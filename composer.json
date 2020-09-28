@@ -18,7 +18,7 @@
     "ergebnis/composer-normalize": "~2.8.0",
     "ergebnis/phpstan-rules": "~0.15.1",
     "infection/infection": "~0.13.6 || ~0.16.4",
-    "mimmi20/coding-standard": "~1.0.2",
+    "mimmi20/coding-standard": "~1.0.3",
     "pepakriz/phpstan-exception-rules": "~0.11.1",
     "phpstan/extension-installer": "~1.0.5",
     "phpstan/phpstan": "~0.12.42",
