@@ -3,14 +3,16 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="vendor/squizlabs/php_codesniffer/phpcs.xsd"
 >
-    <description>browser-detector</description>
+    <description>mezzio-navigation</description>
 
     <arg name="report" value="full"/>
     <arg value="wps"/>
     <arg name="encoding" value="utf-8"/>
 
     <!-- inherit rules from: -->
-    <rule ref="mimmi20-cs"/>
+    <rule ref="mimmi20-cs">
+        <exclude name="Squiz.Commenting.FunctionComment.ScalarTypeHintMissing"/>
+    </rule>
 
     <!-- Paths to check -->
     <file>src</file>

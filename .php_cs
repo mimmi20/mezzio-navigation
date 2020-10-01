@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of the mimmi20/template package.
+ * This file is part of the mimmi20/mezzio-navigation package.
  *
  * Copyright (c) 2020, Thomas Mueller <mimmi20@live.de>
  *
@@ -11,7 +11,7 @@
 declare(strict_types = 1);
 
 $header = <<<'EOF'
-This file is part of the mimmi20/template package.
+This file is part of the mimmi20/mezzio-navigation package.
 
 Copyright (c) 2020, Thomas Mueller <mimmi20@live.de>
 

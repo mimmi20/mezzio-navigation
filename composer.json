@@ -1,9 +1,13 @@
 {
-  "name": "mimmi20/template",
+  "name": "mimmi20/mezzio-navigation",
   "type": "library",
-  "description": "Provides a GitHub repository template for a PHP library, using GitHub actions.",
-  "homepage": "https://github.com/mimmi20/template",
+  "description": "Provides a Navigation for Mezzio.",
+  "homepage": "https://github.com/mimmi20/mezzio-navigation",
   "license": "MIT",
+  "keywords": [
+    "laminas",
+    "mezzio"
+  ],
   "authors": [
     {
       "name": "Thomas Müller",
@@ -11,8 +15,15 @@
       "role": "Developer"
     }
   ],
+  "extra": {
+    "laminas": {
+      "config-provider": "Mezzio\\Navigation\\ConfigProvider"
+    }
+  },
   "require": {
-    "php": "^7.1.3 || ^8.0.0"
+    "php": "^7.1.3 || ^8.0.0",
+    "laminas/laminas-stdlib": "~3.2.1",
+    "psr/container": "^1.0"
   },
   "require-dev": {
     "ergebnis/composer-normalize": "~2.8.0",
@@ -26,7 +37,27 @@
     "phpstan/phpstan-deprecation-rules": "~0.12.5",
     "phpstan/phpstan-phpunit": "~0.12.16",
     "phpstan/phpstan-strict-rules": "~0.12.5",
-    "phpunit/phpunit": "~7.5.20 || ~8.5.8 || ~9.3.5"
+    "phpunit/phpunit": "~7.5.20 || ~8.5.8 || ~9.3.5",
+    "laminas/laminas-servicemanager": "~3.4.1",
+    "mezzio/mezzio-router": "^3.0.0",
+    "mezzio/mezzio-authorization": "*"
+  },
+  "suggest": {
+    "laminas/laminas-config": "^3.1.0, to provide page configuration (optional, as arrays and Traversables are also allowed)",
+    "laminas/laminas-servicemanager": "~3.4.1, to use the navigation factories",
+    "mezzio/mezzio-authorization": "to provide ACL-based access restrictions to pages",
+    "mezzio/mezzio-router": "^3.0.0, to use router-based URI generation with Mvc pages",
+    "mimmi20/mezzio-navigation-laminasviewrenderer": "to use the navigation view helpers"
+  },
+  "autoload": {
+    "psr-4": {
+      "Mezzio\\Navigation\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "MezzioTest\\Navigation\\": "test/"
+    }
   },
   "config": {
     "platform": {
@@ -36,7 +67,7 @@
     "sort-packages": true
   },
   "support": {
-    "issues": "https://github.com/mimmi20/template/issues",
-    "source": "https://github.com/mimmi20/template"
+    "issues": "https://github.com/mimmi20/mezzio-navigation/issues",
+    "source": "https://github.com/mimmi20/mezzio-navigation"
   }
 }

@@ -24,7 +24,7 @@
         <ini name="date.timezone" value="UTC"/>
     </php>
 
-    <testsuite name="BrowserDetector Test Suite">
+    <testsuite name="Mezzio Navigation Test Suite">
         <directory>tests/</directory>
     </testsuite>
 
