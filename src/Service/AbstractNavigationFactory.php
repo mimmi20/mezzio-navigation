@@ -11,15 +11,15 @@
 declare(strict_types = 1);
 namespace Mezzio\Navigation\Service;
 
+use Interop\Container\ContainerInterface;
 use Laminas\Config;
-use Mezzio\Router\RouteResult;
-use Mezzio\Router\RouterInterface;
-use Psr\Http\Message\ServerRequestInterface as Request;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Laminas\Stdlib\ArrayUtils;
 use Mezzio\Navigation\Exception;
 use Mezzio\Navigation\Navigation;
-use Interop\Container\ContainerInterface;
+use Mezzio\Router\RouteResult;
+use Mezzio\Router\RouterInterface;
+use Psr\Http\Message\ServerRequestInterface as Request;
 use Traversable;
 
 /**

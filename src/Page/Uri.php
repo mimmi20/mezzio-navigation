@@ -11,8 +11,8 @@
 declare(strict_types = 1);
 namespace Mezzio\Navigation\Page;
 
-use Psr\Http\Message\ServerRequestInterface as Request;
 use Mezzio\Navigation\Exception;
+use Psr\Http\Message\ServerRequestInterface as Request;
 
 /**
  * Represents a page that is defined by specifying a URI
@@ -72,7 +72,7 @@ final class Uri extends AbstractPage
      */
     public function getHref(): string
     {
-        $uri = $this->getUri();
+        $uri      = $this->getUri();
         $fragment = $this->getFragment();
 
         if (null !== $fragment) {
@@ -100,7 +100,8 @@ final class Uri extends AbstractPage
      */
     public function isActive(bool $recursive = false): bool
     {
-        if (!$this->active
+        if (
+            !$this->active
             && $this->getRequest() instanceof Request
             && $this->getRequest()->getUri()->getPath() === $this->getUri()
         ) {

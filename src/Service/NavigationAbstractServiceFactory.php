@@ -11,10 +11,9 @@
 declare(strict_types = 1);
 namespace Mezzio\Navigation\Service;
 
-use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
-use Laminas\ServiceManager\ServiceLocatorInterface;
-use Mezzio\Navigation\Navigation;
 use Interop\Container\ContainerInterface;
+use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
+use Mezzio\Navigation\Navigation;
 
 /**
  * Navigation abstract service factory
@@ -62,7 +61,9 @@ final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param \Interop\Container\ContainerInterface $container
+     * @param string                                $requestedName
+     * @param array|null                            $options
      *
      * @return Navigation
      */
@@ -136,11 +137,7 @@ final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
             return true;
         }
 
-        if (isset($config[mb_strtolower($withoutPrefix)])) {
-            return true;
-        }
-
-        return false;
+        return isset($config[mb_strtolower($withoutPrefix)]);
     }
 
     /**

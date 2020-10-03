@@ -24,9 +24,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class NavigationTest extends TestCase
 {
-    /**
-     * @var \Mezzio\Navigation\Navigation
-     */
+    /** @var \Mezzio\Navigation\Navigation */
     private $navigation;
 
     /**
@@ -50,9 +48,10 @@ final class NavigationTest extends TestCase
     /**
      * Testing that navigation order is done correctly
      *
+     * @return void
+     *
      * @group   Laminas-8337
      * @group   Laminas-8313
-     * @return void
      */
     public function testNavigationArraySortsCorrectly(): void
     {

@@ -209,7 +209,10 @@ abstract class AbstractContainer implements Countable, RecursiveIterator
             $hash = $page->hashCode();
         } elseif (is_int($page)) {
             $this->sort();
-            if (!$hash = array_search($page, $this->index, true)) {
+
+            $hash = array_search($page, $this->index, true);
+
+            if (!$hash) {
                 return false;
             }
         } else {
@@ -295,7 +298,7 @@ abstract class AbstractContainer implements Countable, RecursiveIterator
             return false;
         }
 
-        return $this->index ? true : false;
+        return empty($this->index);
     }
 
     /**
@@ -383,6 +386,8 @@ abstract class AbstractContainer implements Countable, RecursiveIterator
      * @param array  $arguments method arguments
      *
      * @throws Exception\BadMethodCallException if method does not exist
+     *
+     * @return mixed
      */
     public function __call(string $method, $arguments)
     {

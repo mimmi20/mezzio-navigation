@@ -45,8 +45,9 @@ final class ConfigProviderTest extends TestCase
     /**
      * @param ConfigProvider $provider
      *
-     * @depends testProvidesExpectedConfiguration
      * @return void
+     *
+     * @depends testProvidesExpectedConfiguration
      */
     public function testInvocationProvidesDependencyConfiguration(ConfigProvider $provider): void
     {

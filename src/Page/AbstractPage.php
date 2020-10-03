@@ -240,7 +240,9 @@ abstract class AbstractPage extends AbstractContainer
 
         if (static::$factories) {
             foreach (static::$factories as $factoryCallBack) {
-                if (($page = call_user_func($factoryCallBack, $options))) {
+                $page = call_user_func($factoryCallBack, $options);
+
+                if ($page) {
                     return $page;
                 }
             }
@@ -267,6 +269,8 @@ abstract class AbstractPage extends AbstractContainer
      * Add static factory for self::factory function
      *
      * @param callable $callback Any callable variable
+     *
+     * @return void
      */
     final public static function addFactory(callable $callback): void
     {
@@ -699,8 +703,8 @@ abstract class AbstractPage extends AbstractContainer
      * Sets ACL resource associated with this page
      *
      * @param string $resource [optional] resource to associate
-     *                                     with page. Default is null, which
-     *                                     sets no resource.
+     *                         with page. Default is null, which
+     *                         sets no resource.
      *
      * @throws Exception\InvalidArgumentException if $resource is invalid
      *
@@ -725,8 +729,8 @@ abstract class AbstractPage extends AbstractContainer
      * Sets privilege associated with this page
      *
      * @param string $privilege [optional] ACL privilege to associate
-     *                               with this page. Default is null, which
-     *                               sets no privilege.
+     *                          with this page. Default is null, which
+     *                          sets no privilege.
      *
      * @return void
      */
@@ -749,8 +753,8 @@ abstract class AbstractPage extends AbstractContainer
      * Sets permission associated with this page
      *
      * @param string $permission [optional] permission to associate
-     *                               with this page. Default is null, which
-     *                               sets no permission.
+     *                           with this page. Default is null, which
+     *                           sets no permission.
      *
      * @return void
      */
@@ -773,8 +777,8 @@ abstract class AbstractPage extends AbstractContainer
      * Sets text domain for translation
      *
      * @param string $textDomain [optional] text domain to associate
-     *                                with this page. Default is null, which
-     *                                sets no text domain.
+     *                           with this page. Default is null, which
+     *                           sets no text domain.
      *
      * @return void
      */

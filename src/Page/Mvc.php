@@ -182,7 +182,7 @@ final class Mvc extends AbstractPage
 
         if ($this->useRouteMatch() && $this->getRouteMatch()) {
             $rmParams = $this->getRouteMatch()->getMatchedParams();
-            $params = array_merge($rmParams, $this->getParams());
+            $params   = array_merge($rmParams, $this->getParams());
         } else {
             $params = $this->getParams();
         }
@@ -206,7 +206,8 @@ final class Mvc extends AbstractPage
             $options['fragment'] = $fragment;
         }
 
-        if (null !== ($query = $this->getQuery())) {
+        $query = $this->getQuery();
+        if (null !== $query) {
             $options['query'] = $query;
         }
 
