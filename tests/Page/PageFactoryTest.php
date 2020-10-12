@@ -13,7 +13,7 @@ namespace MezzioTest\Navigation\Page;
 
 use Mezzio\Navigation\Exception\InvalidArgumentException;
 use Mezzio\Navigation\Page\AbstractPage;
-use Mezzio\Navigation\Page\Mvc;
+use Mezzio\Navigation\Page\Route;
 use Mezzio\Navigation\Page\Uri;
 use MezzioTest\Navigation\TestAsset\Page;
 use PHPUnit\Framework\TestCase;
@@ -36,7 +36,7 @@ final class PageFactoryTest extends TestCase
             }
 
             if (isset($page['factory_mvc'])) {
-                return new Mvc($page);
+                return new Route($page);
             }
 
             return null;
@@ -51,7 +51,7 @@ final class PageFactoryTest extends TestCase
         );
 
         self::assertInstanceOf(
-            Mvc::class,
+            Route::class,
             AbstractPage::factory([
                 'label' => 'URI Page',
                 'factory_mvc' => '#',
@@ -79,7 +79,7 @@ final class PageFactoryTest extends TestCase
             ]),
         ];
 
-        self::assertContainsOnly(Mvc::class, $pages);
+        self::assertContainsOnly(Route::class, $pages);
     }
 
     /**
@@ -107,7 +107,7 @@ final class PageFactoryTest extends TestCase
             'uri' => '#',
         ]);
 
-        self::assertInstanceOf(Mvc::class, $page);
+        self::assertInstanceOf(Route::class, $page);
     }
 
     /**
@@ -122,7 +122,7 @@ final class PageFactoryTest extends TestCase
             'controller' => 'index',
         ]);
 
-        self::assertInstanceOf(Mvc::class, $mvcPage);
+        self::assertInstanceOf(Route::class, $mvcPage);
     }
 
     /**

@@ -23,7 +23,7 @@ use Mezzio\Router\RouterInterface;
  * ModuleRouteListener; to remove the requirement on that component, they are
  * reproduced here.
  */
-final class Mvc extends AbstractPage
+final class Route extends AbstractPage
 {
     /**
      * URL query part to use when assembling URL
