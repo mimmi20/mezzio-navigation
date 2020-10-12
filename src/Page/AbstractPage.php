@@ -164,17 +164,15 @@ abstract class AbstractPage extends AbstractContainer
      * Factory for Mezzio\Navigation\Page classes
      *
      * A specific type to construct can be specified by specifying the key
-     * 'type' in $options. If type is 'uri' or 'mvc', the type will be resolved
-     * to Mezzio\Navigation\Page\Uri or Mezzio\Navigation\Page\Mvc. Any other value
+     * 'type' in $options. If type is 'uri' or 'route', the type will be resolved
+     * to Mezzio\Navigation\Page\Uri or Mezzio\Navigation\Page\Route. Any other value
      * for 'type' will be considered the full name of the class to construct.
      * A valid custom page class must extend Mezzio\Navigation\Page\AbstractPage.
      *
      * If 'type' is not given, the type of page to construct will be determined
      * by the following rules:
-     * - If $options contains either of the keys 'action', 'controller',
-     *   or 'route', a Mezzio\Navigation\Page\Mvc page will be created.
-     * - If $options contains the key 'uri', a Mezzio\Navigation\Page\Uri page
-     *   will be created.
+     * - If $options contains the key 'route', a Mezzio\Navigation\Page\Route page will be created.
+     * - If $options contains the key 'uri', a Mezzio\Navigation\Page\Uri page will be created.
      *
      * @param array|Traversable $options options used for creating page
      *
@@ -209,11 +207,11 @@ abstract class AbstractPage extends AbstractContainer
             $type = $options['type'];
             if (is_string($type) && !empty($type)) {
                 switch (mb_strtolower($type)) {
-                    case 'mvc':
-                        $type = 'Mezzio\Navigation\Page\Mvc';
+                    case 'route':
+                        $type = Route::class;
                         break;
                     case 'uri':
-                        $type = 'Mezzio\Navigation\Page\Uri';
+                        $type = Uri::class;
                         break;
                 }
 
@@ -249,11 +247,10 @@ abstract class AbstractPage extends AbstractContainer
         }
 
         $hasUri = isset($options['uri']);
-        $hasMvc = isset($options['action']) || isset($options['controller'])
-                || isset($options['route']);
+        $hasRoute = isset($options['route']);
 
-        if ($hasMvc) {
-            return new Mvc($options);
+        if ($hasRoute) {
+            return new Route($options);
         }
 
         if ($hasUri) {

@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @group      Laminas_Navigation
  */
-final class MvcTest extends TestCase
+final class RouteTest extends TestCase
 {
     /**
      * @return void

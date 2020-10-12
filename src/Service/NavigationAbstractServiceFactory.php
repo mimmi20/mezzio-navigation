@@ -31,7 +31,7 @@ final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
     /**
      * Service manager factory prefix
      */
-    public const SERVICE_PREFIX = 'Laminas\\Navigation\\';
+    public const SERVICE_PREFIX = 'Mezzio\\Navigation\\';
 
     /**
      * Navigation configuration
