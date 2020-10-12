@@ -37,10 +37,10 @@
     "phpunit/phpunit": "~7.5.20 || ~8.5.8 || ~9.4.1"
   },
   "suggest": {
-    "laminas/laminas-config": "^3.1.0, to provide page configuration (optional, as arrays and Traversables are also allowed)",
+    "laminas/laminas-config": "~3.3.0 || ~3.4.0, to provide page configuration (optional, as arrays and Traversables are also allowed)",
     "laminas/laminas-servicemanager": "~3.4.1, to use the navigation factories",
-    "mezzio/mezzio-authorization": "to provide ACL-based access restrictions to pages",
-    "mezzio/mezzio-router": "^3.0.0, to use router-based URI generation with Mvc pages",
+    "mezzio/mezzio-authorization": "^1.0.1, to provide access restrictions to pages",
+    "mezzio/mezzio-router": "^3.1.3, to use router-based URI generation with pages",
     "mimmi20/mezzio-navigation-laminasviewrenderer": "to use the navigation view helpers"
   },
   "config": {
