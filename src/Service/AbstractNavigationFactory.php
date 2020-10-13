@@ -27,8 +27,8 @@ use Traversable;
  */
 abstract class AbstractNavigationFactory implements FactoryInterface
 {
-    /** @var array */
-    protected $pages = [];
+    /** @var array|null */
+    protected $pages;
 
     /**
      * Create and return a new Navigation instance (v3).
