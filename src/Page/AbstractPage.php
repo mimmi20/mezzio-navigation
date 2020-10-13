@@ -246,7 +246,7 @@ abstract class AbstractPage extends AbstractContainer
             }
         }
 
-        $hasUri = isset($options['uri']);
+        $hasUri   = isset($options['uri']);
         $hasRoute = isset($options['route']);
 
         if ($hasRoute) {
