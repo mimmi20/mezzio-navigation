@@ -11,38 +11,36 @@
 declare(strict_types = 1);
 namespace Mezzio\Navigation;
 
-use Countable;
 use Laminas\Stdlib\ErrorHandler;
-use Mezzio\Navigation\Page\AbstractPage;
-use RecursiveIterator;
+use Mezzio\Navigation\Page\PageInterface;
 use RecursiveIteratorIterator;
 use Traversable;
 
 /**
- * AbstractContainer class for Mezzio\Navigation\Page classes.
+ * Trait for Mezzio\Navigation\Page classes.
  */
-abstract class AbstractContainer implements Countable, RecursiveIterator
+trait ContainerTrait
 {
     /**
      * Contains sub pages
      *
-     * @var array
+     * @var PageInterface[]
      */
-    protected $pages = [];
+    private $pages = [];
 
     /**
      * An index that contains the order in which to iterate pages
      *
      * @var array
      */
-    protected $index = [];
+    private $index = [];
 
     /**
      * Whether index is dirty and needs to be re-arranged
      *
      * @var bool
      */
-    protected $dirtyIndex = false;
+    private $dirtyIndex = false;
 
     // Internal methods:
 
@@ -51,7 +49,7 @@ abstract class AbstractContainer implements Countable, RecursiveIterator
      *
      * @return void
      */
-    protected function sort(): void
+    private function sort(): void
     {
         if (!$this->dirtyIndex) {
             return;
@@ -89,33 +87,21 @@ abstract class AbstractContainer implements Countable, RecursiveIterator
 
     /**
      * Adds a page to the container
-     *
      * This method will inject the container as the given page's parent by
-     * calling {@link Page\AbstractPage::setParent()}.
+     * calling {@link PageInterface::setParent()}.
      *
-     * @param array|Page\AbstractPage|Traversable $page page to add
+     * @param PageInterface $page page to add
      *
      * @throws Exception\InvalidArgumentException if page is invalid
      *
      * @return void
      */
-    public function addPage($page): void
+    final public function addPage(PageInterface $page): void
     {
         if ($page === $this) {
             throw new Exception\InvalidArgumentException(
                 'A page cannot have itself as a parent'
             );
-        }
-
-        if (!$page instanceof Page\AbstractPage) {
-            if (!is_array($page) && !$page instanceof Traversable) {
-                throw new Exception\InvalidArgumentException(
-                    'Invalid argument: $page must be an instance of '
-                    . 'Mezzio\Navigation\Page\AbstractPage or Traversable, or an array'
-                );
-            }
-
-            $page = Page\AbstractPage::factory($page);
         }
 
         $hash = $page->hashCode();
@@ -137,34 +123,22 @@ abstract class AbstractContainer implements Countable, RecursiveIterator
     /**
      * Adds several pages at once
      *
-     * @param AbstractContainer|array|Traversable $pages pages to add
+     * @param array|Traversable $pages pages to add
      *
-     * @throws Exception\InvalidArgumentException if $pages is not array,
-     *                                            Traversable or AbstractContainer
+     * @throws Exception\InvalidArgumentException                 if $pages is not array, Traversable or PageInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
      * @return void
      */
     final public function addPages($pages): void
     {
-        if (!is_array($pages) && !$pages instanceof Traversable) {
-            throw new Exception\InvalidArgumentException(
-                'Invalid argument: $pages must be an array, an '
-                . 'instance of Traversable or an instance of '
-                . 'Mezzio\Navigation\AbstractContainer'
-            );
-        }
-
-        // Because adding a page to a container removes it from the original
-        // (see {@link Page\AbstractPage::setParent()}), iteration of the
-        // original container will break. As such, we need to iterate the
-        // container into an array first.
-        if ($pages instanceof self) {
-            $pages = iterator_to_array($pages);
-        }
-
         foreach ($pages as $page) {
             if (null === $page) {
                 continue;
+            }
+
+            if (!$page instanceof PageInterface) {
+                $page = Page\PageFactory::factory($page);
             }
 
             $this->addPage($page);
@@ -174,11 +148,14 @@ abstract class AbstractContainer implements Countable, RecursiveIterator
     /**
      * Sets pages this container should have, removing existing pages
      *
-     * @param array $pages pages to set
+     * @param array|Traversable $pages pages to set
+     *
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
      * @return void
      */
-    final public function setPages(array $pages): void
+    final public function setPages($pages): void
     {
         $this->removePages();
         $this->addPages($pages);
@@ -187,7 +164,7 @@ abstract class AbstractContainer implements Countable, RecursiveIterator
     /**
      * Returns pages in the container
      *
-     * @return array array of Page\AbstractPage instances
+     * @return PageInterface[]
      */
     final public function getPages(): array
     {
@@ -197,15 +174,14 @@ abstract class AbstractContainer implements Countable, RecursiveIterator
     /**
      * Removes the given page from the container
      *
-     * @param int|Page\AbstractPage $page      page to remove, either a page
-     *                                         instance or a specific page order
-     * @param bool                  $recursive [optional] whether to remove recursively
+     * @param int|PageInterface $page      page to remove, either a page instance or a specific page order
+     * @param bool              $recursive [optional] whether to remove recursively
      *
      * @return bool whether the removal was successful
      */
     final public function removePage($page, bool $recursive = false): bool
     {
-        if ($page instanceof Page\AbstractPage) {
+        if ($page instanceof PageInterface) {
             $hash = $page->hashCode();
         } elseif (is_int($page)) {
             $this->sort();
@@ -229,7 +205,7 @@ abstract class AbstractContainer implements Countable, RecursiveIterator
 
         if ($recursive) {
             foreach ($this->pages as $childPage) {
-                \assert($childPage instanceof \Mezzio\Navigation\Page\AbstractPage);
+                \assert($childPage instanceof PageInterface);
                 if ($childPage->hasPage($page, true)) {
                     $childPage->removePage($page, true);
 
@@ -255,15 +231,28 @@ abstract class AbstractContainer implements Countable, RecursiveIterator
     /**
      * Checks if the container has the given page
      *
-     * @param Page\AbstractPage $page      page to look for
-     * @param bool              $recursive [optional] whether to search recursively.
-     *                                     Default is false.
+     * @param int|PageInterface $page      page to look for
+     * @param bool              $recursive [optional] whether to search recursively. Default is false.
      *
      * @return bool whether page is in container
      */
-    final public function hasPage(Page\AbstractPage $page, bool $recursive = false): bool
+    final public function hasPage($page, bool $recursive = false): bool
     {
-        if (array_key_exists($page->hashCode(), $this->index)) {
+        if ($page instanceof PageInterface) {
+            $hash = $page->hashCode();
+        } elseif (is_int($page)) {
+            $this->sort();
+
+            $hash = array_search($page, $this->index, true);
+
+            if (!$hash) {
+                return false;
+            }
+        } else {
+            return false;
+        }
+
+        if (array_key_exists($hash, $this->index)) {
             return true;
         }
 
@@ -307,9 +296,9 @@ abstract class AbstractContainer implements Countable, RecursiveIterator
      * @param string $property name of property to match against
      * @param mixed  $value    value to match property against
      *
-     * @return AbstractPage|null matching page or null
+     * @return PageInterface|null matching page or null
      */
-    final public function findOneBy(string $property, $value): ?AbstractPage
+    final public function findOneBy(string $property, $value): ?PageInterface
     {
         $iterator = new RecursiveIteratorIterator($this, RecursiveIteratorIterator::SELF_FIRST);
 
@@ -329,7 +318,7 @@ abstract class AbstractContainer implements Countable, RecursiveIterator
      * @param string $property name of property to match against
      * @param mixed  $value    value to match property against
      *
-     * @return array array containing only Page\AbstractPage instances
+     * @return PageInterface[] array containing only Page\AbstractPage instances
      */
     final public function findAllBy(string $property, $value): array
     {
@@ -349,29 +338,6 @@ abstract class AbstractContainer implements Countable, RecursiveIterator
     }
 
     /**
-     * Returns page(s) matching $property == $value
-     *
-     * @param string $property name of property to match against
-     * @param mixed  $value    value to match property against
-     * @param bool   $all      [optional] whether an array of all matching
-     *                         pages should be returned, or only the first.
-     *                         If true, an array will be returned, even if not
-     *                         matching pages are found. If false, null will
-     *                         be returned if no matching page is found.
-     *                         Default is false.
-     *
-     * @return array|Page\AbstractPage|null matching page or null
-     */
-    final public function findBy(string $property, $value, bool $all = false)
-    {
-        if ($all) {
-            return $this->findAllBy($property, $value);
-        }
-
-        return $this->findOneBy($property, $value);
-    }
-
-    /**
      * Magic overload: Proxy calls to finder methods
      *
      * Examples of finder calls:
@@ -386,20 +352,27 @@ abstract class AbstractContainer implements Countable, RecursiveIterator
      * @param array  $arguments method arguments
      *
      * @throws Exception\BadMethodCallException if method does not exist
+     * @throws \ErrorException
      *
      * @return mixed
      */
     public function __call(string $method, $arguments)
     {
         ErrorHandler::start(E_WARNING);
+
         $result = preg_match('/(find(?:One|All)?By)(.+)/', $method, $match);
         $error  = ErrorHandler::stop();
+
         if (!$result) {
-            throw new Exception\BadMethodCallException(sprintf(
-                'Bad method call: Unknown method %s::%s',
-                static::class,
-                $method
-            ), 0, $error);
+            throw new Exception\BadMethodCallException(
+                sprintf(
+                    'Bad method call: Unknown method %s::%s',
+                    static::class,
+                    $method
+                ),
+                0,
+                $error
+            );
         }
 
         return $this->{$match[1]}($match[2], $arguments[0]);
@@ -410,7 +383,7 @@ abstract class AbstractContainer implements Countable, RecursiveIterator
      *
      * @return array
      */
-    public function toArray(): array
+    final public function toArray(): array
     {
         $this->sort();
         $pages   = [];
@@ -426,14 +399,13 @@ abstract class AbstractContainer implements Countable, RecursiveIterator
 
     /**
      * Returns current page
-     *
      * Implements RecursiveIterator interface.
      *
      * @throws Exception\OutOfBoundsException if the index is invalid
      *
-     * @return AbstractPage current page or null
+     * @return PageInterface current page or null
      */
-    final public function current(): AbstractPage
+    final public function current(): PageInterface
     {
         $this->sort();
 
@@ -460,7 +432,7 @@ abstract class AbstractContainer implements Countable, RecursiveIterator
     {
         $this->sort();
 
-        return key($this->index);
+        return (string) key($this->index);
     }
 
     /**
@@ -508,6 +480,8 @@ abstract class AbstractContainer implements Countable, RecursiveIterator
      *
      * Implements RecursiveIterator interface.
      *
+     * @throws \Mezzio\Navigation\Exception\OutOfBoundsException
+     *
      * @return bool whether container has any pages
      */
     final public function hasChildren(): bool
@@ -520,9 +494,9 @@ abstract class AbstractContainer implements Countable, RecursiveIterator
      *
      * Implements RecursiveIterator interface.
      *
-     * @return AbstractPage|null
+     * @return PageInterface|null
      */
-    final public function getChildren(): ?AbstractPage
+    final public function getChildren(): ?PageInterface
     {
         $hash = key($this->index);
 

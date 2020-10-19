@@ -23,8 +23,13 @@ use Mezzio\Router\RouterInterface;
  * ModuleRouteListener; to remove the requirement on that component, they are
  * reproduced here.
  */
-final class Route extends AbstractPage
+final class Route implements PageInterface
 {
+    use PageTrait {
+        isActive as isActiveParent;
+        toArray as toParentArray;
+    }
+
     /**
      * URL query part to use when assembling URL
      *
@@ -134,7 +139,7 @@ final class Route extends AbstractPage
                         return $this->active;
                     }
 
-                    return parent::isActive($recursive);
+                    return $this->isActiveParent($recursive);
                 }
             }
 
@@ -147,7 +152,7 @@ final class Route extends AbstractPage
             }
         }
 
-        return parent::isActive($recursive);
+        return $this->isActiveParent($recursive);
     }
 
     /**
@@ -158,7 +163,8 @@ final class Route extends AbstractPage
      *
      * @see RouteStackInterface
      *
-     * @throws Exception\DomainException if no router is set
+     * @throws Exception\DomainException                 if no router is set
+     * @throws \Mezzio\Router\Exception\RuntimeException
      *
      * @return string page href
      */
@@ -176,26 +182,32 @@ final class Route extends AbstractPage
         if (!$router instanceof RouterInterface) {
             throw new Exception\DomainException(
                 __METHOD__
-                . ' cannot execute as no Laminas\Router\RouteStackInterface instance is composed'
+                . ' cannot execute as no Mezzio\Router\RouterInterface instance is composed'
             );
         }
 
-        if ($this->useRouteMatch() && $this->getRouteMatch()) {
+        if ($this->useRouteMatch() && null !== $this->getRouteMatch()) {
             $rmParams = $this->getRouteMatch()->getMatchedParams();
             $params   = array_merge($rmParams, $this->getParams());
         } else {
             $params = $this->getParams();
         }
 
+        $name = null;
+
         switch (true) {
             case null !== $this->getRoute() || null !== self::getDefaultRoute():
                 $name = null !== $this->getRoute() ? $this->getRoute() : self::getDefaultRoute();
                 break;
-            case null !== $this->getRouteMatch():
+            case null !== $this->getRouteMatch() && !$this->getRouteMatch()->isFailure():
                 $name = $this->getRouteMatch()->getMatchedRouteName();
                 break;
             default:
-                throw new Exception\DomainException('No route name could be found');
+                // do nothing
+        }
+
+        if (!is_string($name)) {
+            throw new Exception\DomainException('No route name could be found');
         }
 
         $options = ['name' => $name];
@@ -433,7 +445,7 @@ final class Route extends AbstractPage
     public function toArray(): array
     {
         return array_merge(
-            parent::toArray(),
+            $this->toParentArray(),
             [
                 'params' => $this->getParams(),
                 'route' => $this->getRoute(),

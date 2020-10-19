@@ -13,11 +13,6 @@ namespace MezzioTest\Navigation\Page;
 
 use PHPUnit\Framework\TestCase;
 
-/**
- * Tests the class Laminas_Navigation_Page_Mvc
- *
- * @group      Laminas_Navigation
- */
 final class RouteTest extends TestCase
 {
     /**
@@ -29,6 +24,8 @@ final class RouteTest extends TestCase
     }
 
     /**
+     * @throws \PHPUnit\Framework\SkippedTestError
+     *
      * @return void
      */
     public function testHrefGeneratedByRouterWithDefaultRoute(): void
@@ -37,6 +34,8 @@ final class RouteTest extends TestCase
     }
 
     /**
+     * @throws \PHPUnit\Framework\SkippedTestError
+     *
      * @return void
      */
     public function testHrefGeneratedByRouterRequiresNoRoute(): void
@@ -45,6 +44,8 @@ final class RouteTest extends TestCase
     }
 
     /**
+     * @throws \PHPUnit\Framework\SkippedTestError
+     *
      * @return void
      */
     public function testHrefRouteMatchEnabledWithoutRouteMatchObject(): void
@@ -53,6 +54,8 @@ final class RouteTest extends TestCase
     }
 
     /**
+     * @throws \PHPUnit\Framework\SkippedTestError
+     *
      * @return void
      */
     public function testHrefGeneratedIsRouteAware(): void
@@ -61,6 +64,8 @@ final class RouteTest extends TestCase
     }
 
     /**
+     * @throws \PHPUnit\Framework\SkippedTestError
+     *
      * @return void
      */
     public function testIsActiveReturnsTrueWhenMatchingRoute(): void
@@ -69,6 +74,8 @@ final class RouteTest extends TestCase
     }
 
     /**
+     * @throws \PHPUnit\Framework\SkippedTestError
+     *
      * @return void
      */
     public function testIsActiveReturnsTrueWhenMatchingRouteWhileUsingModuleRouteListener(): void
@@ -77,6 +84,8 @@ final class RouteTest extends TestCase
     }
 
     /**
+     * @throws \PHPUnit\Framework\SkippedTestError
+     *
      * @return void
      */
     public function testIsActiveReturnsFalseWhenMatchingRouteButNonMatchingParams(): void
@@ -85,6 +94,8 @@ final class RouteTest extends TestCase
     }
 
     /**
+     * @throws \PHPUnit\Framework\SkippedTestError
+     *
      * @return void
      */
     public function testIsActiveReturnsFalseWhenNoRouteAndNoMatchedRouteNameIsSet(): void
@@ -93,6 +104,8 @@ final class RouteTest extends TestCase
     }
 
     /**
+     * @throws \PHPUnit\Framework\SkippedTestError
+     *
      * @return void
      */
     public function testGetHrefWithFragmentIdentifier(): void
@@ -101,6 +114,8 @@ final class RouteTest extends TestCase
     }
 
     /**
+     * @throws \PHPUnit\Framework\SkippedTestError
+     *
      * @return void
      */
     public function testGetHrefPassesQueryPartToRouter(): void
@@ -109,6 +124,8 @@ final class RouteTest extends TestCase
     }
 
     /**
+     * @throws \PHPUnit\Framework\SkippedTestError
+     *
      * @return void
      */
     public function testIsActiveReturnsTrueOnIdenticalControllerAction(): void
@@ -117,6 +134,8 @@ final class RouteTest extends TestCase
     }
 
     /**
+     * @throws \PHPUnit\Framework\SkippedTestError
+     *
      * @return void
      */
     public function testIsActiveReturnsFalseOnDifferentControllerAction(): void
@@ -125,6 +144,8 @@ final class RouteTest extends TestCase
     }
 
     /**
+     * @throws \PHPUnit\Framework\SkippedTestError
+     *
      * @return void
      */
     public function testIsActiveReturnsTrueOnIdenticalIncludingPageParams(): void
@@ -133,6 +154,8 @@ final class RouteTest extends TestCase
     }
 
     /**
+     * @throws \PHPUnit\Framework\SkippedTestError
+     *
      * @return void
      */
     public function testIsActiveReturnsTrueWhenRequestHasMoreParams(): void
@@ -141,6 +164,8 @@ final class RouteTest extends TestCase
     }
 
     /**
+     * @throws \PHPUnit\Framework\SkippedTestError
+     *
      * @return void
      */
     public function testIsActiveReturnsFalseWhenRequestHasLessParams(): void
@@ -149,6 +174,8 @@ final class RouteTest extends TestCase
     }
 
     /**
+     * @throws \PHPUnit\Framework\SkippedTestError
+     *
      * @return void
      */
     public function testActionAndControllerAccessors(): void
@@ -157,6 +184,8 @@ final class RouteTest extends TestCase
     }
 
     /**
+     * @throws \PHPUnit\Framework\SkippedTestError
+     *
      * @return void
      */
     public function testRouteAccessor(): void
@@ -165,6 +194,8 @@ final class RouteTest extends TestCase
     }
 
     /**
+     * @throws \PHPUnit\Framework\SkippedTestError
+     *
      * @return void
      */
     public function testSetAndGetParams(): void
@@ -173,6 +204,8 @@ final class RouteTest extends TestCase
     }
 
     /**
+     * @throws \PHPUnit\Framework\SkippedTestError
+     *
      * @return void
      */
     public function testToArrayMethod(): void
@@ -181,6 +214,8 @@ final class RouteTest extends TestCase
     }
 
     /**
+     * @throws \PHPUnit\Framework\SkippedTestError
+     *
      * @return void
      */
     public function testSpecifyingAnotherUrlHelperToGenerateHrefs(): void
@@ -189,6 +224,8 @@ final class RouteTest extends TestCase
     }
 
     /**
+     * @throws \PHPUnit\Framework\SkippedTestError
+     *
      * @return void
      */
     public function testDefaultRouterCanBeSetWithConstructor(): void
@@ -197,6 +234,8 @@ final class RouteTest extends TestCase
     }
 
     /**
+     * @throws \PHPUnit\Framework\SkippedTestError
+     *
      * @return void
      */
     public function testDefaultRouterCanBeSetWithGetter(): void
@@ -205,6 +244,8 @@ final class RouteTest extends TestCase
     }
 
     /**
+     * @throws \PHPUnit\Framework\SkippedTestError
+     *
      * @return void
      */
     public function testNoExceptionForGetHrefIfDefaultRouterIsSet(): void
@@ -213,6 +254,8 @@ final class RouteTest extends TestCase
     }
 
     /**
+     * @throws \PHPUnit\Framework\SkippedTestError
+     *
      * @return void
      */
     public function testBoolSetAndGetUseRouteMatch(): void
@@ -221,6 +264,8 @@ final class RouteTest extends TestCase
     }
 
     /**
+     * @throws \PHPUnit\Framework\SkippedTestError
+     *
      * @return void
      */
     public function testMvcPageParamsInheritRouteMatchParams(): void
@@ -229,6 +274,8 @@ final class RouteTest extends TestCase
     }
 
     /**
+     * @throws \PHPUnit\Framework\SkippedTestError
+     *
      * @return void
      */
     public function testInheritedRouteMatchParamsWorkWithModuleRouteListener(): void
@@ -237,6 +284,8 @@ final class RouteTest extends TestCase
     }
 
     /**
+     * @throws \PHPUnit\Framework\SkippedTestError
+     *
      * @return void
      */
     public function testMistakeDetectIsActiveOnIndexController(): void
@@ -245,6 +294,8 @@ final class RouteTest extends TestCase
     }
 
     /**
+     * @throws \PHPUnit\Framework\SkippedTestError
+     *
      * @return void
      */
     public function testRecursiveDetectIsActiveWhenRouteNameIsKnown(): void
@@ -253,6 +304,8 @@ final class RouteTest extends TestCase
     }
 
     /**
+     * @throws \PHPUnit\Framework\SkippedTestError
+     *
      * @return void
      */
     public function testSetRouteMatchThrowsExceptionOnInvalidParameter(): void

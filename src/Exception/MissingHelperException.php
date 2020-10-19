@@ -9,19 +9,13 @@
  */
 
 declare(strict_types = 1);
-namespace MezzioTest\Navigation\TestAsset;
+namespace Mezzio\Navigation\Exception;
 
-use Mezzio\Navigation\Page\AbstractPage;
+use DomainException;
+use Psr\Container\ContainerExceptionInterface;
 
-final class Page extends AbstractPage
+final class MissingHelperException extends DomainException implements
+    ContainerExceptionInterface,
+    ExceptionInterface
 {
-    /**
-     * Returns the page's href
-     *
-     * @return string
-     */
-    public function getHref(): string
-    {
-        return '#';
-    }
 }

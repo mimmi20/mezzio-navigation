@@ -11,10 +11,11 @@
 declare(strict_types = 1);
 namespace MezzioTest\Navigation\Page;
 
-use Laminas\Http\Request;
 use Mezzio\Navigation;
 use Mezzio\Navigation\Page;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\UriInterface;
 
 /**
  * Tests the class Laminas_Navigation_Page_Uri
@@ -24,6 +25,11 @@ use PHPUnit\Framework\TestCase;
 final class UriTest extends TestCase
 {
     /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     *
      * @return void
      */
     public function testUriOptionAsString(): void
@@ -37,6 +43,11 @@ final class UriTest extends TestCase
     }
 
     /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     *
      * @return void
      */
     public function testUriOptionAsNull(): void
@@ -50,6 +61,9 @@ final class UriTest extends TestCase
     }
 
     /**
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     *
      * @return void
      */
     public function testUriOptionAsInteger(): void
@@ -62,21 +76,29 @@ final class UriTest extends TestCase
     }
 
     /**
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     *
      * @return void
      */
     public function testUriOptionAsObject(): void
     {
+        $uri      = new \stdClass();
+        $uri->foo = 'bar';
+
         $this->expectException(
             Navigation\Exception\InvalidArgumentException::class
         );
-
-        $uri      = new \stdClass();
-        $uri->foo = 'bar';
 
         new Page\Uri(['uri' => $uri]);
     }
 
     /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     *
      * @return void
      */
     public function testSetAndGetUri(): void
@@ -86,12 +108,18 @@ final class UriTest extends TestCase
             'uri' => '#',
         ]);
 
-        $page->setUri('http://www.example.com/')->setUri('about:blank');
+        $page->setUri('http://www.example.com/');
+        $page->setUri('about:blank');
 
         self::assertEquals('about:blank', $page->getUri());
     }
 
     /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     *
      * @return void
      */
     public function testGetHref(): void
@@ -105,46 +133,84 @@ final class UriTest extends TestCase
     }
 
     /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     *
      * @return void
      */
     public function testIsActiveReturnsTrueWhenHasMatchingRequestUri(): void
     {
-        $page = new Page\Uri([
-            'label' => 'foo',
-            'uri' => '/bar',
-        ]);
+        $url  = '/bar';
+        $page = new Page\Uri(
+            [
+                'label' => 'foo',
+                'uri' => $url,
+            ]
+        );
 
-        $request = new Request();
-        $request->setUri('/bar');
-        $request->setMethod('GET');
+        $uri = $this->createMock(UriInterface::class);
+        $uri->expects(self::once())
+            ->method('getPath')
+            ->willReturn($url);
 
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->expects(self::once())
+            ->method('getUri')
+            ->willReturn($uri);
+
+        /* @var ServerRequestInterface $request */
         $page->setRequest($request);
 
-        self::assertInstanceOf('Laminas\Http\Request', $page->getRequest());
-
+        self::assertSame($request, $page->getRequest());
         self::assertTrue($page->isActive());
     }
 
     /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     *
      * @return void
      */
     public function testIsActiveReturnsFalseOnNonMatchingRequestUri(): void
     {
-        $page = new Page\Uri([
-            'label' => 'foo',
-            'uri' => '/bar',
-        ]);
+        $url1 = '/bar';
+        $url2 = '/baz';
+        $page = new Page\Uri(
+            [
+                'label' => 'foo',
+                'uri' => $url1,
+            ]
+        );
 
-        $request = new Request();
-        $request->setUri('/baz');
-        $request->setMethod('GET');
+        $uri = $this->createMock(UriInterface::class);
+        $uri->expects(self::once())
+            ->method('getPath')
+            ->willReturn($url2);
 
+        $request = $this->createMock(ServerRequestInterface::class);
+        $request->expects(self::once())
+            ->method('getUri')
+            ->willReturn($uri);
+
+        /* @var ServerRequestInterface $request */
         $page->setRequest($request);
 
+        self::assertSame($request, $page->getRequest());
         self::assertFalse($page->isActive());
     }
 
     /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     *
      * @return void
      */
     public function testGetHrefWithFragmentIdentifier(): void

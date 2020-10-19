@@ -13,22 +13,13 @@ parameters:
   exceptionRules:
     reportUnusedCatchesOfUncheckedExceptions: true
     uncheckedExceptions: []
+  checkGenericClassInNonGenericObjectType: false
   checkMissingIterableValueType: false
+  treatPhpDocTypesAsCertain: false
   excludes_analyse:
     - */tests/*/data/*
   ignoreErrors:
-    - '~MockObject~'
-#    - '~Parameter #1 \$headers of callable BrowserDetector\\Detector expects array\|Psr\Http\Message\MessageInterface\|string\|UaRequest\GenericRequest, stdClass given~'
-    - '~Parameter #1 \$headers of method BrowserDetector\\Detector::__invoke\(\) expects array\|Psr\\Http\\Message\\MessageInterface\|string\|UaRequest\\GenericRequest, stdClass given~'
-    - '~Parameter #1 \$message of method Psr\\Log\\LoggerInterface::.* expects string, .*Exception given~'
-    - '~is not subtype of Throwable~'
-    - '~Call to static method PHPUnit~'
-    - '~has a nullable return type declaration~'
-    - '~has parameter \$.* with a nullable type declaration~'
-#    - '~with null as default value~'
-    - '~Call to deprecated method getBrowser\(\) of class BrowserDetector\\Detector~'
-    - '~Useless \@throws~'
-    - '~Missing \@throws~'
-    - '~Error suppression via "@" should not be used~'
-    - '~Call to function assert\(\) with true and string will always evaluate to true~'
-    - '~Instanceof between .* and .* will always evaluate to true~'
+    - '~PHPDoc tag @throws with type .* is not compatible with parent~'
+    - '~PHPDoc tag @throws with type .*Interface is not subtype of Throwable~'
+    - '~Useless @throws .* annotation~'
+    - '~Strict comparison using === between .* and \$this(.*) will always evaluate to false~'

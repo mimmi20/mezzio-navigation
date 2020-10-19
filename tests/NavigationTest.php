@@ -15,43 +15,31 @@ use Mezzio\Navigation\Navigation;
 use Mezzio\Navigation\Page;
 use PHPUnit\Framework\TestCase;
 
-/**
- * Laminas_Navigation
- */
-
-/**
- * @group      Laminas_Navigation
- */
 final class NavigationTest extends TestCase
 {
     /** @var \Mezzio\Navigation\Navigation */
     private $navigation;
 
     /**
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     *
      * @return void
      */
     protected function setUp(): void
     {
-        parent::setUp();
         $this->navigation = new Navigation();
-    }
-
-    /**
-     * @return void
-     */
-    protected function tearDown(): void
-    {
-        $this->navigation = null;
-        parent::tearDown();
     }
 
     /**
      * Testing that navigation order is done correctly
      *
-     * @return void
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
-     * @group   Laminas-8337
-     * @group   Laminas-8313
+     * @return void
      */
     public function testNavigationArraySortsCorrectly(): void
     {
@@ -68,7 +56,7 @@ final class NavigationTest extends TestCase
         $pages = $this->navigation->toArray();
 
         self::assertCount(3, $pages);
-        self::assertEquals('page3', $pages[0]['uri'], var_export($pages, 1));
+        self::assertEquals('page3', $pages[0]['uri'], var_export($pages, true));
         self::assertEquals('page1', $pages[1]['uri']);
         self::assertEquals('page2', $pages[2]['uri']);
     }

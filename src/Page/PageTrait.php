@@ -12,21 +12,26 @@ declare(strict_types = 1);
 namespace Mezzio\Navigation\Page;
 
 use Laminas\Stdlib\ArrayUtils;
-use Mezzio\Navigation\AbstractContainer;
+use Mezzio\Navigation\ContainerInterface;
+use Mezzio\Navigation\ContainerTrait;
 use Mezzio\Navigation\Exception;
 use Traversable;
 
 /**
  * Base class for Mezzio\Navigation\Page pages
  */
-abstract class AbstractPage extends AbstractContainer
+trait PageTrait
 {
+    use ContainerTrait {
+        toArray as parentToArray;
+    }
+
     /**
      * Page label
      *
      * @var string|null
      */
-    protected $label;
+    private $label;
 
     /**
      * Fragment identifier (anchor identifier)
@@ -40,35 +45,35 @@ abstract class AbstractPage extends AbstractContainer
      *
      * @var string|null
      */
-    protected $fragment;
+    private $fragment;
 
     /**
      * Page id
      *
      * @var string|null
      */
-    protected $id;
+    private $id;
 
     /**
      * Style class for this page (CSS)
      *
      * @var string|null
      */
-    protected $class;
+    private $class;
 
     /**
      * A more descriptive title for this page
      *
      * @var string|null
      */
-    protected $title;
+    private $title;
 
     /**
      * This page's target
      *
      * @var string|null
      */
-    protected $target;
+    private $target;
 
     /**
      * Forward links to other pages
@@ -77,7 +82,7 @@ abstract class AbstractPage extends AbstractContainer
      *
      * @var array
      */
-    protected $rel = [];
+    private $rel = [];
 
     /**
      * Reverse links to other pages
@@ -86,201 +91,78 @@ abstract class AbstractPage extends AbstractContainer
      *
      * @var array
      */
-    protected $rev = [];
+    private $rev = [];
 
     /**
      * Page order used by parent container
      *
      * @var int|null
      */
-    protected $order;
+    private $order;
 
     /**
      * resource associated with this page
      *
      * @var string|null
      */
-    protected $resource;
+    private $resource;
 
     /**
      * ACL privilege associated with this page
      *
      * @var string|null
      */
-    protected $privilege;
+    private $privilege;
 
     /**
      * Permission associated with this page
      *
      * @var string|null
      */
-    protected $permission;
+    private $permission;
 
     /**
      * Text domain for Translator
      *
      * @var string|null
      */
-    protected $textDomain;
+    private $textDomain;
 
     /**
      * Whether this page should be considered active
      *
      * @var bool
      */
-    protected $active = false;
+    private $active = false;
 
     /**
      * Whether this page should be considered visible
      *
      * @var bool
      */
-    protected $visible = true;
+    private $visible = true;
 
     /**
      * Parent container
      *
-     * @var \Mezzio\Navigation\AbstractContainer|null
+     * @var \Mezzio\Navigation\ContainerInterface|null
      */
-    protected $parent;
+    private $parent;
 
     /**
      * Custom page properties, used by __set(), __get() and __isset()
      *
      * @var array
      */
-    protected $properties = [];
-
-    /**
-     * Static factories list for factory pages
-     *
-     * @var array
-     */
-    protected static $factories = [];
-
-    // Initialization:
-
-    /**
-     * Factory for Mezzio\Navigation\Page classes
-     *
-     * A specific type to construct can be specified by specifying the key
-     * 'type' in $options. If type is 'uri' or 'route', the type will be resolved
-     * to Mezzio\Navigation\Page\Uri or Mezzio\Navigation\Page\Route. Any other value
-     * for 'type' will be considered the full name of the class to construct.
-     * A valid custom page class must extend Mezzio\Navigation\Page\AbstractPage.
-     *
-     * If 'type' is not given, the type of page to construct will be determined
-     * by the following rules:
-     * - If $options contains the key 'route', a Mezzio\Navigation\Page\Route page will be created.
-     * - If $options contains the key 'uri', a Mezzio\Navigation\Page\Uri page will be created.
-     *
-     * @param array|Traversable $options options used for creating page
-     *
-     * @throws Exception\InvalidArgumentException if $options is not
-     *                                            array/Traversable
-     * @throws Exception\InvalidArgumentException if 'type' is specified
-     *                                            but class not found
-     * @throws Exception\InvalidArgumentException if something goes wrong
-     *                                            during instantiation of
-     *                                            the page
-     * @throws Exception\InvalidArgumentException if 'type' is given, and
-     *                                            the specified type does
-     *                                            not extend this class
-     * @throws Exception\InvalidArgumentException if unable to determine
-     *                                            which class to instantiate
-     *
-     * @return AbstractPage a page instance
-     */
-    final public static function factory($options)
-    {
-        if ($options instanceof Traversable) {
-            $options = ArrayUtils::iteratorToArray($options);
-        }
-
-        if (!is_array($options)) {
-            throw new Exception\InvalidArgumentException(
-                'Invalid argument: $options must be an array or Traversable'
-            );
-        }
-
-        if (isset($options['type'])) {
-            $type = $options['type'];
-            if (is_string($type) && !empty($type)) {
-                switch (mb_strtolower($type)) {
-                    case 'route':
-                        $type = Route::class;
-                        break;
-                    case 'uri':
-                        $type = Uri::class;
-                        break;
-                }
-
-                if (!class_exists($type, true)) {
-                    throw new Exception\InvalidArgumentException(
-                        'Cannot find class ' . $type
-                    );
-                }
-
-                $page = new $type($options);
-                if (!$page instanceof self) {
-                    throw new Exception\InvalidArgumentException(
-                        sprintf(
-                            'Invalid argument: Detected type "%s", which ' .
-                            'is not an instance of Mezzio\Navigation\Page',
-                            $type
-                        )
-                    );
-                }
-
-                return $page;
-            }
-        }
-
-        if (static::$factories) {
-            foreach (static::$factories as $factoryCallBack) {
-                $page = call_user_func($factoryCallBack, $options);
-
-                if ($page) {
-                    return $page;
-                }
-            }
-        }
-
-        $hasUri   = isset($options['uri']);
-        $hasRoute = isset($options['route']);
-
-        if ($hasRoute) {
-            return new Route($options);
-        }
-
-        if ($hasUri) {
-            return new Uri($options);
-        }
-
-        throw new Exception\InvalidArgumentException(
-            'Invalid argument: Unable to determine class to instantiate'
-        );
-    }
-
-    /**
-     * Add static factory for self::factory function
-     *
-     * @param callable $callback Any callable variable
-     *
-     * @return void
-     */
-    final public static function addFactory(callable $callback): void
-    {
-        static::$factories[] = $callback;
-    }
+    private $properties = [];
 
     /**
      * Page constructor
      *
-     * @param array|Traversable|null $options [optional] page options. Default is
-     *                                        null, which should set defaults.
+     * @param array|Traversable|null $options [optional] page options. Default is null, which should set defaults.
      *
-     * @throws Exception\InvalidArgumentException if invalid options are given
+     * @throws Exception\InvalidArgumentException                 if invalid options are given
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      */
     public function __construct($options = null)
     {
@@ -301,7 +183,7 @@ abstract class AbstractPage extends AbstractContainer
      *
      * @return void
      */
-    protected function init(): void
+    private function init(): void
     {
     }
 
@@ -331,20 +213,14 @@ abstract class AbstractPage extends AbstractContainer
     /**
      * Sets page label
      *
-     * @param string $label new page label
+     * @param string|null $label new page label
      *
      * @throws Exception\InvalidArgumentException if empty/no string is given
      *
      * @return void
      */
-    final public function setLabel(string $label): void
+    final public function setLabel(?string $label = null): void
     {
-        if (null !== $label && !is_string($label)) {
-            throw new Exception\InvalidArgumentException(
-                'Invalid argument: $label must be a string or null'
-            );
-        }
-
         $this->label = $label;
     }
 
@@ -361,20 +237,14 @@ abstract class AbstractPage extends AbstractContainer
     /**
      * Sets a fragment identifier
      *
-     * @param string $fragment new fragment identifier
+     * @param string|null $fragment new fragment identifier
      *
      * @throws Exception\InvalidArgumentException if empty/no string is given
      *
      * @return void
      */
-    final public function setFragment(string $fragment): void
+    final public function setFragment(?string $fragment = null): void
     {
-        if (null !== $fragment && !is_string($fragment)) {
-            throw new Exception\InvalidArgumentException(
-                'Invalid argument: $fragment must be a string or null'
-            );
-        }
-
         $this->fragment = $fragment;
     }
 
@@ -400,13 +270,7 @@ abstract class AbstractPage extends AbstractContainer
      */
     final public function setId(?string $id = null): void
     {
-        if (null !== $id && !is_string($id) && !is_numeric($id)) {
-            throw new Exception\InvalidArgumentException(
-                'Invalid argument: $id must be a string, number or null'
-            );
-        }
-
-        $this->id = null === $id ? $id : (string) $id;
+        $this->id = $id;
     }
 
     /**
@@ -431,12 +295,6 @@ abstract class AbstractPage extends AbstractContainer
      */
     final public function setClass(?string $class = null): void
     {
-        if (null !== $class && !is_string($class)) {
-            throw new Exception\InvalidArgumentException(
-                'Invalid argument: $class must be a string or null'
-            );
-        }
-
         $this->class = $class;
     }
 
@@ -462,12 +320,6 @@ abstract class AbstractPage extends AbstractContainer
      */
     final public function setTitle(?string $title = null): void
     {
-        if (null !== $title && !is_string($title)) {
-            throw new Exception\InvalidArgumentException(
-                'Invalid argument: $title must be a non-empty string'
-            );
-        }
-
         $this->title = $title;
     }
 
@@ -493,12 +345,6 @@ abstract class AbstractPage extends AbstractContainer
      */
     final public function setTarget(?string $target = null): void
     {
-        if (null !== $target && !is_string($target)) {
-            throw new Exception\InvalidArgumentException(
-                'Invalid argument: $target must be a string or null'
-            );
-        }
-
         $this->target = $target;
     }
 
@@ -520,11 +366,10 @@ abstract class AbstractPage extends AbstractContainer
      * prev, next, help, etc), and the value is a mixed value that could somehow
      * be considered a page.
      *
-     * @param array|Traversable $relations [optional] an associative array of
-     *                                     forward links to other pages
+     * @param array|Traversable|null $relations [optional] an associative array of forward links to other pages
      *
-     * @throws Exception\InvalidArgumentException if $relations is not an array
-     *                                            or Traversable object
+     * @throws Exception\InvalidArgumentException                 if $relations is not an array or Traversable object
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
      * @return void
      */
@@ -588,11 +433,10 @@ abstract class AbstractPage extends AbstractContainer
      * prev, next, help, etc), and the value is a mixed value that could somehow
      * be considered a page.
      *
-     * @param array|Traversable $relations [optional] an associative array of
-     *                                     reverse links to other pages
+     * @param array|Traversable|null $relations [optional] an associative array of reverse links to other pages
      *
-     * @throws Exception\InvalidArgumentException if $relations it not an array
-     *                                            or Traversable object
+     * @throws Exception\InvalidArgumentException                 if $relations it not an array or Traversable object
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
      * @return void
      */
@@ -662,20 +506,6 @@ abstract class AbstractPage extends AbstractContainer
      */
     final public function setOrder(?int $order = null): void
     {
-        if (is_string($order)) {
-            $temp = (int) $order;
-            if (0 > $temp || 0 < $temp || '0' === $order) {
-                $order = $temp;
-            }
-        }
-
-        if (null !== $order && !is_int($order)) {
-            throw new Exception\InvalidArgumentException(
-                'Invalid argument: $order must be an integer or null, ' .
-                'or a string that casts to an integer'
-            );
-        }
-
         $this->order = $order;
 
         // notify parent, if any
@@ -787,7 +617,7 @@ abstract class AbstractPage extends AbstractContainer
     /**
      * Returns text domain for translation
      *
-     * @return mixed|null text domain or null
+     * @return string|null text domain or null
      */
     final public function getTextDomain(): ?string
     {
@@ -804,7 +634,7 @@ abstract class AbstractPage extends AbstractContainer
      */
     final public function setActive(bool $active = true): void
     {
-        $this->active = (bool) $active;
+        $this->active = $active;
     }
 
     /**
@@ -816,7 +646,7 @@ abstract class AbstractPage extends AbstractContainer
      *
      * @return bool whether page should be considered active
      */
-    public function isActive(bool $recursive = false): bool
+    final public function isActive(bool $recursive = false): bool
     {
         if (!$this->active && $recursive) {
             foreach ($this->pages as $page) {
@@ -855,11 +685,7 @@ abstract class AbstractPage extends AbstractContainer
      */
     final public function setVisible(bool $visible = true): void
     {
-        if (is_string($visible) && 'false' === mb_strtolower($visible)) {
-            $visible = false;
-        }
-
-        $this->visible = (bool) $visible;
+        $this->visible = $visible;
     }
 
     /**
@@ -905,14 +731,14 @@ abstract class AbstractPage extends AbstractContainer
     /**
      * Sets parent container
      *
-     * @param AbstractContainer|null $parent [optional] new parent to set.
-     *                                       Default is null which will set no parent.
+     * @param ContainerInterface|null $parent [optional] new parent to set.
+     *                                        Default is null which will set no parent.
      *
-     * @throws Exception\InvalidArgumentException
+     *@throws Exception\InvalidArgumentException
      *
      * @return void
      */
-    final public function setParent(?AbstractContainer $parent = null): void
+    final public function setParent(?ContainerInterface $parent = null): void
     {
         if ($parent === $this) {
             throw new Exception\InvalidArgumentException(
@@ -944,9 +770,9 @@ abstract class AbstractPage extends AbstractContainer
     /**
      * Returns parent container
      *
-     * @return AbstractContainer|null parent container or null
+     * @return ContainerInterface|null parent container or null
      */
-    final public function getParent(): ?AbstractContainer
+    final public function getParent(): ?ContainerInterface
     {
         return $this->parent;
     }
@@ -1230,26 +1056,29 @@ abstract class AbstractPage extends AbstractContainer
      *
      * @return array associative array containing all page properties
      */
-    public function toArray(): array
+    final public function toArray(): array
     {
-        return array_merge($this->getCustomProperties(), [
-            'label' => $this->getLabel(),
-            'fragment' => $this->getFragment(),
-            'id' => $this->getId(),
-            'class' => $this->getClass(),
-            'title' => $this->getTitle(),
-            'target' => $this->getTarget(),
-            'rel' => $this->getRel(),
-            'rev' => $this->getRev(),
-            'order' => $this->getOrder(),
-            'resource' => $this->getResource(),
-            'privilege' => $this->getPrivilege(),
-            'permission' => $this->getPermission(),
-            'active' => $this->isActive(),
-            'visible' => $this->isVisible(),
-            'type' => static::class,
-            'pages' => parent::toArray(),
-        ]);
+        return array_merge(
+            $this->getCustomProperties(),
+            [
+                'label' => $this->getLabel(),
+                'fragment' => $this->getFragment(),
+                'id' => $this->getId(),
+                'class' => $this->getClass(),
+                'title' => $this->getTitle(),
+                'target' => $this->getTarget(),
+                'rel' => $this->getRel(),
+                'rev' => $this->getRev(),
+                'order' => $this->getOrder(),
+                'resource' => $this->getResource(),
+                'privilege' => $this->getPrivilege(),
+                'permission' => $this->getPermission(),
+                'active' => $this->isActive(),
+                'visible' => $this->isVisible(),
+                'type' => static::class,
+                'pages' => $this->parentToArray(),
+            ]
+        );
     }
 
     // Internal methods:
@@ -1261,17 +1090,8 @@ abstract class AbstractPage extends AbstractContainer
      *
      * @return string normalized property name
      */
-    protected static function normalizePropertyName(string $property): string
+    private static function normalizePropertyName(string $property): string
     {
         return str_replace(' ', '', ucwords(str_replace('_', ' ', $property)));
     }
-
-    // Abstract methods:
-
-    /**
-     * Returns href for this page
-     *
-     * @return string the page's href
-     */
-    abstract public function getHref(): string;
 }

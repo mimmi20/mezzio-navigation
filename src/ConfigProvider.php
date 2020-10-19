@@ -38,6 +38,8 @@ final class ConfigProvider
             ],
             'factories' => [
                 Navigation::class => Service\DefaultNavigationFactory::class,
+                Config\NavigationConfig::class => Config\NavigationConfigFactory::class,
+                NavigationMiddleware::class => NavigationMiddlewareFactory::class,
             ],
         ];
     }
