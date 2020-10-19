@@ -11,23 +11,24 @@
 declare(strict_types = 1);
 namespace Mezzio\Navigation;
 
-use Traversable;
-
 /**
- * A simple container class for {@link \Mezzio\Navigation\Page} pages
+ * A simple container class for {@link \Mezzio\Navigation\Navigation} pages
  */
-final class Navigation extends AbstractContainer
+final class Navigation implements ContainerInterface
 {
+    use ContainerTrait;
+
     /**
      * Creates a new navigation container
      *
-     * @param array|Traversable|null $pages [optional] pages to add
+     * @param array|\Traversable|null $pages [optional] pages to add
      *
-     * @throws Exception\InvalidArgumentException if $pages is invalid
+     * @throws Exception\InvalidArgumentException                 if $pages is invalid
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      */
     public function __construct($pages = null)
     {
-        if ($pages && (!is_array($pages) && !$pages instanceof Traversable)) {
+        if ($pages && (!is_array($pages) && !$pages instanceof \Traversable)) {
             throw new Exception\InvalidArgumentException(
                 'Invalid argument: $pages must be an array, an '
                 . 'instance of Traversable, or null'

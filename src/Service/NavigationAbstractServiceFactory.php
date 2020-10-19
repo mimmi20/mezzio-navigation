@@ -13,6 +13,7 @@ namespace Mezzio\Navigation\Service;
 
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
+use Mezzio\Navigation\Config\NavigationConfig;
 use Mezzio\Navigation\Navigation;
 
 /**
@@ -24,21 +25,9 @@ use Mezzio\Navigation\Navigation;
 final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
 {
     /**
-     * Top-level configuration key indicating navigation configuration
-     */
-    public const CONFIG_KEY = 'navigation';
-
-    /**
      * Service manager factory prefix
      */
     public const SERVICE_PREFIX = 'Mezzio\\Navigation\\';
-
-    /**
-     * Navigation configuration
-     *
-     * @var array
-     */
-    private $config;
 
     /**
      * Can we create a navigation by the requested name? (v3)
@@ -46,6 +35,8 @@ final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
      * @param ContainerInterface $container
      * @param string             $requestedName Name by which service was requested, must
      *                                          start with Mezzio\Navigation\
+     *
+     * @throws \Psr\Container\ContainerExceptionInterface
      *
      * @return bool
      */
@@ -55,7 +46,7 @@ final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
             return false;
         }
 
-        $config = $this->getConfig($container);
+        $config = $container->get(NavigationConfig::class);
 
         return $this->hasNamedConfig($requestedName, $config);
     }
@@ -69,44 +60,10 @@ final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null)
     {
-        $config  = $this->getConfig($container);
-        $factory = new ConstructedNavigationFactory($this->getNamedConfig($requestedName, $config));
+        $configname = $this->getConfigName($requestedName);
+        $factory    = new ConstructedNavigationFactory($configname);
 
         return $factory($container, $requestedName);
-    }
-
-    /**
-     * Get navigation configuration, if any
-     *
-     * @param ContainerInterface $container
-     *
-     * @return array
-     */
-    private function getConfig(ContainerInterface $container): array
-    {
-        if (null !== $this->config) {
-            return $this->config;
-        }
-
-        if (!$container->has('config')) {
-            $this->config = [];
-
-            return $this->config;
-        }
-
-        $config = $container->get('config');
-        if (
-            !isset($config[self::CONFIG_KEY])
-            || !is_array($config[self::CONFIG_KEY])
-        ) {
-            $this->config = [];
-
-            return $this->config;
-        }
-
-        $this->config = $config[self::CONFIG_KEY];
-
-        return $this->config;
     }
 
     /**
@@ -114,9 +71,9 @@ final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
      *
      * @param string $name
      *
-     * @return false|string
+     * @return string
      */
-    private function getConfigName(string $name)
+    private function getConfigName(string $name): string
     {
         return mb_substr($name, mb_strlen(self::SERVICE_PREFIX));
     }
@@ -124,42 +81,21 @@ final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
     /**
      * Does the configuration have a matching named section?
      *
-     * @param string             $name
-     * @param array|\ArrayAccess $config
+     * @param string           $name
+     * @param NavigationConfig $config
      *
      * @return bool
      */
-    private function hasNamedConfig(string $name, $config): bool
+    private function hasNamedConfig(string $name, NavigationConfig $config): bool
     {
         $withoutPrefix = $this->getConfigName($name);
 
-        if (isset($config[$withoutPrefix])) {
+        $pages = $config->getPages();
+
+        if (isset($pages[$withoutPrefix])) {
             return true;
         }
 
-        return isset($config[mb_strtolower($withoutPrefix)]);
-    }
-
-    /**
-     * Get the matching named configuration section.
-     *
-     * @param string             $name
-     * @param array|\ArrayAccess $config
-     *
-     * @return array
-     */
-    private function getNamedConfig(string $name, $config): array
-    {
-        $withoutPrefix = $this->getConfigName($name);
-
-        if (isset($config[$withoutPrefix])) {
-            return $config[$withoutPrefix];
-        }
-
-        if (isset($config[mb_strtolower($withoutPrefix)])) {
-            return $config[mb_strtolower($withoutPrefix)];
-        }
-
-        return [];
+        return isset($pages[mb_strtolower($withoutPrefix)]);
     }
 }

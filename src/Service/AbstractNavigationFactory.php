@@ -15,11 +15,12 @@ use Interop\Container\ContainerInterface;
 use Laminas\Config;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Laminas\Stdlib\ArrayUtils;
+use Mezzio\Navigation\Config\NavigationConfig;
 use Mezzio\Navigation\Exception;
 use Mezzio\Navigation\Navigation;
-use Mezzio\Router\RouteResult;
+use Mezzio\Router\Route;
 use Mezzio\Router\RouterInterface;
-use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ServerRequestInterface;
 use Traversable;
 
 /**
@@ -37,81 +38,68 @@ abstract class AbstractNavigationFactory implements FactoryInterface
      * @param string             $requestedName
      * @param array|null         $options
      *
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Psr\Container\ContainerExceptionInterface
+     *
      * @return Navigation
      */
-    public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null)
+    public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null): Navigation
     {
-        return new Navigation($this->getPages($container));
+        $config = $container->get(NavigationConfig::class);
+        \assert($config instanceof NavigationConfig);
+
+        return new Navigation($this->getPages($config));
     }
 
     /**
-     * @return string
-     *
-     * @abstract
-     */
-    abstract protected function getName(): string;
-
-    /**
-     * @param ContainerInterface $container
+     * @param NavigationConfig $config
      *
      * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      *
      * @return array|null
      */
-    protected function getPages(ContainerInterface $container): ?array
-    {
-        if (null === $this->pages) {
-            $configuration = $container->get('config');
-
-            if (!isset($configuration['navigation'])) {
-                throw new Exception\InvalidArgumentException('Could not find navigation configuration key');
-            }
-
-            if (!isset($configuration['navigation'][$this->getName()])) {
-                throw new Exception\InvalidArgumentException(sprintf(
-                    'Failed to find a navigation container by the name "%s"',
-                    $this->getName()
-                ));
-            }
-
-            $pages       = $this->getPagesFromConfig($configuration['navigation'][$this->getName()]);
-            $this->pages = $this->preparePages($container, $pages);
-        }
-
-        return $this->pages;
-    }
+    abstract protected function getPages(NavigationConfig $config): ?array;
 
     /**
-     * @param ContainerInterface           $container
-     * @param array|\Laminas\Config\Config $pages
+     * @param NavigationConfig $config
+     * @param array            $pages
      *
      * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      *
      * @return array|null
      */
-    protected function preparePages(ContainerInterface $container, $pages): ?array
+    protected function preparePages(NavigationConfig $config, array $pages): ?array
     {
-        $application = $container->get('Application');
-        $routeMatch  = $application->getMvcEvent()->getRouteMatch();
-        $router      = $application->getMvcEvent()->getRouter();
-        $request     = $application->getMvcEvent()->getRequest();
+        if (null === $config->getRouteResult()) {
+            $routeMatch = null;
+        } else {
+            $routeMatch = $config->getRouteResult()->getMatchedRoute();
 
-        // HTTP request is the only one that may be injected
-        if (!$request instanceof Request) {
-            $request = null;
+            if (false === $routeMatch) {
+                $routeMatch = null;
+            }
         }
 
-        return $this->injectComponents($pages, $routeMatch, $router, $request);
+        return $this->injectComponents(
+            $pages,
+            $routeMatch,
+            $config->getRouter(),
+            $config->getRequest()
+        );
     }
 
     /**
      * @param array|\Laminas\Config\Config|string|null $config
      *
      * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Config\Exception\RuntimeException
+     * @throws \Laminas\Config\Exception\InvalidArgumentException
      *
-     * @return array|\Laminas\Config\Config|null
+     * @return array
      */
-    protected function getPagesFromConfig($config = null)
+    protected function getPagesFromConfig($config = null): array
     {
         if (is_string($config)) {
             if (!file_exists($config)) {
@@ -122,6 +110,10 @@ abstract class AbstractNavigationFactory implements FactoryInterface
             }
 
             $config = Config\Factory::fromFile($config);
+
+            if ($config instanceof Config\Config) {
+                $config = $config->toArray();
+            }
         } elseif ($config instanceof Traversable) {
             $config = ArrayUtils::iteratorToArray($config);
         } elseif (!is_array($config)) {
@@ -135,22 +127,23 @@ abstract class AbstractNavigationFactory implements FactoryInterface
 
     /**
      * @param array                               $pages
-     * @param \Mezzio\Router\RouteResult|null     $routeMatch
+     * @param \Mezzio\Router\Route|null           $routeMatch
      * @param \Mezzio\Router\RouterInterface|null $router
-     * @param Request|null                        $request
+     * @param ServerRequestInterface|null         $request
      *
      * @return array
      */
     protected function injectComponents(
         array $pages,
-        ?RouteResult $routeMatch = null,
+        ?Route $routeMatch = null,
         ?RouterInterface $router = null,
-        ?Request $request = null
+        ?ServerRequestInterface $request = null
     ) {
         foreach ($pages as &$page) {
-            $hasUri = isset($page['uri']);
-            $hasMvc = isset($page['action']) || isset($page['controller']) || isset($page['route']);
-            if ($hasMvc) {
+            $hasUri   = isset($page['uri']);
+            $hasRoute = isset($page['route']);
+
+            if ($hasRoute) {
                 if (!isset($page['routeMatch']) && $routeMatch) {
                     $page['routeMatch'] = $routeMatch;
                 }

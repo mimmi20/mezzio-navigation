@@ -11,14 +11,18 @@
 declare(strict_types = 1);
 namespace Mezzio\Navigation\Page;
 
-use Mezzio\Navigation\Exception;
-use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
  * Represents a page that is defined by specifying a URI
  */
-final class Uri extends AbstractPage
+final class Uri implements PageInterface
 {
+    use PageTrait {
+        isActive as isActiveParent;
+        toArray as toParentArray;
+    }
+
     /**
      * Page URI
      *
@@ -29,7 +33,7 @@ final class Uri extends AbstractPage
     /**
      * Request object used to determine uri path
      *
-     * @var Request|null
+     * @var ServerRequestInterface|null
      */
     private $request;
 
@@ -38,18 +42,10 @@ final class Uri extends AbstractPage
      *
      * @param string $uri page URI, must a string or null
      *
-     * @throws Exception\InvalidArgumentException if $uri is invalid
-     *
      * @return void
      */
     public function setUri(string $uri): void
     {
-        if (null !== $uri && !is_string($uri)) {
-            throw new Exception\InvalidArgumentException(
-                'Invalid argument: $uri must be a string or null'
-            );
-        }
-
         $this->uri = $uri;
     }
 
@@ -64,6 +60,24 @@ final class Uri extends AbstractPage
     }
 
     /**
+     * @return \Psr\Http\Message\ServerRequestInterface|null
+     */
+    public function getRequest(): ?ServerRequestInterface
+    {
+        return $this->request;
+    }
+
+    /**
+     * @param \Psr\Http\Message\ServerRequestInterface|null $request
+     *
+     * @return void
+     */
+    public function setRequest(?ServerRequestInterface $request): void
+    {
+        $this->request = $request;
+    }
+
+    /**
      * Returns href for this page
      *
      * Includes the fragment identifier if it is set.
@@ -72,7 +86,7 @@ final class Uri extends AbstractPage
      */
     public function getHref(): string
     {
-        $uri      = $this->getUri();
+        $uri      = (string) $this->getUri();
         $fragment = $this->getFragment();
 
         if (null !== $fragment) {
@@ -102,7 +116,7 @@ final class Uri extends AbstractPage
     {
         if (
             !$this->active
-            && $this->getRequest() instanceof Request
+            && $this->getRequest() instanceof ServerRequestInterface
             && $this->getRequest()->getUri()->getPath() === $this->getUri()
         ) {
             $this->active = true;
@@ -110,29 +124,7 @@ final class Uri extends AbstractPage
             return true;
         }
 
-        return parent::isActive($recursive);
-    }
-
-    /**
-     * Get the request
-     *
-     * @return Request|null
-     */
-    public function getRequest(): ?Request
-    {
-        return $this->request;
-    }
-
-    /**
-     * Sets request for assembling URLs
-     *
-     * @param Request|null $request
-     *
-     * @return void
-     */
-    public function setRequest(?Request $request = null): void
-    {
-        $this->request = $request;
+        return $this->isActiveParent($recursive);
     }
 
     /**
@@ -143,7 +135,7 @@ final class Uri extends AbstractPage
     public function toArray(): array
     {
         return array_merge(
-            parent::toArray(),
+            $this->toParentArray(),
             [
                 'uri' => $this->getUri(),
             ]

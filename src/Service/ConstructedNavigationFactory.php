@@ -11,43 +11,55 @@
 declare(strict_types = 1);
 namespace Mezzio\Navigation\Service;
 
-use Interop\Container\ContainerInterface;
+use Mezzio\Navigation\Config\NavigationConfig;
+use Mezzio\Navigation\Exception;
 
 /**
  * Constructed factory to set pages during construction.
  */
 final class ConstructedNavigationFactory extends AbstractNavigationFactory
 {
-    /** @var array|\Laminas\Config\Config|string */
-    protected $config;
+    /** @var string */
+    protected $configName;
 
     /**
-     * @param array|\Laminas\Config\Config|string $config
+     * @param string $configName
      */
-    public function __construct($config)
+    public function __construct(string $configName)
     {
-        $this->config = $config;
+        $this->configName = $configName;
     }
 
     /**
-     * @param ContainerInterface $container
+     * @param NavigationConfig $config
+     *
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Config\Exception\RuntimeException
+     * @throws \Laminas\Config\Exception\InvalidArgumentException
      *
      * @return array|null
      */
-    public function getPages(ContainerInterface $container): ?array
+    public function getPages(NavigationConfig $config): ?array
     {
         if (null === $this->pages) {
-            $this->pages = $this->preparePages($container, $this->getPagesFromConfig($this->config));
+            $pages = $config->getPages();
+
+            if (!array_key_exists($this->configName, $pages) || !is_array($pages[$this->configName])) {
+                throw new Exception\InvalidArgumentException(
+                    sprintf(
+                        'Failed to find a navigation container by the name "%s"',
+                        $this->configName
+                    )
+                );
+            }
+
+            $this->pages = $this->preparePages(
+                $config,
+                $this->getPagesFromConfig($pages[$this->configName])
+            );
         }
 
         return $this->pages;
-    }
-
-    /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return 'constructed';
     }
 }
