@@ -40,11 +40,11 @@ final class Uri implements PageInterface
     /**
      * Sets page URI
      *
-     * @param string $uri page URI, must a string or null
+     * @param string|null $uri page URI, must a string or null
      *
      * @return void
      */
-    public function setUri(string $uri): void
+    public function setUri(?string $uri): void
     {
         $this->uri = $uri;
     }

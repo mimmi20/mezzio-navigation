@@ -11,7 +11,6 @@
 declare(strict_types = 1);
 namespace MezzioTest\Navigation\Page;
 
-use Mezzio\Navigation;
 use Mezzio\Navigation\Page;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
@@ -58,39 +57,6 @@ final class UriTest extends TestCase
         ]);
 
         self::assertNull($page->getUri(), 'getUri() should return null');
-    }
-
-    /**
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
-     *
-     * @return void
-     */
-    public function testUriOptionAsInteger(): void
-    {
-        $this->expectException(
-            Navigation\Exception\InvalidArgumentException::class
-        );
-
-        new Page\Uri(['uri' => 1337]);
-    }
-
-    /**
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
-     *
-     * @return void
-     */
-    public function testUriOptionAsObject(): void
-    {
-        $uri      = new \stdClass();
-        $uri->foo = 'bar';
-
-        $this->expectException(
-            Navigation\Exception\InvalidArgumentException::class
-        );
-
-        new Page\Uri(['uri' => $uri]);
     }
 
     /**
