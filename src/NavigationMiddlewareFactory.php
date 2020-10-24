@@ -11,7 +11,7 @@
 declare(strict_types = 1);
 namespace Mezzio\Navigation;
 
-use Mezzio\Authorization\AuthorizationInterface;
+use Mezzio\GenericAuthorization\AuthorizationInterface;
 use Mezzio\Helper\UrlHelper;
 use Mezzio\Router\RouterInterface;
 use Psr\Container\ContainerInterface;

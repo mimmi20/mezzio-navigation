@@ -11,7 +11,7 @@
 declare(strict_types = 1);
 namespace Mezzio\Navigation;
 
-use Mezzio\Authorization\AuthorizationInterface;
+use Mezzio\GenericAuthorization\AuthorizationInterface;
 use Mezzio\Helper\UrlHelper;
 use Mezzio\Router\RouteResult;
 use Mezzio\Router\RouterInterface;
@@ -38,10 +38,10 @@ final class NavigationMiddleware implements MiddlewareInterface
     private $router;
 
     /**
-     * @param \Mezzio\Navigation\Config\NavigationConfig        $navigationConfig
-     * @param \Mezzio\Helper\UrlHelper                          $urlHelper
-     * @param \Mezzio\Authorization\AuthorizationInterface|null $authorization
-     * @param ?RouterInterface                                  $router
+     * @param \Mezzio\Navigation\Config\NavigationConfig               $navigationConfig
+     * @param \Mezzio\Helper\UrlHelper                                 $urlHelper
+     * @param \Mezzio\GenericAuthorization\AuthorizationInterface|null $authorization
+     * @param ?RouterInterface                                         $router
      */
     public function __construct(
         Config\NavigationConfig $navigationConfig,
