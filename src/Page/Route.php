@@ -380,11 +380,11 @@ final class Route implements PageInterface
      *
      * @see getHref()
      *
-     * @param RouterInterface $router Router
+     * @param RouterInterface|null $router Router
      *
      * @return void
      */
-    public function setRouter(RouterInterface $router): void
+    public function setRouter(?RouterInterface $router): void
     {
         $this->router = $router;
     }

@@ -60,8 +60,7 @@ final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null)
     {
-        $configname = $this->getConfigName($requestedName);
-        $factory    = new ConstructedNavigationFactory($configname);
+        $factory = new ConstructedNavigationFactory($this->getNamedConfigName($container, $requestedName));
 
         return $factory($container, $requestedName);
     }
@@ -97,5 +96,30 @@ final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
         }
 
         return isset($pages[mb_strtolower($withoutPrefix)]);
+    }
+
+    /**
+     * Get the matching named configuration section.
+     *
+     * @param ContainerInterface $container
+     * @param string $name
+     * @return string
+     */
+    private function getNamedConfigName(ContainerInterface $container, string $name): string
+    {
+        $config        = $container->get(NavigationConfig::class);
+        $withoutPrefix = $this->getConfigName($name);
+
+        $pages = $config->getPages();
+
+        if (isset($pages[$withoutPrefix])) {
+            return $withoutPrefix;
+        }
+
+        if (isset($pages[strtolower($withoutPrefix)])) {
+            return strtolower($withoutPrefix);
+        }
+
+        return '';
     }
 }
