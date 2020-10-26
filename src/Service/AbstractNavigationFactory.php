@@ -31,6 +31,9 @@ abstract class AbstractNavigationFactory implements FactoryInterface
     /** @var array|null */
     protected $pages;
 
+    /** @var string */
+    protected $configName;
+
     /**
      * Create and return a new Navigation instance (v3).
      *
@@ -56,10 +59,34 @@ abstract class AbstractNavigationFactory implements FactoryInterface
      * @param NavigationConfig $config
      *
      * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Laminas\Config\Exception\RuntimeException
+     * @throws \Laminas\Config\Exception\InvalidArgumentException
      *
      * @return array|null
      */
-    abstract protected function getPages(NavigationConfig $config): ?array;
+    protected function getPages(NavigationConfig $config): ?array
+    {
+        if (null === $this->pages) {
+            $pages = $config->getPages();
+
+            if (!array_key_exists($this->configName, $pages) || !is_array($pages[$this->configName])) {
+                throw new Exception\InvalidArgumentException(
+                    sprintf(
+                        'Failed to find a navigation container by the name "%s"',
+                        $this->configName
+                    )
+                );
+            }
+
+            $this->pages = $this->preparePages(
+                $config,
+                $this->getPagesFromConfig($pages[$this->configName])
+            );
+        }
+
+        return $this->pages;
+    }
 
     /**
      * @param NavigationConfig $config
