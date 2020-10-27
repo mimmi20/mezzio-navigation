@@ -18,7 +18,7 @@ use Laminas\Stdlib\ArrayUtils;
 use Mezzio\Navigation\Config\NavigationConfig;
 use Mezzio\Navigation\Exception;
 use Mezzio\Navigation\Navigation;
-use Mezzio\Router\Route;
+use Mezzio\Router\RouteResult;
 use Mezzio\Router\RouterInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Traversable;
@@ -99,18 +99,14 @@ abstract class AbstractNavigationFactory implements FactoryInterface
     protected function preparePages(NavigationConfig $config, array $pages): ?array
     {
         if (null === $config->getRouteResult()) {
-            $routeMatch = null;
+            $routeResult = null;
         } else {
-            $routeMatch = $config->getRouteResult()->getMatchedRoute();
-
-            if (false === $routeMatch) {
-                $routeMatch = null;
-            }
+            $routeResult = $config->getRouteResult();
         }
 
         return $this->injectComponents(
             $pages,
-            $routeMatch,
+            $routeResult,
             $config->getRouter(),
             $config->getRequest()
         );
@@ -154,7 +150,7 @@ abstract class AbstractNavigationFactory implements FactoryInterface
 
     /**
      * @param array                               $pages
-     * @param \Mezzio\Router\Route|null           $routeMatch
+     * @param \Mezzio\Router\RouteResult|null           $routeResult
      * @param \Mezzio\Router\RouterInterface|null $router
      * @param ServerRequestInterface|null         $request
      *
@@ -162,33 +158,33 @@ abstract class AbstractNavigationFactory implements FactoryInterface
      */
     protected function injectComponents(
         array $pages,
-        ?Route $routeMatch = null,
+        ?RouteResult $routeResult = null,
         ?RouterInterface $router = null,
         ?ServerRequestInterface $request = null
     ) {
-        foreach ($pages as &$page) {
-            $hasUri   = isset($page['uri']);
-            $hasRoute = isset($page['route']);
+        foreach (array_keys($pages) as $pageIndex) {
+            $hasUri   = isset($pages[$pageIndex]['uri']);
+            $hasRoute = isset($pages[$pageIndex]['route']);
 
             if ($hasRoute) {
-                if (!isset($page['routeMatch']) && $routeMatch) {
-                    $page['routeMatch'] = $routeMatch;
+                if (!isset($pages[$pageIndex]['route_match']) && $routeResult) {
+                    $pages[$pageIndex]['route_match'] = $routeResult;
                 }
 
-                if (!isset($page['router'])) {
-                    $page['router'] = $router;
+                if (!isset($pages[$pageIndex]['router'])) {
+                    $pages[$pageIndex]['router'] = $router;
                 }
             } elseif ($hasUri) {
-                if (!isset($page['request'])) {
-                    $page['request'] = $request;
+                if (!isset($pages[$pageIndex]['request'])) {
+                    $pages[$pageIndex]['request'] = $request;
                 }
             }
 
-            if (!isset($page['pages'])) {
+            if (!isset($pages[$pageIndex]['pages'])) {
                 continue;
             }
 
-            $page['pages'] = $this->injectComponents($page['pages'], $routeMatch, $router, $request);
+            $pages[$pageIndex]['pages'] = $this->injectComponents($pages[$pageIndex]['pages'], $routeResult, $router, $request);
         }
 
         return $pages;
