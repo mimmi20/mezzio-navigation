@@ -15,7 +15,7 @@ use Interop\Container\ContainerInterface;
 use Laminas\Config;
 use Laminas\ServiceManager\Factory\FactoryInterface;
 use Laminas\Stdlib\ArrayUtils;
-use Mezzio\Navigation\Config\NavigationConfig;
+use Mezzio\Navigation\Config\NavigationConfigInterface;
 use Mezzio\Navigation\Exception;
 use Mezzio\Navigation\Navigation;
 use Mezzio\Router\RouteResult;
@@ -51,14 +51,14 @@ abstract class AbstractNavigationFactory implements FactoryInterface
      */
     public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null): Navigation
     {
-        $config = $container->get(NavigationConfig::class);
-        \assert($config instanceof NavigationConfig);
+        $config = $container->get(NavigationConfigInterface::class);
+        \assert($config instanceof NavigationConfigInterface);
 
         return new Navigation($this->getPages($config));
     }
 
     /**
-     * @param NavigationConfig $config
+     * @param NavigationConfigInterface $config
      *
      * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
@@ -67,7 +67,7 @@ abstract class AbstractNavigationFactory implements FactoryInterface
      *
      * @return array|null
      */
-    protected function getPages(NavigationConfig $config): ?array
+    protected function getPages(NavigationConfigInterface $config): ?array
     {
         if (null === $this->pages) {
             $pages = $config->getPages();
@@ -91,14 +91,14 @@ abstract class AbstractNavigationFactory implements FactoryInterface
     }
 
     /**
-     * @param NavigationConfig $config
-     * @param array            $pages
+     * @param NavigationConfigInterface $config
+     * @param array                     $pages
      *
      * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      *
      * @return array|null
      */
-    protected function preparePages(NavigationConfig $config, array $pages): ?array
+    protected function preparePages(NavigationConfigInterface $config, array $pages): ?array
     {
         if (null === $config->getRouteResult()) {
             $routeResult = null;

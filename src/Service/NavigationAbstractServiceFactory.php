@@ -14,6 +14,7 @@ namespace Mezzio\Navigation\Service;
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 use Mezzio\Navigation\Config\NavigationConfig;
+use Mezzio\Navigation\Config\NavigationConfigInterface;
 use Mezzio\Navigation\Navigation;
 
 /**
@@ -46,7 +47,7 @@ final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
             return false;
         }
 
-        $config = $container->get(NavigationConfig::class);
+        $config = $container->get(NavigationConfigInterface::class);
 
         return $this->hasNamedConfig($requestedName, $config);
     }
@@ -112,7 +113,7 @@ final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
      */
     private function getNamedConfigName(ContainerInterface $container, string $name): string
     {
-        $config        = $container->get(NavigationConfig::class);
+        $config        = $container->get(NavigationConfigInterface::class);
         $withoutPrefix = $this->getConfigName($name);
 
         $pages = $config->getPages();

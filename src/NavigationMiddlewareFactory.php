@@ -13,9 +13,10 @@ namespace Mezzio\Navigation;
 
 use Mezzio\GenericAuthorization\AuthorizationInterface;
 use Mezzio\Helper\UrlHelper;
+use Mezzio\Navigation\Exception\InvalidArgumentException;
 use Mezzio\Router\RouterInterface;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
-use function sprintf;
 
 final class NavigationMiddlewareFactory
 {
@@ -46,7 +47,7 @@ final class NavigationMiddlewareFactory
      * @param string $navigationConfigName
      * @param string $urlHelperServiceName
      */
-    public function __construct(string $navigationConfigName = Config\NavigationConfig::class, string $urlHelperServiceName = UrlHelper::class)
+    public function __construct(string $navigationConfigName = Config\NavigationConfigInterface::class, string $urlHelperServiceName = UrlHelper::class)
     {
         $this->navigationConfigName = $navigationConfigName;
         $this->urlHelperServiceName = $urlHelperServiceName;
@@ -57,43 +58,91 @@ final class NavigationMiddlewareFactory
      *
      * @param \Psr\Container\ContainerInterface $container
      *
-     * @throws Exception\MissingHelperException           if the UrlHelper service is missing
-     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws Exception\MissingHelperException   if the UrlHelper service is missing
+     * @throws Exception\InvalidArgumentException
      *
      * @return \Mezzio\Navigation\NavigationMiddleware
      */
     public function __invoke(ContainerInterface $container): NavigationMiddleware
     {
         if (!$container->has($this->navigationConfigName)) {
-            throw new Exception\MissingHelperException(sprintf(
-                '%s requires a %s service at instantiation; none found',
-                NavigationMiddleware::class,
-                $this->navigationConfigName
-            ));
+            throw new Exception\MissingHelperException(
+                sprintf(
+                    '%s requires a %s service at instantiation; none found',
+                    NavigationMiddleware::class,
+                    $this->navigationConfigName
+                )
+            );
         }
 
         if (!$container->has($this->urlHelperServiceName)) {
-            throw new Exception\MissingHelperException(sprintf(
-                '%s requires a %s service at instantiation; none found',
-                NavigationMiddleware::class,
-                $this->urlHelperServiceName
-            ));
+            throw new Exception\MissingHelperException(
+                sprintf(
+                    '%s requires a %s service at instantiation; none found',
+                    NavigationMiddleware::class,
+                    $this->urlHelperServiceName
+                )
+            );
         }
 
         $authorization = null;
         $router        = null;
 
         if ($container->has(AuthorizationInterface::class)) {
-            $authorization = $container->get(AuthorizationInterface::class);
+            try {
+                $authorization = $container->get(AuthorizationInterface::class);
+            } catch (ContainerExceptionInterface $e) {
+                throw new InvalidArgumentException(
+                    sprintf(
+                        'Cannot create %s service; could not initialize dependency %s',
+                        NavigationMiddleware::class,
+                        AuthorizationInterface::class
+                    )
+                );
+            }
         }
 
         if ($container->has(RouterInterface::class)) {
-            $router = $container->get(RouterInterface::class);
+            try {
+                $router = $container->get(RouterInterface::class);
+            } catch (ContainerExceptionInterface $e) {
+                throw new InvalidArgumentException(
+                    sprintf(
+                        'Cannot create %s service; could not initialize dependency %s',
+                        NavigationMiddleware::class,
+                        RouterInterface::class
+                    )
+                );
+            }
+        }
+
+        try {
+            $navigationConfig = $container->get($this->navigationConfigName);
+        } catch (ContainerExceptionInterface $e) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Cannot create %s service; could not initialize dependency %s',
+                    NavigationMiddleware::class,
+                    $this->navigationConfigName
+                )
+            );
+        }
+
+        try {
+            $urlHelper = $container->get($this->urlHelperServiceName);
+        } catch (ContainerExceptionInterface $e) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Cannot create %s service; could not initialize dependency %s',
+                    NavigationMiddleware::class,
+                    $this->urlHelperServiceName
+                )
+            );
         }
 
         return new NavigationMiddleware(
-            $container->get($this->navigationConfigName),
-            $container->get($this->urlHelperServiceName),
+            $navigationConfig,
+            $urlHelper,
             $authorization,
             $router
         );

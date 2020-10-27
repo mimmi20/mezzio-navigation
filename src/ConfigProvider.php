@@ -41,6 +41,9 @@ final class ConfigProvider
                 Config\NavigationConfig::class => Config\NavigationConfigFactory::class,
                 NavigationMiddleware::class => NavigationMiddlewareFactory::class,
             ],
+            'aliases' => [
+                Config\NavigationConfigInterface::class => Config\NavigationConfig::class,
+            ],
         ];
     }
 }

@@ -12,7 +12,6 @@
     <!-- inherit rules from: -->
     <rule ref="mimmi20-cs">
         <exclude name="Squiz.Commenting.FunctionComment.ScalarTypeHintMissing"/>
-        <exclude name="SlevomatCodingStandard.Namespaces.UseSpacing.IncorrectLinesCountBetweenDifferentTypeOfUse"/>
     </rule>
 
     <!-- Paths to check -->
