@@ -56,6 +56,8 @@ final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
      * @param string                                $requestedName
      * @param array|null                            $options
      *
+     * @throws \Psr\Container\ContainerExceptionInterface
+     *
      * @return Navigation
      */
     public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null)
@@ -102,7 +104,10 @@ final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
      * Get the matching named configuration section.
      *
      * @param ContainerInterface $container
-     * @param string $name
+     * @param string             $name
+     *
+     * @throws \Psr\Container\ContainerExceptionInterface
+     *
      * @return string
      */
     private function getNamedConfigName(ContainerInterface $container, string $name): string
@@ -116,8 +121,8 @@ final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
             return $withoutPrefix;
         }
 
-        if (isset($pages[strtolower($withoutPrefix)])) {
-            return strtolower($withoutPrefix);
+        if (isset($pages[mb_strtolower($withoutPrefix)])) {
+            return mb_strtolower($withoutPrefix);
         }
 
         return '';

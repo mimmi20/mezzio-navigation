@@ -42,6 +42,8 @@ abstract class AbstractNavigationFactory implements FactoryInterface
      * @param array|null         $options
      *
      * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Config\Exception\RuntimeException
+     * @throws \Laminas\Config\Exception\InvalidArgumentException
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      * @throws \Psr\Container\ContainerExceptionInterface
      *
@@ -150,7 +152,7 @@ abstract class AbstractNavigationFactory implements FactoryInterface
 
     /**
      * @param array                               $pages
-     * @param \Mezzio\Router\RouteResult|null           $routeResult
+     * @param \Mezzio\Router\RouteResult|null     $routeResult
      * @param \Mezzio\Router\RouterInterface|null $router
      * @param ServerRequestInterface|null         $request
      *

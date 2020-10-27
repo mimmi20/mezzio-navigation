@@ -11,9 +11,6 @@
 declare(strict_types = 1);
 namespace Mezzio\Navigation\Service;
 
-use Mezzio\Navigation\Config\NavigationConfig;
-use Mezzio\Navigation\Exception;
-
 /**
  * Constructed factory to set pages during construction.
  */
