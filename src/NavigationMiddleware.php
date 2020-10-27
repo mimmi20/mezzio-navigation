@@ -25,7 +25,7 @@ use Psr\Http\Server\RequestHandlerInterface;
  */
 final class NavigationMiddleware implements MiddlewareInterface
 {
-    /** @var Config\NavigationConfig */
+    /** @var Config\NavigationConfigInterface */
     private $navigationConfig;
 
     /** @var UrlHelper */
@@ -38,13 +38,13 @@ final class NavigationMiddleware implements MiddlewareInterface
     private $router;
 
     /**
-     * @param \Mezzio\Navigation\Config\NavigationConfig               $navigationConfig
+     * @param \Mezzio\Navigation\Config\NavigationConfigInterface      $navigationConfig
      * @param \Mezzio\Helper\UrlHelper                                 $urlHelper
      * @param \Mezzio\GenericAuthorization\AuthorizationInterface|null $authorization
      * @param ?RouterInterface                                         $router
      */
     public function __construct(
-        Config\NavigationConfig $navigationConfig,
+        Config\NavigationConfigInterface $navigationConfig,
         UrlHelper $urlHelper,
         ?AuthorizationInterface $authorization,
         ?RouterInterface $router

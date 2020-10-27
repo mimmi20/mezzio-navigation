@@ -62,7 +62,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "MezzioTest\\Navigation\\": "test/"
+      "MezzioTest\\Navigation\\": "tests/"
     }
   },
   "support": {

@@ -20,7 +20,7 @@ use Psr\Http\Message\ServerRequestInterface;
 /**
  * A simple container class for {@link \Mezzio\Navigation\Page} pages
  */
-final class NavigationConfig
+final class NavigationConfig implements NavigationConfigInterface
 {
     /** @var UrlHelper|null */
     private $urlHelper;
