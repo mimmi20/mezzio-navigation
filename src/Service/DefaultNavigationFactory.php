@@ -11,14 +11,14 @@
 declare(strict_types = 1);
 namespace Mezzio\Navigation\Service;
 
-use Mezzio\Navigation\Config\NavigationConfig;
-use Mezzio\Navigation\Exception;
-
 /**
  * Default navigation factory.
  */
 final class DefaultNavigationFactory extends AbstractNavigationFactory
 {
+    /**
+     * creates the DefaultNavigationFactory.
+     */
     public function __construct()
     {
         $this->configName = 'default';
