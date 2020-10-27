@@ -409,9 +409,8 @@ trait ContainerTrait
     {
         $this->sort();
 
-        current($this->index);
         $hash = key($this->index);
-        if (!isset($this->pages[$hash])) {
+        if (null === $hash || !isset($this->pages[$hash])) {
             throw new Exception\OutOfBoundsException(
                 'Corruption detected in container; '
                 . 'invalid key found in internal iterator'
