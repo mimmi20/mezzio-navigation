@@ -11,11 +11,15 @@
 declare(strict_types = 1);
 namespace Mezzio\Navigation\Service;
 
+use Laminas\ServiceManager\Factory\FactoryInterface;
+
 /**
  * Constructed factory to set pages during construction.
  */
-final class ConstructedNavigationFactory extends AbstractNavigationFactory
+final class ConstructedNavigationFactory implements FactoryInterface
 {
+    use NavigationFactoryTrait;
+
     /**
      * @param string $configName
      */

@@ -131,9 +131,9 @@ trait PageTrait
     /**
      * Whether this page should be considered active
      *
-     * @var bool
+     * @var bool|null
      */
-    private $active = false;
+    private $active;
 
     /**
      * Whether this page should be considered visible
@@ -157,34 +157,22 @@ trait PageTrait
     private $properties = [];
 
     /**
-     * Page constructor
-     *
-     * @param array|Traversable|null $options [optional] page options. Default is null, which should set defaults.
+     * @param iterable|null $options [optional] page options. Default is null, which should set defaults.
      *
      * @throws Exception\InvalidArgumentException                 if invalid options are given
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      */
-    public function __construct($options = null)
+    public function __construct(?iterable $options = null)
     {
         if ($options instanceof Traversable) {
             $options = ArrayUtils::iteratorToArray($options);
         }
 
-        if (is_array($options)) {
-            $this->setOptions($options);
+        if (!is_array($options)) {
+            return;
         }
 
-        // do custom initialization
-        $this->init();
-    }
-
-    /**
-     * Initializes page (used by subclasses)
-     *
-     * @return void
-     */
-    private function init(): void
-    {
+        $this->setOptions($options);
     }
 
     /**
@@ -215,8 +203,6 @@ trait PageTrait
      *
      * @param string|null $label new page label
      *
-     * @throws Exception\InvalidArgumentException if empty/no string is given
-     *
      * @return void
      */
     final public function setLabel(?string $label = null): void
@@ -238,8 +224,6 @@ trait PageTrait
      * Sets a fragment identifier
      *
      * @param string|null $fragment new fragment identifier
-     *
-     * @throws Exception\InvalidArgumentException if empty/no string is given
      *
      * @return void
      */
@@ -264,8 +248,6 @@ trait PageTrait
      * @param string|null $id [optional] id to set. Default is null,
      *                        which sets no id.
      *
-     * @throws Exception\InvalidArgumentException if not given string or null
-     *
      * @return void
      */
     final public function setId(?string $id = null): void
@@ -288,8 +270,6 @@ trait PageTrait
      *
      * @param string|null $class [optional] CSS class to set. Default
      *                           is null, which sets no CSS class.
-     *
-     * @throws Exception\InvalidArgumentException if not given string or null
      *
      * @return void
      */
@@ -314,8 +294,6 @@ trait PageTrait
      * @param string|null $title [optional] page title. Default is
      *                           null, which sets no title.
      *
-     * @throws Exception\InvalidArgumentException if not given string or null
-     *
      * @return void
      */
     final public function setTitle(?string $title = null): void
@@ -338,8 +316,6 @@ trait PageTrait
      *
      * @param string|null $target [optional] target to set. Default is
      *                            null, which sets no target.
-     *
-     * @throws Exception\InvalidArgumentException if target is not string or null
      *
      * @return void
      */
@@ -366,14 +342,14 @@ trait PageTrait
      * prev, next, help, etc), and the value is a mixed value that could somehow
      * be considered a page.
      *
-     * @param array|Traversable|null $relations [optional] an associative array of forward links to other pages
+     * @param iterable|null $relations [optional] an associative array of forward links to other pages
      *
      * @throws Exception\InvalidArgumentException                 if $relations is not an array or Traversable object
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
      * @return void
      */
-    final public function setRel($relations = null): void
+    final public function setRel(?iterable $relations = null): void
     {
         $this->rel = [];
 
@@ -383,13 +359,6 @@ trait PageTrait
 
         if ($relations instanceof Traversable) {
             $relations = ArrayUtils::iteratorToArray($relations);
-        }
-
-        if (!is_array($relations)) {
-            throw new Exception\InvalidArgumentException(
-                'Invalid argument: $relations must be an ' .
-                'array or an instance of Traversable'
-            );
         }
 
         foreach ($relations as $name => $relation) {
@@ -412,11 +381,11 @@ trait PageTrait
      * @param string|null $relation [optional] name of relation to return. If not
      *                              given, all relations will be returned.
      *
-     * @return array|null an array of relations. If $relation is not
-     *                    specified, all relations will be returned in
-     *                    an associative array.
+     * @return array|string|null an array of relations. If $relation is not
+     *                           specified, all relations will be returned in
+     *                           an associative array.
      */
-    final public function getRel(?string $relation = null): ?array
+    final public function getRel(?string $relation = null)
     {
         if (null !== $relation) {
             return $this->rel[$relation] ?? null;
@@ -433,14 +402,14 @@ trait PageTrait
      * prev, next, help, etc), and the value is a mixed value that could somehow
      * be considered a page.
      *
-     * @param array|Traversable|null $relations [optional] an associative array of reverse links to other pages
+     * @param iterable|null $relations [optional] an associative array of reverse links to other pages
      *
      * @throws Exception\InvalidArgumentException                 if $relations it not an array or Traversable object
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
      * @return void
      */
-    final public function setRev($relations = null): void
+    final public function setRev(?iterable $relations = null): void
     {
         $this->rev = [];
 
@@ -450,13 +419,6 @@ trait PageTrait
 
         if ($relations instanceof Traversable) {
             $relations = ArrayUtils::iteratorToArray($relations);
-        }
-
-        if (!is_array($relations)) {
-            throw new Exception\InvalidArgumentException(
-                'Invalid argument: $relations must be an ' .
-                'array or an instance of Traversable'
-            );
         }
 
         foreach ($relations as $name => $relation) {
@@ -479,18 +441,66 @@ trait PageTrait
      * @param string|null $relation [optional] name of relation to return. If not
      *                              given, all relations will be returned.
      *
-     * @return array|null an array of relations. If $relation is not
-     *                    specified, all relations will be returned in
-     *                    an associative array.
+     * @return array|string|null an array of relations. If $relation is not
+     *                           specified, all relations will be returned in
+     *                           an associative array.
      */
-    final public function getRev(?string $relation = null): ?array
+    final public function getRev(?string $relation = null)
     {
         if (null !== $relation) {
-            return $this->rev[$relation] ??
-                null;
+            return $this->rev[$relation] ?? null;
         }
 
         return $this->rev;
+    }
+
+    /**
+     * Sets parent container
+     *
+     * @param ContainerInterface|null $parent [optional] new parent to set.
+     *                                        Default is null which will set no parent.
+     *
+     *@throws Exception\InvalidArgumentException
+     *
+     * @return void
+     */
+    final public function setParent(?ContainerInterface $parent = null): void
+    {
+        if ($parent === $this) {
+            throw new Exception\InvalidArgumentException(
+                'A page cannot have itself as a parent'
+            );
+        }
+
+        // return if the given parent already is parent
+        if ($parent === $this->parent) {
+            return;
+        }
+
+        // remove from old parent
+        if (null !== $this->parent) {
+            $this->parent->removePage($this);
+        }
+
+        // set new parent
+        $this->parent = $parent;
+
+        // add to parent if page and not already a child
+        if (null === $this->parent || $this->parent->hasPage($this, false)) {
+            return;
+        }
+
+        $this->parent->addPage($this);
+    }
+
+    /**
+     * Returns parent container
+     *
+     * @return ContainerInterface|null parent container or null
+     */
+    final public function getParent(): ?ContainerInterface
+    {
+        return $this->parent;
     }
 
     /**
@@ -509,7 +519,7 @@ trait PageTrait
         $this->order = $order;
 
         // notify parent, if any
-        if (!isset($this->parent)) {
+        if (null === $this->parent) {
             return;
         }
 
@@ -648,7 +658,7 @@ trait PageTrait
      */
     final public function isActive(bool $recursive = false): bool
     {
-        if (!$this->active && $recursive) {
+        if (null === $this->active && $recursive) {
             foreach ($this->pages as $page) {
                 if ($page->isActive(true)) {
                     return true;
@@ -658,7 +668,7 @@ trait PageTrait
             return false;
         }
 
-        return $this->active;
+        return (bool) $this->active;
     }
 
     /**
@@ -701,10 +711,10 @@ trait PageTrait
     {
         if (
             $recursive
-            && isset($this->parent)
-            && $this->parent instanceof self
+            && null !== $this->parent
+            && $this->parent instanceof PageInterface
         ) {
-            if (!$this->parent->isVisible(true)) {
+            if (!$this->parent->isVisible($recursive)) {
                 return false;
             }
         }
@@ -729,55 +739,6 @@ trait PageTrait
     }
 
     /**
-     * Sets parent container
-     *
-     * @param ContainerInterface|null $parent [optional] new parent to set.
-     *                                        Default is null which will set no parent.
-     *
-     *@throws Exception\InvalidArgumentException
-     *
-     * @return void
-     */
-    final public function setParent(?ContainerInterface $parent = null): void
-    {
-        if ($parent === $this) {
-            throw new Exception\InvalidArgumentException(
-                'A page cannot have itself as a parent'
-            );
-        }
-
-        // return if the given parent already is parent
-        if ($parent === $this->parent) {
-            return;
-        }
-
-        // remove from old parent
-        if (null !== $this->parent) {
-            $this->parent->removePage($this);
-        }
-
-        // set new parent
-        $this->parent = $parent;
-
-        // add to parent if page and not already a child
-        if (null === $this->parent || $this->parent->hasPage($this, false)) {
-            return;
-        }
-
-        $this->parent->addPage($this);
-    }
-
-    /**
-     * Returns parent container
-     *
-     * @return ContainerInterface|null parent container or null
-     */
-    final public function getParent(): ?ContainerInterface
-    {
-        return $this->parent;
-    }
-
-    /**
      * Sets the given property
      *
      * If the given property is native (id, class, title, etc), the matching
@@ -792,7 +753,7 @@ trait PageTrait
      */
     final public function set(string $property, $value): void
     {
-        if (!is_string($property) || empty($property)) {
+        if (empty($property)) {
             throw new Exception\InvalidArgumentException(
                 'Invalid argument: $property must be a non-empty string'
             );
@@ -822,7 +783,7 @@ trait PageTrait
      */
     final public function get(string $property)
     {
-        if (!is_string($property) || empty($property)) {
+        if (empty($property)) {
             throw new Exception\InvalidArgumentException(
                 'Invalid argument: $property must be a non-empty string'
             );
@@ -954,10 +915,6 @@ trait PageTrait
      */
     final public function addRel(string $relation, $value): void
     {
-        if (!is_string($relation)) {
-            return;
-        }
-
         $this->rel[$relation] = $value;
     }
 
@@ -972,10 +929,6 @@ trait PageTrait
      */
     final public function addRev(string $relation, $value): void
     {
-        if (!is_string($relation)) {
-            return;
-        }
-
         $this->rev[$relation] = $value;
     }
 

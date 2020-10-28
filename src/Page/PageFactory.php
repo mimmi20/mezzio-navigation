@@ -39,7 +39,7 @@ final class PageFactory
      * - If $options contains the key 'route', a Mezzio\Navigation\Page\Route page will be created.
      * - If $options contains the key 'uri', a Mezzio\Navigation\Page\Uri page will be created.
      *
-     * @param array|Traversable $options options used for creating page
+     * @param iterable $options options used for creating page
      *
      * @throws Exception\InvalidArgumentException                 if 'type' is specified but class not found
      * @throws Exception\InvalidArgumentException                 if something goes wrong during instantiation of the page
@@ -50,7 +50,7 @@ final class PageFactory
      *
      * @return PageInterface a page instance
      */
-    public static function factory($options): PageInterface
+    public static function factory(iterable $options): PageInterface
     {
         if ($options instanceof Traversable) {
             $options = ArrayUtils::iteratorToArray($options);

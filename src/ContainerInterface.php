@@ -14,7 +14,6 @@ namespace Mezzio\Navigation;
 use Countable;
 use Mezzio\Navigation\Page\PageInterface;
 use RecursiveIterator;
-use Traversable;
 
 /**
  * ContainerInterface class for Mezzio\Navigation\Navigation classes.
@@ -44,22 +43,22 @@ interface ContainerInterface extends Countable, RecursiveIterator
     /**
      * Adds several pages at once
      *
-     * @param array|PageInterface[]|Traversable $pages pages to add
+     * @param iterable|PageInterface[] $pages pages to add
      *
      * @throws Exception\InvalidArgumentException
      *
      * @return void
      */
-    public function addPages($pages): void;
+    public function addPages(iterable $pages): void;
 
     /**
      * Sets pages this container should have, removing existing pages
      *
-     * @param PageInterface[] $pages pages to set
+     * @param iterable|PageInterface[] $pages pages to set
      *
      * @return void
      */
-    public function setPages($pages): void;
+    public function setPages(iterable $pages): void;
 
     /**
      * Returns pages in the container

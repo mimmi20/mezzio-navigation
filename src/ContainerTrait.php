@@ -14,7 +14,6 @@ namespace Mezzio\Navigation;
 use Laminas\Stdlib\ErrorHandler;
 use Mezzio\Navigation\Page\PageInterface;
 use RecursiveIteratorIterator;
-use Traversable;
 
 /**
  * Trait for Mezzio\Navigation\Page classes.
@@ -123,14 +122,14 @@ trait ContainerTrait
     /**
      * Adds several pages at once
      *
-     * @param array|Traversable $pages pages to add
+     * @param iterable $pages pages to add
      *
      * @throws Exception\InvalidArgumentException                 if $pages is not array, Traversable or PageInterface
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
      * @return void
      */
-    final public function addPages($pages): void
+    final public function addPages(iterable $pages): void
     {
         foreach ($pages as $page) {
             if (null === $page) {
@@ -148,14 +147,14 @@ trait ContainerTrait
     /**
      * Sets pages this container should have, removing existing pages
      *
-     * @param array|Traversable $pages pages to set
+     * @param iterable $pages pages to set
      *
      * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
      * @return void
      */
-    final public function setPages($pages): void
+    final public function setPages(iterable $pages): void
     {
         $this->removePages();
         $this->addPages($pages);

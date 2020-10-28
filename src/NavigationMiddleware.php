@@ -46,8 +46,8 @@ final class NavigationMiddleware implements MiddlewareInterface
     public function __construct(
         Config\NavigationConfigInterface $navigationConfig,
         UrlHelper $urlHelper,
-        ?AuthorizationInterface $authorization,
-        ?RouterInterface $router
+        ?AuthorizationInterface $authorization = null,
+        ?RouterInterface $router = null
     ) {
         $this->navigationConfig = $navigationConfig;
         $this->urlHelper        = $urlHelper;
@@ -66,7 +66,7 @@ final class NavigationMiddleware implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $result = $request->getAttribute(RouteResult::class, false);
+        $result = $request->getAttribute(RouteResult::class);
 
         if ($result instanceof RouteResult) {
             $this->navigationConfig->setRouteResult($result);

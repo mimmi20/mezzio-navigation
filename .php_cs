@@ -40,6 +40,7 @@ return PhpCsFixer\Config::create()
                     'location' => 'after_open',
                     'separate' => 'bottom',
                 ],
+                'no_unset_on_property' => false,
             ]
         )
     )

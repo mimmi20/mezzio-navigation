@@ -13,7 +13,6 @@ namespace Mezzio\Navigation\Page;
 
 use Mezzio\Navigation\ContainerInterface;
 use Mezzio\Navigation\Exception;
-use Traversable;
 
 /**
  * Interface for Mezzio\Navigation\Page pages
@@ -43,8 +42,6 @@ interface PageInterface extends ContainerInterface
      *
      * @param string $label new page label
      *
-     * @throws Exception\InvalidArgumentException if empty/no string is given
-     *
      * @return void
      */
     public function setLabel(string $label): void;
@@ -61,8 +58,6 @@ interface PageInterface extends ContainerInterface
      *
      * @param string $fragment new fragment identifier
      *
-     * @throws Exception\InvalidArgumentException if empty/no string is given
-     *
      * @return void
      */
     public function setFragment(string $fragment): void;
@@ -77,10 +72,7 @@ interface PageInterface extends ContainerInterface
     /**
      * Sets page id
      *
-     * @param string|null $id [optional] id to set. Default is null,
-     *                        which sets no id.
-     *
-     * @throws Exception\InvalidArgumentException if not given string or null
+     * @param string|null $id [optional] id to set. Default is null, which sets no id.
      *
      * @return void
      */
@@ -99,8 +91,6 @@ interface PageInterface extends ContainerInterface
      * @param string|null $class [optional] CSS class to set. Default
      *                           is null, which sets no CSS class.
      *
-     * @throws Exception\InvalidArgumentException if not given string or null
-     *
      * @return void
      */
     public function setClass(?string $class = null): void;
@@ -118,8 +108,6 @@ interface PageInterface extends ContainerInterface
      * @param string|null $title [optional] page title. Default is
      *                           null, which sets no title.
      *
-     * @throws Exception\InvalidArgumentException if not given string or null
-     *
      * @return void
      */
     public function setTitle(?string $title = null): void;
@@ -136,8 +124,6 @@ interface PageInterface extends ContainerInterface
      *
      * @param string|null $target [optional] target to set. Default is
      *                            null, which sets no target.
-     *
-     * @throws Exception\InvalidArgumentException if target is not string or null
      *
      * @return void
      */
@@ -158,15 +144,12 @@ interface PageInterface extends ContainerInterface
      * prev, next, help, etc), and the value is a mixed value that could somehow
      * be considered a page.
      *
-     * @param array|Traversable $relations [optional] an associative array of
-     *                                     forward links to other pages
-     *
-     * @throws Exception\InvalidArgumentException if $relations is not an array
-     *                                            or Traversable object
+     * @param iterable|null $relations [optional] an associative array of
+     *                                 forward links to other pages
      *
      * @return void
      */
-    public function setRel($relations = null): void;
+    public function setRel(?iterable $relations = null): void;
 
     /**
      * Returns the page's forward links to other pages
@@ -179,11 +162,11 @@ interface PageInterface extends ContainerInterface
      * @param string|null $relation [optional] name of relation to return. If not
      *                              given, all relations will be returned.
      *
-     * @return array|null an array of relations. If $relation is not
-     *                    specified, all relations will be returned in
-     *                    an associative array.
+     * @return array|string|null an array of relations. If $relation is not
+     *                           specified, all relations will be returned in
+     *                           an associative array.
      */
-    public function getRel(?string $relation = null): ?array;
+    public function getRel(?string $relation = null);
 
     /**
      * Sets the page's reverse links to other pages
@@ -193,15 +176,12 @@ interface PageInterface extends ContainerInterface
      * prev, next, help, etc), and the value is a mixed value that could somehow
      * be considered a page.
      *
-     * @param array|Traversable $relations [optional] an associative array of
-     *                                     reverse links to other pages
-     *
-     * @throws Exception\InvalidArgumentException if $relations it not an array
-     *                                            or Traversable object
+     * @param iterable|null $relations [optional] an associative array of
+     *                                 reverse links to other pages
      *
      * @return void
      */
-    public function setRev($relations = null): void;
+    public function setRev(?iterable $relations = null): void;
 
     /**
      * Returns the page's reverse links to other pages
@@ -214,11 +194,11 @@ interface PageInterface extends ContainerInterface
      * @param string|null $relation [optional] name of relation to return. If not
      *                              given, all relations will be returned.
      *
-     * @return array|null an array of relations. If $relation is not
-     *                    specified, all relations will be returned in
-     *                    an associative array.
+     * @return array|string|null an array of relations. If $relation is not
+     *                           specified, all relations will be returned in
+     *                           an associative array.
      */
-    public function getRev(?string $relation = null): ?array;
+    public function getRev(?string $relation = null);
 
     /**
      * Sets page order to use in parent container
