@@ -12,6 +12,7 @@ declare(strict_types = 1);
 namespace MezzioTest\Navigation;
 
 use Mezzio\Navigation\Config\NavigationConfig;
+use Mezzio\Navigation\Config\NavigationConfigInterface;
 use Mezzio\Navigation\ConfigProvider;
 use Mezzio\Navigation\Navigation;
 use Mezzio\Navigation\NavigationMiddleware;
@@ -41,8 +42,8 @@ final class ConfigProviderTest extends TestCase
     {
         $dependencies = $this->provider->getDependencyConfig();
         self::assertIsArray($dependencies);
-        self::assertArrayHasKey('factories', $dependencies);
 
+        self::assertArrayHasKey('factories', $dependencies);
         $factories = $dependencies['factories'];
         self::assertIsArray($factories);
         self::assertArrayHasKey(Navigation::class, $factories);
@@ -50,10 +51,14 @@ final class ConfigProviderTest extends TestCase
         self::assertArrayHasKey(NavigationConfig::class, $factories);
 
         self::assertArrayHasKey('abstract_factories', $dependencies);
-
         $abstractFactories = $dependencies['abstract_factories'];
         self::assertIsArray($abstractFactories);
         self::assertContains(NavigationAbstractServiceFactory::class, $abstractFactories);
+
+        self::assertArrayHasKey('aliases', $dependencies);
+        $aliases = $dependencies['aliases'];
+        self::assertIsArray($aliases);
+        self::assertArrayHasKey(NavigationConfigInterface::class, $aliases);
     }
 
     /**
@@ -71,8 +76,8 @@ final class ConfigProviderTest extends TestCase
 
         $dependencies = $config['dependencies'];
         self::assertIsArray($dependencies);
-        self::assertArrayHasKey('factories', $dependencies);
 
+        self::assertArrayHasKey('factories', $dependencies);
         $factories = $dependencies['factories'];
         self::assertIsArray($factories);
         self::assertArrayHasKey(Navigation::class, $factories);
@@ -80,9 +85,13 @@ final class ConfigProviderTest extends TestCase
         self::assertArrayHasKey(NavigationConfig::class, $factories);
 
         self::assertArrayHasKey('abstract_factories', $dependencies);
-
         $abstractFactories = $dependencies['abstract_factories'];
         self::assertIsArray($abstractFactories);
         self::assertContains(NavigationAbstractServiceFactory::class, $abstractFactories);
+
+        self::assertArrayHasKey('aliases', $dependencies);
+        $aliases = $dependencies['aliases'];
+        self::assertIsArray($aliases);
+        self::assertArrayHasKey(NavigationConfigInterface::class, $aliases);
     }
 }

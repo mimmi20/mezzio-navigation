@@ -13,7 +13,6 @@ namespace Mezzio\Navigation\Service;
 
 use Interop\Container\ContainerInterface;
 use Laminas\Config;
-use Laminas\ServiceManager\Factory\FactoryInterface;
 use Laminas\Stdlib\ArrayUtils;
 use Mezzio\Navigation\Config\NavigationConfigInterface;
 use Mezzio\Navigation\Exception;
@@ -24,15 +23,15 @@ use Psr\Http\Message\ServerRequestInterface;
 use Traversable;
 
 /**
- * Abstract navigation factory
+ * navigation factory trait
  */
-abstract class AbstractNavigationFactory implements FactoryInterface
+trait NavigationFactoryTrait
 {
     /** @var array|null */
-    protected $pages;
+    private $pages;
 
     /** @var string */
-    protected $configName;
+    private $configName;
 
     /**
      * Create and return a new Navigation instance (v3).
@@ -65,9 +64,9 @@ abstract class AbstractNavigationFactory implements FactoryInterface
      * @throws \Laminas\Config\Exception\RuntimeException
      * @throws \Laminas\Config\Exception\InvalidArgumentException
      *
-     * @return array|null
+     * @return array
      */
-    protected function getPages(NavigationConfigInterface $config): ?array
+    private function getPages(NavigationConfigInterface $config): array
     {
         if (null === $this->pages) {
             $pages = $config->getPages();
@@ -94,11 +93,9 @@ abstract class AbstractNavigationFactory implements FactoryInterface
      * @param NavigationConfigInterface $config
      * @param array                     $pages
      *
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return array|null
+     * @return array
      */
-    protected function preparePages(NavigationConfigInterface $config, array $pages): ?array
+    private function preparePages(NavigationConfigInterface $config, array $pages): array
     {
         if (null === $config->getRouteResult()) {
             $routeResult = null;
@@ -124,7 +121,7 @@ abstract class AbstractNavigationFactory implements FactoryInterface
      *
      * @return array
      */
-    protected function getPagesFromConfig($config = null): array
+    private function getPagesFromConfig($config = null): array
     {
         if (is_string($config)) {
             if (!file_exists($config)) {
@@ -158,12 +155,12 @@ abstract class AbstractNavigationFactory implements FactoryInterface
      *
      * @return array
      */
-    protected function injectComponents(
+    private function injectComponents(
         array $pages,
         ?RouteResult $routeResult = null,
         ?RouterInterface $router = null,
         ?ServerRequestInterface $request = null
-    ) {
+    ): array {
         foreach (array_keys($pages) as $pageIndex) {
             $hasUri   = isset($pages[$pageIndex]['uri']);
             $hasRoute = isset($pages[$pageIndex]['route']);

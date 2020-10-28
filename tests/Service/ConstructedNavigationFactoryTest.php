@@ -15,4 +15,21 @@ use PHPUnit\Framework\TestCase;
 
 final class ConstructedNavigationFactoryTest extends TestCase
 {
+    /**
+     * @throws \PHPUnit\Framework\IncompleteTestError
+     *
+     * @return void
+     */
+    protected function setUp(): void
+    {
+        self::markTestIncomplete();
+    }
+
+    /**
+     * @return void
+     */
+    public function testDummy(): void
+    {
+        // do nothing
+    }
 }

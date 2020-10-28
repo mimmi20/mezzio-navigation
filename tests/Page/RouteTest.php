@@ -11,305 +11,923 @@
 declare(strict_types = 1);
 namespace MezzioTest\Navigation\Page;
 
+use Mezzio\Navigation\ContainerInterface;
+use Mezzio\Navigation\Exception\InvalidArgumentException;
+use Mezzio\Navigation\Page\PageInterface;
+use Mezzio\Navigation\Page\Route;
 use PHPUnit\Framework\TestCase;
 
 final class RouteTest extends TestCase
 {
     /**
-     * @return void
-     */
-    protected function setUp(): void
-    {
-        // @todo: define
-    }
-
-    /**
-     * @throws \PHPUnit\Framework\SkippedTestError
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
      * @return void
      */
-    public function testHrefGeneratedByRouterWithDefaultRoute(): void
+    public function testConstructorWithoutParameters(): void
     {
-        self::markTestSkipped();
+        $page = new Route();
+
+        self::assertSame([], $page->getPages());
     }
 
     /**
-     * @throws \PHPUnit\Framework\SkippedTestError
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
      * @return void
      */
-    public function testHrefGeneratedByRouterRequiresNoRoute(): void
+    public function testConstructorWithRoute(): void
     {
-        self::markTestSkipped();
+        $route = 'test';
+
+        $page = new Route(['route' => $route]);
+
+        self::assertSame($route, $page->getRoute());
     }
 
     /**
-     * @throws \PHPUnit\Framework\SkippedTestError
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
      * @return void
      */
-    public function testHrefRouteMatchEnabledWithoutRouteMatchObject(): void
+    public function testSetOptionsWithRoute(): void
     {
-        self::markTestSkipped();
+        $route = 'test';
+
+        $page = new Route();
+        $page->setOptions(['route' => $route]);
+
+        self::assertSame($route, $page->getRoute());
     }
 
     /**
-     * @throws \PHPUnit\Framework\SkippedTestError
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
      * @return void
      */
-    public function testHrefGeneratedIsRouteAware(): void
+    public function testSetRoute(): void
     {
-        self::markTestSkipped();
+        $route = 'test';
+
+        $page = new Route();
+        $page->setRoute($route);
+
+        self::assertSame($route, $page->getRoute());
     }
 
     /**
-     * @throws \PHPUnit\Framework\SkippedTestError
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
      * @return void
      */
-    public function testIsActiveReturnsTrueWhenMatchingRoute(): void
+    public function testConstructorWithLabel(): void
     {
-        self::markTestSkipped();
+        $label = 'test';
+
+        $page = new Route(['label' => $label]);
+
+        self::assertSame($label, $page->getLabel());
     }
 
     /**
-     * @throws \PHPUnit\Framework\SkippedTestError
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
      * @return void
      */
-    public function testIsActiveReturnsTrueWhenMatchingRouteWhileUsingModuleRouteListener(): void
+    public function testSetOptionsWithLabel(): void
     {
-        self::markTestSkipped();
+        $label = 'test';
+
+        $page = new Route();
+        $page->setOptions(['label' => $label]);
+
+        self::assertSame($label, $page->getLabel());
     }
 
     /**
-     * @throws \PHPUnit\Framework\SkippedTestError
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
      * @return void
      */
-    public function testIsActiveReturnsFalseWhenMatchingRouteButNonMatchingParams(): void
+    public function testSetLabel(): void
     {
-        self::markTestSkipped();
+        $label = 'test';
+
+        $page = new Route();
+        $page->setLabel($label);
+
+        self::assertSame($label, $page->getLabel());
     }
 
     /**
-     * @throws \PHPUnit\Framework\SkippedTestError
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
      * @return void
      */
-    public function testIsActiveReturnsFalseWhenNoRouteAndNoMatchedRouteNameIsSet(): void
+    public function testConstructorWithFragment(): void
     {
-        self::markTestSkipped();
+        $fragment = 'test';
+
+        $page = new Route(['fragment' => $fragment]);
+
+        self::assertSame($fragment, $page->getFragment());
     }
 
     /**
-     * @throws \PHPUnit\Framework\SkippedTestError
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
      * @return void
      */
-    public function testGetHrefWithFragmentIdentifier(): void
+    public function testSetOptionsWithFragment(): void
     {
-        self::markTestSkipped();
+        $fragment = 'test';
+
+        $page = new Route();
+        $page->setOptions(['fragment' => $fragment]);
+
+        self::assertSame($fragment, $page->getFragment());
     }
 
     /**
-     * @throws \PHPUnit\Framework\SkippedTestError
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
      * @return void
      */
-    public function testGetHrefPassesQueryPartToRouter(): void
+    public function testSetFragment(): void
     {
-        self::markTestSkipped();
+        $fragment = 'test';
+
+        $page = new Route();
+        $page->setFragment($fragment);
+
+        self::assertSame($fragment, $page->getFragment());
     }
 
     /**
-     * @throws \PHPUnit\Framework\SkippedTestError
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
      * @return void
      */
-    public function testIsActiveReturnsTrueOnIdenticalControllerAction(): void
+    public function testConstructorWithId(): void
     {
-        self::markTestSkipped();
+        $id = 'test';
+
+        $page = new Route(['id' => $id]);
+
+        self::assertSame($id, $page->getId());
     }
 
     /**
-     * @throws \PHPUnit\Framework\SkippedTestError
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
      * @return void
      */
-    public function testIsActiveReturnsFalseOnDifferentControllerAction(): void
+    public function testSetOptionsWithId(): void
     {
-        self::markTestSkipped();
+        $id = 'test';
+
+        $page = new Route();
+        $page->setOptions(['id' => $id]);
+
+        self::assertSame($id, $page->getId());
     }
 
     /**
-     * @throws \PHPUnit\Framework\SkippedTestError
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
      * @return void
      */
-    public function testIsActiveReturnsTrueOnIdenticalIncludingPageParams(): void
+    public function testSetId(): void
     {
-        self::markTestSkipped();
+        $id = 'test';
+
+        $page = new Route();
+        $page->setId($id);
+
+        self::assertSame($id, $page->getId());
     }
 
     /**
-     * @throws \PHPUnit\Framework\SkippedTestError
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
      * @return void
      */
-    public function testIsActiveReturnsTrueWhenRequestHasMoreParams(): void
+    public function testConstructorClass(): void
     {
-        self::markTestSkipped();
+        $class = 'test';
+
+        $page = new Route(['class' => $class]);
+
+        self::assertSame($class, $page->getClass());
     }
 
     /**
-     * @throws \PHPUnit\Framework\SkippedTestError
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
      * @return void
      */
-    public function testIsActiveReturnsFalseWhenRequestHasLessParams(): void
+    public function testSetOptionsWithClass(): void
     {
-        self::markTestSkipped();
+        $class = 'test';
+
+        $page = new Route();
+        $page->setOptions(['class' => $class]);
+
+        self::assertSame($class, $page->getClass());
     }
 
     /**
-     * @throws \PHPUnit\Framework\SkippedTestError
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
      * @return void
      */
-    public function testActionAndControllerAccessors(): void
+    public function testSetClass(): void
     {
-        self::markTestSkipped();
+        $class = 'test';
+
+        $page = new Route();
+        $page->setClass($class);
+
+        self::assertSame($class, $page->getClass());
     }
 
     /**
-     * @throws \PHPUnit\Framework\SkippedTestError
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
      * @return void
      */
-    public function testRouteAccessor(): void
+    public function testConstructorTitle(): void
     {
-        self::markTestSkipped();
+        $title = 'test';
+
+        $page = new Route(['title' => $title]);
+
+        self::assertSame($title, $page->getTitle());
     }
 
     /**
-     * @throws \PHPUnit\Framework\SkippedTestError
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
      * @return void
      */
-    public function testSetAndGetParams(): void
+    public function testSetOptionsWithTitle(): void
     {
-        self::markTestSkipped();
+        $title = 'test';
+
+        $page = new Route();
+        $page->setOptions(['title' => $title]);
+
+        self::assertSame($title, $page->getTitle());
     }
 
     /**
-     * @throws \PHPUnit\Framework\SkippedTestError
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
      * @return void
      */
-    public function testToArrayMethod(): void
+    public function testSetTitle(): void
     {
-        self::markTestSkipped();
+        $title = 'test';
+
+        $page = new Route();
+        $page->setTitle($title);
+
+        self::assertSame($title, $page->getTitle());
     }
 
     /**
-     * @throws \PHPUnit\Framework\SkippedTestError
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
      * @return void
      */
-    public function testSpecifyingAnotherUrlHelperToGenerateHrefs(): void
+    public function testConstructorTarget(): void
     {
-        self::markTestSkipped();
+        $target = 'test';
+
+        $page = new Route(['target' => $target]);
+
+        self::assertSame($target, $page->getTarget());
     }
 
     /**
-     * @throws \PHPUnit\Framework\SkippedTestError
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
      * @return void
      */
-    public function testDefaultRouterCanBeSetWithConstructor(): void
+    public function testSetOptionsWithTarget(): void
     {
-        self::markTestSkipped();
+        $target = 'test';
+
+        $page = new Route();
+        $page->setOptions(['target' => $target]);
+
+        self::assertSame($target, $page->getTarget());
     }
 
     /**
-     * @throws \PHPUnit\Framework\SkippedTestError
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
      * @return void
      */
-    public function testDefaultRouterCanBeSetWithGetter(): void
+    public function testSetTarget(): void
     {
-        self::markTestSkipped();
+        $target = 'test';
+
+        $page = new Route();
+        $page->setTarget($target);
+
+        self::assertSame($target, $page->getTarget());
     }
 
     /**
-     * @throws \PHPUnit\Framework\SkippedTestError
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
      * @return void
      */
-    public function testNoExceptionForGetHrefIfDefaultRouterIsSet(): void
+    public function testSetRel(): void
     {
-        self::markTestSkipped();
+        $relValue = 'test1';
+        $relKey   = 'test';
+        $rel      = [$relKey => $relValue];
+
+        $page = new Route();
+        $page->setRel();
+
+        self::assertSame([], $page->getRel());
+
+        $page->setRel($rel);
+
+        self::assertSame($rel, $page->getRel());
+        self::assertSame($relValue, $page->getRel($relKey));
+
+        self::assertCount(1, (array) $page->getRel());
+
+        $page->addRel('test2', 'test2');
+
+        self::assertCount(2, (array) $page->getRel());
+
+        $page->removeRel('test');
+
+        self::assertCount(1, (array) $page->getRel());
+
+        $page->removeRel('test4');
+
+        self::assertCount(1, (array) $page->getRel());
+
+        self::assertSame(['test2'], $page->getDefinedRel());
     }
 
     /**
-     * @throws \PHPUnit\Framework\SkippedTestError
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
      * @return void
      */
-    public function testBoolSetAndGetUseRouteMatch(): void
+    public function testSetRev(): void
     {
-        self::markTestSkipped();
+        $revValue = 'test1';
+        $revKey   = 'test';
+        $rev      = [$revKey => $revValue];
+
+        $page = new Route();
+        $page->setRev();
+
+        self::assertSame([], $page->getRev());
+
+        $page->setRev($rev);
+
+        self::assertSame($rev, $page->getRev());
+        self::assertSame($revValue, $page->getRev($revKey));
+
+        self::assertCount(1, (array) $page->getRev());
+
+        $page->addRev('test2', 'test2');
+
+        self::assertCount(2, (array) $page->getRev());
+
+        $page->removeRev('test');
+
+        self::assertCount(1, (array) $page->getRev());
+
+        $page->removeRev('test4');
+
+        self::assertCount(1, (array) $page->getRev());
+
+        self::assertSame(['test2'], $page->getDefinedRev());
     }
 
     /**
-     * @throws \PHPUnit\Framework\SkippedTestError
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
      * @return void
      */
-    public function testMvcPageParamsInheritRouteMatchParams(): void
+    public function testSetParentException(): void
     {
-        self::markTestSkipped();
+        $page = new Route();
+        self::assertNull($page->getParent());
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('A page cannot have itself as a parent');
+
+        $page->setParent($page);
     }
 
     /**
-     * @throws \PHPUnit\Framework\SkippedTestError
+     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
      * @return void
      */
-    public function testInheritedRouteMatchParamsWorkWithModuleRouteListener(): void
+    public function testDuplicateSetParent(): void
     {
-        self::markTestSkipped();
+        $page = new Route();
+
+        $parent = $this->getMockBuilder(ContainerInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $parent->expects(self::never())
+            ->method('removePage');
+        $parent->expects(self::once())
+            ->method('hasPage')
+            ->with($page, false)
+            ->willReturn(false);
+        $parent->expects(self::once())
+            ->method('addPage')
+            ->with($page);
+
+        /* @var ContainerInterface $parent */
+        $page->setParent($parent);
+        $page->setParent($parent);
     }
 
     /**
-     * @throws \PHPUnit\Framework\SkippedTestError
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
      * @return void
      */
-    public function testMistakeDetectIsActiveOnIndexController(): void
+    public function testSetTwoParents(): void
     {
-        self::markTestSkipped();
+        $page = new Route();
+
+        $parent1 = $this->getMockBuilder(ContainerInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $parent1->expects(self::once())
+            ->method('removePage')
+            ->with($page);
+        $parent1->expects(self::once())
+            ->method('hasPage')
+            ->with($page, false)
+            ->willReturn(false);
+        $parent1->expects(self::once())
+            ->method('addPage')
+            ->with($page);
+
+        $parent2 = $this->getMockBuilder(ContainerInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $parent2->expects(self::never())
+            ->method('removePage');
+        $parent2->expects(self::once())
+            ->method('hasPage')
+            ->with($page, false)
+            ->willReturn(true);
+        $parent2->expects(self::never())
+            ->method('addPage');
+
+        /* @var ContainerInterface $parent1 */
+        /* @var ContainerInterface $parent2 */
+        $page->setParent($parent1);
+        self::assertSame($parent1, $page->getParent());
+
+        $page->setParent($parent2);
+        self::assertSame($parent2, $page->getParent());
     }
 
     /**
-     * @throws \PHPUnit\Framework\SkippedTestError
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
      * @return void
      */
-    public function testRecursiveDetectIsActiveWhenRouteNameIsKnown(): void
+    public function testSetOrder(): void
     {
-        self::markTestSkipped();
+        $order = 42;
+
+        $page = new Route();
+        self::assertNull($page->getOrder());
+
+        $page->setOrder($order);
+
+        self::assertSame($order, $page->getOrder());
     }
 
     /**
-     * @throws \PHPUnit\Framework\SkippedTestError
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
      * @return void
      */
-    public function testSetRouteMatchThrowsExceptionOnInvalidParameter(): void
+    public function testSetOrderWithParent(): void
     {
-        self::markTestSkipped();
+        $order = 42;
+
+        $page = new Route();
+
+        $parent = $this->getMockBuilder(ContainerInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $parent->expects(self::once())
+            ->method('notifyOrderUpdated');
+
+        $page->setParent($parent);
+        $page->setOrder($order);
+
+        self::assertSame($order, $page->getOrder());
+    }
+
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     *
+     * @return void
+     */
+    public function testSetResource(): void
+    {
+        $resource = 'test';
+
+        $page = new Route();
+        self::assertNull($page->getResource());
+
+        $page->setResource($resource);
+
+        self::assertSame($resource, $page->getResource());
+    }
+
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     *
+     * @return void
+     */
+    public function testSetPrivilege(): void
+    {
+        $privilege = 'test';
+
+        $page = new Route();
+        self::assertNull($page->getPrivilege());
+
+        $page->setPrivilege($privilege);
+
+        self::assertSame($privilege, $page->getPrivilege());
+    }
+
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     *
+     * @return void
+     */
+    public function testSetPermission(): void
+    {
+        $permission = 'test';
+
+        $page = new Route();
+        self::assertNull($page->getPermission());
+
+        $page->setPermission($permission);
+
+        self::assertSame($permission, $page->getPermission());
+    }
+
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     *
+     * @return void
+     */
+    public function testSetTextDomain(): void
+    {
+        $textDomain = 'test';
+
+        $page = new Route();
+        self::assertNull($page->getTextDomain());
+
+        $page->setTextDomain($textDomain);
+
+        self::assertSame($textDomain, $page->getTextDomain());
+    }
+
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     *
+     * @return void
+     */
+    public function testSetVisible(): void
+    {
+        $visible = false;
+
+        $page = new Route();
+
+        self::assertTrue($page->isVisible());
+        self::assertTrue($page->getVisible());
+
+        $page->setVisible($visible);
+
+        self::assertFalse($page->isVisible());
+        self::assertFalse($page->getVisible());
+    }
+
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     *
+     * @return void
+     */
+    public function testSetVisibleWithParent(): void
+    {
+        $page = new Route();
+
+        $parent1 = $this->getMockBuilder(PageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $parent1->expects(self::exactly(2))
+            ->method('isVisible')
+            ->willReturn(true);
+
+        /* @var PageInterface $parent1 */
+        $page->setParent($parent1);
+
+        self::assertTrue($page->isVisible(true));
+        self::assertTrue($page->getVisible(true));
+
+        $parent2 = $this->getMockBuilder(PageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $parent2->expects(self::exactly(2))
+            ->method('isVisible')
+            ->willReturn(false);
+
+        /* @var PageInterface $parent2 */
+        $page->setParent($parent2);
+
+        self::assertFalse($page->isVisible(true));
+        self::assertFalse($page->getVisible(true));
+
+        $page->setVisible(false);
+
+        self::assertFalse($page->isVisible());
+        self::assertFalse($page->getVisible());
+
+        $page->setVisible(true);
+
+        self::assertTrue($page->isVisible());
+        self::assertTrue($page->getVisible());
+    }
+
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     *
+     * @return void
+     */
+    public function testSetActive(): void
+    {
+        $active = true;
+
+        $page = new Route();
+        self::assertFalse($page->isActive());
+        self::assertFalse($page->getActive());
+
+        $page->setActive($active);
+
+        self::assertTrue($page->isActive());
+        self::assertTrue($page->getActive());
+    }
+
+    /**
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     *
+     * @return void
+     */
+    public function testSetWithException(): void
+    {
+        $page = new Route();
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid argument: $property must be a non-empty string');
+
+        $page->set('', null);
+    }
+
+    /**
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     *
+     * @return void
+     */
+    public function testGetWithException(): void
+    {
+        $page = new Route();
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid argument: $property must be a non-empty string');
+
+        $page->get('');
+    }
+
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     *
+     * @return void
+     */
+    public function testGetSet(): void
+    {
+        $target = 'test2';
+        $test   = 'test 42';
+        $abc    = '4711';
+
+        $page = new Route();
+
+        self::assertNull($page->get('test'));
+
+        $page->set('target', $target);
+        $page->set('test', $test);
+        $page->abc = $abc;
+
+        self::assertSame($target, $page->get('target'));
+        self::assertSame($test, $page->get('test'));
+        self::assertSame($abc, $page->abc);
+
+        self::assertTrue(isset($page->target));
+        self::assertTrue(isset($page->test));
+
+        self::assertSame(['test' => 'test 42', 'abc' => '4711'], $page->getCustomProperties());
+
+        unset($page->test, $page->test);
+
+        self::assertFalse(isset($page->test));
+        self::assertSame(['abc' => '4711'], $page->getCustomProperties());
+    }
+
+    /**
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     *
+     * @return void
+     */
+    public function testUnset(): void
+    {
+        $page = new Route();
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Unsetting native property "target" is not allowed');
+
+        unset($page->target);
+    }
+
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     *
+     * @return void
+     */
+    public function testToString(): void
+    {
+        $page = new Route();
+        self::assertSame('', (string) $page);
+
+        $label = 'test';
+
+        $page->setLabel($label);
+
+        self::assertSame($label, (string) $page);
+    }
+
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     *
+     * @return void
+     */
+    public function testHashCode(): void
+    {
+        $page = new Route();
+
+        $label = 'test';
+
+        $page->setLabel($label);
+
+        $expected = spl_object_hash($page);
+
+        self::assertSame($expected, $page->hashCode());
     }
 }

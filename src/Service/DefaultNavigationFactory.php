@@ -11,11 +11,15 @@
 declare(strict_types = 1);
 namespace Mezzio\Navigation\Service;
 
+use Laminas\ServiceManager\Factory\FactoryInterface;
+
 /**
  * Default navigation factory.
  */
-final class DefaultNavigationFactory extends AbstractNavigationFactory
+final class DefaultNavigationFactory implements FactoryInterface
 {
+    use NavigationFactoryTrait;
+
     /**
      * creates the DefaultNavigationFactory.
      */

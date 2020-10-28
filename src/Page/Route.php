@@ -122,12 +122,12 @@ final class Route implements PageInterface
      */
     public function isActive(bool $recursive = false): bool
     {
-        if (!$this->active) {
-            $reqParams = [];
+        if (null === $this->active) {
+            $reqParams  = [];
+            $pageParams = $this->params;
 
             if ($this->routeMatch instanceof RouteResult) {
-                $reqParams  = $this->routeMatch->getMatchedParams();
-                $pageParams = $this->params;
+                $reqParams = $this->routeMatch->getMatchedParams();
 
                 if (null !== $this->getRoute()) {
                     if (
@@ -143,9 +143,7 @@ final class Route implements PageInterface
                 }
             }
 
-            $pageParams = $this->params;
-
-            if (count(array_intersect_assoc($reqParams, $pageParams)) === count($pageParams)) {
+            if (0 < count($pageParams) && count(array_intersect_assoc($reqParams, $pageParams)) === count($pageParams)) {
                 $this->active = true;
 
                 return true;
