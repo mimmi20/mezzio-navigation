@@ -90,22 +90,6 @@ final class Route implements PageInterface
      */
     private $router;
 
-    /**
-     * Default router to be used if router is not given.
-     *
-     * @see getHref()
-     *
-     * @var \Mezzio\Router\RouterInterface|null
-     */
-    private static $defaultRouter = null;
-
-    /**
-     * Default route name
-     *
-     * @var string|null
-     */
-    private static $defaultRoute = null;
-
     // Accessors:
 
     /**
@@ -173,9 +157,6 @@ final class Route implements PageInterface
         }
 
         $router = $this->router;
-        if (null === $router) {
-            $router = self::$defaultRouter;
-        }
 
         if (!$router instanceof RouterInterface) {
             throw new Exception\DomainException(
@@ -194,8 +175,8 @@ final class Route implements PageInterface
         $name = null;
 
         switch (true) {
-            case null !== $this->getRoute() || null !== self::getDefaultRoute():
-                $name = null !== $this->getRoute() ? $this->getRoute() : self::getDefaultRoute();
+            case null !== $this->getRoute():
+                $name = $this->getRoute();
                 break;
             case null !== $this->getRouteMatch() && !$this->getRouteMatch()->isFailure():
                 $name = $this->getRouteMatch()->getMatchedRouteName();
@@ -258,14 +239,13 @@ final class Route implements PageInterface
      *
      * @see getHref()
      *
-     * @param array|null $params [optional] page params. Default is null
-     *                           which sets no params.
+     * @param array $params [optional] page params
      *
      * @return void
      */
-    public function setParams(?array $params = null): void
+    public function setParams(array $params = []): void
     {
-        $this->params    = empty($params) ? [] : $params;
+        $this->params    = $params;
         $this->hrefCache = null;
     }
 
@@ -294,9 +274,9 @@ final class Route implements PageInterface
      */
     public function setRoute(string $route): void
     {
-        if (null !== $route && (!is_string($route) || 1 > mb_strlen($route))) {
+        if (empty($route)) {
             throw new Exception\InvalidArgumentException(
-                'Invalid argument: $route must be a non-empty string or null'
+                'Invalid argument: $route must be a non-empty string'
             );
         }
 
@@ -359,7 +339,7 @@ final class Route implements PageInterface
      */
     public function setUseRouteMatch(bool $useRouteMatch = true): void
     {
-        $this->useRouteMatch = (bool) $useRouteMatch;
+        $this->useRouteMatch = $useRouteMatch;
         $this->hrefCache     = null;
     }
 
@@ -385,52 +365,6 @@ final class Route implements PageInterface
     public function setRouter(?RouterInterface $router): void
     {
         $this->router = $router;
-    }
-
-    /**
-     * Sets the default router for assembling URLs.
-     *
-     * @see getHref()
-     *
-     * @param RouterInterface $router Router
-     *
-     * @return void
-     */
-    public static function setDefaultRouter(RouterInterface $router): void
-    {
-        self::$defaultRouter = $router;
-    }
-
-    /**
-     * Gets the default router for assembling URLs.
-     *
-     * @return RouterInterface|null
-     */
-    public static function getDefaultRouter(): ?RouterInterface
-    {
-        return self::$defaultRouter;
-    }
-
-    /**
-     * Set default route name
-     *
-     * @param string $route
-     *
-     * @return void
-     */
-    public static function setDefaultRoute(string $route): void
-    {
-        self::$defaultRoute = $route;
-    }
-
-    /**
-     * Get default route name
-     *
-     * @return string|null
-     */
-    public static function getDefaultRoute(): ?string
-    {
-        return self::$defaultRoute;
     }
 
     // Public methods:
