@@ -11,11 +11,9 @@
 declare(strict_types = 1);
 namespace Mezzio\Navigation\Page;
 
-use Laminas\Stdlib\ArrayUtils;
 use Mezzio\Navigation\ContainerInterface;
 use Mezzio\Navigation\ContainerTrait;
 use Mezzio\Navigation\Exception;
-use Traversable;
 
 /**
  * Base class for Mezzio\Navigation\Page pages
@@ -159,16 +157,11 @@ trait PageTrait
     /**
      * @param iterable|null $options [optional] page options. Default is null, which should set defaults.
      *
-     * @throws Exception\InvalidArgumentException                 if invalid options are given
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws Exception\InvalidArgumentException if invalid options are given
      */
     public function __construct(?iterable $options = null)
     {
-        if ($options instanceof Traversable) {
-            $options = ArrayUtils::iteratorToArray($options);
-        }
-
-        if (!is_array($options)) {
+        if (null === $options) {
             return;
         }
 
@@ -183,13 +176,13 @@ trait PageTrait
      * corresponds to setTarget(), and the option 'reset_params' corresponds to
      * the method setResetParams().
      *
-     * @param array $options associative array of options to set
+     * @param iterable $options associative array of options to set
      *
      * @throws Exception\InvalidArgumentException if invalid options are given
      *
      * @return void
      */
-    final public function setOptions(array $options): void
+    final public function setOptions(iterable $options): void
     {
         foreach ($options as $key => $value) {
             $this->set($key, $value);
@@ -357,10 +350,6 @@ trait PageTrait
             return;
         }
 
-        if ($relations instanceof Traversable) {
-            $relations = ArrayUtils::iteratorToArray($relations);
-        }
-
         foreach ($relations as $name => $relation) {
             if (!is_string($name)) {
                 continue;
@@ -415,10 +404,6 @@ trait PageTrait
 
         if (null === $relations) {
             return;
-        }
-
-        if ($relations instanceof Traversable) {
-            $relations = ArrayUtils::iteratorToArray($relations);
         }
 
         foreach ($relations as $name => $relation) {
