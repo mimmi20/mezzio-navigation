@@ -11,7 +11,6 @@
 declare(strict_types = 1);
 namespace Mezzio\Navigation\Service;
 
-use Interop\Container\ContainerInterface;
 use Laminas\Config;
 use Laminas\Stdlib\ArrayUtils;
 use Mezzio\Navigation\Config\NavigationConfigInterface;
@@ -19,6 +18,7 @@ use Mezzio\Navigation\Exception;
 use Mezzio\Navigation\Navigation;
 use Mezzio\Router\RouteResult;
 use Mezzio\Router\RouterInterface;
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Traversable;
 
@@ -71,7 +71,11 @@ trait NavigationFactoryTrait
         if (null === $this->pages) {
             $pages = $config->getPages();
 
-            if (!array_key_exists($this->configName, $pages) || !is_array($pages[$this->configName])) {
+            if (
+                null === $pages
+                || !array_key_exists($this->configName, $pages)
+                || !is_array($pages[$this->configName])
+            ) {
                 throw new Exception\InvalidArgumentException(
                     sprintf(
                         'Failed to find a navigation container by the name "%s"',

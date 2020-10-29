@@ -11,11 +11,11 @@
 declare(strict_types = 1);
 namespace Mezzio\Navigation\Config;
 
-use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
-use Laminas\ServiceManager\Factory\FactoryInterface;
+use Mezzio\Navigation\Exception\InvalidArgumentException;
+use Psr\Container\ContainerInterface;
 
-final class NavigationConfigFactory implements FactoryInterface
+final class NavigationConfigFactory
 {
     /**
      * Top-level configuration key indicating navigation configuration
@@ -32,7 +32,6 @@ final class NavigationConfigFactory implements FactoryInterface
      * @throws ServiceNotCreatedException
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
      * @return NavigationConfig
      */
@@ -45,7 +44,7 @@ final class NavigationConfigFactory implements FactoryInterface
             || !array_key_exists(self::CONFIG_KEY, $configuration)
             || !is_array($configuration[self::CONFIG_KEY])
         ) {
-            throw new ServiceNotCreatedException('Could not find navigation configuration key');
+            throw new InvalidArgumentException('Could not find navigation configuration key');
         }
 
         $config = new NavigationConfig();
