@@ -83,9 +83,9 @@ interface NavigationConfigInterface
     public function setAuthorization(?AuthorizationInterface $authorization = null): void;
 
     /**
-     * @return array[]
+     * @return array[]|null
      */
-    public function getPages(): array;
+    public function getPages(): ?array;
 
     /**
      * @param array[] $pages

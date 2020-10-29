@@ -37,7 +37,7 @@ final class NavigationConfig implements NavigationConfigInterface
     /** @var AuthorizationInterface|null */
     private $authorization;
 
-    /** @var array[] */
+    /** @var array[]|null */
     private $pages;
 
     /**
@@ -131,9 +131,9 @@ final class NavigationConfig implements NavigationConfigInterface
     }
 
     /**
-     * @return array[]
+     * @return array[]|null
      */
-    public function getPages(): array
+    public function getPages(): ?array
     {
         return $this->pages;
     }

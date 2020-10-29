@@ -36,7 +36,7 @@ final class NavigationMiddlewareFactory
     public static function __set_state(array $data): self
     {
         return new self(
-            $data['navigationServiceName'] ?? Navigation::class,
+            $data['navigationConfigName'] ?? Config\NavigationConfigInterface::class,
             $data['urlHelperServiceName'] ?? UrlHelper::class
         );
     }

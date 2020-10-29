@@ -11,11 +11,10 @@
 declare(strict_types = 1);
 namespace Mezzio\Navigation\Service;
 
-use Interop\Container\ContainerInterface;
-use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 use Mezzio\Navigation\Config\NavigationConfig;
 use Mezzio\Navigation\Config\NavigationConfigInterface;
 use Mezzio\Navigation\Navigation;
+use Psr\Container\ContainerInterface;
 
 /**
  * Navigation abstract service factory
@@ -23,7 +22,7 @@ use Mezzio\Navigation\Navigation;
  * Allows configuring several navigation instances. If you have a navigation config key named "special" then you can
  * use $container->get('Mezzio\Navigation\Special') to retrieve a navigation instance with this configuration.
  */
-final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
+final class NavigationAbstractServiceFactory
 {
     /**
      * Service manager factory prefix
@@ -53,9 +52,9 @@ final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
     }
 
     /**
-     * @param \Interop\Container\ContainerInterface $container
-     * @param string                                $requestedName
-     * @param array|null                            $options
+     * @param \Psr\Container\ContainerInterface $container
+     * @param string                            $requestedName
+     * @param array|null                        $options
      *
      * @throws \Psr\Container\ContainerExceptionInterface
      *
