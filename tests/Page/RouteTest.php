@@ -12,6 +12,7 @@ declare(strict_types = 1);
 namespace MezzioTest\Navigation\Page;
 
 use Mezzio\Navigation\ContainerInterface;
+use Mezzio\Navigation\Exception\DomainException;
 use Mezzio\Navigation\Exception\InvalidArgumentException;
 use Mezzio\Navigation\Page\PageInterface;
 use Mezzio\Navigation\Page\Route;
@@ -800,6 +801,106 @@ final class RouteTest extends TestCase
     }
 
     /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     *
+     * @return void
+     */
+    public function testSetActiveWithRouteMatchWithoutRoute(): void
+    {
+        $routeResult = $this->getMockBuilder(RouteResult::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $routeResult->expects(self::once())
+            ->method('getMatchedParams')
+            ->willReturn(['test', 'abc']);
+        $routeResult->expects(self::never())
+            ->method('getMatchedRouteName');
+
+        $params = ['test'];
+
+        $page = new Route();
+        self::assertFalse($page->isActive());
+        self::assertFalse($page->getActive());
+
+        /* @var RouteResult $routeResult */
+        $page->setRouteMatch($routeResult);
+        $page->setParams($params);
+
+        self::assertTrue($page->isActive());
+        self::assertTrue($page->getActive());
+    }
+
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     *
+     * @return void
+     */
+    public function testSetActiveWithRouteMatchWithRouteNotMatch(): void
+    {
+        $routeResult = $this->getMockBuilder(RouteResult::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $routeResult->expects(self::once())
+            ->method('getMatchedParams')
+            ->willReturn(['test', 'abc']);
+        $routeResult->expects(self::once())
+            ->method('getMatchedRouteName')
+            ->willReturn('testRoute2');
+
+        $params = ['test'];
+        $route  = 'testRoute';
+
+        $page = new Route();
+
+        /* @var RouteResult $routeResult */
+        $page->setRouteMatch($routeResult);
+        $page->setParams($params);
+        $page->setRoute($route);
+
+        self::assertFalse($page->isActive());
+    }
+
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     *
+     * @return void
+     */
+    public function testSetActiveWithRouteMatchWithRouteMatch(): void
+    {
+        $route = 'testRoute';
+
+        $routeResult = $this->getMockBuilder(RouteResult::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $routeResult->expects(self::once())
+            ->method('getMatchedParams')
+            ->willReturn(['test', 'abc']);
+        $routeResult->expects(self::once())
+            ->method('getMatchedRouteName')
+            ->willReturn($route);
+
+        $params = ['test'];
+
+        $page = new Route();
+
+        /* @var RouteResult $routeResult */
+        $page->setRouteMatch($routeResult);
+        $page->setParams($params);
+        $page->setRoute($route);
+
+        self::assertTrue($page->isActive());
+    }
+
+    /**
      * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      *
      * @return void
@@ -1032,5 +1133,237 @@ final class RouteTest extends TestCase
         $page->setRouter($router);
 
         self::assertSame($router, $page->getRouter());
+    }
+
+    /**
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Mezzio\Navigation\Exception\DomainException
+     * @throws \Mezzio\Router\Exception\RuntimeException
+     *
+     * @return void
+     */
+    public function testGetHrefMissingRouter(): void
+    {
+        $page = new Route();
+
+        $this->expectException(DomainException::class);
+        $this->expectExceptionMessage('Mezzio\Navigation\Page\Route::getHref cannot execute as no Mezzio\Router\RouterInterface instance is composed');
+        $page->getHref();
+    }
+
+    /**
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Mezzio\Navigation\Exception\DomainException
+     * @throws \Mezzio\Router\Exception\RuntimeException
+     *
+     * @return void
+     */
+    public function testGetHrefMissingRoute(): void
+    {
+        $router = $this->createMock(RouterInterface::class);
+
+        $page = new Route();
+
+        /* @var RouterInterface $router */
+        $page->setRouter($router);
+
+        $this->expectException(DomainException::class);
+        $this->expectExceptionMessage('No route name could be found');
+        $page->getHref();
+    }
+
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Mezzio\Navigation\Exception\DomainException
+     * @throws \Mezzio\Router\Exception\RuntimeException
+     *
+     * @return void
+     */
+    public function testGetHrefWithRoute(): void
+    {
+        $route       = 'testRoute';
+        $expectedUri = '/test';
+        $router      = $this->getMockBuilder(RouterInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $router->expects(self::once())
+            ->method('generateUri')
+            ->with($route, [], ['name' => $route])
+            ->willReturn($expectedUri);
+
+        $page = new Route();
+
+        /* @var RouterInterface $router */
+        $page->setRouter($router);
+        $page->setRoute($route);
+
+        $uri = $page->getHref();
+
+        self::assertSame($expectedUri, $uri);
+    }
+
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Mezzio\Navigation\Exception\DomainException
+     * @throws \Mezzio\Router\Exception\RuntimeException
+     *
+     * @return void
+     */
+    public function testGetHrefWithRouteMatch(): void
+    {
+        $route       = 'testRoute';
+        $expectedUri = '/test';
+        $params      = ['test', 'abc'];
+
+        $router = $this->getMockBuilder(RouterInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $router->expects(self::once())
+            ->method('generateUri')
+            ->with($route, $params, ['name' => $route])
+            ->willReturn($expectedUri);
+
+        $routeResult = $this->getMockBuilder(RouteResult::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $routeResult->expects(self::once())
+            ->method('getMatchedParams')
+            ->willReturn($params);
+        $routeResult->expects(self::once())
+            ->method('getMatchedRouteName')
+            ->willReturn($route);
+        $routeResult->expects(self::once())
+            ->method('isFailure')
+            ->willReturn(false);
+
+        $page = new Route();
+
+        /* @var RouterInterface $router */
+        $page->setRouter($router);
+
+        /* @var RouteResult $routeResult */
+        $page->setRouteMatch($routeResult);
+
+        $page->setUseRouteMatch(true);
+
+        $uri = $page->getHref();
+
+        self::assertSame($expectedUri, $uri);
+    }
+
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Mezzio\Navigation\Exception\DomainException
+     * @throws \Mezzio\Router\Exception\RuntimeException
+     *
+     * @return void
+     */
+    public function testGetHrefWithFragmentIdentifier(): void
+    {
+        $route       = 'testRoute';
+        $expectedUri = '/test';
+        $params      = ['test', 'abc'];
+        $fragment    = 'bar';
+
+        $router = $this->getMockBuilder(RouterInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $router->expects(self::once())
+            ->method('generateUri')
+            ->with($route, $params, ['name' => $route, 'fragment' => $fragment])
+            ->willReturn($expectedUri);
+
+        $routeResult = $this->getMockBuilder(RouteResult::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $routeResult->expects(self::once())
+            ->method('getMatchedParams')
+            ->willReturn($params);
+        $routeResult->expects(self::once())
+            ->method('getMatchedRouteName')
+            ->willReturn($route);
+        $routeResult->expects(self::once())
+            ->method('isFailure')
+            ->willReturn(false);
+
+        $page = new Route();
+
+        /* @var RouterInterface $router */
+        $page->setRouter($router);
+
+        /* @var RouteResult $routeResult */
+        $page->setRouteMatch($routeResult);
+
+        $page->setUseRouteMatch(true);
+        $page->setFragment($fragment);
+
+        $uri = $page->getHref();
+
+        self::assertSame($expectedUri, $uri);
+    }
+
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Mezzio\Navigation\Exception\DomainException
+     * @throws \Mezzio\Router\Exception\RuntimeException
+     *
+     * @return void
+     */
+    public function testGetHrefWithQuery(): void
+    {
+        $route       = 'testRoute';
+        $expectedUri = '/test';
+        $params      = ['test', 'abc'];
+        $query       = 'bar';
+
+        $router = $this->getMockBuilder(RouterInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $router->expects(self::once())
+            ->method('generateUri')
+            ->with($route, $params, ['name' => $route, 'query' => $query])
+            ->willReturn($expectedUri);
+
+        $routeResult = $this->getMockBuilder(RouteResult::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $routeResult->expects(self::once())
+            ->method('getMatchedParams')
+            ->willReturn($params);
+        $routeResult->expects(self::once())
+            ->method('getMatchedRouteName')
+            ->willReturn($route);
+        $routeResult->expects(self::once())
+            ->method('isFailure')
+            ->willReturn(false);
+
+        $page = new Route();
+
+        /* @var RouterInterface $router */
+        $page->setRouter($router);
+
+        /* @var RouteResult $routeResult */
+        $page->setRouteMatch($routeResult);
+
+        $page->setUseRouteMatch(true);
+        $page->setQuery($query);
+
+        $page->getHref();
+
+        $uri = $page->getHref();
+
+        self::assertSame($expectedUri, $uri);
     }
 }

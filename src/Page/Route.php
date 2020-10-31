@@ -108,19 +108,19 @@ final class Route implements PageInterface
     {
         if (null === $this->active) {
             $reqParams  = [];
-            $pageParams = $this->params;
+            $pageParams = $this->getParams();
 
-            if ($this->routeMatch instanceof RouteResult) {
-                $reqParams = $this->routeMatch->getMatchedParams();
+            if (null !== $this->getRouteMatch()) {
+                $reqParams = $this->getRouteMatch()->getMatchedParams();
 
                 if (null !== $this->getRoute()) {
                     if (
-                        $this->routeMatch->getMatchedRouteName() === $this->getRoute()
+                        $this->getRouteMatch()->getMatchedRouteName() === $this->getRoute()
                         && (count(array_intersect_assoc($reqParams, $pageParams)) === count($pageParams))
                     ) {
                         $this->active = true;
 
-                        return $this->active;
+                        return true;
                     }
 
                     return $this->isActiveParent($recursive);
@@ -156,33 +156,19 @@ final class Route implements PageInterface
             return $this->hrefCache;
         }
 
-        $router = $this->router;
-
-        if (!$router instanceof RouterInterface) {
+        if (!$this->router instanceof RouterInterface) {
             throw new Exception\DomainException(
                 __METHOD__
                 . ' cannot execute as no Mezzio\Router\RouterInterface instance is composed'
             );
         }
 
-        if ($this->useRouteMatch() && null !== $this->getRouteMatch()) {
-            $rmParams = $this->getRouteMatch()->getMatchedParams();
-            $params   = array_merge($rmParams, $this->getParams());
-        } else {
-            $params = $this->getParams();
-        }
-
         $name = null;
 
-        switch (true) {
-            case null !== $this->getRoute():
-                $name = $this->getRoute();
-                break;
-            case null !== $this->getRouteMatch() && !$this->getRouteMatch()->isFailure():
-                $name = $this->getRouteMatch()->getMatchedRouteName();
-                break;
-            default:
-                // do nothing
+        if (null !== $this->getRoute()) {
+            $name = $this->getRoute();
+        } elseif (null !== $this->getRouteMatch() && !$this->getRouteMatch()->isFailure()) {
+            $name = $this->getRouteMatch()->getMatchedRouteName();
         }
 
         if (!is_string($name)) {
@@ -202,7 +188,16 @@ final class Route implements PageInterface
             $options['query'] = $query;
         }
 
-        $url = $router->generateUri($name, $params, $options);
+        $params = $this->getParams();
+
+        if ($this->useRouteMatch() && null !== $this->getRouteMatch()) {
+            $params = array_merge(
+                $this->getRouteMatch()->getMatchedParams(),
+                $params
+            );
+        }
+
+        $url = $this->router->generateUri($name, $params, $options);
 
         return $this->hrefCache = $url;
     }

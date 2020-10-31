@@ -54,7 +54,7 @@ final class NavigationMiddlewareFactory
     }
 
     /**
-     * Create and return a UrlHelperMiddleware instance.
+     * Create and return a NavigationMiddleware instance.
      *
      * @param \Psr\Container\ContainerInterface $container
      *
