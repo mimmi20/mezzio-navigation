@@ -59,6 +59,7 @@ trait ContainerTrait
 
         foreach ($this->pages as $hash => $page) {
             $order = $page->getOrder();
+
             if (null === $order) {
                 $newIndex[$hash] = $index;
                 ++$index;
@@ -68,6 +69,7 @@ trait ContainerTrait
         }
 
         asort($newIndex);
+
         $this->index      = $newIndex;
         $this->dirtyIndex = false;
     }
