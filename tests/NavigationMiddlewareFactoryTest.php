@@ -306,4 +306,47 @@ final class NavigationMiddlewareFactoryTest extends TestCase
         /* @var ContainerInterface $container */
         $factory($container);
     }
+
+    /**
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @return void
+     */
+    public function testFactoryAllowsSerialization(): void
+    {
+        $navigationConfigName = 'MyNavigationConfigInterface';
+        $urlHelperServiceName = 'MyUrlHelper';
+
+        $authorization    = $this->createMock(AuthorizationInterface::class);
+        $router           = $this->createMock(RouterInterface::class);
+        $navigationConfig = $this->createMock(NavigationConfigInterface::class);
+        $urlHelper        = $this->createMock(UrlHelper::class);
+
+        $container = $this->getMockBuilder(ContainerInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $container->expects(self::exactly(4))
+            ->method('has')
+            ->withConsecutive([$navigationConfigName], [$urlHelperServiceName], [AuthorizationInterface::class], [RouterInterface::class])
+            ->willReturnOnConsecutiveCalls(true, true, true, true);
+        $container->expects(self::exactly(4))
+            ->method('get')
+            ->withConsecutive([AuthorizationInterface::class], [RouterInterface::class], [$navigationConfigName], [$urlHelperServiceName])
+            ->willReturnOnConsecutiveCalls($authorization, $router, $navigationConfig, $urlHelper);
+
+        $factory = NavigationMiddlewareFactory::__set_state(
+            [
+                'navigationConfigName' => $navigationConfigName,
+                'urlHelperServiceName' => $urlHelperServiceName,
+            ]
+        );
+
+        self::assertInstanceOf(NavigationMiddlewareFactory::class, $factory);
+
+        /** @var ContainerInterface $container */
+        $middleware = $factory($container);
+        self::assertInstanceOf(NavigationMiddleware::class, $middleware);
+    }
 }
