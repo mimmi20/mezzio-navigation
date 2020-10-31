@@ -35,7 +35,7 @@ final class NavigationConfigFactory
      *
      * @return NavigationConfig
      */
-    public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null): NavigationConfig
+    public function __invoke(ContainerInterface $container, string $requestedName, ?array $options = null): NavigationConfig
     {
         $configuration = $container->get('config');
 

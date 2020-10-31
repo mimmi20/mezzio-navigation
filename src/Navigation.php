@@ -17,21 +17,4 @@ namespace Mezzio\Navigation;
 final class Navigation implements ContainerInterface
 {
     use ContainerTrait;
-
-    /**
-     * Creates a new navigation container
-     *
-     * @param iterable|null $pages [optional] pages to add
-     *
-     * @throws Exception\InvalidArgumentException                 if $pages is invalid
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
-     */
-    public function __construct(?iterable $pages = null)
-    {
-        if (!$pages) {
-            return;
-        }
-
-        $this->addPages($pages);
-    }
 }

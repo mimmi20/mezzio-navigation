@@ -122,7 +122,7 @@ trait ContainerTrait
     /**
      * Adds several pages at once
      *
-     * @param iterable $pages pages to add
+     * @param PageInterface[] $pages pages to add
      *
      * @throws Exception\InvalidArgumentException                 if $pages is not array, Traversable or PageInterface
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
@@ -132,12 +132,10 @@ trait ContainerTrait
     final public function addPages(iterable $pages): void
     {
         foreach ($pages as $page) {
-            if (null === $page) {
-                continue;
-            }
-
             if (!$page instanceof PageInterface) {
-                $page = Page\PageFactory::factory($page);
+                throw new Exception\InvalidArgumentException(
+                    'Invalid argument: $page must be an Instance of PageInterface'
+                );
             }
 
             $this->addPage($page);
@@ -147,7 +145,7 @@ trait ContainerTrait
     /**
      * Sets pages this container should have, removing existing pages
      *
-     * @param iterable $pages pages to set
+     * @param PageInterface[] $pages pages to set
      *
      * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
