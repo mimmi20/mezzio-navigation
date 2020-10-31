@@ -11,9 +11,7 @@
 declare(strict_types = 1);
 namespace Mezzio\Navigation\Page;
 
-use Laminas\Stdlib\ArrayUtils;
 use Mezzio\Navigation\Exception;
-use Traversable;
 
 /**
  * Base class for Mezzio\Navigation\Page pages
@@ -39,31 +37,21 @@ final class PageFactory
      * - If $options contains the key 'route', a Mezzio\Navigation\Page\Route page will be created.
      * - If $options contains the key 'uri', a Mezzio\Navigation\Page\Uri page will be created.
      *
-     * @param iterable $options options used for creating page
+     * @param array $options options used for creating page
      *
-     * @throws Exception\InvalidArgumentException                 if 'type' is specified but class not found
-     * @throws Exception\InvalidArgumentException                 if something goes wrong during instantiation of the page
-     * @throws Exception\InvalidArgumentException                 if 'type' is given, and the specified type does not extend this class
-     * @throws Exception\InvalidArgumentException                 if unable to determine which class to instantiate
-     * @throws Exception\InvalidArgumentException                 if $options is not array/Traversable
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws Exception\InvalidArgumentException if 'type' is specified but class not found
+     * @throws Exception\InvalidArgumentException if something goes wrong during instantiation of the page
+     * @throws Exception\InvalidArgumentException if 'type' is given, and the specified type does not extend this class
+     * @throws Exception\InvalidArgumentException if unable to determine which class to instantiate
+     * @throws Exception\InvalidArgumentException if $options is not array/Traversable
      *
      * @return PageInterface a page instance
      */
-    public static function factory(iterable $options): PageInterface
+    public static function factory(array $options): PageInterface
     {
-        if ($options instanceof Traversable) {
-            $options = ArrayUtils::iteratorToArray($options);
-        }
-
-        if (!is_array($options)) {
-            throw new Exception\InvalidArgumentException(
-                'Invalid argument: $options must be an array or Traversable'
-            );
-        }
-
         if (isset($options['type'])) {
             $type = $options['type'];
+
             if (is_string($type) && !empty($type)) {
                 switch (mb_strtolower($type)) {
                     case 'route':

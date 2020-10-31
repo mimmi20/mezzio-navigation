@@ -40,7 +40,7 @@ final class NavigationAbstractServiceFactory
      *
      * @return bool
      */
-    public function canCreate(ContainerInterface $container, $requestedName): bool
+    public function canCreate(ContainerInterface $container, string $requestedName): bool
     {
         if (0 !== mb_strpos($requestedName, self::SERVICE_PREFIX)) {
             return false;
@@ -60,7 +60,7 @@ final class NavigationAbstractServiceFactory
      *
      * @return Navigation
      */
-    public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null)
+    public function __invoke(ContainerInterface $container, string $requestedName, ?array $options = null)
     {
         $factory = new ConstructedNavigationFactory($this->getNamedConfigName($container, $requestedName));
 
