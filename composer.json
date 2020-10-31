@@ -21,7 +21,6 @@
     "psr/container": "^1.0.0"
   },
   "require-dev": {
-    "ergebnis/composer-normalize": "~2.8.0",
     "infection/infection": "~0.13.6 || ~0.18",
     "laminas/laminas-config": "~3.3.0 || ~3.4.0",
     "laminas/laminas-servicemanager": "~3.4.1",
