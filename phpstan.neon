@@ -24,3 +24,4 @@ parameters:
     - '~Useless @throws .* annotation~'
     - '~Strict comparison using === between .* and \$this(.*) will always evaluate to false~'
     - '~Access to an undefined property .*::\$.*~'
+    - '~Parameter #1 .* of method .* expects .*, .* given~'

@@ -26,18 +26,29 @@ use Psr\Http\Message\UriInterface;
  */
 final class UriTest extends TestCase
 {
+    /** @var \Mezzio\Navigation\Page\Uri */
+    private $page;
+
+    /**
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     *
+     * @return void
+     */
+    protected function setUp(): void
+    {
+        $this->page = new Uri();
+    }
+
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      *
      * @return void
      */
     public function testConstructorWithoutParameters(): void
     {
-        $page = new Uri();
-
-        self::assertSame([], $page->getPages());
+        self::assertSame([], $this->page->getPages());
     }
 
     /**
@@ -67,16 +78,14 @@ final class UriTest extends TestCase
     {
         $label = 'test';
 
-        $page = new Uri();
-        $page->setOptions(['label' => $label]);
+        $this->page->setOptions(['label' => $label]);
 
-        self::assertSame($label, $page->getLabel());
+        self::assertSame($label, $this->page->getLabel());
     }
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      *
      * @return void
      */
@@ -84,10 +93,9 @@ final class UriTest extends TestCase
     {
         $label = 'test';
 
-        $page = new Uri();
-        $page->setLabel($label);
+        $this->page->setLabel($label);
 
-        self::assertSame($label, $page->getLabel());
+        self::assertSame($label, $this->page->getLabel());
     }
 
     /**
@@ -117,16 +125,14 @@ final class UriTest extends TestCase
     {
         $fragment = 'test';
 
-        $page = new Uri();
-        $page->setOptions(['fragment' => $fragment]);
+        $this->page->setOptions(['fragment' => $fragment]);
 
-        self::assertSame($fragment, $page->getFragment());
+        self::assertSame($fragment, $this->page->getFragment());
     }
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      *
      * @return void
      */
@@ -134,10 +140,9 @@ final class UriTest extends TestCase
     {
         $fragment = 'test';
 
-        $page = new Uri();
-        $page->setFragment($fragment);
+        $this->page->setFragment($fragment);
 
-        self::assertSame($fragment, $page->getFragment());
+        self::assertSame($fragment, $this->page->getFragment());
     }
 
     /**
@@ -167,16 +172,14 @@ final class UriTest extends TestCase
     {
         $id = 'test';
 
-        $page = new Uri();
-        $page->setOptions(['id' => $id]);
+        $this->page->setOptions(['id' => $id]);
 
-        self::assertSame($id, $page->getId());
+        self::assertSame($id, $this->page->getId());
     }
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      *
      * @return void
      */
@@ -184,10 +187,9 @@ final class UriTest extends TestCase
     {
         $id = 'test';
 
-        $page = new Uri();
-        $page->setId($id);
+        $this->page->setId($id);
 
-        self::assertSame($id, $page->getId());
+        self::assertSame($id, $this->page->getId());
     }
 
     /**
@@ -217,16 +219,14 @@ final class UriTest extends TestCase
     {
         $class = 'test';
 
-        $page = new Uri();
-        $page->setOptions(['class' => $class]);
+        $this->page->setOptions(['class' => $class]);
 
-        self::assertSame($class, $page->getClass());
+        self::assertSame($class, $this->page->getClass());
     }
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      *
      * @return void
      */
@@ -234,10 +234,9 @@ final class UriTest extends TestCase
     {
         $class = 'test';
 
-        $page = new Uri();
-        $page->setClass($class);
+        $this->page->setClass($class);
 
-        self::assertSame($class, $page->getClass());
+        self::assertSame($class, $this->page->getClass());
     }
 
     /**
@@ -267,16 +266,14 @@ final class UriTest extends TestCase
     {
         $title = 'test';
 
-        $page = new Uri();
-        $page->setOptions(['title' => $title]);
+        $this->page->setOptions(['title' => $title]);
 
-        self::assertSame($title, $page->getTitle());
+        self::assertSame($title, $this->page->getTitle());
     }
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      *
      * @return void
      */
@@ -284,10 +281,9 @@ final class UriTest extends TestCase
     {
         $title = 'test';
 
-        $page = new Uri();
-        $page->setTitle($title);
+        $this->page->setTitle($title);
 
-        self::assertSame($title, $page->getTitle());
+        self::assertSame($title, $this->page->getTitle());
     }
 
     /**
@@ -317,16 +313,14 @@ final class UriTest extends TestCase
     {
         $target = 'test';
 
-        $page = new Uri();
-        $page->setOptions(['target' => $target]);
+        $this->page->setOptions(['target' => $target]);
 
-        self::assertSame($target, $page->getTarget());
+        self::assertSame($target, $this->page->getTarget());
     }
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      *
      * @return void
      */
@@ -334,10 +328,9 @@ final class UriTest extends TestCase
     {
         $target = 'test';
 
-        $page = new Uri();
-        $page->setTarget($target);
+        $this->page->setTarget($target);
 
-        self::assertSame($target, $page->getTarget());
+        self::assertSame($target, $this->page->getTarget());
     }
 
     /**
@@ -353,31 +346,30 @@ final class UriTest extends TestCase
         $relValue = 'test1';
         $relKey   = 'test';
 
-        $page = new Uri();
-        $page->setRel();
+        $this->page->setRel();
 
-        self::assertSame([], $page->getRel());
+        self::assertSame([], $this->page->getRel());
 
-        $page->setRel([$relKey => $relValue, 42 => 'tests']);
+        $this->page->setRel([$relKey => $relValue, 42 => 'tests']);
 
-        self::assertSame([$relKey => $relValue], $page->getRel());
-        self::assertSame($relValue, $page->getRel($relKey));
+        self::assertSame([$relKey => $relValue], $this->page->getRel());
+        self::assertSame($relValue, $this->page->getRel($relKey));
 
-        self::assertCount(1, (array) $page->getRel());
+        self::assertCount(1, (array) $this->page->getRel());
 
-        $page->addRel('test2', 'test2');
+        $this->page->addRel('test2', 'test2');
 
-        self::assertCount(2, (array) $page->getRel());
+        self::assertCount(2, (array) $this->page->getRel());
 
-        $page->removeRel('test');
+        $this->page->removeRel('test');
 
-        self::assertCount(1, (array) $page->getRel());
+        self::assertCount(1, (array) $this->page->getRel());
 
-        $page->removeRel('test4');
+        $this->page->removeRel('test4');
 
-        self::assertCount(1, (array) $page->getRel());
+        self::assertCount(1, (array) $this->page->getRel());
 
-        self::assertSame(['test2'], $page->getDefinedRel());
+        self::assertSame(['test2'], $this->page->getDefinedRel());
     }
 
     /**
@@ -393,31 +385,30 @@ final class UriTest extends TestCase
         $revValue = 'test1';
         $revKey   = 'test';
 
-        $page = new Uri();
-        $page->setRev();
+        $this->page->setRev();
 
-        self::assertSame([], $page->getRev());
+        self::assertSame([], $this->page->getRev());
 
-        $page->setRev([$revKey => $revValue, 42 => 'tests']);
+        $this->page->setRev([$revKey => $revValue, 42 => 'tests']);
 
-        self::assertSame([$revKey => $revValue], $page->getRev());
-        self::assertSame($revValue, $page->getRev($revKey));
+        self::assertSame([$revKey => $revValue], $this->page->getRev());
+        self::assertSame($revValue, $this->page->getRev($revKey));
 
-        self::assertCount(1, (array) $page->getRev());
+        self::assertCount(1, (array) $this->page->getRev());
 
-        $page->addRev('test2', 'test2');
+        $this->page->addRev('test2', 'test2');
 
-        self::assertCount(2, (array) $page->getRev());
+        self::assertCount(2, (array) $this->page->getRev());
 
-        $page->removeRev('test');
+        $this->page->removeRev('test');
 
-        self::assertCount(1, (array) $page->getRev());
+        self::assertCount(1, (array) $this->page->getRev());
 
-        $page->removeRev('test4');
+        $this->page->removeRev('test4');
 
-        self::assertCount(1, (array) $page->getRev());
+        self::assertCount(1, (array) $this->page->getRev());
 
-        self::assertSame(['test2'], $page->getDefinedRev());
+        self::assertSame(['test2'], $this->page->getDefinedRev());
     }
 
     /**
@@ -429,13 +420,12 @@ final class UriTest extends TestCase
      */
     public function testSetParentException(): void
     {
-        $page = new Uri();
-        self::assertNull($page->getParent());
+        self::assertNull($this->page->getParent());
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('A page cannot have itself as a parent');
 
-        $page->setParent($page);
+        $this->page->setParent($this->page);
     }
 
     /**
@@ -446,8 +436,6 @@ final class UriTest extends TestCase
      */
     public function testDuplicateSetParent(): void
     {
-        $page = new Uri();
-
         $parent = $this->getMockBuilder(ContainerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -455,15 +443,15 @@ final class UriTest extends TestCase
             ->method('removePage');
         $parent->expects(self::once())
             ->method('hasPage')
-            ->with($page, false)
+            ->with($this->page, false)
             ->willReturn(false);
         $parent->expects(self::once())
             ->method('addPage')
-            ->with($page);
+            ->with($this->page);
 
         /* @var ContainerInterface $parent */
-        $page->setParent($parent);
-        $page->setParent($parent);
+        $this->page->setParent($parent);
+        $this->page->setParent($parent);
     }
 
     /**
@@ -476,21 +464,19 @@ final class UriTest extends TestCase
      */
     public function testSetTwoParents(): void
     {
-        $page = new Uri();
-
         $parent1 = $this->getMockBuilder(ContainerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
         $parent1->expects(self::once())
             ->method('removePage')
-            ->with($page);
+            ->with($this->page);
         $parent1->expects(self::once())
             ->method('hasPage')
-            ->with($page, false)
+            ->with($this->page, false)
             ->willReturn(false);
         $parent1->expects(self::once())
             ->method('addPage')
-            ->with($page);
+            ->with($this->page);
 
         $parent2 = $this->getMockBuilder(ContainerInterface::class)
             ->disableOriginalConstructor()
@@ -499,18 +485,18 @@ final class UriTest extends TestCase
             ->method('removePage');
         $parent2->expects(self::once())
             ->method('hasPage')
-            ->with($page, false)
+            ->with($this->page, false)
             ->willReturn(true);
         $parent2->expects(self::never())
             ->method('addPage');
 
         /* @var ContainerInterface $parent1 */
         /* @var ContainerInterface $parent2 */
-        $page->setParent($parent1);
-        self::assertSame($parent1, $page->getParent());
+        $this->page->setParent($parent1);
+        self::assertSame($parent1, $this->page->getParent());
 
-        $page->setParent($parent2);
-        self::assertSame($parent2, $page->getParent());
+        $this->page->setParent($parent2);
+        self::assertSame($parent2, $this->page->getParent());
     }
 
     /**
@@ -524,12 +510,11 @@ final class UriTest extends TestCase
     {
         $order = 42;
 
-        $page = new Uri();
-        self::assertNull($page->getOrder());
+        self::assertNull($this->page->getOrder());
 
-        $page->setOrder($order);
+        $this->page->setOrder($order);
 
-        self::assertSame($order, $page->getOrder());
+        self::assertSame($order, $this->page->getOrder());
     }
 
     /**
@@ -544,18 +529,16 @@ final class UriTest extends TestCase
     {
         $order = 42;
 
-        $page = new Uri();
-
         $parent = $this->getMockBuilder(ContainerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
         $parent->expects(self::once())
             ->method('notifyOrderUpdated');
 
-        $page->setParent($parent);
-        $page->setOrder($order);
+        $this->page->setParent($parent);
+        $this->page->setOrder($order);
 
-        self::assertSame($order, $page->getOrder());
+        self::assertSame($order, $this->page->getOrder());
     }
 
     /**
@@ -569,18 +552,16 @@ final class UriTest extends TestCase
     {
         $resource = 'test';
 
-        $page = new Uri();
-        self::assertNull($page->getResource());
+        self::assertNull($this->page->getResource());
 
-        $page->setResource($resource);
+        $this->page->setResource($resource);
 
-        self::assertSame($resource, $page->getResource());
+        self::assertSame($resource, $this->page->getResource());
     }
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      *
      * @return void
      */
@@ -588,18 +569,16 @@ final class UriTest extends TestCase
     {
         $privilege = 'test';
 
-        $page = new Uri();
-        self::assertNull($page->getPrivilege());
+        self::assertNull($this->page->getPrivilege());
 
-        $page->setPrivilege($privilege);
+        $this->page->setPrivilege($privilege);
 
-        self::assertSame($privilege, $page->getPrivilege());
+        self::assertSame($privilege, $this->page->getPrivilege());
     }
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      *
      * @return void
      */
@@ -607,18 +586,16 @@ final class UriTest extends TestCase
     {
         $permission = 'test';
 
-        $page = new Uri();
-        self::assertNull($page->getPermission());
+        self::assertNull($this->page->getPermission());
 
-        $page->setPermission($permission);
+        $this->page->setPermission($permission);
 
-        self::assertSame($permission, $page->getPermission());
+        self::assertSame($permission, $this->page->getPermission());
     }
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      *
      * @return void
      */
@@ -626,18 +603,16 @@ final class UriTest extends TestCase
     {
         $textDomain = 'test';
 
-        $page = new Uri();
-        self::assertNull($page->getTextDomain());
+        self::assertNull($this->page->getTextDomain());
 
-        $page->setTextDomain($textDomain);
+        $this->page->setTextDomain($textDomain);
 
-        self::assertSame($textDomain, $page->getTextDomain());
+        self::assertSame($textDomain, $this->page->getTextDomain());
     }
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      *
      * @return void
      */
@@ -645,15 +620,13 @@ final class UriTest extends TestCase
     {
         $visible = false;
 
-        $page = new Uri();
+        self::assertTrue($this->page->isVisible());
+        self::assertTrue($this->page->getVisible());
 
-        self::assertTrue($page->isVisible());
-        self::assertTrue($page->getVisible());
+        $this->page->setVisible($visible);
 
-        $page->setVisible($visible);
-
-        self::assertFalse($page->isVisible());
-        self::assertFalse($page->getVisible());
+        self::assertFalse($this->page->isVisible());
+        self::assertFalse($this->page->getVisible());
     }
 
     /**
@@ -666,8 +639,6 @@ final class UriTest extends TestCase
      */
     public function testSetVisibleWithParent(): void
     {
-        $page = new Uri();
-
         $parent1 = $this->getMockBuilder(PageInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -676,10 +647,10 @@ final class UriTest extends TestCase
             ->willReturn(true);
 
         /* @var PageInterface $parent1 */
-        $page->setParent($parent1);
+        $this->page->setParent($parent1);
 
-        self::assertTrue($page->isVisible(true));
-        self::assertTrue($page->getVisible(true));
+        self::assertTrue($this->page->isVisible(true));
+        self::assertTrue($this->page->getVisible(true));
 
         $parent2 = $this->getMockBuilder(PageInterface::class)
             ->disableOriginalConstructor()
@@ -689,26 +660,25 @@ final class UriTest extends TestCase
             ->willReturn(false);
 
         /* @var PageInterface $parent2 */
-        $page->setParent($parent2);
+        $this->page->setParent($parent2);
 
-        self::assertFalse($page->isVisible(true));
-        self::assertFalse($page->getVisible(true));
+        self::assertFalse($this->page->isVisible(true));
+        self::assertFalse($this->page->getVisible(true));
 
-        $page->setVisible(false);
+        $this->page->setVisible(false);
 
-        self::assertFalse($page->isVisible());
-        self::assertFalse($page->getVisible());
+        self::assertFalse($this->page->isVisible());
+        self::assertFalse($this->page->getVisible());
 
-        $page->setVisible(true);
+        $this->page->setVisible(true);
 
-        self::assertTrue($page->isVisible());
-        self::assertTrue($page->getVisible());
+        self::assertTrue($this->page->isVisible());
+        self::assertTrue($this->page->getVisible());
     }
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      *
      * @return void
      */
@@ -716,14 +686,13 @@ final class UriTest extends TestCase
     {
         $active = true;
 
-        $page = new Uri();
-        self::assertFalse($page->isActive());
-        self::assertFalse($page->getActive());
+        self::assertFalse($this->page->isActive());
+        self::assertFalse($this->page->getActive());
 
-        $page->setActive($active);
+        $this->page->setActive($active);
 
-        self::assertTrue($page->isActive());
-        self::assertTrue($page->getActive());
+        self::assertTrue($this->page->isActive());
+        self::assertTrue($this->page->getActive());
     }
 
     /**
@@ -744,14 +713,13 @@ final class UriTest extends TestCase
             ->with(true)
             ->willReturn(true);
 
-        $page = new Uri();
-        self::assertFalse($page->isActive(true));
-        self::assertFalse($page->getActive(true));
+        self::assertFalse($this->page->isActive(true));
+        self::assertFalse($this->page->getActive(true));
 
-        $page->addPage($childPage1);
+        $this->page->addPage($childPage1);
 
-        self::assertTrue($page->isActive(true));
-        self::assertTrue($page->getActive(true));
+        self::assertTrue($this->page->isActive(true));
+        self::assertTrue($this->page->getActive(true));
     }
 
     /**
@@ -761,12 +729,10 @@ final class UriTest extends TestCase
      */
     public function testSetWithException(): void
     {
-        $page = new Uri();
-
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid argument: $property must be a non-empty string');
 
-        $page->set('', null);
+        $this->page->set('', null);
     }
 
     /**
@@ -776,12 +742,10 @@ final class UriTest extends TestCase
      */
     public function testGetWithException(): void
     {
-        $page = new Uri();
-
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid argument: $property must be a non-empty string');
 
-        $page->get('');
+        $this->page->get('');
     }
 
     /**
@@ -797,81 +761,70 @@ final class UriTest extends TestCase
         $test   = 'test 42';
         $abc    = '4711';
 
-        $page = new Uri();
+        self::assertNull($this->page->get('test'));
 
-        self::assertNull($page->get('test'));
+        $this->page->set('target', $target);
+        $this->page->set('test', $test);
+        $this->page->abc = $abc;
 
-        $page->set('target', $target);
-        $page->set('test', $test);
-        $page->abc = $abc;
+        self::assertSame($target, $this->page->get('target'));
+        self::assertSame($test, $this->page->get('test'));
+        self::assertSame($abc, $this->page->abc);
 
-        self::assertSame($target, $page->get('target'));
-        self::assertSame($test, $page->get('test'));
-        self::assertSame($abc, $page->abc);
+        self::assertTrue(isset($this->page->target));
+        self::assertTrue(isset($this->page->test));
 
-        self::assertTrue(isset($page->target));
-        self::assertTrue(isset($page->test));
+        self::assertSame(['test' => 'test 42', 'abc' => '4711'], $this->page->getCustomProperties());
 
-        self::assertSame(['test' => 'test 42', 'abc' => '4711'], $page->getCustomProperties());
+        unset($this->page->test, $this->page->test);
 
-        unset($page->test, $page->test);
-
-        self::assertFalse(isset($page->test));
-        self::assertSame(['abc' => '4711'], $page->getCustomProperties());
+        self::assertFalse(isset($this->page->test));
+        self::assertSame(['abc' => '4711'], $this->page->getCustomProperties());
     }
 
     /**
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
      * @return void
      */
     public function testUnset(): void
     {
-        $page = new Uri();
-
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Unsetting native property "target" is not allowed');
 
-        unset($page->target);
+        unset($this->page->target);
     }
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      *
      * @return void
      */
     public function testToString(): void
     {
-        $page = new Uri();
-        self::assertSame('', (string) $page);
+        self::assertSame('', (string) $this->page);
 
         $label = 'test';
 
-        $page->setLabel($label);
+        $this->page->setLabel($label);
 
-        self::assertSame($label, (string) $page);
+        self::assertSame($label, (string) $this->page);
     }
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      *
      * @return void
      */
     public function testHashCode(): void
     {
-        $page = new Uri();
-
         $label = 'test';
 
-        $page->setLabel($label);
+        $this->page->setLabel($label);
 
-        $expected = spl_object_hash($page);
+        $expected = spl_object_hash($this->page);
 
-        self::assertSame($expected, $page->hashCode());
+        self::assertSame($expected, $this->page->hashCode());
     }
 
     /**
@@ -883,14 +836,14 @@ final class UriTest extends TestCase
      */
     public function testUriOptionAsString(): void
     {
-        $page = new Uri(
+        $this->page = new Uri(
             [
                 'label' => 'foo',
                 'uri' => '#',
             ]
         );
 
-        self::assertEquals('#', $page->getUri());
+        self::assertEquals('#', $this->page->getUri());
     }
 
     /**
@@ -902,14 +855,14 @@ final class UriTest extends TestCase
      */
     public function testUriOptionAsNull(): void
     {
-        $page = new Uri(
+        $this->page = new Uri(
             [
                 'label' => 'foo',
                 'uri' => null,
             ]
         );
 
-        self::assertNull($page->getUri(), 'getUri() should return null');
+        self::assertNull($this->page->getUri(), 'getUri() should return null');
     }
 
     /**
@@ -921,23 +874,22 @@ final class UriTest extends TestCase
      */
     public function testSetAndGetUri(): void
     {
-        $page = new Uri(
+        $this->page = new Uri(
             [
                 'label' => 'foo',
                 'uri' => '#',
             ]
         );
 
-        $page->setUri('http://www.example.com/');
-        $page->setUri('about:blank');
+        $this->page->setUri('http://www.example.com/');
+        $this->page->setUri('about:blank');
 
-        self::assertEquals('about:blank', $page->getUri());
+        self::assertEquals('about:blank', $this->page->getUri());
     }
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      *
      * @return void
      */
@@ -945,10 +897,9 @@ final class UriTest extends TestCase
     {
         $uri = 'spotify:album:4YzcWwBUSzibRsqD9Sgu4A';
 
-        $page = new Uri();
-        $page->setUri($uri);
+        $this->page->setUri($uri);
 
-        self::assertEquals($uri, $page->getHref());
+        self::assertEquals($uri, $this->page->getHref());
     }
 
     /**
@@ -961,8 +912,8 @@ final class UriTest extends TestCase
      */
     public function testIsActiveReturnsTrueWhenHasMatchingRequestUri(): void
     {
-        $url  = '/bar';
-        $page = new Uri(
+        $url        = '/bar';
+        $this->page = new Uri(
             [
                 'label' => 'foo',
                 'uri' => $url,
@@ -980,10 +931,10 @@ final class UriTest extends TestCase
             ->willReturn($uri);
 
         /* @var ServerRequestInterface $request */
-        $page->setRequest($request);
+        $this->page->setRequest($request);
 
-        self::assertSame($request, $page->getRequest());
-        self::assertTrue($page->isActive());
+        self::assertSame($request, $this->page->getRequest());
+        self::assertTrue($this->page->isActive());
     }
 
     /**
@@ -996,9 +947,9 @@ final class UriTest extends TestCase
      */
     public function testIsActiveReturnsFalseOnNonMatchingRequestUri(): void
     {
-        $url1 = '/bar';
-        $url2 = '/baz';
-        $page = new Uri(
+        $url1       = '/bar';
+        $url2       = '/baz';
+        $this->page = new Uri(
             [
                 'label' => 'foo',
                 'uri' => $url1,
@@ -1016,16 +967,15 @@ final class UriTest extends TestCase
             ->willReturn($uri);
 
         /* @var ServerRequestInterface $request */
-        $page->setRequest($request);
+        $this->page->setRequest($request);
 
-        self::assertSame($request, $page->getRequest());
-        self::assertFalse($page->isActive());
+        self::assertSame($request, $this->page->getRequest());
+        self::assertFalse($this->page->isActive());
     }
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      *
      * @return void
      */
@@ -1033,14 +983,667 @@ final class UriTest extends TestCase
     {
         $uri = 'http://www.example.com/foo.html';
 
-        $page = new Uri();
-        $page->setUri($uri);
-        $page->setFragment('bar');
+        $this->page->setUri($uri);
+        $this->page->setFragment('bar');
 
-        self::assertEquals($uri . '#bar', $page->getHref());
+        self::assertEquals($uri . '#bar', $this->page->getHref());
 
-        $page->setUri('#');
+        $this->page->setUri('#');
 
-        self::assertEquals('#bar', $page->getHref());
+        self::assertEquals('#bar', $this->page->getHref());
+    }
+
+    /**
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     *
+     * @return void
+     */
+    public function testAddSelfAsChild(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('A page cannot have itself as a parent');
+
+        $this->page->addPage($this->page);
+    }
+
+    /**
+     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     *
+     * @return void
+     */
+    public function testAddChildPageTwice(): void
+    {
+        $hashCode = 'abc';
+
+        $childPage = $this->getMockBuilder(PageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $childPage->expects(self::exactly(2))
+            ->method('hashCode')
+            ->willReturn($hashCode);
+        $childPage->expects(self::once())
+            ->method('getOrder')
+            ->willReturn(1);
+        $childPage->expects(self::once())
+            ->method('setParent')
+            ->with($this->page);
+
+        /* @var PageInterface $childPage */
+        $this->page->addPage($childPage);
+        $this->page->addPage($childPage);
+    }
+
+    /**
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     *
+     * @return void
+     */
+    public function testAddPages(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid argument: $page must be an Instance of PageInterface');
+
+        $this->page->addPages(['test']);
+    }
+
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     *
+     * @return void
+     */
+    public function testRemovePageByIndex(): void
+    {
+        $code1 = 'code 1';
+        $code2 = 'code 2';
+
+        $childPage1 = $this->getMockBuilder(PageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $childPage1->expects(self::once())
+            ->method('hashCode')
+            ->willReturn($code1);
+        $childPage1->expects(self::exactly(2))
+            ->method('getOrder')
+            ->willReturn(1);
+        $childPage1->expects(self::once())
+            ->method('setParent')
+            ->with($this->page);
+
+        $childPage2 = $this->getMockBuilder(PageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $childPage2->expects(self::once())
+            ->method('hashCode')
+            ->willReturn($code2);
+        $childPage2->expects(self::exactly(2))
+            ->method('getOrder')
+            ->willReturn(null);
+        $childPage2->expects(self::once())
+            ->method('setParent')
+            ->with($this->page);
+
+        /* @var PageInterface $childPage1 */
+        /* @var PageInterface $childPage2 */
+        $this->page->addPage($childPage1);
+        $this->page->addPage($childPage2);
+
+        self::assertTrue($this->page->removePage(1));
+        self::assertSame([$code2 => $childPage2], $this->page->getPages());
+    }
+
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     *
+     * @return void
+     */
+    public function testRemovePageByObject(): void
+    {
+        $code1 = 'code 1';
+        $code2 = 'code 2';
+
+        $childPage1 = $this->getMockBuilder(PageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $childPage1->expects(self::once())
+            ->method('hashCode')
+            ->willReturn($code1);
+        $childPage1->expects(self::once())
+            ->method('getOrder')
+            ->willReturn(1);
+        $childPage1->expects(self::once())
+            ->method('setParent')
+            ->with($this->page);
+
+        $childPage2 = $this->getMockBuilder(PageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $childPage2->expects(self::exactly(2))
+            ->method('hashCode')
+            ->willReturn($code2);
+        $childPage2->expects(self::once())
+            ->method('getOrder')
+            ->willReturn(null);
+        $childPage2->expects(self::once())
+            ->method('setParent')
+            ->with($this->page);
+
+        /* @var PageInterface $childPage1 */
+        /* @var PageInterface $childPage2 */
+        $this->page->addPage($childPage1);
+        $this->page->addPage($childPage2);
+
+        self::assertTrue($this->page->removePage($childPage2));
+        self::assertSame([$code1 => $childPage1], $this->page->getPages());
+    }
+
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     *
+     * @return void
+     */
+    public function testRemovePageNotByHash(): void
+    {
+        $code1 = 'code 1';
+        $code2 = 'code 2';
+
+        $childPage1 = $this->getMockBuilder(PageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $childPage1->expects(self::once())
+            ->method('hashCode')
+            ->willReturn($code1);
+        $childPage1->expects(self::once())
+            ->method('getOrder')
+            ->willReturn(1);
+        $childPage1->expects(self::once())
+            ->method('setParent')
+            ->with($this->page);
+
+        $childPage2 = $this->getMockBuilder(PageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $childPage2->expects(self::once())
+            ->method('hashCode')
+            ->willReturn($code2);
+        $childPage2->expects(self::once())
+            ->method('getOrder')
+            ->willReturn(null);
+        $childPage2->expects(self::once())
+            ->method('setParent')
+            ->with($this->page);
+
+        /* @var PageInterface $childPage1 */
+        /* @var PageInterface $childPage2 */
+        $this->page->addPage($childPage1);
+        $this->page->addPage($childPage2);
+
+        self::assertFalse($this->page->removePage($code1));
+        self::assertSame([$code1 => $childPage1, $code2 => $childPage2], $this->page->getPages());
+    }
+
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     *
+     * @return void
+     */
+    public function testRemovePageNotExistingPage(): void
+    {
+        $code1 = 'code 1';
+        $code2 = 'code 2';
+
+        $childPage1 = $this->getMockBuilder(PageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $childPage1->expects(self::once())
+            ->method('hashCode')
+            ->willReturn($code1);
+        $childPage1->expects(self::exactly(2))
+            ->method('getOrder')
+            ->willReturn(1);
+        $childPage1->expects(self::once())
+            ->method('setParent')
+            ->with($this->page);
+
+        $childPage2 = $this->getMockBuilder(PageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $childPage2->expects(self::once())
+            ->method('hashCode')
+            ->willReturn($code2);
+        $childPage2->expects(self::exactly(2))
+            ->method('getOrder')
+            ->willReturn(null);
+        $childPage2->expects(self::once())
+            ->method('setParent')
+            ->with($this->page);
+
+        /* @var PageInterface $childPage1 */
+        /* @var PageInterface $childPage2 */
+        $this->page->addPage($childPage1);
+        $this->page->addPage($childPage2);
+
+        self::assertFalse($this->page->removePage(3));
+        self::assertSame([$code1 => $childPage1, $code2 => $childPage2], $this->page->getPages());
+    }
+
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     *
+     * @return void
+     */
+    public function testRemovePageRecursive(): void
+    {
+        $code1 = 'code 1';
+        $code2 = 'code 2';
+
+        $childPage1 = $this->getMockBuilder(PageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $childPage1->expects(self::once())
+            ->method('hashCode')
+            ->willReturn($code1);
+        $childPage1->expects(self::once())
+            ->method('getOrder')
+            ->willReturn(1);
+        $childPage1->expects(self::once())
+            ->method('setParent')
+            ->with($this->page);
+
+        $childPage2 = $this->getMockBuilder(PageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $childPage2->expects(self::once())
+            ->method('hashCode')
+            ->willReturn($code2);
+        $childPage2->expects(self::never())
+            ->method('getOrder')
+            ->willReturn(null);
+        $childPage2->expects(self::never())
+            ->method('setParent')
+            ->with($this->page);
+
+        $childPage1->expects(self::once())
+            ->method('hasPage')
+            ->with($childPage2, true)
+            ->willReturn(true);
+        $childPage1->expects(self::once())
+            ->method('removePage')
+            ->with($childPage2, true);
+
+        /* @var PageInterface $childPage1 */
+        /* @var PageInterface $childPage2 */
+        $this->page->addPage($childPage1);
+        $childPage1->addPage($childPage2);
+
+        self::assertTrue($this->page->removePage($childPage2, true));
+        self::assertSame([$code1 => $childPage1], $this->page->getPages());
+    }
+
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     *
+     * @return void
+     */
+    public function testRemovePageRecursiveNotFound(): void
+    {
+        $code1 = 'code 1';
+        $code2 = 'code 2';
+
+        $childPage1 = $this->getMockBuilder(PageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $childPage1->expects(self::once())
+            ->method('hashCode')
+            ->willReturn($code1);
+        $childPage1->expects(self::once())
+            ->method('getOrder')
+            ->willReturn(1);
+        $childPage1->expects(self::once())
+            ->method('setParent')
+            ->with($this->page);
+
+        $childPage2 = $this->getMockBuilder(PageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $childPage2->expects(self::once())
+            ->method('hashCode')
+            ->willReturn($code2);
+        $childPage2->expects(self::never())
+            ->method('getOrder')
+            ->willReturn(null);
+        $childPage2->expects(self::never())
+            ->method('setParent')
+            ->with($this->page);
+
+        $childPage1->expects(self::once())
+            ->method('hasPage')
+            ->with($childPage2, true)
+            ->willReturn(false);
+        $childPage1->expects(self::never())
+            ->method('removePage');
+
+        /* @var PageInterface $childPage1 */
+        /* @var PageInterface $childPage2 */
+        $this->page->addPage($childPage1);
+        $childPage1->addPage($childPage2);
+
+        self::assertFalse($this->page->removePage($childPage2, true));
+        self::assertSame([$code1 => $childPage1], $this->page->getPages());
+    }
+
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     *
+     * @return void
+     */
+    public function testHasPageByIndex(): void
+    {
+        $code1 = 'code 1';
+        $code2 = 'code 2';
+
+        $childPage1 = $this->getMockBuilder(PageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $childPage1->expects(self::once())
+            ->method('hashCode')
+            ->willReturn($code1);
+        $childPage1->expects(self::exactly(2))
+            ->method('getOrder')
+            ->willReturn(1);
+        $childPage1->expects(self::once())
+            ->method('setParent')
+            ->with($this->page);
+
+        $childPage2 = $this->getMockBuilder(PageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $childPage2->expects(self::once())
+            ->method('hashCode')
+            ->willReturn($code2);
+        $childPage2->expects(self::exactly(2))
+            ->method('getOrder')
+            ->willReturn(null);
+        $childPage2->expects(self::once())
+            ->method('setParent')
+            ->with($this->page);
+
+        /* @var PageInterface $childPage1 */
+        /* @var PageInterface $childPage2 */
+        $this->page->addPage($childPage1);
+        $this->page->addPage($childPage2);
+
+        self::assertTrue($this->page->hasPage(1));
+    }
+
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     *
+     * @return void
+     */
+    public function testHasPageByObject(): void
+    {
+        $code1 = 'code 1';
+        $code2 = 'code 2';
+
+        $childPage1 = $this->getMockBuilder(PageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $childPage1->expects(self::once())
+            ->method('hashCode')
+            ->willReturn($code1);
+        $childPage1->expects(self::once())
+            ->method('getOrder')
+            ->willReturn(1);
+        $childPage1->expects(self::once())
+            ->method('setParent')
+            ->with($this->page);
+
+        $childPage2 = $this->getMockBuilder(PageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $childPage2->expects(self::exactly(2))
+            ->method('hashCode')
+            ->willReturn($code2);
+        $childPage2->expects(self::once())
+            ->method('getOrder')
+            ->willReturn(null);
+        $childPage2->expects(self::once())
+            ->method('setParent')
+            ->with($this->page);
+
+        /* @var PageInterface $childPage1 */
+        /* @var PageInterface $childPage2 */
+        $this->page->addPage($childPage1);
+        $this->page->addPage($childPage2);
+
+        self::assertTrue($this->page->hasPage($childPage2));
+    }
+
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     *
+     * @return void
+     */
+    public function testHasPageNotByHash(): void
+    {
+        $code1 = 'code 1';
+        $code2 = 'code 2';
+
+        $childPage1 = $this->getMockBuilder(PageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $childPage1->expects(self::once())
+            ->method('hashCode')
+            ->willReturn($code1);
+        $childPage1->expects(self::once())
+            ->method('getOrder')
+            ->willReturn(1);
+        $childPage1->expects(self::once())
+            ->method('setParent')
+            ->with($this->page);
+
+        $childPage2 = $this->getMockBuilder(PageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $childPage2->expects(self::once())
+            ->method('hashCode')
+            ->willReturn($code2);
+        $childPage2->expects(self::once())
+            ->method('getOrder')
+            ->willReturn(null);
+        $childPage2->expects(self::once())
+            ->method('setParent')
+            ->with($this->page);
+
+        /* @var PageInterface $childPage1 */
+        /* @var PageInterface $childPage2 */
+        $this->page->addPage($childPage1);
+        $this->page->addPage($childPage2);
+
+        self::assertFalse($this->page->hasPage($code1));
+    }
+
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     *
+     * @return void
+     */
+    public function testHasNotExistingPage(): void
+    {
+        $code1 = 'code 1';
+        $code2 = 'code 2';
+
+        $childPage1 = $this->getMockBuilder(PageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $childPage1->expects(self::once())
+            ->method('hashCode')
+            ->willReturn($code1);
+        $childPage1->expects(self::exactly(2))
+            ->method('getOrder')
+            ->willReturn(1);
+        $childPage1->expects(self::once())
+            ->method('setParent')
+            ->with($this->page);
+
+        $childPage2 = $this->getMockBuilder(PageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $childPage2->expects(self::once())
+            ->method('hashCode')
+            ->willReturn($code2);
+        $childPage2->expects(self::exactly(2))
+            ->method('getOrder')
+            ->willReturn(null);
+        $childPage2->expects(self::once())
+            ->method('setParent')
+            ->with($this->page);
+
+        /* @var PageInterface $childPage1 */
+        /* @var PageInterface $childPage2 */
+        $this->page->addPage($childPage1);
+        $this->page->addPage($childPage2);
+
+        self::assertFalse($this->page->hasPage(3));
+    }
+
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     *
+     * @return void
+     */
+    public function testHasPageRecursive(): void
+    {
+        $code1 = 'code 1';
+        $code2 = 'code 2';
+
+        $childPage1 = $this->getMockBuilder(PageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $childPage1->expects(self::once())
+            ->method('hashCode')
+            ->willReturn($code1);
+        $childPage1->expects(self::once())
+            ->method('getOrder')
+            ->willReturn(1);
+        $childPage1->expects(self::once())
+            ->method('setParent')
+            ->with($this->page);
+
+        $childPage2 = $this->getMockBuilder(PageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $childPage2->expects(self::once())
+            ->method('hashCode')
+            ->willReturn($code2);
+        $childPage2->expects(self::never())
+            ->method('getOrder')
+            ->willReturn(null);
+        $childPage2->expects(self::never())
+            ->method('setParent')
+            ->with($this->page);
+
+        $childPage1->expects(self::once())
+            ->method('hasPage')
+            ->with($childPage2, true)
+            ->willReturn(true);
+        $childPage1->expects(self::never())
+            ->method('removePage');
+
+        /* @var PageInterface $childPage1 */
+        /* @var PageInterface $childPage2 */
+        $this->page->addPage($childPage1);
+        $childPage1->addPage($childPage2);
+
+        self::assertTrue($this->page->hasPage($childPage2, true));
+    }
+
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     *
+     * @return void
+     */
+    public function testHasPageRecursiveNotFound(): void
+    {
+        $code1 = 'code 1';
+        $code2 = 'code 2';
+
+        $childPage1 = $this->getMockBuilder(PageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $childPage1->expects(self::once())
+            ->method('hashCode')
+            ->willReturn($code1);
+        $childPage1->expects(self::once())
+            ->method('getOrder')
+            ->willReturn(1);
+        $childPage1->expects(self::once())
+            ->method('setParent')
+            ->with($this->page);
+
+        $childPage2 = $this->getMockBuilder(PageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $childPage2->expects(self::once())
+            ->method('hashCode')
+            ->willReturn($code2);
+        $childPage2->expects(self::never())
+            ->method('getOrder')
+            ->willReturn(null);
+        $childPage2->expects(self::never())
+            ->method('setParent')
+            ->with($this->page);
+
+        $childPage1->expects(self::once())
+            ->method('hasPage')
+            ->with($childPage2, true)
+            ->willReturn(false);
+        $childPage1->expects(self::never())
+            ->method('removePage');
+
+        /* @var PageInterface $childPage1 */
+        /* @var PageInterface $childPage2 */
+        $this->page->addPage($childPage1);
+        $childPage1->addPage($childPage2);
+
+        self::assertFalse($this->page->hasPage($childPage2, true));
     }
 }

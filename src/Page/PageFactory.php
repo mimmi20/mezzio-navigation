@@ -69,12 +69,13 @@ final class PageFactory
                 }
 
                 $page = new $type($options);
+
                 if (!$page instanceof PageInterface) {
                     throw new Exception\InvalidArgumentException(
                         sprintf(
-                            'Invalid argument: Detected type "%s", which ' .
-                            'is not an instance of Mezzio\Navigation\Page\PageInterface',
-                            $type
+                            'Invalid argument: Detected type "%s", which is not an instance of %s',
+                            $type,
+                            PageInterface::class
                         )
                     );
                 }
