@@ -11,7 +11,9 @@
 declare(strict_types = 1);
 namespace MezzioTest\Navigation;
 
+use Mezzio\Navigation\Exception\BadMethodCallException;
 use Mezzio\Navigation\Exception\InvalidArgumentException;
+use Mezzio\Navigation\Exception\OutOfBoundsException;
 use Mezzio\Navigation\Navigation;
 use Mezzio\Navigation\Page;
 use PHPUnit\Framework\TestCase;
@@ -701,5 +703,482 @@ final class NavigationTest extends TestCase
         $childPage1->addPage($childPage2);
 
         self::assertFalse($this->navigation->hasPage($childPage2, true));
+    }
+
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     *
+     * @return void
+     */
+    public function testHasNoVisiblePages(): void
+    {
+        self::assertFalse($this->navigation->hasPages());
+
+        $code1 = 'code 1';
+        $code2 = 'code 2';
+
+        $childPage1 = $this->getMockBuilder(Page\PageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $childPage1->expects(self::once())
+            ->method('hashCode')
+            ->willReturn($code1);
+        $childPage1->expects(self::once())
+            ->method('getOrder')
+            ->willReturn(1);
+        $childPage1->expects(self::once())
+            ->method('setParent')
+            ->with($this->navigation);
+        $childPage1->expects(self::once())
+            ->method('isVisible')
+            ->willReturn(false);
+
+        $childPage2 = $this->getMockBuilder(Page\PageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $childPage2->expects(self::once())
+            ->method('hashCode')
+            ->willReturn($code2);
+        $childPage2->expects(self::once())
+            ->method('getOrder')
+            ->willReturn(null);
+        $childPage2->expects(self::once())
+            ->method('setParent')
+            ->with($this->navigation);
+        $childPage2->expects(self::once())
+            ->method('isVisible')
+            ->willReturn(false);
+
+        /* @var Page\PageInterface $childPage1 */
+        /* @var Page\PageInterface $childPage2 */
+        $this->navigation->addPage($childPage1);
+        $this->navigation->addPage($childPage2);
+
+        self::assertTrue($this->navigation->hasPages());
+        self::assertFalse($this->navigation->hasPages(true));
+    }
+
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     *
+     * @return void
+     */
+    public function testHasVisiblePages(): void
+    {
+        self::assertFalse($this->navigation->hasPages());
+
+        $code1 = 'code 1';
+        $code2 = 'code 2';
+
+        $childPage1 = $this->getMockBuilder(Page\PageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $childPage1->expects(self::once())
+            ->method('hashCode')
+            ->willReturn($code1);
+        $childPage1->expects(self::once())
+            ->method('getOrder')
+            ->willReturn(1);
+        $childPage1->expects(self::once())
+            ->method('setParent')
+            ->with($this->navigation);
+        $childPage1->expects(self::once())
+            ->method('isVisible')
+            ->willReturn(false);
+
+        $childPage2 = $this->getMockBuilder(Page\PageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $childPage2->expects(self::once())
+            ->method('hashCode')
+            ->willReturn($code2);
+        $childPage2->expects(self::once())
+            ->method('getOrder')
+            ->willReturn(null);
+        $childPage2->expects(self::once())
+            ->method('setParent')
+            ->with($this->navigation);
+        $childPage2->expects(self::once())
+            ->method('isVisible')
+            ->willReturn(true);
+
+        /* @var Page\PageInterface $childPage1 */
+        /* @var Page\PageInterface $childPage2 */
+        $this->navigation->addPage($childPage1);
+        $this->navigation->addPage($childPage2);
+
+        self::assertTrue($this->navigation->hasPages());
+        self::assertTrue($this->navigation->hasPages(true));
+    }
+
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     *
+     * @return void
+     */
+    public function testFindOneBy(): void
+    {
+        $property = 'route';
+        $value    = 'test';
+
+        self::assertNull($this->navigation->findOneBy($property, $value));
+
+        $code1 = 'code 1';
+        $code2 = 'code 2';
+
+        $childPage1 = $this->getMockBuilder(Page\PageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $childPage1->expects(self::once())
+            ->method('hashCode')
+            ->willReturn($code1);
+        $childPage1->expects(self::exactly(2))
+            ->method('getOrder')
+            ->willReturn(1);
+        $childPage1->expects(self::once())
+            ->method('setParent')
+            ->with($this->navigation);
+        $childPage1->expects(self::never())
+            ->method('isVisible');
+        $childPage1->expects(self::never())
+            ->method('get');
+
+        $childPage2 = $this->getMockBuilder(Page\PageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $childPage2->expects(self::once())
+            ->method('hashCode')
+            ->willReturn($code2);
+        $childPage2->expects(self::exactly(2))
+            ->method('getOrder')
+            ->willReturn(null);
+        $childPage2->expects(self::once())
+            ->method('setParent')
+            ->with($this->navigation);
+        $childPage2->expects(self::never())
+            ->method('isVisible');
+        $childPage2->expects(self::once())
+            ->method('get')
+            ->with($property)
+            ->willReturn($value);
+
+        /* @var Page\PageInterface $childPage1 */
+        /* @var Page\PageInterface $childPage2 */
+        $this->navigation->addPage($childPage1);
+        $this->navigation->addPage($childPage2);
+
+        self::assertSame($childPage2, $this->navigation->findOneBy($property, $value));
+    }
+
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     *
+     * @return void
+     */
+    public function testFindAllBy(): void
+    {
+        $property = 'route';
+        $value    = 'test';
+
+        self::assertSame([], $this->navigation->findAllBy($property, $value));
+
+        $code1 = 'code 1';
+        $code2 = 'code 2';
+
+        $childPage1 = $this->getMockBuilder(Page\PageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $childPage1->expects(self::once())
+            ->method('hashCode')
+            ->willReturn($code1);
+        $childPage1->expects(self::exactly(2))
+            ->method('getOrder')
+            ->willReturn(1);
+        $childPage1->expects(self::once())
+            ->method('setParent')
+            ->with($this->navigation);
+        $childPage1->expects(self::never())
+            ->method('isVisible');
+        $childPage1->expects(self::once())
+            ->method('get')
+            ->with($property)
+            ->willReturn($value);
+
+        $childPage2 = $this->getMockBuilder(Page\PageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $childPage2->expects(self::once())
+            ->method('hashCode')
+            ->willReturn($code2);
+        $childPage2->expects(self::exactly(2))
+            ->method('getOrder')
+            ->willReturn(null);
+        $childPage2->expects(self::once())
+            ->method('setParent')
+            ->with($this->navigation);
+        $childPage2->expects(self::never())
+            ->method('isVisible');
+        $childPage2->expects(self::once())
+            ->method('get')
+            ->with($property)
+            ->willReturn($value);
+
+        /* @var Page\PageInterface $childPage1 */
+        /* @var Page\PageInterface $childPage2 */
+        $this->navigation->addPage($childPage1);
+        $this->navigation->addPage($childPage2);
+
+        self::assertSame([$childPage2, $childPage1], $this->navigation->findAllBy($property, $value));
+    }
+
+    /**
+     * @throws \Mezzio\Navigation\Exception\BadMethodCallException
+     * @throws \ErrorException
+     *
+     * @return void
+     */
+    public function testCallFindAllByException(): void
+    {
+        $value = 'test';
+
+        $this->expectException(BadMethodCallException::class);
+        $this->expectExceptionMessage('Bad method call: Unknown method Mezzio\Navigation\Navigation::findAlllByTest');
+
+        $this->navigation->findAlllByTest($value);
+    }
+
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Mezzio\Navigation\Exception\BadMethodCallException
+     * @throws \ErrorException
+     *
+     * @return void
+     */
+    public function testCallFindAllBy(): void
+    {
+        $property = 'Route';
+        $value    = 'test';
+
+        self::assertSame([], $this->navigation->findAllByRoute($value));
+
+        $code1 = 'code 1';
+        $code2 = 'code 2';
+
+        $childPage1 = $this->getMockBuilder(Page\PageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $childPage1->expects(self::once())
+            ->method('hashCode')
+            ->willReturn($code1);
+        $childPage1->expects(self::exactly(2))
+            ->method('getOrder')
+            ->willReturn(1);
+        $childPage1->expects(self::once())
+            ->method('setParent')
+            ->with($this->navigation);
+        $childPage1->expects(self::never())
+            ->method('isVisible');
+        $childPage1->expects(self::once())
+            ->method('get')
+            ->with($property)
+            ->willReturn($value);
+
+        $childPage2 = $this->getMockBuilder(Page\PageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $childPage2->expects(self::once())
+            ->method('hashCode')
+            ->willReturn($code2);
+        $childPage2->expects(self::exactly(2))
+            ->method('getOrder')
+            ->willReturn(null);
+        $childPage2->expects(self::once())
+            ->method('setParent')
+            ->with($this->navigation);
+        $childPage2->expects(self::never())
+            ->method('isVisible');
+        $childPage2->expects(self::once())
+            ->method('get')
+            ->with($property)
+            ->willReturn($value);
+
+        /* @var Page\PageInterface $childPage1 */
+        /* @var Page\PageInterface $childPage2 */
+        $this->navigation->addPage($childPage1);
+        $this->navigation->addPage($childPage2);
+
+        self::assertSame([$childPage2, $childPage1], $this->navigation->findAllByRoute($value));
+    }
+
+    /**
+     * @throws \Mezzio\Navigation\Exception\OutOfBoundsException
+     *
+     * @return void
+     */
+    public function testCurrentException(): void
+    {
+        $this->expectException(OutOfBoundsException::class);
+        $this->expectExceptionMessage('container is currently empty, could not find any key in internal iterator');
+
+        $this->navigation->current();
+    }
+
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Mezzio\Navigation\Exception\OutOfBoundsException
+     *
+     * @return void
+     */
+    public function testCurrent(): void
+    {
+        $code1 = 'code 1';
+        $code2 = 'code 2';
+
+        $childPage1 = $this->getMockBuilder(Page\PageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $childPage1->expects(self::once())
+            ->method('hashCode')
+            ->willReturn($code1);
+        $childPage1->expects(self::exactly(2))
+            ->method('getOrder')
+            ->willReturn(1);
+        $childPage1->expects(self::once())
+            ->method('setParent')
+            ->with($this->navigation);
+        $childPage1->expects(self::never())
+            ->method('isVisible');
+        $childPage1->expects(self::never())
+            ->method('get');
+
+        $childPage2 = $this->getMockBuilder(Page\PageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $childPage2->expects(self::once())
+            ->method('hashCode')
+            ->willReturn($code2);
+        $childPage2->expects(self::exactly(2))
+            ->method('getOrder')
+            ->willReturn(null);
+        $childPage2->expects(self::once())
+            ->method('setParent')
+            ->with($this->navigation);
+        $childPage2->expects(self::never())
+            ->method('isVisible');
+        $childPage2->expects(self::never())
+            ->method('get');
+
+        /* @var Page\PageInterface $childPage1 */
+        /* @var Page\PageInterface $childPage2 */
+        $this->navigation->addPage($childPage1);
+        $this->navigation->addPage($childPage2);
+
+        self::assertSame($childPage2, $this->navigation->current());
+        self::assertSame($code2, $this->navigation->key());
+        self::assertTrue($this->navigation->valid());
+
+        $this->navigation->next();
+
+        self::assertSame($childPage1, $this->navigation->current());
+        self::assertSame($code1, $this->navigation->key());
+        self::assertTrue($this->navigation->valid());
+
+        $this->navigation->next();
+
+        self::assertSame('', $this->navigation->key());
+        self::assertFalse($this->navigation->valid());
+
+        $this->expectException(OutOfBoundsException::class);
+        $this->expectExceptionMessage('Corruption detected in container; invalid key found in internal iterator');
+
+        self::assertSame($childPage1, $this->navigation->current());
+    }
+
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Mezzio\Navigation\Exception\OutOfBoundsException
+     *
+     * @return void
+     */
+    public function testRewind(): void
+    {
+        $code1 = 'code 1';
+        $code2 = 'code 2';
+
+        $childPage1 = $this->getMockBuilder(Page\PageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $childPage1->expects(self::once())
+            ->method('hashCode')
+            ->willReturn($code1);
+        $childPage1->expects(self::exactly(2))
+            ->method('getOrder')
+            ->willReturn(1);
+        $childPage1->expects(self::once())
+            ->method('setParent')
+            ->with($this->navigation);
+        $childPage1->expects(self::never())
+            ->method('isVisible');
+        $childPage1->expects(self::never())
+            ->method('get');
+
+        $childPage2 = $this->getMockBuilder(Page\PageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $childPage2->expects(self::once())
+            ->method('hashCode')
+            ->willReturn($code2);
+        $childPage2->expects(self::exactly(2))
+            ->method('getOrder')
+            ->willReturn(null);
+        $childPage2->expects(self::once())
+            ->method('setParent')
+            ->with($this->navigation);
+        $childPage2->expects(self::never())
+            ->method('isVisible');
+        $childPage2->expects(self::never())
+            ->method('get');
+
+        /* @var Page\PageInterface $childPage1 */
+        /* @var Page\PageInterface $childPage2 */
+        $this->navigation->addPage($childPage1);
+        $this->navigation->addPage($childPage2);
+
+        self::assertSame($childPage2, $this->navigation->current());
+        self::assertSame($code2, $this->navigation->key());
+        self::assertTrue($this->navigation->valid());
+
+        $this->navigation->next();
+
+        self::assertSame($childPage1, $this->navigation->current());
+        self::assertSame($code1, $this->navigation->key());
+        self::assertTrue($this->navigation->valid());
+
+        $this->navigation->rewind();
+
+        self::assertSame($childPage2, $this->navigation->current());
+        self::assertSame($code2, $this->navigation->key());
+        self::assertTrue($this->navigation->valid());
     }
 }

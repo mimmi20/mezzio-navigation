@@ -16,7 +16,7 @@ use Mezzio\Navigation\Exception;
 /**
  * Base class for Mezzio\Navigation\Page pages
  */
-final class PageFactory
+final class PageFactory implements PageFactoryInterface
 {
     /**
      * Static factories list for factory pages
@@ -47,7 +47,7 @@ final class PageFactory
      *
      * @return PageInterface a page instance
      */
-    public static function factory(array $options): PageInterface
+    public function factory(array $options): PageInterface
     {
         if (isset($options['type'])) {
             $type = $options['type'];

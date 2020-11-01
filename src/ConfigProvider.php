@@ -11,6 +11,8 @@
 declare(strict_types = 1);
 namespace Mezzio\Navigation;
 
+use Laminas\ServiceManager\Factory\InvokableFactory;
+
 final class ConfigProvider
 {
     /**
@@ -40,9 +42,11 @@ final class ConfigProvider
                 Navigation::class => Service\DefaultNavigationFactory::class,
                 Config\NavigationConfig::class => Config\NavigationConfigFactory::class,
                 NavigationMiddleware::class => NavigationMiddlewareFactory::class,
+                Page\PageFactory::class => InvokableFactory::class,
             ],
             'aliases' => [
                 Config\NavigationConfigInterface::class => Config\NavigationConfig::class,
+                Page\PageFactoryInterface::class => Page\PageFactory::class,
             ],
         ];
     }

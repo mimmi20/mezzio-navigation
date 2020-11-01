@@ -14,7 +14,7 @@ namespace Mezzio\Navigation\Service;
 use Mezzio\Navigation\Config\NavigationConfigInterface;
 use Mezzio\Navigation\Exception;
 use Mezzio\Navigation\Navigation;
-use Mezzio\Navigation\Page\PageFactory;
+use Mezzio\Navigation\Page\PageFactoryInterface;
 use Mezzio\Navigation\Page\PageInterface;
 use Mezzio\Navigation\Page\Route;
 use Mezzio\Navigation\Page\Uri;
@@ -38,8 +38,6 @@ trait NavigationFactoryTrait
      * Create and return a new Navigation instance (v3).
      *
      * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param array|null         $options
      *
      * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
@@ -47,30 +45,33 @@ trait NavigationFactoryTrait
      *
      * @return Navigation
      */
-    public function __invoke(ContainerInterface $container, string $requestedName, ?array $options = null): Navigation
+    public function __invoke(ContainerInterface $container): Navigation
     {
         $config = $container->get(NavigationConfigInterface::class);
         \assert($config instanceof NavigationConfigInterface);
 
         $navigation = new Navigation();
 
-        $navigation->setPages($this->getPages($config));
+        $navigation->setPages($this->getPages($container, $config));
 
         return $navigation;
     }
 
     /**
+     * @param ContainerInterface        $container
      * @param NavigationConfigInterface $config
      *
      * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws \Psr\Container\ContainerExceptionInterface
      *
      * @return PageInterface[]
      */
-    private function getPages(NavigationConfigInterface $config): array
+    private function getPages(ContainerInterface $container, NavigationConfigInterface $config): array
     {
         if (null === $this->pages) {
-            $pages = $config->getPages();
+            $pages   = $config->getPages();
+            $factory = $container->get(PageFactoryInterface::class);
 
             if (
                 null === $pages
@@ -93,6 +94,7 @@ trait NavigationFactoryTrait
 
             $this->pages = $this->preparePages(
                 $pages[$this->configName],
+                $factory,
                 $routeResult,
                 $config->getRouter(),
                 $config->getRequest()
@@ -104,6 +106,7 @@ trait NavigationFactoryTrait
 
     /**
      * @param array[]                             $pages
+     * @param PageFactoryInterface                $factory
      * @param \Mezzio\Router\RouteResult|null     $routeResult
      * @param \Mezzio\Router\RouterInterface|null $router
      * @param ServerRequestInterface|null         $request
@@ -115,13 +118,14 @@ trait NavigationFactoryTrait
      */
     private function preparePages(
         array $pages,
+        PageFactoryInterface $factory,
         ?RouteResult $routeResult = null,
         ?RouterInterface $router = null,
         ?ServerRequestInterface $request = null
     ): array {
         return array_map(
-            function (array $pageConfig) use ($routeResult, $router, $request): PageInterface {
-                $page = PageFactory::factory($pageConfig);
+            function (array $pageConfig) use ($factory, $routeResult, $router, $request): PageInterface {
+                $page = $factory->factory($pageConfig);
 
                 if ($page instanceof Route) {
                     if (null !== $routeResult) {
@@ -134,7 +138,7 @@ trait NavigationFactoryTrait
                 }
 
                 if (isset($pageConfig['pages'])) {
-                    $page->setPages($this->preparePages($pageConfig['pages'], $routeResult, $router, $request));
+                    $page->setPages($this->preparePages($pageConfig['pages'], $factory, $routeResult, $router, $request));
                 }
 
                 return $page;

@@ -20,8 +20,9 @@ parameters:
     - */tests/*/data/*
   ignoreErrors:
     - '~PHPDoc tag @throws with type .* is not compatible with parent~'
-    - '~PHPDoc tag @throws with type .*Interface is not subtype of Throwable~'
+    - '~PHPDoc tag @throws with type .* is not subtype of Throwable~'
     - '~Useless @throws .* annotation~'
     - '~Strict comparison using === between .* and \$this(.*) will always evaluate to false~'
     - '~Access to an undefined property .*::\$.*~'
     - '~Parameter #1 .* of method .* expects .*, .* given~'
+    - '~Call to an undefined method .*::findAll~'
