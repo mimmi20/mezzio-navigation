@@ -11,8 +11,8 @@
 declare(strict_types = 1);
 namespace Mezzio\Navigation\Service;
 
-use Mezzio\Navigation\Config\NavigationConfig;
 use Mezzio\Navigation\Config\NavigationConfigInterface;
+use Mezzio\Navigation\Exception\InvalidArgumentException;
 use Mezzio\Navigation\Navigation;
 use Psr\Container\ContainerInterface;
 
@@ -57,14 +57,17 @@ final class NavigationAbstractServiceFactory
      * @param array|null                        $options
      *
      * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws InvalidArgumentException
      *
      * @return Navigation
      */
     public function __invoke(ContainerInterface $container, string $requestedName, ?array $options = null)
     {
-        $factory = new ConstructedNavigationFactory($this->getNamedConfigName($container, $requestedName));
+        $factory = new ConstructedNavigationFactory(
+            $this->getNamedConfigName($container, $requestedName)
+        );
 
-        return $factory($container, $requestedName);
+        return $factory($container);
     }
 
     /**
@@ -82,12 +85,12 @@ final class NavigationAbstractServiceFactory
     /**
      * Does the configuration have a matching named section?
      *
-     * @param string           $name
-     * @param NavigationConfig $config
+     * @param string                    $name
+     * @param NavigationConfigInterface $config
      *
      * @return bool
      */
-    private function hasNamedConfig(string $name, NavigationConfig $config): bool
+    private function hasNamedConfig(string $name, NavigationConfigInterface $config): bool
     {
         $withoutPrefix = $this->getConfigName($name);
 
@@ -107,6 +110,7 @@ final class NavigationAbstractServiceFactory
      * @param string             $name
      *
      * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws InvalidArgumentException
      *
      * @return string
      */
@@ -125,6 +129,8 @@ final class NavigationAbstractServiceFactory
             return mb_strtolower($withoutPrefix);
         }
 
-        return '';
+        throw new InvalidArgumentException(
+            sprintf('Failed to find a navigation container by the name "%s"', $name)
+        );
     }
 }

@@ -205,6 +205,7 @@ trait ContainerTrait
         if ($recursive) {
             foreach ($this->pages as $childPage) {
                 \assert($childPage instanceof PageInterface);
+
                 if ($childPage->hasPage($page, true)) {
                     $childPage->removePage($page, true);
 
@@ -277,6 +278,8 @@ trait ContainerTrait
     {
         if ($onlyVisible) {
             foreach ($this->pages as $page) {
+                \assert($page instanceof PageInterface);
+
                 if ($page->isVisible()) {
                     return true;
                 }
@@ -286,7 +289,7 @@ trait ContainerTrait
             return false;
         }
 
-        return empty($this->index);
+        return !empty($this->index);
     }
 
     /**
@@ -295,6 +298,8 @@ trait ContainerTrait
      * @param string $property name of property to match against
      * @param mixed  $value    value to match property against
      *
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     *
      * @return PageInterface|null matching page or null
      */
     final public function findOneBy(string $property, $value): ?PageInterface
@@ -302,6 +307,8 @@ trait ContainerTrait
         $iterator = new RecursiveIteratorIterator($this, RecursiveIteratorIterator::SELF_FIRST);
 
         foreach ($iterator as $page) {
+            \assert($page instanceof PageInterface);
+
             if ($page->get($property) === $value) {
                 return $page;
             }
@@ -317,6 +324,8 @@ trait ContainerTrait
      * @param string $property name of property to match against
      * @param mixed  $value    value to match property against
      *
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     *
      * @return PageInterface[] array containing only Page\AbstractPage instances
      */
     final public function findAllBy(string $property, $value): array
@@ -326,6 +335,8 @@ trait ContainerTrait
         $iterator = new RecursiveIteratorIterator($this, RecursiveIteratorIterator::SELF_FIRST);
 
         foreach ($iterator as $page) {
+            \assert($page instanceof PageInterface);
+
             if ($page->get($property) !== $value) {
                 continue;
             }
@@ -355,11 +366,11 @@ trait ContainerTrait
      *
      * @return mixed
      */
-    public function __call(string $method, $arguments)
+    public function __call(string $method, array $arguments)
     {
         ErrorHandler::start(E_WARNING);
 
-        $result = preg_match('/(find(?:One|All)?By)(.+)/', $method, $match);
+        $result = preg_match('/(find(?:One|All)By)(.+)/', $method, $match);
         $error  = ErrorHandler::stop();
 
         if (!$result) {
@@ -406,13 +417,18 @@ trait ContainerTrait
      */
     final public function current(): PageInterface
     {
+        if (empty($this->index)) {
+            throw new Exception\OutOfBoundsException(
+                'container is currently empty, could not find any key in internal iterator'
+            );
+        }
+
         $this->sort();
 
         $hash = key($this->index);
         if (null === $hash || !isset($this->pages[$hash])) {
             throw new Exception\OutOfBoundsException(
-                'Corruption detected in container; '
-                . 'invalid key found in internal iterator'
+                'Corruption detected in container; invalid key found in internal iterator'
             );
         }
 
