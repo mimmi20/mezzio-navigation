@@ -11,13 +11,13 @@
 declare(strict_types = 1);
 namespace MezzioTest\Navigation\Service;
 
+use Interop\Container\ContainerInterface;
 use Mezzio\Navigation\Config\NavigationConfigInterface;
 use Mezzio\Navigation\Exception\InvalidArgumentException;
 use Mezzio\Navigation\Navigation;
 use Mezzio\Navigation\Page\PageFactoryInterface;
 use Mezzio\Navigation\Service\NavigationAbstractServiceFactory;
 use PHPUnit\Framework\TestCase;
-use Psr\Container\ContainerInterface;
 
 final class NavigationAbstractServiceFactoryTest extends TestCase
 {
