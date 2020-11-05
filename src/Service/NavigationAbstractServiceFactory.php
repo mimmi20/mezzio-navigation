@@ -11,10 +11,12 @@
 declare(strict_types = 1);
 namespace Mezzio\Navigation\Service;
 
+use Interop\Container\ContainerInterface;
+use Laminas\ServiceManager\AbstractFactoryInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 use Mezzio\Navigation\Config\NavigationConfigInterface;
 use Mezzio\Navigation\Exception\InvalidArgumentException;
 use Mezzio\Navigation\Navigation;
-use Psr\Container\ContainerInterface;
 
 /**
  * Navigation abstract service factory
@@ -22,7 +24,7 @@ use Psr\Container\ContainerInterface;
  * Allows configuring several navigation instances. If you have a navigation config key named "special" then you can
  * use $container->get('Mezzio\Navigation\Special') to retrieve a navigation instance with this configuration.
  */
-final class NavigationAbstractServiceFactory
+final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
 {
     /**
      * Service manager factory prefix
@@ -40,7 +42,7 @@ final class NavigationAbstractServiceFactory
      *
      * @return bool
      */
-    public function canCreate(ContainerInterface $container, string $requestedName): bool
+    public function canCreate(ContainerInterface $container, $requestedName): bool
     {
         if (0 !== mb_strpos($requestedName, self::SERVICE_PREFIX)) {
             return false;
@@ -52,16 +54,16 @@ final class NavigationAbstractServiceFactory
     }
 
     /**
-     * @param \Psr\Container\ContainerInterface $container
-     * @param string                            $requestedName
-     * @param array|null                        $options
+     * @param ContainerInterface $container
+     * @param string             $requestedName
+     * @param array|null         $options
      *
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws InvalidArgumentException
      *
      * @return Navigation
      */
-    public function __invoke(ContainerInterface $container, string $requestedName, ?array $options = null)
+    public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null): Navigation
     {
         $factory = new ConstructedNavigationFactory(
             $this->getNamedConfigName($container, $requestedName)
@@ -132,5 +134,37 @@ final class NavigationAbstractServiceFactory
         throw new InvalidArgumentException(
             sprintf('Failed to find a navigation container by the name "%s"', $name)
         );
+    }
+
+    /**
+     * Determine if we can create a service with name
+     *
+     * @param ServiceLocatorInterface $serviceLocator
+     * @param string                  $name
+     * @param string                  $requestedName
+     *
+     * @return bool
+     *
+     * @codeCoverageIgnore
+     */
+    public function canCreateServiceWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName): bool
+    {
+        return $this->canCreate($serviceLocator, $requestedName);
+    }
+
+    /**
+     * Create service with name
+     *
+     * @param ServiceLocatorInterface $serviceLocator
+     * @param string                  $name
+     * @param string                  $requestedName
+     *
+     * @return Navigation
+     *
+     * @codeCoverageIgnore
+     */
+    public function createServiceWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName): Navigation
+    {
+        return $this($serviceLocator, $requestedName);
     }
 }

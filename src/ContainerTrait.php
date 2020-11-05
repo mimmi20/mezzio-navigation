@@ -413,7 +413,7 @@ trait ContainerTrait
      *
      * @throws Exception\OutOfBoundsException if the index is invalid
      *
-     * @return PageInterface current page or null
+     * @return PageInterface current page
      */
     final public function current(): PageInterface
     {
@@ -459,6 +459,7 @@ trait ContainerTrait
     final public function next(): void
     {
         $this->sort();
+
         next($this->index);
     }
 
@@ -472,6 +473,7 @@ trait ContainerTrait
     final public function rewind(): void
     {
         $this->sort();
+
         reset($this->index);
     }
 
@@ -486,7 +488,7 @@ trait ContainerTrait
     {
         $this->sort();
 
-        return false !== current($this->index);
+        return false !== current($this->index) && null !== current($this->index);
     }
 
     /**
@@ -508,17 +510,17 @@ trait ContainerTrait
      *
      * Implements RecursiveIterator interface.
      *
-     * @return PageInterface|null
+     * @return ContainerInterface
      */
-    final public function getChildren(): ?PageInterface
+    final public function getChildren(): ContainerInterface
     {
-        $hash = key($this->index);
+        $iterator = new self();
 
-        if (isset($this->pages[$hash])) {
-            return $this->pages[$hash];
+        if ($this->valid()) {
+            $iterator->setPages($this->current()->getPages());
         }
 
-        return null;
+        return $iterator;
     }
 
     // Countable interface:
