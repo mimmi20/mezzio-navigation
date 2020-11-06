@@ -59,6 +59,7 @@ final class NavigationTest extends TestCase
         $pages = $this->navigation->toArray();
 
         self::assertCount(3, $pages);
+        self::assertCount(3, $this->navigation);
         self::assertEquals('page3', $pages[0]['uri'], var_export($pages, true));
         self::assertEquals('page1', $pages[1]['uri']);
         self::assertEquals('page2', $pages[2]['uri']);
@@ -896,6 +897,7 @@ final class NavigationTest extends TestCase
 
         $code1 = 'code 1';
         $code2 = 'code 2';
+        $code3 = 'code 3';
 
         $childPage1 = $this->getMockBuilder(Page\PageInterface::class)
             ->disableOriginalConstructor()
@@ -935,10 +937,31 @@ final class NavigationTest extends TestCase
             ->with($property)
             ->willReturn($value);
 
+        $childPage3 = $this->getMockBuilder(Page\PageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $childPage3->expects(self::once())
+            ->method('hashCode')
+            ->willReturn($code3);
+        $childPage3->expects(self::exactly(2))
+            ->method('getOrder')
+            ->willReturn(null);
+        $childPage3->expects(self::once())
+            ->method('setParent')
+            ->with($this->navigation);
+        $childPage3->expects(self::never())
+            ->method('isVisible');
+        $childPage3->expects(self::once())
+            ->method('get')
+            ->with($property)
+            ->willReturn(null);
+
         /* @var Page\PageInterface $childPage1 */
         /* @var Page\PageInterface $childPage2 */
+        /* @var Page\PageInterface $childPage3 */
         $this->navigation->addPage($childPage1);
         $this->navigation->addPage($childPage2);
+        $this->navigation->addPage($childPage3);
 
         self::assertSame([$childPage2, $childPage1], $this->navigation->findAllBy($property, $value));
     }

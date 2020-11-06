@@ -326,7 +326,7 @@ trait ContainerTrait
      *
      * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      *
-     * @return PageInterface[] array containing only Page\AbstractPage instances
+     * @return PageInterface[] array containing only Page\PageInterface instances
      */
     final public function findAllBy(string $property, $value): array
     {
@@ -515,6 +515,8 @@ trait ContainerTrait
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
      * @return ContainerInterface
+     *
+     * @codeCoverageIgnore
      */
     final public function getChildren(): ContainerInterface
     {

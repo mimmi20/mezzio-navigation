@@ -31,7 +31,7 @@ final class PageFactory implements PageFactoryInterface
      * 'type' in $options. If type is 'uri' or 'route', the type will be resolved
      * to Mezzio\Navigation\Page\Uri or Mezzio\Navigation\Page\Route. Any other value
      * for 'type' will be considered the full name of the class to construct.
-     * A valid custom page class must extend Mezzio\Navigation\Page\AbstractPage.
+     * A valid custom page class must implement Mezzio\Navigation\Page\PageInterface.
      * If 'type' is not given, the type of page to construct will be determined
      * by the following rules:
      * - If $options contains the key 'route', a Mezzio\Navigation\Page\Route page will be created.
