@@ -60,6 +60,13 @@ trait PageTrait
     private $class;
 
     /**
+     * Style class for the container around this page (CSS)
+     *
+     * @var string|null
+     */
+    private $liClass;
+
+    /**
      * A more descriptive title for this page
      *
      * @var string|null
@@ -261,8 +268,7 @@ trait PageTrait
     /**
      * Sets page CSS class
      *
-     * @param string|null $class [optional] CSS class to set. Default
-     *                           is null, which sets no CSS class.
+     * @param string|null $class [optional] CSS class to set. Default is null, which sets no CSS class.
      *
      * @return void
      */
@@ -279,6 +285,28 @@ trait PageTrait
     final public function getClass(): ?string
     {
         return $this->class;
+    }
+
+    /**
+     * Sets page CSS class
+     *
+     * @param string|null $liClass [optional] CSS class to set. Default is null, which sets no CSS class.
+     *
+     * @return void
+     */
+    final public function setLiClass(?string $liClass = null): void
+    {
+        $this->liClass = $liClass;
+    }
+
+    /**
+     * Returns page class (CSS)
+     *
+     * @return string|null page's CSS class or null
+     */
+    final public function getLiClass(): ?string
+    {
+        return $this->liClass;
     }
 
     /**
