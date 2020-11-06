@@ -292,6 +292,53 @@ final class RouteTest extends TestCase
      *
      * @return void
      */
+    public function testConstructorLiClass(): void
+    {
+        $class = 'test';
+
+        $this->page = new Route(['liClass' => $class]);
+
+        self::assertSame($class, $this->page->getLiClass());
+    }
+
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     *
+     * @return void
+     */
+    public function testSetOptionsWithLiClass(): void
+    {
+        $class = 'test';
+
+        $this->page->setOptions(['liClass' => $class]);
+
+        self::assertSame($class, $this->page->getLiClass());
+    }
+
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     *
+     * @return void
+     */
+    public function testSetLiClass(): void
+    {
+        $class = 'test';
+
+        $this->page->setLiClass($class);
+
+        self::assertSame($class, $this->page->getLiClass());
+    }
+
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     *
+     * @return void
+     */
     public function testConstructorTitle(): void
     {
         $title = 'test';
