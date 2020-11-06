@@ -510,6 +510,10 @@ trait ContainerTrait
      *
      * Implements RecursiveIterator interface.
      *
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Mezzio\Navigation\Exception\OutOfBoundsException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     *
      * @return ContainerInterface
      */
     final public function getChildren(): ContainerInterface
