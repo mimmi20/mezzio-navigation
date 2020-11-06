@@ -143,6 +143,8 @@ final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
      * @param string                  $name
      * @param string                  $requestedName
      *
+     * @throws \Psr\Container\ContainerExceptionInterface
+     *
      * @return bool
      *
      * @codeCoverageIgnore

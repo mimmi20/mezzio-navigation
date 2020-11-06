@@ -26,3 +26,4 @@ parameters:
     - '~Access to an undefined property .*::\$.*~'
     - '~Parameter #1 .* of method .* expects .*, .* given~'
     - '~Call to an undefined method .*::findAll~'
+    - '~Class .* implements deprecated interface~'
