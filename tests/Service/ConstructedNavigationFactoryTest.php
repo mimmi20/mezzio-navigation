@@ -17,10 +17,15 @@ use Mezzio\Navigation\Navigation;
 use Mezzio\Navigation\Page\PageFactoryInterface;
 use Mezzio\Navigation\Page\PageInterface;
 use Mezzio\Navigation\Page\Route;
+use Mezzio\Navigation\Page\RouteInterface;
 use Mezzio\Navigation\Page\Uri;
+use Mezzio\Navigation\Page\UriInterface;
 use Mezzio\Navigation\Service\ConstructedNavigationFactory;
+use Mezzio\Router\RouteResult;
+use Mezzio\Router\RouterInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
+use Psr\Http\Message\ServerRequestInterface;
 
 final class ConstructedNavigationFactoryTest extends TestCase
 {
@@ -42,9 +47,7 @@ final class ConstructedNavigationFactoryTest extends TestCase
             ->method('getPages')
             ->willReturn($pages);
 
-        $pageFactory = $this->getMockBuilder(PageFactoryInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $pageFactory = $this->createMock(PageFactoryInterface::class);
 
         $container = $this->getMockBuilder(ContainerInterface::class)
             ->disableOriginalConstructor()
@@ -141,6 +144,192 @@ final class ConstructedNavigationFactoryTest extends TestCase
         $pages = $navigation->getPages();
 
         self::assertCount(2, $pages);
+        self::assertContainsOnly(PageInterface::class, $pages);
+    }
+
+    /**
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @return void
+     */
+    public function testInvokeWithRouteResult(): void
+    {
+        $page1Config = [
+            'type' => Route::class,
+        ];
+        $page2Config = [
+            'type' => Uri::class,
+        ];
+        $pageConfig = [
+            'test' => [
+                $page1Config,
+                $page2Config,
+            ],
+        ];
+
+        $routeResult     = $this->createMock(RouteResult::class);
+        $routerInterface = $this->createMock(RouterInterface::class);
+        $prequest        = $this->createMock(ServerRequestInterface::class);
+
+        $page1 = $this->getMockBuilder(RouteInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $page1->expects(self::once())
+            ->method('hashCode')
+            ->willReturn('test1');
+        $page1->expects(self::once())
+            ->method('setRouteMatch')
+            ->with($routeResult);
+        $page1->expects(self::once())
+            ->method('setRouter')
+            ->with($routerInterface);
+
+        $page2 = $this->getMockBuilder(UriInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $page2->expects(self::once())
+            ->method('hashCode')
+            ->willReturn('test2');
+        $page2->expects(self::once())
+            ->method('setRequest')
+            ->with($prequest);
+
+        $navigationConfig = $this->getMockBuilder(NavigationConfigInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $navigationConfig->expects(self::once())
+            ->method('getPages')
+            ->willReturn($pageConfig);
+        $navigationConfig->expects(self::once())
+            ->method('getRouteResult')
+            ->willReturn($routeResult);
+        $navigationConfig->expects(self::once())
+            ->method('getRouter')
+            ->willReturn($routerInterface);
+        $navigationConfig->expects(self::once())
+            ->method('getRequest')
+            ->willReturn($prequest);
+
+        $pageFactory = $this->getMockBuilder(PageFactoryInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $pageFactory->expects(self::exactly(2))
+            ->method('factory')
+            ->withConsecutive([$page1Config], [$page2Config])
+            ->willReturnOnConsecutiveCalls($page1, $page2);
+
+        $container = $this->getMockBuilder(ContainerInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $container->expects(self::exactly(2))
+            ->method('get')
+            ->withConsecutive([NavigationConfigInterface::class], [PageFactoryInterface::class])
+            ->willReturnOnConsecutiveCalls($navigationConfig, $pageFactory);
+
+        $factory = new ConstructedNavigationFactory('test');
+
+        /** @var ContainerInterface $container */
+        $navigation = $factory($container);
+
+        self::assertInstanceOf(Navigation::class, $navigation);
+
+        $pages = $navigation->getPages();
+
+        self::assertCount(2, $pages);
+        self::assertContainsOnly(PageInterface::class, $pages);
+    }
+
+    /**
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @return void
+     */
+    public function testInvokeWithSubPages(): void
+    {
+        $page1Config = [
+            'type' => Route::class,
+        ];
+        $page2Config = [
+            'type' => Uri::class,
+            'pages' => [$page1Config],
+        ];
+        $pageConfig = [
+            'test' => [$page2Config],
+        ];
+
+        $routeResult     = $this->createMock(RouteResult::class);
+        $routerInterface = $this->createMock(RouterInterface::class);
+        $prequest        = $this->createMock(ServerRequestInterface::class);
+
+        $page1 = $this->getMockBuilder(RouteInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $page1->expects(self::once())
+            ->method('hashCode')
+            ->willReturn('test1');
+        $page1->expects(self::once())
+            ->method('setRouteMatch')
+            ->with($routeResult);
+        $page1->expects(self::once())
+            ->method('setRouter')
+            ->with($routerInterface);
+
+        $page2 = $this->getMockBuilder(UriInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $page2->expects(self::never())
+            ->method('hashCode')
+            ->willReturn('test2');
+        $page2->expects(self::once())
+            ->method('setRequest')
+            ->with($prequest);
+
+        $navigationConfig = $this->getMockBuilder(NavigationConfigInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $navigationConfig->expects(self::once())
+            ->method('getPages')
+            ->willReturn($pageConfig);
+        $navigationConfig->expects(self::once())
+            ->method('getRouteResult')
+            ->willReturn($routeResult);
+        $navigationConfig->expects(self::once())
+            ->method('getRouter')
+            ->willReturn($routerInterface);
+        $navigationConfig->expects(self::once())
+            ->method('getRequest')
+            ->willReturn($prequest);
+
+        $pageFactory = $this->getMockBuilder(PageFactoryInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $pageFactory->expects(self::exactly(2))
+            ->method('factory')
+            ->withConsecutive([$page2Config], [$page1Config])
+            ->willReturnOnConsecutiveCalls($page1, $page2);
+
+        $container = $this->getMockBuilder(ContainerInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $container->expects(self::exactly(2))
+            ->method('get')
+            ->withConsecutive([NavigationConfigInterface::class], [PageFactoryInterface::class])
+            ->willReturnOnConsecutiveCalls($navigationConfig, $pageFactory);
+
+        $factory = new ConstructedNavigationFactory('test');
+
+        /** @var ContainerInterface $container */
+        $navigation = $factory($container);
+
+        self::assertInstanceOf(Navigation::class, $navigation);
+
+        $pages = $navigation->getPages();
+
+        self::assertCount(1, $pages);
         self::assertContainsOnly(PageInterface::class, $pages);
     }
 }

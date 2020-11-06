@@ -23,7 +23,7 @@ use Mezzio\Router\RouterInterface;
  * ModuleRouteListener; to remove the requirement on that component, they are
  * reproduced here.
  */
-final class Route implements PageInterface
+final class Route implements RouteInterface
 {
     use PageTrait {
         isActive as isActiveParent;

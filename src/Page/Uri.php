@@ -16,7 +16,7 @@ use Psr\Http\Message\ServerRequestInterface;
 /**
  * Represents a page that is defined by specifying a URI
  */
-final class Uri implements PageInterface
+final class Uri implements UriInterface
 {
     use PageTrait {
         isActive as isActiveParent;
