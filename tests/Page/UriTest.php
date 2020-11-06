@@ -1887,6 +1887,7 @@ final class UriTest extends TestCase
 
         $code1 = 'code 1';
         $code2 = 'code 2';
+        $code3 = 'code 3';
 
         $childPage1 = $this->getMockBuilder(PageInterface::class)
             ->disableOriginalConstructor()
@@ -1926,10 +1927,31 @@ final class UriTest extends TestCase
             ->with($property)
             ->willReturn($value);
 
+        $childPage3 = $this->getMockBuilder(PageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $childPage3->expects(self::once())
+            ->method('hashCode')
+            ->willReturn($code3);
+        $childPage3->expects(self::exactly(2))
+            ->method('getOrder')
+            ->willReturn(null);
+        $childPage3->expects(self::once())
+            ->method('setParent')
+            ->with($this->page);
+        $childPage3->expects(self::never())
+            ->method('isVisible');
+        $childPage3->expects(self::once())
+            ->method('get')
+            ->with($property)
+            ->willReturn(null);
+
         /* @var PageInterface $childPage1 */
         /* @var PageInterface $childPage2 */
+        /* @var PageInterface $childPage3 */
         $this->page->addPage($childPage1);
         $this->page->addPage($childPage2);
+        $this->page->addPage($childPage3);
 
         self::assertSame([$childPage2, $childPage1], $this->page->findAllBy($property, $value));
     }
