@@ -16,8 +16,8 @@ use Mezzio\Navigation\Exception;
 use Mezzio\Navigation\Navigation;
 use Mezzio\Navigation\Page\PageFactoryInterface;
 use Mezzio\Navigation\Page\PageInterface;
-use Mezzio\Navigation\Page\Route;
-use Mezzio\Navigation\Page\Uri;
+use Mezzio\Navigation\Page\RouteInterface;
+use Mezzio\Navigation\Page\UriInterface;
 use Mezzio\Router\RouteResult;
 use Mezzio\Router\RouterInterface;
 use Psr\Container\ContainerInterface;
@@ -86,16 +86,10 @@ trait NavigationFactoryTrait
                 );
             }
 
-            if (null === $config->getRouteResult()) {
-                $routeResult = null;
-            } else {
-                $routeResult = $config->getRouteResult();
-            }
-
             $this->pages = $this->preparePages(
                 $pages[$this->configName],
                 $factory,
-                $routeResult,
+                $config->getRouteResult(),
                 $config->getRouter(),
                 $config->getRequest()
             );
@@ -127,13 +121,13 @@ trait NavigationFactoryTrait
             function (array $pageConfig) use ($factory, $routeResult, $router, $request): PageInterface {
                 $page = $factory->factory($pageConfig);
 
-                if ($page instanceof Route) {
+                if ($page instanceof RouteInterface) {
                     if (null !== $routeResult) {
                         $page->setRouteMatch($routeResult);
                     }
 
                     $page->setRouter($router);
-                } elseif ($page instanceof Uri) {
+                } elseif ($page instanceof UriInterface) {
                     $page->setRequest($request);
                 }
 
