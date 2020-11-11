@@ -52,6 +52,8 @@ final class PageFactory implements PageFactoryInterface
         if (isset($options['type'])) {
             $type = $options['type'];
 
+            unset($options['type']);
+
             if (is_string($type) && !empty($type)) {
                 switch (mb_strtolower($type)) {
                     case 'route':
