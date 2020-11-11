@@ -103,6 +103,22 @@ interface PageInterface extends ContainerInterface
     public function getClass(): ?string;
 
     /**
+     * Sets page CSS class
+     *
+     * @param string|null $liClass [optional] CSS class to set. Default is null, which sets no CSS class.
+     *
+     * @return void
+     */
+    public function setLiClass(?string $liClass = null): void;
+
+    /**
+     * Returns page class (CSS)
+     *
+     * @return string|null page's CSS class or null
+     */
+    public function getLiClass(): ?string;
+
+    /**
      * Sets page title
      *
      * @param string|null $title [optional] page title. Default is
