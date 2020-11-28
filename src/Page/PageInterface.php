@@ -219,15 +219,15 @@ interface PageInterface extends ContainerInterface
     /**
      * Sets page order to use in parent container
      *
-     * @param int|null $order [optional] page order in container.
-     *                        Default is null, which sets no
-     *                        specific order.
+     * @param int|string|null $order [optional] page order in container.
+     *                               Default is null, which sets no
+     *                               specific order.
      *
      * @throws Exception\InvalidArgumentException if order is not integer or null
      *
      * @return void
      */
-    public function setOrder(?int $order = null): void;
+    public function setOrder($order = null): void;
 
     /**
      * Returns page order used in parent container
