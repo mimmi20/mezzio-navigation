@@ -119,6 +119,14 @@ trait NavigationFactoryTrait
     ): array {
         return array_map(
             function (array $pageConfig) use ($factory, $routeResult, $router, $request): PageInterface {
+                $subPages = null;
+
+                if (array_key_exists('pages', $pageConfig) && is_array($pageConfig['pages'])) {
+                    $subPages = $this->preparePages($pageConfig['pages'], $factory, $routeResult, $router, $request);
+                }
+
+                unset($pageConfig['pages']);
+
                 $page = $factory->factory($pageConfig);
 
                 if ($page instanceof RouteInterface) {
@@ -131,8 +139,8 @@ trait NavigationFactoryTrait
                     $page->setRequest($request);
                 }
 
-                if (isset($pageConfig['pages'])) {
-                    $page->setPages($this->preparePages($pageConfig['pages'], $factory, $routeResult, $router, $request));
+                if (null !== $subPages) {
+                    $page->setPages($subPages);
                 }
 
                 return $page;
