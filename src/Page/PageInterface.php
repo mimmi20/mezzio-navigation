@@ -27,24 +27,24 @@ interface PageInterface extends ContainerInterface
      * corresponds to setTarget(), and the option 'reset_params' corresponds to
      * the method setResetParams().
      *
-     * @param array $options associative array of options to set
+     * @param iterable $options associative array of options to set
      *
      * @throws Exception\InvalidArgumentException if invalid options are given
      *
      * @return void
      */
-    public function setOptions(array $options): void;
+    public function setOptions(iterable $options): void;
 
     // Accessors:
 
     /**
      * Sets page label
      *
-     * @param string $label new page label
+     * @param string|null $label new page label
      *
      * @return void
      */
-    public function setLabel(string $label): void;
+    public function setLabel(?string $label = null): void;
 
     /**
      * Returns page label
@@ -56,11 +56,11 @@ interface PageInterface extends ContainerInterface
     /**
      * Sets a fragment identifier
      *
-     * @param string $fragment new fragment identifier
+     * @param string|null $fragment new fragment identifier
      *
      * @return void
      */
-    public function setFragment(string $fragment): void;
+    public function setFragment(?string $fragment = null): void;
 
     /**
      * Returns fragment identifier
