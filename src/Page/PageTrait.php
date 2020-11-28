@@ -519,17 +519,25 @@ trait PageTrait
     /**
      * Sets page order to use in parent container
      *
-     * @param int|null $order [optional] page order in container.
-     *                        Default is null, which sets no
-     *                        specific order.
+     * @param int|string|null $order [optional] page order in container.
+     *                               Default is null, which sets no
+     *                               specific order.
      *
      * @throws Exception\InvalidArgumentException if order is not integer or null
      *
      * @return void
      */
-    final public function setOrder(?int $order = null): void
+    final public function setOrder($order = null): void
     {
-        $this->order = $order;
+        if (is_int($order) || null === $order) {
+            $this->order = $order;
+        } elseif (is_string($order) || is_numeric($order)) {
+            $this->order = (int) $order;
+        } else {
+            throw new Exception\InvalidArgumentException(
+                'Invalid argument: $order must be a string, an integer or null'
+            );
+        }
 
         // notify parent, if any
         if (null === $this->parent) {

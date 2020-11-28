@@ -564,6 +564,27 @@ final class UriTest extends TestCase
         $this->page->setOrder($order);
 
         self::assertSame($order, $this->page->getOrder());
+
+        $this->page->setOrder('42');
+
+        self::assertSame($order, $this->page->getOrder());
+
+        $this->page->setOrder(42.0);
+
+        self::assertSame($order, $this->page->getOrder());
+    }
+
+    /**
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     *
+     * @return void
+     */
+    public function testSetOrderWithException(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid argument: $order must be a string, an integer or null');
+
+        $this->page->setOrder([]);
     }
 
     /**
