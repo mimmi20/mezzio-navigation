@@ -56,6 +56,7 @@ jobs:
           - "7.2"
           - "7.3"
           - "7.4"
+          - "8.0"
 
         dependencies:
           - "--prefer-lowest"
@@ -189,9 +190,7 @@ jobs:
   tests:
     name: "UnitTests"
 
-    needs:
-      - "coding-standards"
-      - "static-code-analysis"
+    needs: "install"
 
     runs-on: "ubuntu-latest"
 
@@ -203,6 +202,7 @@ jobs:
           - "7.2"
           - "7.3"
           - "7.4"
+          - "8.0"
 
         dependencies:
           - ""
