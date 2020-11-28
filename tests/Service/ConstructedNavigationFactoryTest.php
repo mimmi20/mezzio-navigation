@@ -307,10 +307,11 @@ final class ConstructedNavigationFactoryTest extends TestCase
         $pageFactory = $this->getMockBuilder(PageFactoryInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
+        unset($page2Config['pages']);
         $pageFactory->expects(self::exactly(2))
             ->method('factory')
-            ->withConsecutive([$page2Config], [$page1Config])
-            ->willReturnOnConsecutiveCalls($page1, $page2);
+            ->withConsecutive([$page1Config], [$page2Config])
+            ->willReturnOnConsecutiveCalls($page2, $page1);
 
         $container = $this->getMockBuilder(ContainerInterface::class)
             ->disableOriginalConstructor()
