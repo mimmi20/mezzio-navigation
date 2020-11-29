@@ -514,19 +514,19 @@ trait ContainerTrait
      * @throws \Mezzio\Navigation\Exception\OutOfBoundsException
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
-     * @return ContainerInterface
+     * @return PageInterface|null
      *
      * @codeCoverageIgnore
      */
-    final public function getChildren(): ContainerInterface
+    final public function getChildren(): ?PageInterface
     {
-        $iterator = new self();
+        $hash = key($this->index);
 
-        if ($this->valid()) {
-            $iterator->setPages($this->current()->getPages());
+        if (isset($this->pages[$hash])) {
+            return $this->pages[$hash];
         }
 
-        return $iterator;
+        return null;
     }
 
     // Countable interface:

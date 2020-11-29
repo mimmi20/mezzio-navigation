@@ -741,6 +741,16 @@ final class RouteTest extends TestCase
 
         self::assertFalse($this->page->isVisible());
         self::assertFalse($this->page->getVisible());
+
+        $this->page->setVisible('1');
+
+        self::assertTrue($this->page->isVisible());
+        self::assertTrue($this->page->getVisible());
+
+        $this->page->setVisible('false');
+
+        self::assertFalse($this->page->isVisible());
+        self::assertFalse($this->page->getVisible());
     }
 
     /**
@@ -807,6 +817,16 @@ final class RouteTest extends TestCase
 
         self::assertTrue($this->page->isActive());
         self::assertTrue($this->page->getActive());
+
+        $this->page->setActive('1');
+
+        self::assertTrue($this->page->isActive());
+        self::assertTrue($this->page->getActive());
+
+        $this->page->setActive('false');
+
+        self::assertFalse($this->page->isActive());
+        self::assertFalse($this->page->getActive());
     }
 
     /**
