@@ -658,14 +658,18 @@ trait PageTrait
     /**
      * Sets whether page should be considered active or not
      *
-     * @param bool $active [optional] whether page should be
-     *                     considered active or not. Default is true.
+     * @param bool|string $active [optional] whether page should be
+     *                            considered active or not. Default is true.
      *
      * @return void
      */
-    final public function setActive(bool $active = true): void
+    final public function setActive($active = true): void
     {
-        $this->active = $active;
+        if (is_string($active) && 'false' === mb_strtolower($active)) {
+            $active = false;
+        }
+
+        $this->active = (bool) $active;
     }
 
     /**
@@ -709,14 +713,18 @@ trait PageTrait
     /**
      * Sets whether the page should be visible or not
      *
-     * @param bool $visible [optional] whether page should be
-     *                      considered visible or not. Default is true.
+     * @param bool|string $visible [optional] whether page should be
+     *                             considered visible or not. Default is true.
      *
      * @return void
      */
-    final public function setVisible(bool $visible = true): void
+    final public function setVisible($visible = true): void
     {
-        $this->visible = $visible;
+        if (is_string($visible) && 'false' === mb_strtolower($visible)) {
+            $visible = false;
+        }
+
+        $this->visible = (bool) $visible;
     }
 
     /**

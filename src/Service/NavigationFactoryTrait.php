@@ -28,9 +28,6 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 trait NavigationFactoryTrait
 {
-    /** @var array|null */
-    private $pages;
-
     /** @var string */
     private $configName;
 
@@ -69,33 +66,29 @@ trait NavigationFactoryTrait
      */
     private function getPages(ContainerInterface $container, NavigationConfigInterface $config): array
     {
-        if (null === $this->pages) {
-            $pages   = $config->getPages();
-            $factory = $container->get(PageFactoryInterface::class);
+        $pages   = $config->getPages();
+        $factory = $container->get(PageFactoryInterface::class);
 
-            if (
-                null === $pages
-                || !array_key_exists($this->configName, $pages)
-                || !is_array($pages[$this->configName])
-            ) {
-                throw new Exception\InvalidArgumentException(
-                    sprintf(
-                        'Failed to find a navigation container by the name "%s"',
-                        $this->configName
-                    )
-                );
-            }
-
-            $this->pages = $this->preparePages(
-                $pages[$this->configName],
-                $factory,
-                $config->getRouteResult(),
-                $config->getRouter(),
-                $config->getRequest()
+        if (
+            null === $pages
+            || !array_key_exists($this->configName, $pages)
+            || !is_array($pages[$this->configName])
+        ) {
+            throw new Exception\InvalidArgumentException(
+                sprintf(
+                    'Failed to find a navigation container by the name "%s"',
+                    $this->configName
+                )
             );
         }
 
-        return $this->pages;
+        return $this->preparePages(
+            $pages[$this->configName],
+            $factory,
+            $config->getRouteResult(),
+            $config->getRouter(),
+            $config->getRequest()
+        );
     }
 
     /**

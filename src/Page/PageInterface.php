@@ -313,12 +313,12 @@ interface PageInterface extends ContainerInterface
     /**
      * Sets whether page should be considered active or not
      *
-     * @param bool $active [optional] whether page should be
-     *                     considered active or not. Default is true.
+     * @param bool|string $active [optional] whether page should be
+     *                            considered active or not. Default is true.
      *
      * @return void
      */
-    public function setActive(bool $active = true): void;
+    public function setActive($active = true): void;
 
     /**
      * Returns whether page should be considered active or not
@@ -345,12 +345,12 @@ interface PageInterface extends ContainerInterface
     /**
      * Sets whether the page should be visible or not
      *
-     * @param bool $visible [optional] whether page should be
-     *                      considered visible or not. Default is true.
+     * @param bool|string $visible [optional] whether page should be
+     *                             considered visible or not. Default is true.
      *
      * @return void
      */
-    public function setVisible(bool $visible = true): void;
+    public function setVisible($visible = true): void;
 
     /**
      * Returns a boolean value indicating whether the page is visible
