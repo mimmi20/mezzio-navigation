@@ -269,7 +269,7 @@ final class Route implements RouteInterface
      */
     public function setRoute(string $route): void
     {
-        if (empty($route)) {
+        if ('' === $route) {
             throw new Exception\InvalidArgumentException(
                 'Invalid argument: $route must be a non-empty string'
             );

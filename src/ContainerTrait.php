@@ -289,7 +289,7 @@ trait ContainerTrait
             return false;
         }
 
-        return !empty($this->index);
+        return [] !== $this->index;
     }
 
     /**
@@ -417,7 +417,7 @@ trait ContainerTrait
      */
     final public function current(): PageInterface
     {
-        if (empty($this->index)) {
+        if ([] === $this->index) {
             throw new Exception\OutOfBoundsException(
                 'container is currently empty, could not find any key in internal iterator'
             );

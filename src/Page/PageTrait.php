@@ -782,7 +782,7 @@ trait PageTrait
      */
     final public function set(string $property, $value): void
     {
-        if (empty($property)) {
+        if ('' === $property) {
             throw new Exception\InvalidArgumentException(
                 'Invalid argument: $property must be a non-empty string'
             );
@@ -812,7 +812,7 @@ trait PageTrait
      */
     final public function get(string $property)
     {
-        if (empty($property)) {
+        if ('' === $property) {
             throw new Exception\InvalidArgumentException(
                 'Invalid argument: $property must be a non-empty string'
             );
