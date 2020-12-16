@@ -47,6 +47,7 @@ final class PageFactoryTest extends TestCase
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Cannot find class test');
+        $this->expectExceptionCode(0);
 
         $this->factory->factory($options);
     }
@@ -221,6 +222,14 @@ final class PageFactoryTest extends TestCase
     public function testShouldFailForInvalidType(): void
     {
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            sprintf(
+                'Invalid argument: Detected type "%s", which is not an instance of %s',
+                InvalidPage::class,
+                PageInterface::class
+            )
+        );
+        $this->expectExceptionCode(0);
 
         $this->factory->factory(
             [
@@ -238,6 +247,8 @@ final class PageFactoryTest extends TestCase
     public function testShouldFailIfUnableToDetermineType(): void
     {
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid argument: Unable to determine class to instantiate');
+        $this->expectExceptionCode(0);
 
         $this->factory->factory(
             ['label' => 'My Invalid Page']

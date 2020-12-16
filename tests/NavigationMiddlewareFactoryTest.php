@@ -52,6 +52,7 @@ final class NavigationMiddlewareFactoryTest extends TestCase
                 NavigationConfigInterface::class
             )
         );
+        $this->expectExceptionCode(0);
 
         /* @var ContainerInterface $container */
         $factory($container);
@@ -84,6 +85,7 @@ final class NavigationMiddlewareFactoryTest extends TestCase
                 UrlHelper::class
             )
         );
+        $this->expectExceptionCode(0);
 
         /* @var ContainerInterface $container */
         $factory($container);
@@ -152,6 +154,7 @@ final class NavigationMiddlewareFactoryTest extends TestCase
                 AuthorizationInterface::class
             )
         );
+        $this->expectExceptionCode(0);
 
         /* @var ContainerInterface $container */
         $factory($container);
@@ -197,6 +200,7 @@ final class NavigationMiddlewareFactoryTest extends TestCase
                 RouterInterface::class
             )
         );
+        $this->expectExceptionCode(0);
 
         /* @var ContainerInterface $container */
         $factory($container);
@@ -247,6 +251,7 @@ final class NavigationMiddlewareFactoryTest extends TestCase
                 NavigationConfigInterface::class
             )
         );
+        $this->expectExceptionCode(0);
 
         /* @var ContainerInterface $container */
         $factory($container);
@@ -302,6 +307,7 @@ final class NavigationMiddlewareFactoryTest extends TestCase
                 UrlHelper::class
             )
         );
+        $this->expectExceptionCode(0);
 
         /* @var ContainerInterface $container */
         $factory($container);

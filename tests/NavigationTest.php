@@ -44,6 +44,28 @@ final class NavigationTest extends TestCase
      *
      * @return void
      */
+    public function testSetPagesTwice(): void
+    {
+        $page1 = new Page\Uri(['uri' => 'page1']);
+        $page2 = new Page\Uri(['uri' => 'page2']);
+        $page3 = new Page\Uri(['uri' => 'page3']);
+
+        $this->navigation->setPages([$page3, $page2, $page1]);
+        $this->navigation->setPages([$page1, $page2, $page3]);
+
+        self::assertSame([$page1, $page2, $page3], array_values($this->navigation->getPages()));
+    }
+
+    /**
+     * Testing that navigation order is done correctly
+     *
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     *
+     * @return void
+     */
     public function testNavigationArraySortsCorrectly(): void
     {
         $page1 = new Page\Uri(['uri' => 'page1']);
@@ -103,6 +125,7 @@ final class NavigationTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid argument: $page must be an Instance of PageInterface');
+        $this->expectExceptionCode(0);
 
         $this->navigation->addPages(['test']);
     }
@@ -132,6 +155,10 @@ final class NavigationTest extends TestCase
         $childPage1->expects(self::once())
             ->method('setParent')
             ->with($this->navigation);
+        $childPage1->expects(self::never())
+            ->method('hasPage');
+        $childPage1->expects(self::never())
+            ->method('removePage');
 
         $childPage2 = $this->getMockBuilder(Page\PageInterface::class)
             ->disableOriginalConstructor()
@@ -145,6 +172,10 @@ final class NavigationTest extends TestCase
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($this->navigation);
+        $childPage2->expects(self::never())
+            ->method('hasPage');
+        $childPage2->expects(self::never())
+            ->method('removePage');
 
         /* @var Page\PageInterface $childPage1 */
         /* @var Page\PageInterface $childPage2 */
@@ -180,6 +211,10 @@ final class NavigationTest extends TestCase
         $childPage1->expects(self::once())
             ->method('setParent')
             ->with($this->navigation);
+        $childPage1->expects(self::never())
+            ->method('hasPage');
+        $childPage1->expects(self::never())
+            ->method('removePage');
 
         $childPage2 = $this->getMockBuilder(Page\PageInterface::class)
             ->disableOriginalConstructor()
@@ -193,6 +228,10 @@ final class NavigationTest extends TestCase
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($this->navigation);
+        $childPage2->expects(self::never())
+            ->method('hasPage');
+        $childPage2->expects(self::never())
+            ->method('removePage');
 
         /* @var Page\PageInterface $childPage1 */
         /* @var Page\PageInterface $childPage2 */
@@ -228,6 +267,10 @@ final class NavigationTest extends TestCase
         $childPage1->expects(self::once())
             ->method('setParent')
             ->with($this->navigation);
+        $childPage1->expects(self::never())
+            ->method('hasPage');
+        $childPage1->expects(self::never())
+            ->method('removePage');
 
         $childPage2 = $this->getMockBuilder(Page\PageInterface::class)
             ->disableOriginalConstructor()
@@ -241,6 +284,10 @@ final class NavigationTest extends TestCase
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($this->navigation);
+        $childPage2->expects(self::never())
+            ->method('hasPage');
+        $childPage2->expects(self::never())
+            ->method('removePage');
 
         /* @var Page\PageInterface $childPage1 */
         /* @var Page\PageInterface $childPage2 */
@@ -276,6 +323,10 @@ final class NavigationTest extends TestCase
         $childPage1->expects(self::once())
             ->method('setParent')
             ->with($this->navigation);
+        $childPage1->expects(self::never())
+            ->method('hasPage');
+        $childPage1->expects(self::never())
+            ->method('removePage');
 
         $childPage2 = $this->getMockBuilder(Page\PageInterface::class)
             ->disableOriginalConstructor()
@@ -289,6 +340,10 @@ final class NavigationTest extends TestCase
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($this->navigation);
+        $childPage2->expects(self::never())
+            ->method('hasPage');
+        $childPage2->expects(self::never())
+            ->method('removePage');
 
         /* @var Page\PageInterface $childPage1 */
         /* @var Page\PageInterface $childPage2 */
@@ -337,6 +392,10 @@ final class NavigationTest extends TestCase
         $childPage2->expects(self::never())
             ->method('setParent')
             ->with($this->navigation);
+        $childPage2->expects(self::never())
+            ->method('hasPage');
+        $childPage2->expects(self::never())
+            ->method('removePage');
 
         $childPage1->expects(self::once())
             ->method('hasPage')
@@ -393,6 +452,10 @@ final class NavigationTest extends TestCase
         $childPage2->expects(self::never())
             ->method('setParent')
             ->with($this->navigation);
+        $childPage2->expects(self::never())
+            ->method('hasPage');
+        $childPage2->expects(self::never())
+            ->method('removePage');
 
         $childPage1->expects(self::once())
             ->method('hasPage')
@@ -978,6 +1041,7 @@ final class NavigationTest extends TestCase
 
         $this->expectException(BadMethodCallException::class);
         $this->expectExceptionMessage('Bad method call: Unknown method Mezzio\Navigation\Navigation::findAlllByTest');
+        $this->expectExceptionCode(0);
 
         $this->navigation->findAlllByTest($value);
     }
@@ -1057,6 +1121,7 @@ final class NavigationTest extends TestCase
     {
         $this->expectException(OutOfBoundsException::class);
         $this->expectExceptionMessage('container is currently empty, could not find any key in internal iterator');
+        $this->expectExceptionCode(0);
 
         $this->navigation->current();
     }
@@ -1131,6 +1196,7 @@ final class NavigationTest extends TestCase
 
         $this->expectException(OutOfBoundsException::class);
         $this->expectExceptionMessage('Corruption detected in container; invalid key found in internal iterator');
+        $this->expectExceptionCode(0);
 
         self::assertSame($childPage1, $this->navigation->current());
     }

@@ -72,6 +72,7 @@ final class DefaultNavigationFactoryTest extends TestCase
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Failed to find a navigation container by the name "default"');
+        $this->expectExceptionCode(0);
 
         /* @var ContainerInterface $container */
         ($this->factory)($container);

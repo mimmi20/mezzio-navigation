@@ -97,6 +97,9 @@ final class NavigationMiddlewareTest extends TestCase
             ->with($authorization);
         $navigationConfig->expects(self::never())
             ->method('setRouteResult');
+        $navigationConfig->expects(self::once())
+            ->method('setRouter')
+            ->with($router);
 
         /** @var NavigationConfigInterface $navigationConfig */
         /** @var UrlHelper $urlHelper */
@@ -162,6 +165,9 @@ final class NavigationMiddlewareTest extends TestCase
         $navigationConfig->expects(self::once())
             ->method('setRouteResult')
             ->with($routeResult);
+        $navigationConfig->expects(self::once())
+            ->method('setRouter')
+            ->with($router);
 
         /** @var NavigationConfigInterface $navigationConfig */
         /** @var UrlHelper $urlHelper */
