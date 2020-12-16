@@ -61,6 +61,7 @@ final class ConstructedNavigationFactoryTest extends TestCase
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Failed to find a navigation container by the name "test"');
+        $this->expectExceptionCode(0);
 
         /* @var ContainerInterface $container */
         $factory($container);

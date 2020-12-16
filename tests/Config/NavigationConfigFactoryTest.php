@@ -38,6 +38,7 @@ final class NavigationConfigFactoryTest extends TestCase
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Could not find navigation configuration key');
+        $this->expectExceptionCode(0);
 
         /* @var ContainerInterface $container */
         $factory($container, '');
@@ -70,5 +71,7 @@ final class NavigationConfigFactoryTest extends TestCase
         $config = $factory($container, '');
 
         self::assertInstanceOf(NavigationConfig::class, $config);
+
+        self::assertSame($pages[NavigationConfigFactory::CONFIG_KEY], $config->getPages());
     }
 }

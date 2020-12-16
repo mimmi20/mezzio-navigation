@@ -370,7 +370,7 @@ trait ContainerTrait
     {
         ErrorHandler::start(E_WARNING);
 
-        $result = preg_match('/(find(?:One|All)By)(.+)/', $method, $match);
+        $result = preg_match('/(?P<function>find(?:One|All)By)(?P<property>.+)/', $method, $match);
         $error  = ErrorHandler::stop();
 
         if (!$result) {
@@ -385,7 +385,7 @@ trait ContainerTrait
             );
         }
 
-        return $this->{$match[1]}($match[2], $arguments[0]);
+        return $this->{$match['function']}($match['property'], $arguments[0]);
     }
 
     /**

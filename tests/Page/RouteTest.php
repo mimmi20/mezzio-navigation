@@ -517,6 +517,7 @@ final class RouteTest extends TestCase
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('A page cannot have itself as a parent');
+        $this->expectExceptionCode(0);
 
         $this->page->setParent($this->page);
     }
@@ -627,6 +628,7 @@ final class RouteTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid argument: $order must be a string, an integer or null');
+        $this->expectExceptionCode(0);
 
         $this->page->setOrder([]);
     }
@@ -959,6 +961,7 @@ final class RouteTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid argument: $property must be a non-empty string');
+        $this->expectExceptionCode(0);
 
         $this->page->set('', null);
     }
@@ -972,6 +975,7 @@ final class RouteTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid argument: $property must be a non-empty string');
+        $this->expectExceptionCode(0);
 
         $this->page->get('');
     }
@@ -1017,6 +1021,7 @@ final class RouteTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Unsetting native property "target" is not allowed');
+        $this->expectExceptionCode(0);
 
         unset($this->page->target);
     }
@@ -1098,6 +1103,7 @@ final class RouteTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid argument: $route must be a non-empty string');
+        $this->expectExceptionCode(0);
 
         $this->page->setRoute('');
     }
@@ -1163,6 +1169,8 @@ final class RouteTest extends TestCase
     {
         $this->expectException(DomainException::class);
         $this->expectExceptionMessage('Mezzio\Navigation\Page\Route::getHref cannot execute as no Mezzio\Router\RouterInterface instance is composed');
+        $this->expectExceptionCode(0);
+
         $this->page->getHref();
     }
 
@@ -1181,6 +1189,8 @@ final class RouteTest extends TestCase
 
         $this->expectException(DomainException::class);
         $this->expectExceptionMessage('No route name could be found');
+        $this->expectExceptionCode(0);
+
         $this->page->getHref();
     }
 
@@ -1429,6 +1439,7 @@ final class RouteTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('A page cannot have itself as a parent');
+        $this->expectExceptionCode(0);
 
         $this->page->addPage($this->page);
     }
@@ -1462,6 +1473,21 @@ final class RouteTest extends TestCase
     }
 
     /**
+     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     *
+     * @return void
+     */
+    public function testAddChildPageSelf(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('A page cannot have itself as a parent');
+        $this->expectExceptionCode(0);
+
+        $this->page->addPage($this->page);
+    }
+
+    /**
      * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
@@ -1471,6 +1497,7 @@ final class RouteTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid argument: $page must be an Instance of PageInterface');
+        $this->expectExceptionCode(0);
 
         $this->page->addPages(['test']);
     }
@@ -2346,6 +2373,7 @@ final class RouteTest extends TestCase
 
         $this->expectException(BadMethodCallException::class);
         $this->expectExceptionMessage('Bad method call: Unknown method Mezzio\Navigation\Page\Route::findAlllByTest');
+        $this->expectExceptionCode(0);
 
         $this->page->findAlllByTest($value);
     }
@@ -2425,6 +2453,7 @@ final class RouteTest extends TestCase
     {
         $this->expectException(OutOfBoundsException::class);
         $this->expectExceptionMessage('container is currently empty, could not find any key in internal iterator');
+        $this->expectExceptionCode(0);
 
         $this->page->current();
     }
@@ -2499,8 +2528,9 @@ final class RouteTest extends TestCase
 
         $this->expectException(OutOfBoundsException::class);
         $this->expectExceptionMessage('Corruption detected in container; invalid key found in internal iterator');
+        $this->expectExceptionCode(0);
 
-        self::assertSame($childPage1, $this->page->current());
+        $this->page->current();
     }
 
     /**

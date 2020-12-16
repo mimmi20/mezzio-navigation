@@ -473,6 +473,7 @@ final class UriTest extends TestCase
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('A page cannot have itself as a parent');
+        $this->expectExceptionCode(0);
 
         $this->page->setParent($this->page);
     }
@@ -583,6 +584,7 @@ final class UriTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid argument: $order must be a string, an integer or null');
+        $this->expectExceptionCode(0);
 
         $this->page->setOrder([]);
     }
@@ -821,6 +823,7 @@ final class UriTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid argument: $property must be a non-empty string');
+        $this->expectExceptionCode(0);
 
         $this->page->set('', null);
     }
@@ -834,6 +837,7 @@ final class UriTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid argument: $property must be a non-empty string');
+        $this->expectExceptionCode(0);
 
         $this->page->get('');
     }
@@ -879,6 +883,7 @@ final class UriTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Unsetting native property "target" is not allowed');
+        $this->expectExceptionCode(0);
 
         unset($this->page->target);
     }
@@ -1092,6 +1097,7 @@ final class UriTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('A page cannot have itself as a parent');
+        $this->expectExceptionCode(0);
 
         $this->page->addPage($this->page);
     }
@@ -1125,6 +1131,21 @@ final class UriTest extends TestCase
     }
 
     /**
+     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     *
+     * @return void
+     */
+    public function testAddChildPageSelf(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('A page cannot have itself as a parent');
+        $this->expectExceptionCode(0);
+
+        $this->page->addPage($this->page);
+    }
+
+    /**
      * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
@@ -1134,6 +1155,7 @@ final class UriTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid argument: $page must be an Instance of PageInterface');
+        $this->expectExceptionCode(0);
 
         $this->page->addPages(['test']);
     }
@@ -2009,6 +2031,7 @@ final class UriTest extends TestCase
 
         $this->expectException(BadMethodCallException::class);
         $this->expectExceptionMessage('Bad method call: Unknown method Mezzio\Navigation\Page\Uri::findAlllByTest');
+        $this->expectExceptionCode(0);
 
         $this->page->findAlllByTest($value);
     }
@@ -2088,6 +2111,7 @@ final class UriTest extends TestCase
     {
         $this->expectException(OutOfBoundsException::class);
         $this->expectExceptionMessage('container is currently empty, could not find any key in internal iterator');
+        $this->expectExceptionCode(0);
 
         $this->page->current();
     }
@@ -2162,6 +2186,7 @@ final class UriTest extends TestCase
 
         $this->expectException(OutOfBoundsException::class);
         $this->expectExceptionMessage('Corruption detected in container; invalid key found in internal iterator');
+        $this->expectExceptionCode(0);
 
         self::assertSame($childPage1, $this->page->current());
     }
