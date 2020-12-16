@@ -1473,7 +1473,6 @@ final class RouteTest extends TestCase
     }
 
     /**
-     * @throws \PHPUnit\Framework\MockObject\RuntimeException
      * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      *
      * @return void
