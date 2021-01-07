@@ -29,6 +29,12 @@ updates:
       - dependency-name: laminas/laminas-config
         versions:
           - ">= 0"
+      - dependency-name: mezzio/mezzio-helpers
+        versions:
+          - ">= 0"
+      - dependency-name: mezzio/mezzio-router
+        versions:
+          - ">= 0"
     commit-message:
       include: "scope"
       prefix: "Build"
