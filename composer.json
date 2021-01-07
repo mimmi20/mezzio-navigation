@@ -20,27 +20,31 @@
     "laminas/laminas-stdlib": "~3.2.1 || ~3.3.1",
     "psr/container": "^1.0.0"
   },
+  "conflict": {
+    "container-interop/container-interop": "<1.2.0",
+    "mezzio/mezzio-authorization": "*"
+  },
   "require-dev": {
     "infection/infection": "~0.13.6 || ~0.18 || ~0.20.2",
     "laminas/laminas-config": "~3.3.0 || ~3.4.0",
     "laminas/laminas-servicemanager": "~3.5.1",
     "mezzio/mezzio-helpers": "~5.3.0 || ~5.4.0",
-    "mezzio/mezzio-router": "~3.1.3 || ~3.2.1",
-    "mimmi20/coding-standard": "~1.0.7",
+    "mezzio/mezzio-router": "~3.1.3 || ~3.3.0",
+    "mimmi20/coding-standard": "~1.0.8",
     "mimmi20/mezzio-generic-authorization": "dev-master",
     "pepakriz/phpstan-exception-rules": "~0.11.3",
     "phpstan/extension-installer": "~1.1.0",
     "phpstan/phpstan": "~0.12.65",
     "phpstan/phpstan-deprecation-rules": "~0.12.6",
     "phpstan/phpstan-phpunit": "~0.12.17",
-    "phpstan/phpstan-strict-rules": "^0.12.5",
-    "phpunit/phpunit": "~7.5.20 || ~8.5.11 || ~9.4.3"
+    "phpstan/phpstan-strict-rules": "^0.12.7",
+    "phpunit/phpunit": "~7.5.20 || ~8.5.13 || ~9.5.0"
   },
   "suggest": {
     "laminas/laminas-config": "~3.3.0 || ~3.4.0, to provide page configuration (optional, as arrays and Traversables are also allowed)",
-    "laminas/laminas-servicemanager": "~3.4.1, to use the navigation factories",
-    "mezzio/mezzio-authorization": "^1.0.1, to provide access restrictions to pages",
-    "mezzio/mezzio-router": "~3.1.3 || ~3.2.1, to use router-based URI generation with pages",
+    "laminas/laminas-servicemanager": "~3.5.1, to use the navigation factories",
+    "mezzio/mezzio-router": "~3.1.3 || ~3.3.0, to use router-based URI generation with pages",
+    "mimmi20/mezzio-generic-authorization": "dev-master, to provide access restrictions to pages",
     "mimmi20/mezzio-navigation-laminasviewrenderer": "to use the navigation view helpers"
   },
   "config": {
