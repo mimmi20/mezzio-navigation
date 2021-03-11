@@ -38,7 +38,7 @@ final class NavigationTest extends TestCase
      * Testing that navigation order is done correctly
      *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \PHPUnit\Framework\Exception
      * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
@@ -60,7 +60,7 @@ final class NavigationTest extends TestCase
      * Testing that navigation order is done correctly
      *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \PHPUnit\Framework\Exception
      * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
@@ -88,7 +88,7 @@ final class NavigationTest extends TestCase
     }
 
     /**
-     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \PHPUnit\Framework\Exception
      * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      *
      * @return void
@@ -132,8 +132,7 @@ final class NavigationTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \PHPUnit\Framework\Exception
      * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      *
      * @return void
@@ -188,8 +187,7 @@ final class NavigationTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \PHPUnit\Framework\Exception
      * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      *
      * @return void
@@ -244,8 +242,7 @@ final class NavigationTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \PHPUnit\Framework\Exception
      * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      *
      * @return void
@@ -300,8 +297,7 @@ final class NavigationTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \PHPUnit\Framework\Exception
      * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      *
      * @return void
@@ -356,8 +352,7 @@ final class NavigationTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \PHPUnit\Framework\Exception
      * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      *
      * @return void
@@ -416,8 +411,7 @@ final class NavigationTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \PHPUnit\Framework\Exception
      * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      *
      * @return void
@@ -475,8 +469,7 @@ final class NavigationTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \PHPUnit\Framework\Exception
      * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      *
      * @return void
@@ -522,8 +515,7 @@ final class NavigationTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \PHPUnit\Framework\Exception
      * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      *
      * @return void
@@ -569,8 +561,7 @@ final class NavigationTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \PHPUnit\Framework\Exception
      * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      *
      * @return void
@@ -616,8 +607,7 @@ final class NavigationTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \PHPUnit\Framework\Exception
      * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      *
      * @return void
@@ -663,8 +653,7 @@ final class NavigationTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \PHPUnit\Framework\Exception
      * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      *
      * @return void
@@ -717,8 +706,7 @@ final class NavigationTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \PHPUnit\Framework\Exception
      * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      *
      * @return void
@@ -771,8 +759,7 @@ final class NavigationTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \PHPUnit\Framework\Exception
      * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      *
      * @return void
@@ -827,8 +814,7 @@ final class NavigationTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \PHPUnit\Framework\Exception
      * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      *
      * @return void
@@ -883,8 +869,7 @@ final class NavigationTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \PHPUnit\Framework\Exception
      * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      *
      * @return void
@@ -945,8 +930,7 @@ final class NavigationTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \PHPUnit\Framework\Exception
      * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      *
      * @return void
@@ -1048,8 +1032,7 @@ final class NavigationTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \PHPUnit\Framework\Exception
      * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      * @throws \Mezzio\Navigation\Exception\BadMethodCallException
      * @throws \ErrorException
@@ -1128,8 +1111,7 @@ final class NavigationTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \PHPUnit\Framework\Exception
      * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      * @throws \Mezzio\Navigation\Exception\OutOfBoundsException
      *
@@ -1203,8 +1185,7 @@ final class NavigationTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \PHPUnit\Framework\Exception
      * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      * @throws \Mezzio\Navigation\Exception\OutOfBoundsException
      *

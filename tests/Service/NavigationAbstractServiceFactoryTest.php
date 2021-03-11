@@ -34,8 +34,7 @@ final class NavigationAbstractServiceFactoryTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \PHPUnit\Framework\Exception
      * @throws \Psr\Container\ContainerExceptionInterface
      *
      * @return void
@@ -54,8 +53,7 @@ final class NavigationAbstractServiceFactoryTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \PHPUnit\Framework\Exception
      * @throws \Psr\Container\ContainerExceptionInterface
      *
      * @return void
@@ -87,8 +85,7 @@ final class NavigationAbstractServiceFactoryTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \PHPUnit\Framework\Exception
      * @throws \Psr\Container\ContainerExceptionInterface
      *
      * @return void
@@ -120,8 +117,7 @@ final class NavigationAbstractServiceFactoryTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \PHPUnit\Framework\Exception
      * @throws \Psr\Container\ContainerExceptionInterface
      *
      * @return void
@@ -153,8 +149,7 @@ final class NavigationAbstractServiceFactoryTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \PHPUnit\Framework\Exception
      *
      * @return void
      */
@@ -189,8 +184,7 @@ final class NavigationAbstractServiceFactoryTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \PHPUnit\Framework\Exception
      *
      * @return void
      */
@@ -224,7 +218,7 @@ final class NavigationAbstractServiceFactoryTest extends TestCase
     }
 
     /**
-     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \PHPUnit\Framework\Exception
      *
      * @return void
      */
