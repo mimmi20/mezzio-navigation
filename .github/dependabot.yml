@@ -3,11 +3,12 @@
 version: 2
 
 updates:
-  - package-ecosystem: composer
+  - package-ecosystem: "composer"
     directory: "/"
     schedule:
-      interval: daily
-      time: '04:00'
+      interval: "daily"
+      time: "04:00"
+      timezone: "Europe/Berlin"
     open-pull-requests-limit: 10
     reviewers:
       - "mimmi20"
@@ -16,34 +17,35 @@ updates:
     labels:
       - "dependencies"
     versioning-strategy: increase
-    ignore:
-      - dependency-name: infection/infection
-        versions:
-          - ">= 0"
-      - dependency-name: phpunit/phpunit
-        versions:
-          - ">= 0"
-      - dependency-name: laminas/laminas-stdlib
-        versions:
-          - ">= 0"
-      - dependency-name: laminas/laminas-config
-        versions:
-          - ">= 0"
-      - dependency-name: mezzio/mezzio-helpers
-        versions:
-          - ">= 0"
-      - dependency-name: mezzio/mezzio-router
-        versions:
-          - ">= 0"
     commit-message:
       include: "scope"
-      prefix: "Build"
+      prefix: "composer"
+#    ignore:
+#      - dependency-name: infection/infection
+#        versions:
+#          - ">= 0"
+#      - dependency-name: phpunit/phpunit
+#        versions:
+#          - ">= 0"
+#      - dependency-name: laminas/laminas-stdlib
+#        versions:
+#          - ">= 0"
+#      - dependency-name: laminas/laminas-config
+#        versions:
+#          - ">= 0"
+#      - dependency-name: mezzio/mezzio-helpers
+#        versions:
+#          - ">= 0"
+#      - dependency-name: mezzio/mezzio-router
+#        versions:
+#          - ">= 0"
 
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: daily
-      time: '04:00'
+      interval: "daily"
+      time: "04:00"
+      timezone: "Europe/Berlin"
     open-pull-requests-limit: 10
     reviewers:
       - "mimmi20"
