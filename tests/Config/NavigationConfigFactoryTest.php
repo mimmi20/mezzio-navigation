@@ -20,7 +20,7 @@ use Psr\Container\ContainerInterface;
 final class NavigationConfigFactoryTest extends TestCase
 {
     /**
-     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \PHPUnit\Framework\Exception
      *
      * @return void
      */
@@ -45,8 +45,7 @@ final class NavigationConfigFactoryTest extends TestCase
     }
 
     /**
-     * @throws \PHPUnit\Framework\MockObject\RuntimeException
-     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \PHPUnit\Framework\Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      *
      * @return void
