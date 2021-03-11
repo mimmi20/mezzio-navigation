@@ -1,9 +1,14 @@
 # mezzio-navigation
 
-[![Code Coverage](https://codecov.io/gh/mimmi20/mezzio-navigation/branch/master/graph/badge.svg)](https://codecov.io/gh/mimmi20/mezzio-navigation)
+[![Latest Stable Version](https://poser.pugx.org/mimmi20/mezzio-navigation/v/stable?format=flat-square)](https://packagist.org/packages/mimmi20/mezzio-navigation)
+[![Latest Unstable Version](https://poser.pugx.org/mimmi20/mezzio-navigation/v/unstable?format=flat-square)](https://packagist.org/packages/mimmi20/mezzio-navigation)
+[![License](https://poser.pugx.org/mimmi20/mezzio-navigation/license?format=flat-square)](https://packagist.org/packages/mimmi20/mezzio-navigation)
 
-[![Latest Stable Version](https://poser.pugx.org/mimmi20/mezzio-navigation/v/stable)](https://packagist.org/packages/mimmi20/mezzio-navigation)
-[![Total Downloads](https://poser.pugx.org/mimmi20/mezzio-navigation/downloads)](https://packagist.org/packages/mimmi20/mezzio-navigation)
+## Code Status
+
+[![codecov](https://codecov.io/gh/mimmi20/mezzio-navigation/branch/master/graph/badge.svg)](https://codecov.io/gh/mimmi20/mezzio-navigation)
+[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/mimmi20/mezzio-navigation.svg)](http://isitmaintained.com/project/mimmi20/mezzio-navigation "Average time to resolve an issue")
+[![Percentage of issues still open](http://isitmaintained.com/badge/open/mimmi20/mezzio-navigation.svg)](http://isitmaintained.com/project/mimmi20/mezzio-navigation "Percentage of issues still open")
 
 # Introduction
 

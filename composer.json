@@ -16,40 +16,40 @@
     }
   ],
   "require": {
-    "php": "^7.1.3 || ^8.0.0",
-    "laminas/laminas-stdlib": "~3.2.1 || ~3.3.1",
-    "psr/container": "^1.0.0"
+    "php": "^7.4.0 || ^8.0.0",
+    "laminas/laminas-stdlib": "^3.3.1",
+    "psr/container": "^1.0.0 || ^2.0.0"
   },
   "conflict": {
     "container-interop/container-interop": "<1.2.0",
     "mezzio/mezzio-authorization": "*"
   },
   "require-dev": {
-    "infection/infection": "~0.13.6 || ~0.18 || ~0.20.2",
-    "laminas/laminas-config": "~3.3.0 || ~3.4.0",
-    "laminas/laminas-servicemanager": "~3.5.2",
-    "mezzio/mezzio-helpers": "~5.3.0 || ~5.4.0",
-    "mezzio/mezzio-router": "~3.1.3 || ~3.3.0",
-    "mimmi20/coding-standard": "~1.0.10",
-    "mimmi20/mezzio-generic-authorization": "~1.0.1",
-    "pepakriz/phpstan-exception-rules": "~0.11.6",
-    "phpstan/extension-installer": "~1.1.0",
-    "phpstan/phpstan": "~0.12.81",
-    "phpstan/phpstan-deprecation-rules": "~0.12.6",
-    "phpstan/phpstan-phpunit": "~0.12.18",
+    "infection/infection": "^0.21.4",
+    "laminas/laminas-config": "^3.5.0",
+    "laminas/laminas-servicemanager": "^3.6.4",
+    "mezzio/mezzio-helpers": "^5.4.0",
+    "mezzio/mezzio-router": "^3.3.0",
+    "mimmi20/coding-standard": "^2.0.1",
+    "mimmi20/mezzio-generic-authorization": "^2.0.0",
+    "pepakriz/phpstan-exception-rules": "^0.11.6",
+    "phpstan/extension-installer": "^1.1.0",
+    "phpstan/phpstan": "^0.12.81",
+    "phpstan/phpstan-deprecation-rules": "^0.12.6",
+    "phpstan/phpstan-phpunit": "^0.12.18",
     "phpstan/phpstan-strict-rules": "^0.12.9",
-    "phpunit/phpunit": "~7.5.20 || ~8.5.13 || ~9.5.0"
+    "phpunit/phpunit": "^9.5.2"
   },
   "suggest": {
-    "laminas/laminas-config": "~3.3.0 || ~3.4.0, to provide page configuration (optional, as arrays and Traversables are also allowed)",
-    "laminas/laminas-servicemanager": "~3.5.1, to use the navigation factories",
-    "mezzio/mezzio-router": "~3.1.3 || ~3.3.0, to use router-based URI generation with pages",
+    "laminas/laminas-config": "^3.5.0, to provide page configuration (optional, as arrays and Traversables are also allowed)",
+    "laminas/laminas-servicemanager": "^3.6.4, to use the navigation factories",
+    "mezzio/mezzio-router": "^3.1.3 || ^3.3.0, to use router-based URI generation with pages",
     "mimmi20/mezzio-generic-authorization": "dev-master, to provide access restrictions to pages",
     "mimmi20/mezzio-navigation-laminasviewrenderer": "to use the navigation view helpers"
   },
   "config": {
     "platform": {
-      "php": "7.1.3"
+      "php": "7.4.0"
     },
     "preferred-install": "dist",
     "sort-packages": true
