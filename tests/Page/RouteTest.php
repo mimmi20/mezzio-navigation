@@ -2578,6 +2578,7 @@ final class RouteTest extends TestCase
      * @ throws \Mezzio\Navigation\Exception\InvalidArgumentException
      *
      * @throws \PHPUnit\Framework\SyntheticSkippedError
+     * @throws \PHPUnit\Framework\SkippedTestError
      *
      * @return void
      */
