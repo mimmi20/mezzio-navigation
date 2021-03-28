@@ -9,6 +9,7 @@
  */
 
 declare(strict_types = 1);
+
 namespace MezzioTest\Navigation\Config;
 
 use Mezzio\GenericAuthorization\AuthorizationInterface;
@@ -16,27 +17,25 @@ use Mezzio\Helper\UrlHelper;
 use Mezzio\Navigation\Config\NavigationConfig;
 use Mezzio\Router\RouteResult;
 use Mezzio\Router\RouterInterface;
+use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
+use SebastianBergmann\RecursionContext\InvalidArgumentException;
+
+use function assert;
 
 final class NavigationConfigTest extends TestCase
 {
-    /** @var NavigationConfig */
-    private $config;
+    private NavigationConfig $config;
 
-    /**
-     * @return void
-     */
     protected function setUp(): void
     {
         $this->config = new NavigationConfig();
     }
 
     /**
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testSetUrlHelper(): void
     {
@@ -44,17 +43,15 @@ final class NavigationConfigTest extends TestCase
 
         $helper = $this->createMock(UrlHelper::class);
 
-        /* @var UrlHelper $helper */
+        assert($helper instanceof UrlHelper);
         $this->config->setUrlHelper($helper);
 
         self::assertSame($helper, $this->config->getUrlHelper());
     }
 
     /**
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testSetRouteResult(): void
     {
@@ -62,17 +59,15 @@ final class NavigationConfigTest extends TestCase
 
         $routeResult = $this->createMock(RouteResult::class);
 
-        /* @var RouteResult $routeResult */
+        assert($routeResult instanceof RouteResult);
         $this->config->setRouteResult($routeResult);
 
         self::assertSame($routeResult, $this->config->getRouteResult());
     }
 
     /**
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testSetRouter(): void
     {
@@ -80,17 +75,15 @@ final class NavigationConfigTest extends TestCase
 
         $router = $this->createMock(RouterInterface::class);
 
-        /* @var RouterInterface $router */
+        assert($router instanceof RouterInterface);
         $this->config->setRouter($router);
 
         self::assertSame($router, $this->config->getRouter());
     }
 
     /**
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testSetRequest(): void
     {
@@ -98,17 +91,15 @@ final class NavigationConfigTest extends TestCase
 
         $request = $this->createMock(ServerRequestInterface::class);
 
-        /* @var ServerRequestInterface $request */
+        assert($request instanceof ServerRequestInterface);
         $this->config->setRequest($request);
 
         self::assertSame($request, $this->config->getRequest());
     }
 
     /**
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testSetAuthorization(): void
     {
@@ -116,17 +107,15 @@ final class NavigationConfigTest extends TestCase
 
         $authorization = $this->createMock(AuthorizationInterface::class);
 
-        /* @var AuthorizationInterface $authorization */
+        assert($authorization instanceof AuthorizationInterface);
         $this->config->setAuthorization($authorization);
 
         self::assertSame($authorization, $this->config->getAuthorization());
     }
 
     /**
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testSetPages(): void
     {

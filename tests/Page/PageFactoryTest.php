@@ -9,6 +9,7 @@
  */
 
 declare(strict_types = 1);
+
 namespace MezzioTest\Navigation\Page;
 
 use Mezzio\Navigation\Exception\InvalidArgumentException;
@@ -18,18 +19,18 @@ use Mezzio\Navigation\Page\Route;
 use Mezzio\Navigation\Page\Uri;
 use MezzioTest\Navigation\TestAsset\InvalidPage;
 use MezzioTest\Navigation\TestAsset\Page;
+use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
+
+use function sprintf;
 
 final class PageFactoryTest extends TestCase
 {
-    /** @var \Mezzio\Navigation\Page\PageFactory */
-    private $factory;
+    private PageFactory $factory;
 
     /**
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
-     *
-     * @return void
      */
     protected function setUp(): void
     {
@@ -37,9 +38,7 @@ final class PageFactoryTest extends TestCase
     }
 
     /**
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws InvalidArgumentException
      */
     public function testFactoryInvalidType(): void
     {
@@ -54,10 +53,8 @@ final class PageFactoryTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testDetectFactoryPage(): void
     {
@@ -98,10 +95,8 @@ final class PageFactoryTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testDetectMvcPage(): void
     {
@@ -119,10 +114,8 @@ final class PageFactoryTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testDetectUriPage(): void
     {
@@ -138,10 +131,8 @@ final class PageFactoryTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testMvcShouldHaveDetectionPrecedence(): void
     {
@@ -158,10 +149,8 @@ final class PageFactoryTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testSupportsMvcShorthand(): void
     {
@@ -177,10 +166,8 @@ final class PageFactoryTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testSupportsUriShorthand(): void
     {
@@ -197,10 +184,8 @@ final class PageFactoryTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testSupportsCustomPageTypes(): void
     {
@@ -215,9 +200,7 @@ final class PageFactoryTest extends TestCase
     }
 
     /**
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws InvalidArgumentException
      */
     public function testShouldFailForInvalidType(): void
     {
@@ -240,9 +223,7 @@ final class PageFactoryTest extends TestCase
     }
 
     /**
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws InvalidArgumentException
      */
     public function testShouldFailIfUnableToDetermineType(): void
     {

@@ -9,6 +9,7 @@
  */
 
 declare(strict_types = 1);
+
 namespace Mezzio\Navigation\Service;
 
 use Interop\Container\ContainerInterface;
@@ -17,6 +18,13 @@ use Laminas\ServiceManager\ServiceLocatorInterface;
 use Mezzio\Navigation\Config\NavigationConfigInterface;
 use Mezzio\Navigation\Exception\InvalidArgumentException;
 use Mezzio\Navigation\Navigation;
+use Psr\Container\ContainerExceptionInterface;
+
+use function mb_strlen;
+use function mb_strpos;
+use function mb_strtolower;
+use function mb_substr;
+use function sprintf;
 
 /**
  * Navigation abstract service factory
@@ -32,15 +40,33 @@ final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
     public const SERVICE_PREFIX = 'Mezzio\\Navigation\\';
 
     /**
+     * @param string            $requestedName
+     * @param array<mixed>|null $options
+     *
+     * @throws ContainerExceptionInterface
+     * @throws InvalidArgumentException
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+     */
+    public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null): Navigation
+    {
+        $factory = new ConstructedNavigationFactory(
+            $this->getNamedConfigName($container, $requestedName)
+        );
+
+        return $factory($container);
+    }
+
+    /**
      * Can we create a navigation by the requested name? (v3)
      *
-     * @param ContainerInterface $container
-     * @param string             $requestedName Name by which service was requested, must
-     *                                          start with Mezzio\Navigation\
+     * @param string $requestedName Name by which service was requested, must
+     *                              start with Mezzio\Navigation\
      *
-     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws ContainerExceptionInterface
      *
-     * @return bool
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
     public function canCreate(ContainerInterface $container, $requestedName): bool
     {
@@ -54,30 +80,39 @@ final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
     }
 
     /**
-     * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param array|null         $options
+     * Determine if we can create a service with name
      *
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws InvalidArgumentException
+     * @param string $name
+     * @param string $requestedName
      *
-     * @return Navigation
+     * @throws ContainerExceptionInterface
+     *
+     * @codeCoverageIgnore
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
      */
-    public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null): Navigation
+    public function canCreateServiceWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName): bool
     {
-        $factory = new ConstructedNavigationFactory(
-            $this->getNamedConfigName($container, $requestedName)
-        );
+        return $this->canCreate($serviceLocator, $requestedName);
+    }
 
-        return $factory($container);
+    /**
+     * Create service with name
+     *
+     * @param string $name
+     * @param string $requestedName
+     *
+     * @codeCoverageIgnore
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
+     * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
+     */
+    public function createServiceWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName): Navigation
+    {
+        return $this($serviceLocator, $requestedName);
     }
 
     /**
      * Extract config name from service name
-     *
-     * @param string $name
-     *
-     * @return string
      */
     private function getConfigName(string $name): string
     {
@@ -86,11 +121,6 @@ final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
 
     /**
      * Does the configuration have a matching named section?
-     *
-     * @param string                    $name
-     * @param NavigationConfigInterface $config
-     *
-     * @return bool
      */
     private function hasNamedConfig(string $name, NavigationConfigInterface $config): bool
     {
@@ -108,13 +138,8 @@ final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
     /**
      * Get the matching named configuration section.
      *
-     * @param ContainerInterface $container
-     * @param string             $name
-     *
-     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws ContainerExceptionInterface
      * @throws InvalidArgumentException
-     *
-     * @return string
      */
     private function getNamedConfigName(ContainerInterface $container, string $name): string
     {
@@ -134,39 +159,5 @@ final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
         throw new InvalidArgumentException(
             sprintf('Failed to find a navigation container by the name "%s"', $name)
         );
-    }
-
-    /**
-     * Determine if we can create a service with name
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @param string                  $name
-     * @param string                  $requestedName
-     *
-     * @throws \Psr\Container\ContainerExceptionInterface
-     *
-     * @return bool
-     *
-     * @codeCoverageIgnore
-     */
-    public function canCreateServiceWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName): bool
-    {
-        return $this->canCreate($serviceLocator, $requestedName);
-    }
-
-    /**
-     * Create service with name
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @param string                  $name
-     * @param string                  $requestedName
-     *
-     * @return Navigation
-     *
-     * @codeCoverageIgnore
-     */
-    public function createServiceWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName): Navigation
-    {
-        return $this($serviceLocator, $requestedName);
     }
 }

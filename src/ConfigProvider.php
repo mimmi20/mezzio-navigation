@@ -9,6 +9,7 @@
  */
 
 declare(strict_types = 1);
+
 namespace Mezzio\Navigation;
 
 use Laminas\ServiceManager\Factory\InvokableFactory;
@@ -18,9 +19,9 @@ final class ConfigProvider
     /**
      * Return general-purpose laminas-navigation configuration.
      *
-     * @return array
+     * @return array<string, array<string, array<int|string, string>>>
      */
-    public function __invoke()
+    public function __invoke(): array
     {
         return [
             'dependencies' => $this->getDependencyConfig(),
@@ -30,9 +31,9 @@ final class ConfigProvider
     /**
      * Return application-level dependency configuration.
      *
-     * @return array
+     * @return array<string, array<int|string, string>>
      */
-    public function getDependencyConfig()
+    public function getDependencyConfig(): array
     {
         return [
             'abstract_factories' => [

@@ -9,6 +9,7 @@
  */
 
 declare(strict_types = 1);
+
 namespace MezzioTest\Navigation\Service;
 
 use Mezzio\Navigation\Config\NavigationConfigInterface;
@@ -23,27 +24,24 @@ use Mezzio\Navigation\Page\UriInterface;
 use Mezzio\Navigation\Service\DefaultNavigationFactory;
 use Mezzio\Router\RouteResult;
 use Mezzio\Router\RouterInterface;
+use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
+use function assert;
+
 final class DefaultNavigationFactoryTest extends TestCase
 {
-    /** @var DefaultNavigationFactory */
-    private $factory;
+    private DefaultNavigationFactory $factory;
 
-    /**
-     * @return void
-     */
     protected function setUp(): void
     {
         $this->factory = new DefaultNavigationFactory();
     }
 
     /**
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testCanNotInvokeWithoutConfig(): void
     {
@@ -74,15 +72,13 @@ final class DefaultNavigationFactoryTest extends TestCase
         $this->expectExceptionMessage('Failed to find a navigation container by the name "default"');
         $this->expectExceptionCode(0);
 
-        /* @var ContainerInterface $container */
+        assert($container instanceof ContainerInterface);
         ($this->factory)($container);
     }
 
     /**
-     * @throws \PHPUnit\Framework\Exception
+     * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @return void
      */
     public function testInvoke(): void
     {
@@ -92,7 +88,7 @@ final class DefaultNavigationFactoryTest extends TestCase
         $page2Config = [
             'type' => Uri::class,
         ];
-        $pageConfig = [
+        $pageConfig  = [
             'default' => [
                 $page1Config,
                 $page2Config,
@@ -145,7 +141,7 @@ final class DefaultNavigationFactoryTest extends TestCase
             ->withConsecutive([NavigationConfigInterface::class], [PageFactoryInterface::class])
             ->willReturnOnConsecutiveCalls($navigationConfig, $pageFactory);
 
-        /** @var ContainerInterface $container */
+        assert($container instanceof ContainerInterface);
         $navigation = ($this->factory)($container);
 
         self::assertInstanceOf(Navigation::class, $navigation);
@@ -157,10 +153,8 @@ final class DefaultNavigationFactoryTest extends TestCase
     }
 
     /**
-     * @throws \PHPUnit\Framework\Exception
+     * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @return void
      */
     public function testInvokeWithRouteResult(): void
     {
@@ -170,7 +164,7 @@ final class DefaultNavigationFactoryTest extends TestCase
         $page2Config = [
             'type' => Uri::class,
         ];
-        $pageConfig = [
+        $pageConfig  = [
             'default' => [
                 $page1Config,
                 $page2Config,
@@ -236,7 +230,7 @@ final class DefaultNavigationFactoryTest extends TestCase
             ->withConsecutive([NavigationConfigInterface::class], [PageFactoryInterface::class])
             ->willReturnOnConsecutiveCalls($navigationConfig, $pageFactory);
 
-        /** @var ContainerInterface $container */
+        assert($container instanceof ContainerInterface);
         $navigation = ($this->factory)($container);
 
         self::assertInstanceOf(Navigation::class, $navigation);
@@ -248,10 +242,8 @@ final class DefaultNavigationFactoryTest extends TestCase
     }
 
     /**
-     * @throws \PHPUnit\Framework\Exception
+     * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @return void
      */
     public function testInvokeWithSubPages(): void
     {
@@ -262,7 +254,7 @@ final class DefaultNavigationFactoryTest extends TestCase
             'type' => Uri::class,
             'pages' => [$page1Config],
         ];
-        $pageConfig = [
+        $pageConfig  = [
             'default' => [$page2Config],
         ];
 
@@ -326,7 +318,7 @@ final class DefaultNavigationFactoryTest extends TestCase
             ->withConsecutive([NavigationConfigInterface::class], [PageFactoryInterface::class])
             ->willReturnOnConsecutiveCalls($navigationConfig, $pageFactory);
 
-        /** @var ContainerInterface $container */
+        assert($container instanceof ContainerInterface);
         $navigation = ($this->factory)($container);
 
         self::assertInstanceOf(Navigation::class, $navigation);

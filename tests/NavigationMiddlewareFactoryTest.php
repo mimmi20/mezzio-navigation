@@ -9,6 +9,7 @@
  */
 
 declare(strict_types = 1);
+
 namespace MezzioTest\Navigation;
 
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
@@ -20,15 +21,17 @@ use Mezzio\Navigation\Exception\MissingHelperException;
 use Mezzio\Navigation\NavigationMiddleware;
 use Mezzio\Navigation\NavigationMiddlewareFactory;
 use Mezzio\Router\RouterInterface;
+use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
+
+use function assert;
+use function sprintf;
 
 final class NavigationMiddlewareFactoryTest extends TestCase
 {
     /**
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testFactoryWithoutNavigationConfig(): void
     {
@@ -54,14 +57,12 @@ final class NavigationMiddlewareFactoryTest extends TestCase
         );
         $this->expectExceptionCode(0);
 
-        /* @var ContainerInterface $container */
+        assert($container instanceof ContainerInterface);
         $factory($container);
     }
 
     /**
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testFactoryWithoutUrlHelper(): void
     {
@@ -87,15 +88,13 @@ final class NavigationMiddlewareFactoryTest extends TestCase
         );
         $this->expectExceptionCode(0);
 
-        /* @var ContainerInterface $container */
+        assert($container instanceof ContainerInterface);
         $factory($container);
     }
 
     /**
-     * @throws \PHPUnit\Framework\Exception
+     * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @return void
      */
     public function testFactory(): void
     {
@@ -118,15 +117,13 @@ final class NavigationMiddlewareFactoryTest extends TestCase
 
         $factory = new NavigationMiddlewareFactory();
 
-        /** @var ContainerInterface $container */
+        assert($container instanceof ContainerInterface);
         $middleware = $factory($container);
         self::assertInstanceOf(NavigationMiddleware::class, $middleware);
     }
 
     /**
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testFactoryContainerExceptionAuthorizationInterface(): void
     {
@@ -155,15 +152,13 @@ final class NavigationMiddlewareFactoryTest extends TestCase
         );
         $this->expectExceptionCode(0);
 
-        /* @var ContainerInterface $container */
+        assert($container instanceof ContainerInterface);
         $factory($container);
     }
 
     /**
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Laminas\ServiceManager\Exception\ServiceNotCreatedException
-     *
-     * @return void
+     * @throws Exception
+     * @throws ServiceNotCreatedException
      */
     public function testFactoryContainerExceptionRouterInterface(): void
     {
@@ -201,15 +196,13 @@ final class NavigationMiddlewareFactoryTest extends TestCase
         );
         $this->expectExceptionCode(0);
 
-        /* @var ContainerInterface $container */
+        assert($container instanceof ContainerInterface);
         $factory($container);
     }
 
     /**
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Laminas\ServiceManager\Exception\ServiceNotCreatedException
-     *
-     * @return void
+     * @throws Exception
+     * @throws ServiceNotCreatedException
      */
     public function testFactoryContainerExceptionNavigationConfig(): void
     {
@@ -252,15 +245,13 @@ final class NavigationMiddlewareFactoryTest extends TestCase
         );
         $this->expectExceptionCode(0);
 
-        /* @var ContainerInterface $container */
+        assert($container instanceof ContainerInterface);
         $factory($container);
     }
 
     /**
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Laminas\ServiceManager\Exception\ServiceNotCreatedException
-     *
-     * @return void
+     * @throws Exception
+     * @throws ServiceNotCreatedException
      */
     public function testFactoryContainerExceptionUrlHelper(): void
     {
@@ -308,15 +299,13 @@ final class NavigationMiddlewareFactoryTest extends TestCase
         );
         $this->expectExceptionCode(0);
 
-        /* @var ContainerInterface $container */
+        assert($container instanceof ContainerInterface);
         $factory($container);
     }
 
     /**
-     * @throws \PHPUnit\Framework\Exception
+     * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @return void
      */
     public function testFactoryAllowsSerialization(): void
     {
@@ -349,7 +338,7 @@ final class NavigationMiddlewareFactoryTest extends TestCase
 
         self::assertInstanceOf(NavigationMiddlewareFactory::class, $factory);
 
-        /** @var ContainerInterface $container */
+        assert($container instanceof ContainerInterface);
         $middleware = $factory($container);
         self::assertInstanceOf(NavigationMiddleware::class, $middleware);
     }

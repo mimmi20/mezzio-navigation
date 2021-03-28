@@ -9,6 +9,7 @@
  */
 
 declare(strict_types = 1);
+
 namespace Mezzio\Navigation\Config;
 
 use Mezzio\GenericAuthorization\AuthorizationInterface;
@@ -22,116 +23,71 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 final class NavigationConfig implements NavigationConfigInterface
 {
-    /** @var UrlHelper|null */
-    private $urlHelper;
+    private ?UrlHelper $urlHelper = null;
 
-    /** @var RouteResult|null */
-    private $routeResult;
+    private ?RouteResult $routeResult = null;
 
-    /** @var \Mezzio\Router\RouterInterface|null */
-    private $router;
+    private ?RouterInterface $router = null;
 
-    /** @var ServerRequestInterface|null */
-    private $request;
+    private ?ServerRequestInterface $request = null;
 
-    /** @var AuthorizationInterface|null */
-    private $authorization;
+    private ?AuthorizationInterface $authorization = null;
 
-    /** @var array[]|null */
-    private $pages;
+    /** @var array<int|string, array<mixed>>|null */
+    private ?array $pages = null;
 
-    /**
-     * @return UrlHelper|null
-     */
     public function getUrlHelper(): ?UrlHelper
     {
         return $this->urlHelper;
     }
 
-    /**
-     * @param UrlHelper $urlHelper
-     *
-     * @return void
-     */
     public function setUrlHelper(UrlHelper $urlHelper): void
     {
         $this->urlHelper = $urlHelper;
     }
 
-    /**
-     * @return RouteResult|null
-     */
     public function getRouteResult(): ?RouteResult
     {
         return $this->routeResult;
     }
 
-    /**
-     * @param RouteResult $routeResult
-     *
-     * @return void
-     */
     public function setRouteResult(RouteResult $routeResult): void
     {
         $this->routeResult = $routeResult;
     }
 
-    /**
-     * @return \Mezzio\Router\RouterInterface|null
-     */
     public function getRouter(): ?RouterInterface
     {
         return $this->router;
     }
 
-    /**
-     * @param \Mezzio\Router\RouterInterface|null $router
-     *
-     * @return void
-     */
     public function setRouter(?RouterInterface $router): void
     {
         $this->router = $router;
     }
 
-    /**
-     * @return ServerRequestInterface|null
-     */
     public function getRequest(): ?ServerRequestInterface
     {
         return $this->request;
     }
 
-    /**
-     * @param ServerRequestInterface $request
-     *
-     * @return void
-     */
     public function setRequest(ServerRequestInterface $request): void
     {
         $this->request = $request;
     }
 
-    /**
-     * @return AuthorizationInterface|null
-     */
     public function getAuthorization(): ?AuthorizationInterface
     {
         return $this->authorization;
     }
 
-    /**
-     * @param AuthorizationInterface|null $authorization
-     *
-     * @return void
-     */
     public function setAuthorization(?AuthorizationInterface $authorization = null): void
     {
         $this->authorization = $authorization;
     }
 
     /**
-     * @return array[]|null
+     * @return array<int|string, array<mixed>>|null
      */
     public function getPages(): ?array
     {
@@ -139,9 +95,7 @@ final class NavigationConfig implements NavigationConfigInterface
     }
 
     /**
-     * @param array[] $pages
-     *
-     * @return void
+     * @param array<int|string, array<mixed>> $pages
      */
     public function setPages(array $pages): void
     {

@@ -9,6 +9,7 @@
  */
 
 declare(strict_types = 1);
+
 namespace Mezzio\Navigation\Page;
 
 use Mezzio\Navigation\Exception;
@@ -30,15 +31,11 @@ interface PageFactoryInterface
      * - If $options contains the key 'route', a Mezzio\Navigation\Page\Route page will be created.
      * - If $options contains the key 'uri', a Mezzio\Navigation\Page\Uri page will be created.
      *
-     * @param array $options options used for creating page
-     *
-     * @throws Exception\InvalidArgumentException if 'type' is specified but class not found
-     * @throws Exception\InvalidArgumentException if something goes wrong during instantiation of the page
-     * @throws Exception\InvalidArgumentException if 'type' is given, and the specified type does not extend this class
-     * @throws Exception\InvalidArgumentException if unable to determine which class to instantiate
-     * @throws Exception\InvalidArgumentException if $options is not array/Traversable
+     * @param array<string, array<mixed>|string> $options options used for creating page
      *
      * @return PageInterface a page instance
+     *
+     * @throws Exception\InvalidArgumentException
      */
     public function factory(array $options): PageInterface;
 }

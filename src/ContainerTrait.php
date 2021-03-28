@@ -9,11 +9,31 @@
  */
 
 declare(strict_types = 1);
+
 namespace Mezzio\Navigation;
 
+use ErrorException;
 use Laminas\Stdlib\ErrorHandler;
+use Laminas\Stdlib\Exception\InvalidArgumentException;
+use Mezzio\Navigation\Exception\OutOfBoundsException;
 use Mezzio\Navigation\Page\PageInterface;
 use RecursiveIteratorIterator;
+
+use function array_key_exists;
+use function array_keys;
+use function array_search;
+use function asort;
+use function assert;
+use function count;
+use function current;
+use function is_int;
+use function key;
+use function next;
+use function preg_match;
+use function reset;
+use function sprintf;
+
+use const E_WARNING;
 
 /**
  * Trait for Mezzio\Navigation\Page classes.
@@ -23,63 +43,67 @@ trait ContainerTrait
     /**
      * Contains sub pages
      *
-     * @var PageInterface[]
+     * @var array<PageInterface>
      */
-    private $pages = [];
+    private array $pages = [];
 
     /**
      * An index that contains the order in which to iterate pages
      *
-     * @var array
+     * @var array<string, int|null>
      */
-    private $index = [];
+    private array $index = [];
 
     /**
      * Whether index is dirty and needs to be re-arranged
-     *
-     * @var bool
      */
-    private $dirtyIndex = false;
-
-    // Internal methods:
+    private bool $dirtyIndex = false;
 
     /**
-     * Sorts the page index according to page order
+     * Magic overload: Proxy calls to finder methods
      *
-     * @return void
+     * Examples of finder calls:
+     * <code>
+     * // METHOD                    // SAME AS
+     * $nav->findByLabel('foo');    // $nav->findOneBy('label', 'foo');
+     * $nav->findOneByLabel('foo'); // $nav->findOneBy('label', 'foo');
+     * $nav->findAllByClass('foo'); // $nav->findAllBy('class', 'foo');
+     * </code>
+     *
+     * @param string       $method    method name
+     * @param array<mixed> $arguments method arguments
+     *
+     * @return mixed
+     *
+     * @throws Exception\BadMethodCallException if method does not exist
+     * @throws ErrorException
      */
-    private function sort(): void
+    public function __call(string $method, array $arguments)
     {
-        if (!$this->dirtyIndex) {
-            return;
+        ErrorHandler::start(E_WARNING);
+
+        $result = preg_match('/(?P<function>find(?:One|All)By)(?P<property>.+)/', $method, $match);
+        $error  = ErrorHandler::stop();
+
+        if (!$result) {
+            throw new Exception\BadMethodCallException(
+                sprintf(
+                    'Bad method call: Unknown method %s::%s',
+                    static::class,
+                    $method
+                ),
+                0,
+                $error
+            );
         }
 
-        $newIndex = [];
-        $index    = 0;
-
-        foreach ($this->pages as $hash => $page) {
-            $order = $page->getOrder();
-
-            if (null === $order) {
-                $newIndex[$hash] = $index;
-                ++$index;
-            } else {
-                $newIndex[$hash] = $order;
-            }
-        }
-
-        asort($newIndex);
-
-        $this->index      = $newIndex;
-        $this->dirtyIndex = false;
+        return $this->{$match['function']}($match['property'], $arguments[0]);
     }
 
     // Public methods:
 
     /**
      * Notifies container that the order of pages are updated
-     *
-     * @return void
      */
     final public function notifyOrderUpdated(): void
     {
@@ -94,8 +118,6 @@ trait ContainerTrait
      * @param PageInterface $page page to add
      *
      * @throws Exception\InvalidArgumentException if page is invalid
-     *
-     * @return void
      */
     final public function addPage(PageInterface $page): void
     {
@@ -124,12 +146,10 @@ trait ContainerTrait
     /**
      * Adds several pages at once
      *
-     * @param PageInterface[] $pages pages to add
+     * @param array<PageInterface> $pages pages to add
      *
-     * @throws Exception\InvalidArgumentException                 if $pages is not array, Traversable or PageInterface
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception\InvalidArgumentException if $pages is not array, Traversable or PageInterface
+     * @throws InvalidArgumentException
      */
     final public function addPages(iterable $pages): void
     {
@@ -147,12 +167,10 @@ trait ContainerTrait
     /**
      * Sets pages this container should have, removing existing pages
      *
-     * @param PageInterface[] $pages pages to set
+     * @param array<PageInterface> $pages pages to set
      *
      * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws InvalidArgumentException
      */
     final public function setPages(iterable $pages): void
     {
@@ -163,7 +181,7 @@ trait ContainerTrait
     /**
      * Returns pages in the container
      *
-     * @return PageInterface[]
+     * @return array<PageInterface>
      */
     final public function getPages(): array
     {
@@ -204,7 +222,7 @@ trait ContainerTrait
 
         if ($recursive) {
             foreach ($this->pages as $childPage) {
-                \assert($childPage instanceof PageInterface);
+                assert($childPage instanceof PageInterface);
 
                 if ($childPage->hasPage($page, true)) {
                     $childPage->removePage($page, true);
@@ -219,8 +237,6 @@ trait ContainerTrait
 
     /**
      * Removes all pages in container
-     *
-     * @return void
      */
     final public function removePages(): void
     {
@@ -278,7 +294,7 @@ trait ContainerTrait
     {
         if ($onlyVisible) {
             foreach ($this->pages as $page) {
-                \assert($page instanceof PageInterface);
+                assert($page instanceof PageInterface);
 
                 if ($page->isVisible()) {
                     return true;
@@ -298,16 +314,16 @@ trait ContainerTrait
      * @param string $property name of property to match against
      * @param mixed  $value    value to match property against
      *
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
      * @return PageInterface|null matching page or null
+     *
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      */
     final public function findOneBy(string $property, $value): ?PageInterface
     {
         $iterator = new RecursiveIteratorIterator($this, RecursiveIteratorIterator::SELF_FIRST);
 
         foreach ($iterator as $page) {
-            \assert($page instanceof PageInterface);
+            assert($page instanceof PageInterface);
 
             if ($page->get($property) === $value) {
                 return $page;
@@ -324,9 +340,9 @@ trait ContainerTrait
      * @param string $property name of property to match against
      * @param mixed  $value    value to match property against
      *
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @return array<PageInterface> array containing only Page\PageInterface instances
      *
-     * @return PageInterface[] array containing only Page\PageInterface instances
+     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      */
     final public function findAllBy(string $property, $value): array
     {
@@ -335,7 +351,7 @@ trait ContainerTrait
         $iterator = new RecursiveIteratorIterator($this, RecursiveIteratorIterator::SELF_FIRST);
 
         foreach ($iterator as $page) {
-            \assert($page instanceof PageInterface);
+            assert($page instanceof PageInterface);
 
             if ($page->get($property) !== $value) {
                 continue;
@@ -348,50 +364,9 @@ trait ContainerTrait
     }
 
     /**
-     * Magic overload: Proxy calls to finder methods
-     *
-     * Examples of finder calls:
-     * <code>
-     * // METHOD                    // SAME AS
-     * $nav->findByLabel('foo');    // $nav->findOneBy('label', 'foo');
-     * $nav->findOneByLabel('foo'); // $nav->findOneBy('label', 'foo');
-     * $nav->findAllByClass('foo'); // $nav->findAllBy('class', 'foo');
-     * </code>
-     *
-     * @param string $method    method name
-     * @param array  $arguments method arguments
-     *
-     * @throws Exception\BadMethodCallException if method does not exist
-     * @throws \ErrorException
-     *
-     * @return mixed
-     */
-    public function __call(string $method, array $arguments)
-    {
-        ErrorHandler::start(E_WARNING);
-
-        $result = preg_match('/(?P<function>find(?:One|All)By)(?P<property>.+)/', $method, $match);
-        $error  = ErrorHandler::stop();
-
-        if (!$result) {
-            throw new Exception\BadMethodCallException(
-                sprintf(
-                    'Bad method call: Unknown method %s::%s',
-                    static::class,
-                    $method
-                ),
-                0,
-                $error
-            );
-        }
-
-        return $this->{$match['function']}($match['property'], $arguments[0]);
-    }
-
-    /**
      * Returns an array representation of all pages in container
      *
-     * @return array
+     * @return array<int, array<int, array<string, string>|bool|int|string|null>>
      */
     final public function toArray(): array
     {
@@ -411,9 +386,9 @@ trait ContainerTrait
      * Returns current page
      * Implements RecursiveIterator interface.
      *
-     * @throws Exception\OutOfBoundsException if the index is invalid
-     *
      * @return PageInterface current page
+     *
+     * @throws Exception\OutOfBoundsException if the index is invalid
      */
     final public function current(): PageInterface
     {
@@ -453,8 +428,6 @@ trait ContainerTrait
      * Moves index pointer to next page in the container
      *
      * Implements RecursiveIterator interface.
-     *
-     * @return void
      */
     final public function next(): void
     {
@@ -467,8 +440,6 @@ trait ContainerTrait
      * Sets index pointer to first page in the container
      *
      * Implements RecursiveIterator interface.
-     *
-     * @return void
      */
     final public function rewind(): void
     {
@@ -481,8 +452,6 @@ trait ContainerTrait
      * Checks if container index is valid
      *
      * Implements RecursiveIterator interface.
-     *
-     * @return bool
      */
     final public function valid(): bool
     {
@@ -496,9 +465,9 @@ trait ContainerTrait
      *
      * Implements RecursiveIterator interface.
      *
-     * @throws \Mezzio\Navigation\Exception\OutOfBoundsException
-     *
      * @return bool whether container has any pages
+     *
+     * @throws OutOfBoundsException
      */
     final public function hasChildren(): bool
     {
@@ -511,10 +480,8 @@ trait ContainerTrait
      * Implements RecursiveIterator interface.
      *
      * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     * @throws \Mezzio\Navigation\Exception\OutOfBoundsException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
-     *
-     * @return PageInterface|null
+     * @throws OutOfBoundsException
+     * @throws InvalidArgumentException
      *
      * @codeCoverageIgnore
      */
@@ -541,5 +508,36 @@ trait ContainerTrait
     final public function count(): int
     {
         return count($this->index);
+    }
+
+    // Internal methods:
+
+    /**
+     * Sorts the page index according to page order
+     */
+    private function sort(): void
+    {
+        if (!$this->dirtyIndex) {
+            return;
+        }
+
+        $newIndex = [];
+        $index    = 0;
+
+        foreach ($this->pages as $hash => $page) {
+            $order = $page->getOrder();
+
+            if (null === $order) {
+                $newIndex[$hash] = $index;
+                ++$index;
+            } else {
+                $newIndex[$hash] = $order;
+            }
+        }
+
+        asort($newIndex);
+
+        $this->index      = $newIndex;
+        $this->dirtyIndex = false;
     }
 }

@@ -9,6 +9,7 @@
  */
 
 declare(strict_types = 1);
+
 namespace Mezzio\Navigation\Service;
 
 /**
@@ -18,9 +19,6 @@ final class ConstructedNavigationFactory
 {
     use NavigationFactoryTrait;
 
-    /**
-     * @param string $configName
-     */
     public function __construct(string $configName)
     {
         $this->configName = $configName;

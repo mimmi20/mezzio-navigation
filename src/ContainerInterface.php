@@ -9,6 +9,7 @@
  */
 
 declare(strict_types = 1);
+
 namespace Mezzio\Navigation;
 
 use Countable;
@@ -22,8 +23,6 @@ interface ContainerInterface extends Countable, RecursiveIterator
 {
     /**
      * Notifies container that the order of pages are updated
-     *
-     * @return void
      */
     public function notifyOrderUpdated(): void;
 
@@ -35,35 +34,29 @@ interface ContainerInterface extends Countable, RecursiveIterator
      * @param PageInterface $page page to add
      *
      * @throws Exception\InvalidArgumentException if page is invalid
-     *
-     * @return void
      */
     public function addPage(PageInterface $page): void;
 
     /**
      * Adds several pages at once
      *
-     * @param iterable|PageInterface[] $pages pages to add
+     * @param array<PageInterface>|iterable $pages pages to add
      *
      * @throws Exception\InvalidArgumentException
-     *
-     * @return void
      */
     public function addPages(iterable $pages): void;
 
     /**
      * Sets pages this container should have, removing existing pages
      *
-     * @param iterable|PageInterface[] $pages pages to set
-     *
-     * @return void
+     * @param array<PageInterface>|iterable $pages pages to set
      */
     public function setPages(iterable $pages): void;
 
     /**
      * Returns pages in the container
      *
-     * @return PageInterface[]
+     * @return array<PageInterface>
      */
     public function getPages(): array;
 
@@ -79,8 +72,6 @@ interface ContainerInterface extends Countable, RecursiveIterator
 
     /**
      * Removes all pages in container
-     *
-     * @return void
      */
     public function removePages(): void;
 
@@ -120,14 +111,14 @@ interface ContainerInterface extends Countable, RecursiveIterator
      * @param string $property name of property to match against
      * @param mixed  $value    value to match property against
      *
-     * @return PageInterface[]
+     * @return array<PageInterface>
      */
     public function findAllBy(string $property, $value): array;
 
     /**
      * Returns an array representation of all pages in container
      *
-     * @return array
+     * @return array<int, array<int, array<string, string>|bool|int|string|null>>
      */
     public function toArray(): array;
 }

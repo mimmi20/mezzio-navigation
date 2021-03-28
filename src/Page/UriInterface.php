@@ -9,6 +9,7 @@
  */
 
 declare(strict_types = 1);
+
 namespace Mezzio\Navigation\Page;
 
 use Psr\Http\Message\ServerRequestInterface;
@@ -22,27 +23,15 @@ interface UriInterface extends PageInterface
      * Sets page URI
      *
      * @param string|null $uri page URI, must a string or null
-     *
-     * @return void
      */
     public function setUri(?string $uri): void;
 
     /**
      * Returns URI
-     *
-     * @return string|null
      */
     public function getUri(): ?string;
 
-    /**
-     * @return \Psr\Http\Message\ServerRequestInterface|null
-     */
     public function getRequest(): ?ServerRequestInterface;
 
-    /**
-     * @param \Psr\Http\Message\ServerRequestInterface|null $request
-     *
-     * @return void
-     */
     public function setRequest(?ServerRequestInterface $request): void;
 }

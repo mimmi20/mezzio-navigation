@@ -250,7 +250,7 @@ provided.
 
 - `findOneBy($property, $value) : PageInterface|null`: Returns the first page
   found matching the criteria, or `null` if none was found.
-- `findAllBy($property, $value) : PageInterface[]`: Returns an array of all
+- `findAllBy($property, $value) : array<PageInterface>`: Returns an array of all
   page instances matching the criteria.
 
 > Unlike in [Laminas Navigation](https://github.com/laminas/laminas-navigation) the `findBy` is not available.

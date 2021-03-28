@@ -9,9 +9,16 @@
  */
 
 declare(strict_types = 1);
+
 namespace Mezzio\Navigation\Page;
 
 use Mezzio\Navigation\Exception;
+
+use function call_user_func;
+use function class_exists;
+use function is_string;
+use function mb_strtolower;
+use function sprintf;
 
 /**
  * Base class for Mezzio\Navigation\Page pages
@@ -21,9 +28,9 @@ final class PageFactory implements PageFactoryInterface
     /**
      * Static factories list for factory pages
      *
-     * @var array
+     * @var array<callable>
      */
-    private static $factories = [];
+    private static array $factories = [];
 
     /**
      * Factory for Mezzio\Navigation\Page classes
@@ -37,15 +44,11 @@ final class PageFactory implements PageFactoryInterface
      * - If $options contains the key 'route', a Mezzio\Navigation\Page\Route page will be created.
      * - If $options contains the key 'uri', a Mezzio\Navigation\Page\Uri page will be created.
      *
-     * @param array $options options used for creating page
-     *
-     * @throws Exception\InvalidArgumentException if 'type' is specified but class not found
-     * @throws Exception\InvalidArgumentException if something goes wrong during instantiation of the page
-     * @throws Exception\InvalidArgumentException if 'type' is given, and the specified type does not extend this class
-     * @throws Exception\InvalidArgumentException if unable to determine which class to instantiate
-     * @throws Exception\InvalidArgumentException if $options is not array/Traversable
+     * @param array<string, array<mixed>|string> $options options used for creating page
      *
      * @return PageInterface a page instance
+     *
+     * @throws Exception\InvalidArgumentException
      */
     public function factory(array $options): PageInterface
     {
@@ -116,8 +119,6 @@ final class PageFactory implements PageFactoryInterface
      * Add static factory for self::factory function
      *
      * @param callable $callback Any callable variable
-     *
-     * @return void
      */
     public static function addFactory(callable $callback): void
     {

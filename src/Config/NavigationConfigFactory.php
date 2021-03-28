@@ -9,11 +9,15 @@
  */
 
 declare(strict_types = 1);
+
 namespace Mezzio\Navigation\Config;
 
-use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
 use Mezzio\Navigation\Exception\InvalidArgumentException;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
+
+use function array_key_exists;
+use function is_array;
 
 final class NavigationConfigFactory
 {
@@ -25,15 +29,12 @@ final class NavigationConfigFactory
     /**
      * Create and return a new Navigation instance.
      *
-     * @param ContainerInterface $container
-     * @param string             $requestedName
-     * @param array|null         $options
+     * @param array<mixed>|null $options
      *
-     * @throws ServiceNotCreatedException
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws ContainerExceptionInterface
+     * @throws InvalidArgumentException
      *
-     * @return NavigationConfig
+     * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
      */
     public function __invoke(ContainerInterface $container, string $requestedName, ?array $options = null): NavigationConfig
     {

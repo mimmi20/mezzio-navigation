@@ -9,25 +9,29 @@
  */
 
 declare(strict_types = 1);
+
 namespace MezzioTest\Navigation;
 
+use ErrorException;
 use Mezzio\Navigation\Exception\BadMethodCallException;
 use Mezzio\Navigation\Exception\InvalidArgumentException;
 use Mezzio\Navigation\Exception\OutOfBoundsException;
 use Mezzio\Navigation\Navigation;
 use Mezzio\Navigation\Page;
+use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
+
+use function array_values;
+use function assert;
+use function var_export;
 
 final class NavigationTest extends TestCase
 {
-    /** @var \Mezzio\Navigation\Navigation */
-    private $navigation;
+    private Navigation $navigation;
 
     /**
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
-     *
-     * @return void
      */
     protected function setUp(): void
     {
@@ -38,11 +42,9 @@ final class NavigationTest extends TestCase
      * Testing that navigation order is done correctly
      *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws Exception
+     * @throws InvalidArgumentException
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
-     *
-     * @return void
      */
     public function testSetPagesTwice(): void
     {
@@ -60,11 +62,9 @@ final class NavigationTest extends TestCase
      * Testing that navigation order is done correctly
      *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws Exception
+     * @throws InvalidArgumentException
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
-     *
-     * @return void
      */
     public function testNavigationArraySortsCorrectly(): void
     {
@@ -82,16 +82,14 @@ final class NavigationTest extends TestCase
 
         self::assertCount(3, $pages);
         self::assertCount(3, $this->navigation);
-        self::assertEquals('page3', $pages[0]['uri'], var_export($pages, true));
-        self::assertEquals('page1', $pages[1]['uri']);
-        self::assertEquals('page2', $pages[2]['uri']);
+        self::assertSame('page3', $pages[0]['uri'], var_export($pages, true));
+        self::assertSame('page1', $pages[1]['uri']);
+        self::assertSame('page2', $pages[2]['uri']);
     }
 
     /**
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testAddChildPageTwice(): void
     {
@@ -110,16 +108,14 @@ final class NavigationTest extends TestCase
             ->method('setParent')
             ->with($this->navigation);
 
-        /* @var Page\PageInterface $childPage */
+        assert($childPage instanceof Page\PageInterface);
         $this->navigation->addPage($childPage);
         $this->navigation->addPage($childPage);
     }
 
     /**
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
-     *
-     * @return void
      */
     public function testAddPages(): void
     {
@@ -132,10 +128,8 @@ final class NavigationTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testRemovePageByIndex(): void
     {
@@ -176,8 +170,8 @@ final class NavigationTest extends TestCase
         $childPage2->expects(self::never())
             ->method('removePage');
 
-        /* @var Page\PageInterface $childPage1 */
-        /* @var Page\PageInterface $childPage2 */
+        assert($childPage1 instanceof Page\PageInterface);
+        assert($childPage2 instanceof Page\PageInterface);
         $this->navigation->addPage($childPage1);
         $this->navigation->addPage($childPage2);
 
@@ -187,10 +181,8 @@ final class NavigationTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testRemovePageByObject(): void
     {
@@ -231,8 +223,8 @@ final class NavigationTest extends TestCase
         $childPage2->expects(self::never())
             ->method('removePage');
 
-        /* @var Page\PageInterface $childPage1 */
-        /* @var Page\PageInterface $childPage2 */
+        assert($childPage1 instanceof Page\PageInterface);
+        assert($childPage2 instanceof Page\PageInterface);
         $this->navigation->addPage($childPage1);
         $this->navigation->addPage($childPage2);
 
@@ -242,10 +234,8 @@ final class NavigationTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testRemovePageNotByHash(): void
     {
@@ -286,8 +276,8 @@ final class NavigationTest extends TestCase
         $childPage2->expects(self::never())
             ->method('removePage');
 
-        /* @var Page\PageInterface $childPage1 */
-        /* @var Page\PageInterface $childPage2 */
+        assert($childPage1 instanceof Page\PageInterface);
+        assert($childPage2 instanceof Page\PageInterface);
         $this->navigation->addPage($childPage1);
         $this->navigation->addPage($childPage2);
 
@@ -297,10 +287,8 @@ final class NavigationTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testRemovePageNotExistingPage(): void
     {
@@ -341,8 +329,8 @@ final class NavigationTest extends TestCase
         $childPage2->expects(self::never())
             ->method('removePage');
 
-        /* @var Page\PageInterface $childPage1 */
-        /* @var Page\PageInterface $childPage2 */
+        assert($childPage1 instanceof Page\PageInterface);
+        assert($childPage2 instanceof Page\PageInterface);
         $this->navigation->addPage($childPage1);
         $this->navigation->addPage($childPage2);
 
@@ -352,10 +340,8 @@ final class NavigationTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testRemovePageRecursive(): void
     {
@@ -400,8 +386,8 @@ final class NavigationTest extends TestCase
             ->method('removePage')
             ->with($childPage2, true);
 
-        /* @var Page\PageInterface $childPage1 */
-        /* @var Page\PageInterface $childPage2 */
+        assert($childPage1 instanceof Page\PageInterface);
+        assert($childPage2 instanceof Page\PageInterface);
         $this->navigation->addPage($childPage1);
         $childPage1->addPage($childPage2);
 
@@ -411,10 +397,8 @@ final class NavigationTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testRemovePageRecursiveNotFound(): void
     {
@@ -458,8 +442,8 @@ final class NavigationTest extends TestCase
         $childPage1->expects(self::never())
             ->method('removePage');
 
-        /* @var Page\PageInterface $childPage1 */
-        /* @var Page\PageInterface $childPage2 */
+        assert($childPage1 instanceof Page\PageInterface);
+        assert($childPage2 instanceof Page\PageInterface);
         $this->navigation->addPage($childPage1);
         $childPage1->addPage($childPage2);
 
@@ -469,10 +453,8 @@ final class NavigationTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testHasPageByIndex(): void
     {
@@ -505,8 +487,8 @@ final class NavigationTest extends TestCase
             ->method('setParent')
             ->with($this->navigation);
 
-        /* @var Page\PageInterface $childPage1 */
-        /* @var Page\PageInterface $childPage2 */
+        assert($childPage1 instanceof Page\PageInterface);
+        assert($childPage2 instanceof Page\PageInterface);
         $this->navigation->addPage($childPage1);
         $this->navigation->addPage($childPage2);
 
@@ -515,10 +497,8 @@ final class NavigationTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testHasPageByObject(): void
     {
@@ -551,8 +531,8 @@ final class NavigationTest extends TestCase
             ->method('setParent')
             ->with($this->navigation);
 
-        /* @var Page\PageInterface $childPage1 */
-        /* @var Page\PageInterface $childPage2 */
+        assert($childPage1 instanceof Page\PageInterface);
+        assert($childPage2 instanceof Page\PageInterface);
         $this->navigation->addPage($childPage1);
         $this->navigation->addPage($childPage2);
 
@@ -561,10 +541,8 @@ final class NavigationTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testHasPageNotByHash(): void
     {
@@ -597,8 +575,8 @@ final class NavigationTest extends TestCase
             ->method('setParent')
             ->with($this->navigation);
 
-        /* @var Page\PageInterface $childPage1 */
-        /* @var Page\PageInterface $childPage2 */
+        assert($childPage1 instanceof Page\PageInterface);
+        assert($childPage2 instanceof Page\PageInterface);
         $this->navigation->addPage($childPage1);
         $this->navigation->addPage($childPage2);
 
@@ -607,10 +585,8 @@ final class NavigationTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testHasNotExistingPage(): void
     {
@@ -643,8 +619,8 @@ final class NavigationTest extends TestCase
             ->method('setParent')
             ->with($this->navigation);
 
-        /* @var Page\PageInterface $childPage1 */
-        /* @var Page\PageInterface $childPage2 */
+        assert($childPage1 instanceof Page\PageInterface);
+        assert($childPage2 instanceof Page\PageInterface);
         $this->navigation->addPage($childPage1);
         $this->navigation->addPage($childPage2);
 
@@ -653,10 +629,8 @@ final class NavigationTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testHasPageRecursive(): void
     {
@@ -696,8 +670,8 @@ final class NavigationTest extends TestCase
         $childPage1->expects(self::never())
             ->method('removePage');
 
-        /* @var Page\PageInterface $childPage1 */
-        /* @var Page\PageInterface $childPage2 */
+        assert($childPage1 instanceof Page\PageInterface);
+        assert($childPage2 instanceof Page\PageInterface);
         $this->navigation->addPage($childPage1);
         $childPage1->addPage($childPage2);
 
@@ -706,10 +680,8 @@ final class NavigationTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testHasPageRecursiveNotFound(): void
     {
@@ -749,8 +721,8 @@ final class NavigationTest extends TestCase
         $childPage1->expects(self::never())
             ->method('removePage');
 
-        /* @var Page\PageInterface $childPage1 */
-        /* @var Page\PageInterface $childPage2 */
+        assert($childPage1 instanceof Page\PageInterface);
+        assert($childPage2 instanceof Page\PageInterface);
         $this->navigation->addPage($childPage1);
         $childPage1->addPage($childPage2);
 
@@ -759,10 +731,8 @@ final class NavigationTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testHasNoVisiblePages(): void
     {
@@ -803,8 +773,8 @@ final class NavigationTest extends TestCase
             ->method('isVisible')
             ->willReturn(false);
 
-        /* @var Page\PageInterface $childPage1 */
-        /* @var Page\PageInterface $childPage2 */
+        assert($childPage1 instanceof Page\PageInterface);
+        assert($childPage2 instanceof Page\PageInterface);
         $this->navigation->addPage($childPage1);
         $this->navigation->addPage($childPage2);
 
@@ -814,10 +784,8 @@ final class NavigationTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testHasVisiblePages(): void
     {
@@ -858,8 +826,8 @@ final class NavigationTest extends TestCase
             ->method('isVisible')
             ->willReturn(true);
 
-        /* @var Page\PageInterface $childPage1 */
-        /* @var Page\PageInterface $childPage2 */
+        assert($childPage1 instanceof Page\PageInterface);
+        assert($childPage2 instanceof Page\PageInterface);
         $this->navigation->addPage($childPage1);
         $this->navigation->addPage($childPage2);
 
@@ -869,10 +837,8 @@ final class NavigationTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testFindOneBy(): void
     {
@@ -920,8 +886,8 @@ final class NavigationTest extends TestCase
             ->with($property)
             ->willReturn($value);
 
-        /* @var Page\PageInterface $childPage1 */
-        /* @var Page\PageInterface $childPage2 */
+        assert($childPage1 instanceof Page\PageInterface);
+        assert($childPage2 instanceof Page\PageInterface);
         $this->navigation->addPage($childPage1);
         $this->navigation->addPage($childPage2);
 
@@ -930,10 +896,8 @@ final class NavigationTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testFindAllBy(): void
     {
@@ -1003,9 +967,9 @@ final class NavigationTest extends TestCase
             ->with($property)
             ->willReturn(null);
 
-        /* @var Page\PageInterface $childPage1 */
-        /* @var Page\PageInterface $childPage2 */
-        /* @var Page\PageInterface $childPage3 */
+        assert($childPage1 instanceof Page\PageInterface);
+        assert($childPage2 instanceof Page\PageInterface);
+        assert($childPage3 instanceof Page\PageInterface);
         $this->navigation->addPage($childPage1);
         $this->navigation->addPage($childPage2);
         $this->navigation->addPage($childPage3);
@@ -1014,10 +978,8 @@ final class NavigationTest extends TestCase
     }
 
     /**
-     * @throws \Mezzio\Navigation\Exception\BadMethodCallException
-     * @throws \ErrorException
-     *
-     * @return void
+     * @throws BadMethodCallException
+     * @throws ErrorException
      */
     public function testCallFindAllByException(): void
     {
@@ -1032,12 +994,10 @@ final class NavigationTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     * @throws \Mezzio\Navigation\Exception\BadMethodCallException
-     * @throws \ErrorException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
+     * @throws BadMethodCallException
+     * @throws ErrorException
      */
     public function testCallFindAllBy(): void
     {
@@ -1087,8 +1047,8 @@ final class NavigationTest extends TestCase
             ->with($property)
             ->willReturn($value);
 
-        /* @var Page\PageInterface $childPage1 */
-        /* @var Page\PageInterface $childPage2 */
+        assert($childPage1 instanceof Page\PageInterface);
+        assert($childPage2 instanceof Page\PageInterface);
         $this->navigation->addPage($childPage1);
         $this->navigation->addPage($childPage2);
 
@@ -1096,9 +1056,7 @@ final class NavigationTest extends TestCase
     }
 
     /**
-     * @throws \Mezzio\Navigation\Exception\OutOfBoundsException
-     *
-     * @return void
+     * @throws OutOfBoundsException
      */
     public function testCurrentException(): void
     {
@@ -1111,11 +1069,9 @@ final class NavigationTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     * @throws \Mezzio\Navigation\Exception\OutOfBoundsException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
      */
     public function testCurrent(): void
     {
@@ -1156,8 +1112,8 @@ final class NavigationTest extends TestCase
         $childPage2->expects(self::never())
             ->method('get');
 
-        /* @var Page\PageInterface $childPage1 */
-        /* @var Page\PageInterface $childPage2 */
+        assert($childPage1 instanceof Page\PageInterface);
+        assert($childPage2 instanceof Page\PageInterface);
         $this->navigation->addPage($childPage1);
         $this->navigation->addPage($childPage2);
 
@@ -1185,11 +1141,9 @@ final class NavigationTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     * @throws \Mezzio\Navigation\Exception\OutOfBoundsException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
      */
     public function testRewind(): void
     {
@@ -1230,8 +1184,8 @@ final class NavigationTest extends TestCase
         $childPage2->expects(self::never())
             ->method('get');
 
-        /* @var Page\PageInterface $childPage1 */
-        /* @var Page\PageInterface $childPage2 */
+        assert($childPage1 instanceof Page\PageInterface);
+        assert($childPage2 instanceof Page\PageInterface);
         $this->navigation->addPage($childPage1);
         $this->navigation->addPage($childPage2);
 

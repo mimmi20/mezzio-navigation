@@ -9,11 +9,25 @@
  */
 
 declare(strict_types = 1);
+
 namespace Mezzio\Navigation\Page;
 
+use Laminas\Stdlib\Exception\InvalidArgumentException;
 use Mezzio\Navigation\ContainerInterface;
 use Mezzio\Navigation\ContainerTrait;
 use Mezzio\Navigation\Exception;
+
+use function array_keys;
+use function array_merge;
+use function is_int;
+use function is_numeric;
+use function is_string;
+use function mb_strtolower;
+use function method_exists;
+use function spl_object_hash;
+use function sprintf;
+use function str_replace;
+use function ucwords;
 
 /**
  * Base class for Mezzio\Navigation\Page pages
@@ -26,10 +40,8 @@ trait PageTrait
 
     /**
      * Page label
-     *
-     * @var string|null
      */
-    private $label;
+    private ?string $label = null;
 
     /**
      * Fragment identifier (anchor identifier)
@@ -40,129 +52,101 @@ trait PageTrait
      * Example: http://www.example.org/foo.html#bar ("bar" is the fragment identifier)
      *
      * @see http://www.w3.org/TR/html401/intro/intro.html#fragment-uri
-     *
-     * @var string|null
      */
-    private $fragment;
+    private ?string $fragment = null;
 
     /**
      * Page id
-     *
-     * @var string|null
      */
-    private $id;
+    private ?string $id = null;
 
     /**
      * Style class for this page (CSS)
-     *
-     * @var string|null
      */
-    private $class;
+    private ?string $class = null;
 
     /**
      * Style class for the container around this page (CSS)
-     *
-     * @var string|null
      */
-    private $liClass;
+    private ?string $liClass = null;
 
     /**
      * A more descriptive title for this page
-     *
-     * @var string|null
      */
-    private $title;
+    private ?string $title = null;
 
     /**
      * This page's target
-     *
-     * @var string|null
      */
-    private $target;
+    private ?string $target = null;
 
     /**
      * Forward links to other pages
      *
      * @see http://www.w3.org/TR/html4/struct/links.html#h-12.3.1
      *
-     * @var array
+     * @var array<string, string>
      */
-    private $rel = [];
+    private array $rel = [];
 
     /**
      * Reverse links to other pages
      *
      * @see http://www.w3.org/TR/html4/struct/links.html#h-12.3.1
      *
-     * @var array
+     * @var array<string, string>
      */
-    private $rev = [];
+    private array $rev = [];
 
     /**
      * Page order used by parent container
-     *
-     * @var int|null
      */
-    private $order;
+    private ?int $order = null;
 
     /**
      * resource associated with this page
-     *
-     * @var string|null
      */
-    private $resource;
+    private ?string $resource = null;
 
     /**
      * ACL privilege associated with this page
-     *
-     * @var string|null
      */
-    private $privilege;
+    private ?string $privilege = null;
 
     /**
      * Permission associated with this page
-     *
-     * @var string|null
      */
-    private $permission;
+    private ?string $permission = null;
 
     /**
      * Text domain for Translator
-     *
-     * @var string|null
      */
-    private $textDomain;
+    private ?string $textDomain = null;
 
     /**
      * Whether this page should be considered active
-     *
-     * @var bool|null
      */
-    private $active;
+    private ?bool $active = null;
 
     /**
      * Whether this page should be considered visible
-     *
-     * @var bool
      */
-    private $visible = true;
+    private bool $visible = true;
 
     /**
      * Parent container
-     *
-     * @var \Mezzio\Navigation\ContainerInterface|null
      */
-    private $parent;
+    private ?ContainerInterface $parent = null;
 
     /**
      * Custom page properties, used by __set(), __get() and __isset()
      *
-     * @var array
+     * @var array<string, string>
      */
-    private $properties = [];
+    private array $properties = [];
 
     /**
-     * @param iterable|null $options [optional] page options. Default is null, which should set defaults.
+     * @param iterable|mixed[]|null $options [optional] page options. Default is null, which should set defaults.
      *
      * @throws Exception\InvalidArgumentException if invalid options are given
      */
@@ -175,6 +159,102 @@ trait PageTrait
         $this->setOptions($options);
     }
 
+    // Magic overloads:
+
+    /**
+     * Sets a custom property
+     *
+     * Magic overload for enabling <code>$page->propname = $value</code>.
+     *
+     * @param string $name  property name
+     * @param mixed  $value value to set
+     *
+     * @throws Exception\InvalidArgumentException if property name is invalid
+     */
+    public function __set(string $name, $value): void
+    {
+        $this->set($name, $value);
+    }
+
+    /**
+     * Returns a property, or null if it doesn't exist
+     *
+     * Magic overload for enabling <code>$page->propname</code>.
+     *
+     * @param string $name property name
+     *
+     * @return mixed property value or null
+     *
+     * @throws Exception\InvalidArgumentException if property name is invalid
+     */
+    public function __get(string $name)
+    {
+        return $this->get($name);
+    }
+
+    /**
+     * Checks if a property is set
+     *
+     * Magic overload for enabling <code>isset($page->propname)</code>.
+     *
+     * Returns true if the property is native (id, class, title, etc), and
+     * true or false if it's a custom property (depending on whether the
+     * property actually is set).
+     *
+     * @param string $name property name
+     *
+     * @return bool whether the given property exists
+     */
+    public function __isset(string $name): bool
+    {
+        $method = 'get' . static::normalizePropertyName($name);
+        if (method_exists($this, $method)) {
+            return true;
+        }
+
+        return isset($this->properties[$name]);
+    }
+
+    /**
+     * Unsets the given custom property
+     *
+     * Magic overload for enabling <code>unset($page->propname)</code>.
+     *
+     * @param string $name property name
+     *
+     * @throws Exception\InvalidArgumentException if the property is native
+     */
+    public function __unset(string $name): void
+    {
+        $method = 'set' . static::normalizePropertyName($name);
+        if (method_exists($this, $method)) {
+            throw new Exception\InvalidArgumentException(
+                sprintf(
+                    'Unsetting native property "%s" is not allowed',
+                    $name
+                )
+            );
+        }
+
+        if (!isset($this->properties[$name])) {
+            return;
+        }
+
+        unset($this->properties[$name]);
+    }
+
+    /**
+     * Returns page label
+     *
+     * Magic overload for enabling <code>echo $page</code>.
+     *
+     * @return string page label
+     */
+    public function __toString(): string
+    {
+        return (string) $this->label;
+    }
+
     /**
      * Sets page properties using options from an associative array
      *
@@ -183,11 +263,9 @@ trait PageTrait
      * corresponds to setTarget(), and the option 'reset_params' corresponds to
      * the method setResetParams().
      *
-     * @param iterable $options associative array of options to set
+     * @param iterable|string[] $options associative array of options to set
      *
      * @throws Exception\InvalidArgumentException if invalid options are given
-     *
-     * @return void
      */
     final public function setOptions(iterable $options): void
     {
@@ -202,8 +280,6 @@ trait PageTrait
      * Sets page label
      *
      * @param string|null $label new page label
-     *
-     * @return void
      */
     final public function setLabel(?string $label = null): void
     {
@@ -224,8 +300,6 @@ trait PageTrait
      * Sets a fragment identifier
      *
      * @param string|null $fragment new fragment identifier
-     *
-     * @return void
      */
     final public function setFragment(?string $fragment = null): void
     {
@@ -247,8 +321,6 @@ trait PageTrait
      *
      * @param string|null $id [optional] id to set. Default is null,
      *                        which sets no id.
-     *
-     * @return void
      */
     final public function setId(?string $id = null): void
     {
@@ -269,8 +341,6 @@ trait PageTrait
      * Sets page CSS class
      *
      * @param string|null $class [optional] CSS class to set. Default is null, which sets no CSS class.
-     *
-     * @return void
      */
     final public function setClass(?string $class = null): void
     {
@@ -291,8 +361,6 @@ trait PageTrait
      * Sets page CSS class
      *
      * @param string|null $liClass [optional] CSS class to set. Default is null, which sets no CSS class.
-     *
-     * @return void
      */
     final public function setLiClass(?string $liClass = null): void
     {
@@ -314,8 +382,6 @@ trait PageTrait
      *
      * @param string|null $title [optional] page title. Default is
      *                           null, which sets no title.
-     *
-     * @return void
      */
     final public function setTitle(?string $title = null): void
     {
@@ -337,8 +403,6 @@ trait PageTrait
      *
      * @param string|null $target [optional] target to set. Default is
      *                            null, which sets no target.
-     *
-     * @return void
      */
     final public function setTarget(?string $target = null): void
     {
@@ -363,12 +427,10 @@ trait PageTrait
      * prev, next, help, etc), and the value is a mixed value that could somehow
      * be considered a page.
      *
-     * @param iterable|null $relations [optional] an associative array of forward links to other pages
+     * @param iterable|string[]|null $relations [optional] an associative array of forward links to other pages
      *
-     * @throws Exception\InvalidArgumentException                 if $relations is not an array or Traversable object
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception\InvalidArgumentException if $relations is not an array or Traversable object
+     * @throws InvalidArgumentException
      */
     final public function setRel(?iterable $relations = null): void
     {
@@ -398,9 +460,9 @@ trait PageTrait
      * @param string|null $relation [optional] name of relation to return. If not
      *                              given, all relations will be returned.
      *
-     * @return array|string|null an array of relations. If $relation is not
-     *                           specified, all relations will be returned in
-     *                           an associative array.
+     * @return array<string, string>|string|null an array of relations. If $relation is not
+     *                       specified, all relations will be returned in
+     *                       an associative array.
      */
     final public function getRel(?string $relation = null)
     {
@@ -419,12 +481,10 @@ trait PageTrait
      * prev, next, help, etc), and the value is a mixed value that could somehow
      * be considered a page.
      *
-     * @param iterable|null $relations [optional] an associative array of reverse links to other pages
+     * @param iterable|string[]|null $relations [optional] an associative array of reverse links to other pages
      *
-     * @throws Exception\InvalidArgumentException                 if $relations it not an array or Traversable object
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception\InvalidArgumentException if $relations it not an array or Traversable object
+     * @throws InvalidArgumentException
      */
     final public function setRev(?iterable $relations = null): void
     {
@@ -454,9 +514,9 @@ trait PageTrait
      * @param string|null $relation [optional] name of relation to return. If not
      *                              given, all relations will be returned.
      *
-     * @return array|string|null an array of relations. If $relation is not
-     *                           specified, all relations will be returned in
-     *                           an associative array.
+     * @return array<string, string>|string|null an array of relations. If $relation is not
+     *                       specified, all relations will be returned in
+     *                       an associative array.
      */
     final public function getRev(?string $relation = null)
     {
@@ -473,9 +533,7 @@ trait PageTrait
      * @param ContainerInterface|null $parent [optional] new parent to set.
      *                                        Default is null which will set no parent.
      *
-     *@throws Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception\InvalidArgumentException
      */
     final public function setParent(?ContainerInterface $parent = null): void
     {
@@ -524,8 +582,6 @@ trait PageTrait
      *                               specific order.
      *
      * @throws Exception\InvalidArgumentException if order is not integer or null
-     *
-     * @return void
      */
     final public function setOrder($order = null): void
     {
@@ -565,8 +621,6 @@ trait PageTrait
      *                         sets no resource.
      *
      * @throws Exception\InvalidArgumentException if $resource is invalid
-     *
-     * @return void
      */
     final public function setResource(string $resource): void
     {
@@ -589,8 +643,6 @@ trait PageTrait
      * @param string $privilege [optional] ACL privilege to associate
      *                          with this page. Default is null, which
      *                          sets no privilege.
-     *
-     * @return void
      */
     final public function setPrivilege(string $privilege): void
     {
@@ -613,8 +665,6 @@ trait PageTrait
      * @param string $permission [optional] permission to associate
      *                           with this page. Default is null, which
      *                           sets no permission.
-     *
-     * @return void
      */
     final public function setPermission(string $permission): void
     {
@@ -637,8 +687,6 @@ trait PageTrait
      * @param string $textDomain [optional] text domain to associate
      *                           with this page. Default is null, which
      *                           sets no text domain.
-     *
-     * @return void
      */
     final public function setTextDomain(string $textDomain): void
     {
@@ -660,8 +708,6 @@ trait PageTrait
      *
      * @param bool|string $active [optional] whether page should be
      *                            considered active or not. Default is true.
-     *
-     * @return void
      */
     final public function setActive($active = true): void
     {
@@ -715,8 +761,6 @@ trait PageTrait
      *
      * @param bool|string $visible [optional] whether page should be
      *                             considered visible or not. Default is true.
-     *
-     * @return void
      */
     final public function setVisible($visible = true): void
     {
@@ -777,8 +821,6 @@ trait PageTrait
      * @param mixed  $value    value to set
      *
      * @throws Exception\InvalidArgumentException if property name is invalid
-     *
-     * @return void
      */
     final public function set(string $property, $value): void
     {
@@ -806,9 +848,9 @@ trait PageTrait
      *
      * @param string $property property name
      *
-     * @throws Exception\InvalidArgumentException if property name is invalid
-     *
      * @return mixed the property's value or null
+     *
+     * @throws Exception\InvalidArgumentException if property name is invalid
      */
     final public function get(string $property)
     {
@@ -831,106 +873,6 @@ trait PageTrait
         return null;
     }
 
-    // Magic overloads:
-
-    /**
-     * Sets a custom property
-     *
-     * Magic overload for enabling <code>$page->propname = $value</code>.
-     *
-     * @param string $name  property name
-     * @param mixed  $value value to set
-     *
-     * @throws Exception\InvalidArgumentException if property name is invalid
-     *
-     * @return void
-     */
-    public function __set(string $name, $value): void
-    {
-        $this->set($name, $value);
-    }
-
-    /**
-     * Returns a property, or null if it doesn't exist
-     *
-     * Magic overload for enabling <code>$page->propname</code>.
-     *
-     * @param string $name property name
-     *
-     * @throws Exception\InvalidArgumentException if property name is invalid
-     *
-     * @return mixed property value or null
-     */
-    public function __get(string $name)
-    {
-        return $this->get($name);
-    }
-
-    /**
-     * Checks if a property is set
-     *
-     * Magic overload for enabling <code>isset($page->propname)</code>.
-     *
-     * Returns true if the property is native (id, class, title, etc), and
-     * true or false if it's a custom property (depending on whether the
-     * property actually is set).
-     *
-     * @param string $name property name
-     *
-     * @return bool whether the given property exists
-     */
-    public function __isset(string $name): bool
-    {
-        $method = 'get' . static::normalizePropertyName($name);
-        if (method_exists($this, $method)) {
-            return true;
-        }
-
-        return isset($this->properties[$name]);
-    }
-
-    /**
-     * Unsets the given custom property
-     *
-     * Magic overload for enabling <code>unset($page->propname)</code>.
-     *
-     * @param string $name property name
-     *
-     * @throws Exception\InvalidArgumentException if the property is native
-     *
-     * @return void
-     */
-    public function __unset(string $name): void
-    {
-        $method = 'set' . static::normalizePropertyName($name);
-        if (method_exists($this, $method)) {
-            throw new Exception\InvalidArgumentException(
-                sprintf(
-                    'Unsetting native property "%s" is not allowed',
-                    $name
-                )
-            );
-        }
-
-        if (!isset($this->properties[$name])) {
-            return;
-        }
-
-        unset($this->properties[$name]);
-    }
-
-    /**
-     * Returns page label
-     *
-     * Magic overload for enabling <code>echo $page</code>.
-     *
-     * @return string page label
-     */
-    public function __toString(): string
-    {
-        return (string) $this->label;
-    }
-
     // Public methods:
 
     /**
@@ -939,8 +881,6 @@ trait PageTrait
      * @param string $relation relation name (e.g. alternate, glossary,
      *                         canonical, etc)
      * @param mixed  $value    value to set for relation
-     *
-     * @return void
      */
     final public function addRel(string $relation, $value): void
     {
@@ -953,8 +893,6 @@ trait PageTrait
      * @param string $relation relation name (e.g. alternate, glossary,
      *                         canonical, etc)
      * @param mixed  $value    value to set for relation
-     *
-     * @return void
      */
     final public function addRev(string $relation, $value): void
     {
@@ -965,8 +903,6 @@ trait PageTrait
      * Removes a forward relation from the page
      *
      * @param string $relation name of relation to remove
-     *
-     * @return void
      */
     final public function removeRel(string $relation): void
     {
@@ -981,8 +917,6 @@ trait PageTrait
      * Removes a reverse relation from the page
      *
      * @param string $relation name of relation to remove
-     *
-     * @return void
      */
     final public function removeRev(string $relation): void
     {
@@ -996,7 +930,7 @@ trait PageTrait
     /**
      * Returns an array containing the defined forward relations
      *
-     * @return array defined forward relations
+     * @return array<string> defined forward relations
      */
     final public function getDefinedRel(): array
     {
@@ -1006,7 +940,7 @@ trait PageTrait
     /**
      * Returns an array containing the defined reverse relations
      *
-     * @return array defined reverse relations
+     * @return array<string> defined reverse relations
      */
     final public function getDefinedRev(): array
     {
@@ -1016,7 +950,7 @@ trait PageTrait
     /**
      * Returns custom properties as an array
      *
-     * @return array an array containing custom properties
+     * @return array<string, string> an array containing custom properties
      */
     final public function getCustomProperties(): array
     {
@@ -1036,7 +970,7 @@ trait PageTrait
     /**
      * Returns an array representation of the page
      *
-     * @return array associative array containing all page properties
+     * @return array<string, array<string, string>|bool|int|string|null> associative array containing all page properties
      */
     final public function toArray(): array
     {

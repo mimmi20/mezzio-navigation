@@ -9,11 +9,18 @@
  */
 
 declare(strict_types = 1);
+
 namespace Mezzio\Navigation\Page;
 
 use Mezzio\Navigation\Exception;
+use Mezzio\Router\Exception\RuntimeException;
 use Mezzio\Router\RouteResult;
 use Mezzio\Router\RouterInterface;
+
+use function array_intersect_assoc;
+use function array_merge;
+use function count;
+use function is_string;
 
 /**
  * Represents a page that is defined using controller, action, route
@@ -33,7 +40,7 @@ final class Route implements RouteInterface
     /**
      * URL query part to use when assembling URL
      *
-     * @var array|string|null
+     * @var array<string, string>|string|null
      */
     private $query;
 
@@ -42,18 +49,16 @@ final class Route implements RouteInterface
      *
      * @see getHref()
      *
-     * @var array
+     * @var array<int|string, string>
      */
-    private $params = [];
+    private array $params = [];
 
     /**
      * RouteInterface name to use when assembling URL
      *
      * @see getHref()
-     *
-     * @var string|null
      */
-    private $route;
+    private ?string $route = null;
 
     /**
      * Cached href
@@ -61,34 +66,26 @@ final class Route implements RouteInterface
      * The use of this variable minimizes execution time when getHref() is
      * called more than once during the lifetime of a request. If a property
      * is updated, the cache is invalidated.
-     *
-     * @var string|null
      */
-    private $hrefCache;
+    private ?string $hrefCache = null;
 
     /**
      * RouteInterface matches; used for routing parameters and testing validity
-     *
-     * @var \Mezzio\Router\RouteResult|null
      */
-    private $routeMatch;
+    private ?RouteResult $routeMatch = null;
 
     /**
      * If true and set routeMatch than getHref will use routeMatch params
      * to assemble uri
-     *
-     * @var bool
      */
-    private $useRouteMatch = false;
+    private bool $useRouteMatch = false;
 
     /**
      * Router for assembling URLs
      *
      * @see getHref()
-     *
-     * @var \Mezzio\Router\RouterInterface|null
      */
-    private $router;
+    private ?RouterInterface $router = null;
 
     // Accessors:
 
@@ -145,10 +142,10 @@ final class Route implements RouteInterface
      *
      * @see RouteStackInterface
      *
-     * @throws Exception\DomainException                 if no router is set
-     * @throws \Mezzio\Router\Exception\RuntimeException
-     *
      * @return string page href
+     *
+     * @throws Exception\DomainException if no router is set
+     * @throws RuntimeException
      */
     public function getHref(): string
     {
@@ -207,9 +204,7 @@ final class Route implements RouteInterface
      *
      * @see getHref()
      *
-     * @param array|string|null $query URL query part
-     *
-     * @return void
+     * @param array<string, string>|string|null $query URL query part
      */
     public function setQuery($query): void
     {
@@ -222,7 +217,7 @@ final class Route implements RouteInterface
      *
      * @see getHref()
      *
-     * @return array|string|null URL query part (as an array or string) or null
+     * @return array<string, string>|string|null URL query part (as an array or string) or null
      */
     public function getQuery()
     {
@@ -234,9 +229,7 @@ final class Route implements RouteInterface
      *
      * @see getHref()
      *
-     * @param array $params [optional] page params
-     *
-     * @return void
+     * @param array<int|string, string> $params [optional] page params
      */
     public function setParams(array $params = []): void
     {
@@ -249,7 +242,7 @@ final class Route implements RouteInterface
      *
      * @see getHref()
      *
-     * @return array page params
+     * @return array<int|string, string> page params
      */
     public function getParams(): array
     {
@@ -264,8 +257,6 @@ final class Route implements RouteInterface
      * @param string $route route name to use when assembling URL
      *
      * @throws Exception\InvalidArgumentException if invalid $route is given
-     *
-     * @return void
      */
     public function setRoute(string $route): void
     {
@@ -293,8 +284,6 @@ final class Route implements RouteInterface
 
     /**
      * Get the route match.
-     *
-     * @return RouteResult|null
      */
     public function getRouteMatch(): ?RouteResult
     {
@@ -303,10 +292,6 @@ final class Route implements RouteInterface
 
     /**
      * Set route match object from which parameters will be retrieved
-     *
-     * @param RouteResult $matches
-     *
-     * @return void
      */
     public function setRouteMatch(RouteResult $matches): void
     {
@@ -315,8 +300,6 @@ final class Route implements RouteInterface
 
     /**
      * Get the useRouteMatch flag
-     *
-     * @return bool
      */
     public function useRouteMatch(): bool
     {
@@ -329,8 +312,6 @@ final class Route implements RouteInterface
      * @see getHref()
      *
      * @param bool $useRouteMatch [optional]
-     *
-     * @return void
      */
     public function setUseRouteMatch(bool $useRouteMatch = true): void
     {
@@ -340,8 +321,6 @@ final class Route implements RouteInterface
 
     /**
      * Get the router.
-     *
-     * @return RouterInterface|null
      */
     public function getRouter(): ?RouterInterface
     {
@@ -354,8 +333,6 @@ final class Route implements RouteInterface
      * @see getHref()
      *
      * @param RouterInterface|null $router Router
-     *
-     * @return void
      */
     public function setRouter(?RouterInterface $router): void
     {
@@ -367,7 +344,7 @@ final class Route implements RouteInterface
     /**
      * Returns an array representation of the page
      *
-     * @return array associative array containing all page properties
+     * @return array<string, (bool|int|string|array<string, string>|RouterInterface|RouteResult|null)> associative array containing all page properties
      */
     public function toArray(): array
     {
