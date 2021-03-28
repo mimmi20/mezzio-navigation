@@ -9,6 +9,7 @@
  */
 
 declare(strict_types = 1);
+
 namespace Mezzio\Navigation;
 
 use Mezzio\GenericAuthorization\AuthorizationInterface;
@@ -25,23 +26,16 @@ use Psr\Http\Server\RequestHandlerInterface;
  */
 final class NavigationMiddleware implements MiddlewareInterface
 {
-    /** @var Config\NavigationConfigInterface */
-    private $navigationConfig;
+    private Config\NavigationConfigInterface $navigationConfig;
 
-    /** @var UrlHelper */
-    private $urlHelper;
+    private UrlHelper $urlHelper;
 
-    /** @var AuthorizationInterface|null */
-    private $authorization;
+    private ?AuthorizationInterface $authorization = null;
 
-    /** @var \Mezzio\Router\RouterInterface|null */
-    private $router;
+    private ?RouterInterface $router = null;
 
     /**
-     * @param \Mezzio\Navigation\Config\NavigationConfigInterface      $navigationConfig
-     * @param \Mezzio\Helper\UrlHelper                                 $urlHelper
-     * @param \Mezzio\GenericAuthorization\AuthorizationInterface|null $authorization
-     * @param ?RouterInterface                                         $router
+     * @param ?RouterInterface $router
      */
     public function __construct(
         Config\NavigationConfigInterface $navigationConfig,
@@ -58,11 +52,6 @@ final class NavigationMiddleware implements MiddlewareInterface
     /**
      * Inject the UrlHelper instance with a RouteResult, if present as a request attribute.
      * Injects the helper, and then dispatches the next middleware.
-     *
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Server\RequestHandlerInterface $handler
-     *
-     * @return \Psr\Http\Message\ResponseInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

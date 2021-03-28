@@ -9,6 +9,7 @@
  */
 
 declare(strict_types = 1);
+
 namespace Mezzio\Navigation;
 
 use Mezzio\GenericAuthorization\AuthorizationInterface;
@@ -18,20 +19,29 @@ use Mezzio\Router\RouterInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 
+use function sprintf;
+
 final class NavigationMiddlewareFactory
 {
-    /** @var string */
-    private $navigationConfigName;
+    private string $navigationConfigName;
 
-    /** @var string */
-    private $urlHelperServiceName;
+    private string $urlHelperServiceName;
+
+    /**
+     * Allow varying behavior based on URL helper service name.
+     */
+    public function __construct(string $navigationConfigName = Config\NavigationConfigInterface::class, string $urlHelperServiceName = UrlHelper::class)
+    {
+        $this->navigationConfigName = $navigationConfigName;
+        $this->urlHelperServiceName = $urlHelperServiceName;
+    }
 
     /**
      * Allow serialization
      *
-     * @param array $data
+     * @param array<string, string> $data
      *
-     * @return \Mezzio\Navigation\NavigationMiddlewareFactory
+     * @return NavigationMiddlewareFactory
      */
     public static function __set_state(array $data): self
     {
@@ -42,26 +52,10 @@ final class NavigationMiddlewareFactory
     }
 
     /**
-     * Allow varying behavior based on URL helper service name.
-     *
-     * @param string $navigationConfigName
-     * @param string $urlHelperServiceName
-     */
-    public function __construct(string $navigationConfigName = Config\NavigationConfigInterface::class, string $urlHelperServiceName = UrlHelper::class)
-    {
-        $this->navigationConfigName = $navigationConfigName;
-        $this->urlHelperServiceName = $urlHelperServiceName;
-    }
-
-    /**
      * Create and return a NavigationMiddleware instance.
-     *
-     * @param \Psr\Container\ContainerInterface $container
      *
      * @throws Exception\MissingHelperException   if the UrlHelper service is missing
      * @throws Exception\InvalidArgumentException
-     *
-     * @return \Mezzio\Navigation\NavigationMiddleware
      */
     public function __invoke(ContainerInterface $container): NavigationMiddleware
     {

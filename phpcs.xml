@@ -10,9 +10,7 @@
     <arg name="encoding" value="utf-8"/>
 
     <!-- inherit rules from: -->
-    <rule ref="mimmi20-cs">
-        <exclude name="Squiz.Commenting.FunctionComment.ScalarTypeHintMissing"/>
-    </rule>
+    <rule ref="mimmi20-cs"/>
 
     <!-- Paths to check -->
     <file>src</file>

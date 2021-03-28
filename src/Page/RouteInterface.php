@@ -9,6 +9,7 @@
  */
 
 declare(strict_types = 1);
+
 namespace Mezzio\Navigation\Page;
 
 use Mezzio\Navigation\Exception;
@@ -30,9 +31,7 @@ interface RouteInterface extends PageInterface
      *
      * @see getHref()
      *
-     * @param array|string|null $query URL query part
-     *
-     * @return void
+     * @param array<string, string>|string|null $query URL query part
      */
     public function setQuery($query): void;
 
@@ -41,7 +40,7 @@ interface RouteInterface extends PageInterface
      *
      * @see getHref()
      *
-     * @return array|string|null URL query part (as an array or string) or null
+     * @return array<string, string>|string|null URL query part (as an array or string) or null
      */
     public function getQuery();
 
@@ -50,9 +49,7 @@ interface RouteInterface extends PageInterface
      *
      * @see getHref()
      *
-     * @param array $params [optional] page params
-     *
-     * @return void
+     * @param array<int|string, string> $params [optional] page params
      */
     public function setParams(array $params = []): void;
 
@@ -61,7 +58,7 @@ interface RouteInterface extends PageInterface
      *
      * @see getHref()
      *
-     * @return array page params
+     * @return array<int|string, string> page params
      */
     public function getParams(): array;
 
@@ -73,8 +70,6 @@ interface RouteInterface extends PageInterface
      * @param string $route route name to use when assembling URL
      *
      * @throws Exception\InvalidArgumentException if invalid $route is given
-     *
-     * @return void
      */
     public function setRoute(string $route): void;
 
@@ -89,24 +84,16 @@ interface RouteInterface extends PageInterface
 
     /**
      * Get the route match.
-     *
-     * @return RouteResult|null
      */
     public function getRouteMatch(): ?RouteResult;
 
     /**
      * Set route match object from which parameters will be retrieved
-     *
-     * @param RouteResult $matches
-     *
-     * @return void
      */
     public function setRouteMatch(RouteResult $matches): void;
 
     /**
      * Get the useRouteMatch flag
-     *
-     * @return bool
      */
     public function useRouteMatch(): bool;
 
@@ -116,15 +103,11 @@ interface RouteInterface extends PageInterface
      * @see getHref()
      *
      * @param bool $useRouteMatch [optional]
-     *
-     * @return void
      */
     public function setUseRouteMatch(bool $useRouteMatch = true): void;
 
     /**
      * Get the router.
-     *
-     * @return RouterInterface|null
      */
     public function getRouter(): ?RouterInterface;
 
@@ -134,8 +117,6 @@ interface RouteInterface extends PageInterface
      * @see getHref()
      *
      * @param RouterInterface|null $router Router
-     *
-     * @return void
      */
     public function setRouter(?RouterInterface $router): void;
 }

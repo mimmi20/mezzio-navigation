@@ -9,9 +9,13 @@
  */
 
 declare(strict_types = 1);
+
 namespace Mezzio\Navigation\Page;
 
 use Psr\Http\Message\ServerRequestInterface;
+
+use function array_merge;
+use function mb_substr;
 
 /**
  * Represents a page that is defined by specifying a URI
@@ -25,24 +29,18 @@ final class Uri implements UriInterface
 
     /**
      * Page URI
-     *
-     * @var string|null
      */
-    private $uri;
+    private ?string $uri = null;
 
     /**
      * Request object used to determine uri path
-     *
-     * @var ServerRequestInterface|null
      */
-    private $request;
+    private ?ServerRequestInterface $request = null;
 
     /**
      * Sets page URI
      *
      * @param string|null $uri page URI, must a string or null
-     *
-     * @return void
      */
     public function setUri(?string $uri): void
     {
@@ -51,27 +49,17 @@ final class Uri implements UriInterface
 
     /**
      * Returns URI
-     *
-     * @return string|null
      */
     public function getUri(): ?string
     {
         return $this->uri;
     }
 
-    /**
-     * @return \Psr\Http\Message\ServerRequestInterface|null
-     */
     public function getRequest(): ?ServerRequestInterface
     {
         return $this->request;
     }
 
-    /**
-     * @param \Psr\Http\Message\ServerRequestInterface|null $request
-     *
-     * @return void
-     */
     public function setRequest(?ServerRequestInterface $request): void
     {
         $this->request = $request;
@@ -81,8 +69,6 @@ final class Uri implements UriInterface
      * Returns href for this page
      *
      * Includes the fragment identifier if it is set.
-     *
-     * @return string
      */
     public function getHref(): string
     {
@@ -130,7 +116,7 @@ final class Uri implements UriInterface
     /**
      * Returns an array representation of the page
      *
-     * @return array
+     * @return array<string, array<string, string>|bool|int|string|null>
      */
     public function toArray(): array
     {

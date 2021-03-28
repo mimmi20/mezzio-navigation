@@ -9,8 +9,10 @@
  */
 
 declare(strict_types = 1);
+
 namespace MezzioTest\Navigation\Page;
 
+use ErrorException;
 use Mezzio\Navigation\ContainerInterface;
 use Mezzio\Navigation\Exception\BadMethodCallException;
 use Mezzio\Navigation\Exception\DomainException;
@@ -18,20 +20,24 @@ use Mezzio\Navigation\Exception\InvalidArgumentException;
 use Mezzio\Navigation\Exception\OutOfBoundsException;
 use Mezzio\Navigation\Page\PageInterface;
 use Mezzio\Navigation\Page\Route;
+use Mezzio\Router\Exception\RuntimeException;
 use Mezzio\Router\RouteResult;
 use Mezzio\Router\RouterInterface;
+use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\SkippedTestError;
+use PHPUnit\Framework\SyntheticSkippedError;
 use PHPUnit\Framework\TestCase;
+
+use function assert;
+use function spl_object_hash;
 
 final class RouteTest extends TestCase
 {
-    /** @var \Mezzio\Navigation\Page\Route */
-    private $page;
+    private Route $page;
 
     /**
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
-     *
-     * @return void
      */
     protected function setUp(): void
     {
@@ -40,9 +46,7 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testConstructorWithoutParameters(): void
     {
@@ -51,10 +55,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testConstructorWithRoute(): void
     {
@@ -67,10 +69,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testSetOptionsWithRoute(): void
     {
@@ -83,10 +83,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testSetRoute(): void
     {
@@ -99,10 +97,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testConstructorWithLabel(): void
     {
@@ -115,10 +111,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testSetOptionsWithLabel(): void
     {
@@ -131,9 +125,7 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testSetLabel(): void
     {
@@ -146,10 +138,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testConstructorWithFragment(): void
     {
@@ -162,10 +152,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testSetOptionsWithFragment(): void
     {
@@ -178,9 +166,7 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testSetFragment(): void
     {
@@ -193,10 +179,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testConstructorWithId(): void
     {
@@ -209,10 +193,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testSetOptionsWithId(): void
     {
@@ -225,9 +207,7 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testSetId(): void
     {
@@ -240,10 +220,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testConstructorClass(): void
     {
@@ -256,10 +234,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testSetOptionsWithClass(): void
     {
@@ -272,9 +248,7 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testSetClass(): void
     {
@@ -287,10 +261,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testConstructorLiClass(): void
     {
@@ -303,10 +275,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testSetOptionsWithLiClass(): void
     {
@@ -319,9 +289,7 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testSetLiClass(): void
     {
@@ -334,10 +302,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testConstructorTitle(): void
     {
@@ -350,10 +316,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testSetOptionsWithTitle(): void
     {
@@ -366,9 +330,7 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testSetTitle(): void
     {
@@ -381,10 +343,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testConstructorTarget(): void
     {
@@ -397,10 +357,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testSetOptionsWithTarget(): void
     {
@@ -413,9 +371,7 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testSetTarget(): void
     {
@@ -428,11 +384,9 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws Exception
+     * @throws InvalidArgumentException
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
-     *
-     * @return void
      */
     public function testSetRel(): void
     {
@@ -467,11 +421,9 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws Exception
+     * @throws InvalidArgumentException
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
-     *
-     * @return void
      */
     public function testSetRev(): void
     {
@@ -506,10 +458,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testSetParentException(): void
     {
@@ -523,10 +473,8 @@ final class RouteTest extends TestCase
     }
 
     /**
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testDuplicateSetParent(): void
     {
@@ -543,17 +491,15 @@ final class RouteTest extends TestCase
             ->method('addPage')
             ->with($this->page);
 
-        /* @var ContainerInterface $parent */
+        assert($parent instanceof ContainerInterface);
         $this->page->setParent($parent);
         $this->page->setParent($parent);
     }
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testSetTwoParents(): void
     {
@@ -583,8 +529,8 @@ final class RouteTest extends TestCase
         $parent2->expects(self::never())
             ->method('addPage');
 
-        /* @var ContainerInterface $parent1 */
-        /* @var ContainerInterface $parent2 */
+        assert($parent1 instanceof ContainerInterface);
+        assert($parent2 instanceof ContainerInterface);
         $this->page->setParent($parent1);
         self::assertSame($parent1, $this->page->getParent());
 
@@ -594,10 +540,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testSetOrder(): void
     {
@@ -619,9 +563,7 @@ final class RouteTest extends TestCase
     }
 
     /**
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws InvalidArgumentException
      */
     public function testSetOrderWithException(): void
     {
@@ -634,10 +576,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testSetOrderWithParent(): void
     {
@@ -657,10 +597,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testSetResource(): void
     {
@@ -675,9 +613,7 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testSetPrivilege(): void
     {
@@ -692,9 +628,7 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testSetPermission(): void
     {
@@ -709,9 +643,7 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testSetTextDomain(): void
     {
@@ -726,9 +658,7 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testSetVisible(): void
     {
@@ -755,10 +685,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testSetVisibleWithParent(): void
     {
@@ -769,7 +697,7 @@ final class RouteTest extends TestCase
             ->method('isVisible')
             ->willReturn(true);
 
-        /* @var PageInterface $parent1 */
+        assert($parent1 instanceof PageInterface);
         $this->page->setParent($parent1);
 
         self::assertTrue($this->page->isVisible(true));
@@ -782,7 +710,7 @@ final class RouteTest extends TestCase
             ->method('isVisible')
             ->willReturn(false);
 
-        /* @var PageInterface $parent2 */
+        assert($parent2 instanceof PageInterface);
         $this->page->setParent($parent2);
 
         self::assertFalse($this->page->isVisible(true));
@@ -801,9 +729,7 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testSetActive(): void
     {
@@ -830,10 +756,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testSetActiveWithPages(): void
     {
@@ -856,9 +780,7 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testSetActiveWithRouteMatchWithoutRoute(): void
     {
@@ -876,7 +798,7 @@ final class RouteTest extends TestCase
         self::assertFalse($this->page->isActive());
         self::assertFalse($this->page->getActive());
 
-        /* @var RouteResult $routeResult */
+        assert($routeResult instanceof RouteResult);
         $this->page->setRouteMatch($routeResult);
         $this->page->setParams($params);
 
@@ -886,10 +808,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testSetActiveWithRouteMatchWithRouteNotMatch(): void
     {
@@ -906,7 +826,7 @@ final class RouteTest extends TestCase
         $params = ['test'];
         $route  = 'testRoute';
 
-        /* @var RouteResult $routeResult */
+        assert($routeResult instanceof RouteResult);
         $this->page->setRouteMatch($routeResult);
         $this->page->setParams($params);
         $this->page->setRoute($route);
@@ -916,10 +836,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testSetActiveWithRouteMatchWithRouteMatch(): void
     {
@@ -937,7 +855,7 @@ final class RouteTest extends TestCase
 
         $params = ['test'];
 
-        /* @var RouteResult $routeResult */
+        assert($routeResult instanceof RouteResult);
         $this->page->setRouteMatch($routeResult);
         $this->page->setParams($params);
         $this->page->setRoute($route);
@@ -946,9 +864,7 @@ final class RouteTest extends TestCase
     }
 
     /**
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws InvalidArgumentException
      */
     public function testSetWithException(): void
     {
@@ -960,9 +876,7 @@ final class RouteTest extends TestCase
     }
 
     /**
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws InvalidArgumentException
      */
     public function testGetWithException(): void
     {
@@ -975,10 +889,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testGetSet(): void
     {
@@ -1007,9 +919,6 @@ final class RouteTest extends TestCase
         self::assertSame(['abc' => '4711'], $this->page->getCustomProperties());
     }
 
-    /**
-     * @return void
-     */
     public function testUnset(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -1021,9 +930,7 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testToString(): void
     {
@@ -1038,9 +945,7 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testHashCode(): void
     {
@@ -1055,9 +960,7 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testSetQuery(): void
     {
@@ -1072,9 +975,7 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testSetParams(): void
     {
@@ -1088,9 +989,7 @@ final class RouteTest extends TestCase
     }
 
     /**
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws InvalidArgumentException
      */
     public function testSetRouteException(): void
     {
@@ -1103,9 +1002,7 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testSetRouteMatch(): void
     {
@@ -1113,7 +1010,7 @@ final class RouteTest extends TestCase
 
         self::assertNull($this->page->getRouteMatch());
 
-        /* @var RouteResult $routeResult */
+        assert($routeResult instanceof RouteResult);
         $this->page->setRouteMatch($routeResult);
 
         self::assertSame($routeResult, $this->page->getRouteMatch());
@@ -1121,9 +1018,7 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testSetUseRouteMatch(): void
     {
@@ -1136,9 +1031,7 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testSetRouter(): void
     {
@@ -1146,17 +1039,15 @@ final class RouteTest extends TestCase
 
         self::assertNull($this->page->getRouter());
 
-        /* @var RouterInterface $router */
+        assert($router instanceof RouterInterface);
         $this->page->setRouter($router);
 
         self::assertSame($router, $this->page->getRouter());
     }
 
     /**
-     * @throws \Mezzio\Navigation\Exception\DomainException
-     * @throws \Mezzio\Router\Exception\RuntimeException
-     *
-     * @return void
+     * @throws DomainException
+     * @throws RuntimeException
      */
     public function testGetHrefMissingRouter(): void
     {
@@ -1168,16 +1059,14 @@ final class RouteTest extends TestCase
     }
 
     /**
-     * @throws \Mezzio\Navigation\Exception\DomainException
-     * @throws \Mezzio\Router\Exception\RuntimeException
-     *
-     * @return void
+     * @throws DomainException
+     * @throws RuntimeException
      */
     public function testGetHrefMissingRoute(): void
     {
         $router = $this->createMock(RouterInterface::class);
 
-        /* @var RouterInterface $router */
+        assert($router instanceof RouterInterface);
         $this->page->setRouter($router);
 
         $this->expectException(DomainException::class);
@@ -1189,12 +1078,10 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     * @throws \Mezzio\Navigation\Exception\DomainException
-     * @throws \Mezzio\Router\Exception\RuntimeException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
+     * @throws DomainException
+     * @throws RuntimeException
      */
     public function testGetHrefWithRoute(): void
     {
@@ -1208,7 +1095,7 @@ final class RouteTest extends TestCase
             ->with($route, [], ['name' => $route])
             ->willReturn($expectedUri);
 
-        /* @var RouterInterface $router */
+        assert($router instanceof RouterInterface);
         $this->page->setRouter($router);
         $this->page->setRoute($route);
 
@@ -1219,11 +1106,9 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\DomainException
-     * @throws \Mezzio\Router\Exception\RuntimeException
-     *
-     * @return void
+     * @throws Exception
+     * @throws DomainException
+     * @throws RuntimeException
      */
     public function testGetHrefWithRouteMatch(): void
     {
@@ -1252,10 +1137,10 @@ final class RouteTest extends TestCase
             ->method('isFailure')
             ->willReturn(false);
 
-        /* @var RouterInterface $router */
+        assert($router instanceof RouterInterface);
         $this->page->setRouter($router);
 
-        /* @var RouteResult $routeResult */
+        assert($routeResult instanceof RouteResult);
         $this->page->setRouteMatch($routeResult);
 
         $this->page->setUseRouteMatch(true);
@@ -1267,11 +1152,9 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\DomainException
-     * @throws \Mezzio\Router\Exception\RuntimeException
-     *
-     * @return void
+     * @throws Exception
+     * @throws DomainException
+     * @throws RuntimeException
      */
     public function testGetHrefWithFragmentIdentifier(): void
     {
@@ -1301,10 +1184,10 @@ final class RouteTest extends TestCase
             ->method('isFailure')
             ->willReturn(false);
 
-        /* @var RouterInterface $router */
+        assert($router instanceof RouterInterface);
         $this->page->setRouter($router);
 
-        /* @var RouteResult $routeResult */
+        assert($routeResult instanceof RouteResult);
         $this->page->setRouteMatch($routeResult);
 
         $this->page->setUseRouteMatch(true);
@@ -1317,11 +1200,9 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\DomainException
-     * @throws \Mezzio\Router\Exception\RuntimeException
-     *
-     * @return void
+     * @throws Exception
+     * @throws DomainException
+     * @throws RuntimeException
      */
     public function testGetHrefWithQuery(): void
     {
@@ -1351,10 +1232,10 @@ final class RouteTest extends TestCase
             ->method('isFailure')
             ->willReturn(false);
 
-        /* @var RouterInterface $router */
+        assert($router instanceof RouterInterface);
         $this->page->setRouter($router);
 
-        /* @var RouteResult $routeResult */
+        assert($routeResult instanceof RouteResult);
         $this->page->setRouteMatch($routeResult);
 
         $this->page->setUseRouteMatch(true);
@@ -1369,10 +1250,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testToArray(): void
     {
@@ -1384,10 +1263,10 @@ final class RouteTest extends TestCase
         $this->page->setParams($params);
         $this->page->setRoute($route);
 
-        /* @var RouterInterface $router */
+        assert($router instanceof RouterInterface);
         $this->page->setRouter($router);
 
-        /* @var RouteResult $routeResult */
+        assert($routeResult instanceof RouteResult);
         $this->page->setRouteMatch($routeResult);
 
         $expected = [
@@ -1420,9 +1299,7 @@ final class RouteTest extends TestCase
     }
 
     /**
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws InvalidArgumentException
      */
     public function testAddSelfAsChild(): void
     {
@@ -1434,10 +1311,8 @@ final class RouteTest extends TestCase
     }
 
     /**
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testAddChildPageTwice(): void
     {
@@ -1456,15 +1331,13 @@ final class RouteTest extends TestCase
             ->method('setParent')
             ->with($this->page);
 
-        /* @var PageInterface $childPage */
+        assert($childPage instanceof PageInterface);
         $this->page->addPage($childPage);
         $this->page->addPage($childPage);
     }
 
     /**
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws InvalidArgumentException
      */
     public function testAddChildPageSelf(): void
     {
@@ -1476,10 +1349,8 @@ final class RouteTest extends TestCase
     }
 
     /**
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
-     *
-     * @return void
      */
     public function testAddPages(): void
     {
@@ -1492,10 +1363,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testRemovePageByIndex(): void
     {
@@ -1528,8 +1397,8 @@ final class RouteTest extends TestCase
             ->method('setParent')
             ->with($this->page);
 
-        /* @var PageInterface $childPage1 */
-        /* @var PageInterface $childPage2 */
+        assert($childPage1 instanceof PageInterface);
+        assert($childPage2 instanceof PageInterface);
         $this->page->addPage($childPage1);
         $this->page->addPage($childPage2);
 
@@ -1539,10 +1408,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testRemovePageByObject(): void
     {
@@ -1575,8 +1442,8 @@ final class RouteTest extends TestCase
             ->method('setParent')
             ->with($this->page);
 
-        /* @var PageInterface $childPage1 */
-        /* @var PageInterface $childPage2 */
+        assert($childPage1 instanceof PageInterface);
+        assert($childPage2 instanceof PageInterface);
         $this->page->addPage($childPage1);
         $this->page->addPage($childPage2);
 
@@ -1586,10 +1453,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testRemovePageNotByHash(): void
     {
@@ -1622,8 +1487,8 @@ final class RouteTest extends TestCase
             ->method('setParent')
             ->with($this->page);
 
-        /* @var PageInterface $childPage1 */
-        /* @var PageInterface $childPage2 */
+        assert($childPage1 instanceof PageInterface);
+        assert($childPage2 instanceof PageInterface);
         $this->page->addPage($childPage1);
         $this->page->addPage($childPage2);
 
@@ -1633,10 +1498,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testRemovePageNotExistingPage(): void
     {
@@ -1669,8 +1532,8 @@ final class RouteTest extends TestCase
             ->method('setParent')
             ->with($this->page);
 
-        /* @var PageInterface $childPage1 */
-        /* @var PageInterface $childPage2 */
+        assert($childPage1 instanceof PageInterface);
+        assert($childPage2 instanceof PageInterface);
         $this->page->addPage($childPage1);
         $this->page->addPage($childPage2);
 
@@ -1680,10 +1543,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testRemovePageRecursive(): void
     {
@@ -1724,8 +1585,8 @@ final class RouteTest extends TestCase
             ->method('removePage')
             ->with($childPage2, true);
 
-        /* @var PageInterface $childPage1 */
-        /* @var PageInterface $childPage2 */
+        assert($childPage1 instanceof PageInterface);
+        assert($childPage2 instanceof PageInterface);
         $this->page->addPage($childPage1);
         $childPage1->addPage($childPage2);
 
@@ -1735,10 +1596,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testRemovePageRecursiveNotFound(): void
     {
@@ -1778,8 +1637,8 @@ final class RouteTest extends TestCase
         $childPage1->expects(self::never())
             ->method('removePage');
 
-        /* @var PageInterface $childPage1 */
-        /* @var PageInterface $childPage2 */
+        assert($childPage1 instanceof PageInterface);
+        assert($childPage2 instanceof PageInterface);
         $this->page->addPage($childPage1);
         $childPage1->addPage($childPage2);
 
@@ -1789,10 +1648,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testHasPageByIndex(): void
     {
@@ -1825,8 +1682,8 @@ final class RouteTest extends TestCase
             ->method('setParent')
             ->with($this->page);
 
-        /* @var PageInterface $childPage1 */
-        /* @var PageInterface $childPage2 */
+        assert($childPage1 instanceof PageInterface);
+        assert($childPage2 instanceof PageInterface);
         $this->page->addPage($childPage1);
         $this->page->addPage($childPage2);
 
@@ -1835,10 +1692,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testHasPageByObject(): void
     {
@@ -1871,8 +1726,8 @@ final class RouteTest extends TestCase
             ->method('setParent')
             ->with($this->page);
 
-        /* @var PageInterface $childPage1 */
-        /* @var PageInterface $childPage2 */
+        assert($childPage1 instanceof PageInterface);
+        assert($childPage2 instanceof PageInterface);
         $this->page->addPage($childPage1);
         $this->page->addPage($childPage2);
 
@@ -1881,10 +1736,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testHasPageNotByHash(): void
     {
@@ -1917,8 +1770,8 @@ final class RouteTest extends TestCase
             ->method('setParent')
             ->with($this->page);
 
-        /* @var PageInterface $childPage1 */
-        /* @var PageInterface $childPage2 */
+        assert($childPage1 instanceof PageInterface);
+        assert($childPage2 instanceof PageInterface);
         $this->page->addPage($childPage1);
         $this->page->addPage($childPage2);
 
@@ -1927,10 +1780,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testHasNotExistingPage(): void
     {
@@ -1963,8 +1814,8 @@ final class RouteTest extends TestCase
             ->method('setParent')
             ->with($this->page);
 
-        /* @var PageInterface $childPage1 */
-        /* @var PageInterface $childPage2 */
+        assert($childPage1 instanceof PageInterface);
+        assert($childPage2 instanceof PageInterface);
         $this->page->addPage($childPage1);
         $this->page->addPage($childPage2);
 
@@ -1973,10 +1824,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testHasPageRecursive(): void
     {
@@ -2016,8 +1865,8 @@ final class RouteTest extends TestCase
         $childPage1->expects(self::never())
             ->method('removePage');
 
-        /* @var PageInterface $childPage1 */
-        /* @var PageInterface $childPage2 */
+        assert($childPage1 instanceof PageInterface);
+        assert($childPage2 instanceof PageInterface);
         $this->page->addPage($childPage1);
         $childPage1->addPage($childPage2);
 
@@ -2026,10 +1875,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testHasPageRecursiveNotFound(): void
     {
@@ -2069,8 +1916,8 @@ final class RouteTest extends TestCase
         $childPage1->expects(self::never())
             ->method('removePage');
 
-        /* @var PageInterface $childPage1 */
-        /* @var PageInterface $childPage2 */
+        assert($childPage1 instanceof PageInterface);
+        assert($childPage2 instanceof PageInterface);
         $this->page->addPage($childPage1);
         $childPage1->addPage($childPage2);
 
@@ -2079,10 +1926,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testHasNoVisiblePages(): void
     {
@@ -2123,8 +1968,8 @@ final class RouteTest extends TestCase
             ->method('isVisible')
             ->willReturn(false);
 
-        /* @var PageInterface $childPage1 */
-        /* @var PageInterface $childPage2 */
+        assert($childPage1 instanceof PageInterface);
+        assert($childPage2 instanceof PageInterface);
         $this->page->addPage($childPage1);
         $this->page->addPage($childPage2);
 
@@ -2134,10 +1979,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testHasVisiblePages(): void
     {
@@ -2178,8 +2021,8 @@ final class RouteTest extends TestCase
             ->method('isVisible')
             ->willReturn(true);
 
-        /* @var PageInterface $childPage1 */
-        /* @var PageInterface $childPage2 */
+        assert($childPage1 instanceof PageInterface);
+        assert($childPage2 instanceof PageInterface);
         $this->page->addPage($childPage1);
         $this->page->addPage($childPage2);
 
@@ -2189,10 +2032,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testFindOneBy(): void
     {
@@ -2240,8 +2081,8 @@ final class RouteTest extends TestCase
             ->with($property)
             ->willReturn($value);
 
-        /* @var PageInterface $childPage1 */
-        /* @var PageInterface $childPage2 */
+        assert($childPage1 instanceof PageInterface);
+        assert($childPage2 instanceof PageInterface);
         $this->page->addPage($childPage1);
         $this->page->addPage($childPage2);
 
@@ -2250,10 +2091,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testFindAllBy(): void
     {
@@ -2323,9 +2162,9 @@ final class RouteTest extends TestCase
             ->with($property)
             ->willReturn(null);
 
-        /* @var PageInterface $childPage1 */
-        /* @var PageInterface $childPage2 */
-        /* @var PageInterface $childPage3 */
+        assert($childPage1 instanceof PageInterface);
+        assert($childPage2 instanceof PageInterface);
+        assert($childPage3 instanceof PageInterface);
         $this->page->addPage($childPage1);
         $this->page->addPage($childPage2);
         $this->page->addPage($childPage3);
@@ -2334,10 +2173,8 @@ final class RouteTest extends TestCase
     }
 
     /**
-     * @throws \Mezzio\Navigation\Exception\BadMethodCallException
-     * @throws \ErrorException
-     *
-     * @return void
+     * @throws BadMethodCallException
+     * @throws ErrorException
      */
     public function testCallFindAllByException(): void
     {
@@ -2352,12 +2189,10 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     * @throws \Mezzio\Navigation\Exception\BadMethodCallException
-     * @throws \ErrorException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
+     * @throws BadMethodCallException
+     * @throws ErrorException
      */
     public function testCallFindAllBy(): void
     {
@@ -2407,8 +2242,8 @@ final class RouteTest extends TestCase
             ->with($property)
             ->willReturn($value);
 
-        /* @var PageInterface $childPage1 */
-        /* @var PageInterface $childPage2 */
+        assert($childPage1 instanceof PageInterface);
+        assert($childPage2 instanceof PageInterface);
         $this->page->addPage($childPage1);
         $this->page->addPage($childPage2);
 
@@ -2416,9 +2251,7 @@ final class RouteTest extends TestCase
     }
 
     /**
-     * @throws \Mezzio\Navigation\Exception\OutOfBoundsException
-     *
-     * @return void
+     * @throws OutOfBoundsException
      */
     public function testCurrentException(): void
     {
@@ -2431,11 +2264,9 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     * @throws \Mezzio\Navigation\Exception\OutOfBoundsException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
      */
     public function testCurrent(): void
     {
@@ -2476,8 +2307,8 @@ final class RouteTest extends TestCase
         $childPage2->expects(self::never())
             ->method('get');
 
-        /* @var PageInterface $childPage1 */
-        /* @var PageInterface $childPage2 */
+        assert($childPage1 instanceof PageInterface);
+        assert($childPage2 instanceof PageInterface);
         $this->page->addPage($childPage1);
         $this->page->addPage($childPage2);
 
@@ -2505,11 +2336,9 @@ final class RouteTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     * @throws \Mezzio\Navigation\Exception\OutOfBoundsException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
      */
     public function testRewind(): void
     {
@@ -2550,8 +2379,8 @@ final class RouteTest extends TestCase
         $childPage2->expects(self::never())
             ->method('get');
 
-        /* @var PageInterface $childPage1 */
-        /* @var PageInterface $childPage2 */
+        assert($childPage1 instanceof PageInterface);
+        assert($childPage2 instanceof PageInterface);
         $this->page->addPage($childPage1);
         $this->page->addPage($childPage2);
 
@@ -2577,10 +2406,8 @@ final class RouteTest extends TestCase
      * @ throws \PHPUnit\Framework\Exception
      * @ throws \Mezzio\Navigation\Exception\InvalidArgumentException
      *
-     * @throws \PHPUnit\Framework\SyntheticSkippedError
-     * @throws \PHPUnit\Framework\SkippedTestError
-     *
-     * @return void
+     * @throws SyntheticSkippedError
+     * @throws SkippedTestError
      */
     public function testHasChildren(): void
     {

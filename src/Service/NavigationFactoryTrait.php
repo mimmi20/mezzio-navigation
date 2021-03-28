@@ -9,10 +9,12 @@
  */
 
 declare(strict_types = 1);
+
 namespace Mezzio\Navigation\Service;
 
 use Mezzio\Navigation\Config\NavigationConfigInterface;
 use Mezzio\Navigation\Exception;
+use Mezzio\Navigation\Exception\InvalidArgumentException;
 use Mezzio\Navigation\Navigation;
 use Mezzio\Navigation\Page\PageFactoryInterface;
 use Mezzio\Navigation\Page\PageInterface;
@@ -20,32 +22,34 @@ use Mezzio\Navigation\Page\RouteInterface;
 use Mezzio\Navigation\Page\UriInterface;
 use Mezzio\Router\RouteResult;
 use Mezzio\Router\RouterInterface;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
+
+use function array_key_exists;
+use function array_map;
+use function assert;
+use function is_array;
+use function sprintf;
 
 /**
  * navigation factory trait
  */
 trait NavigationFactoryTrait
 {
-    /** @var string */
-    private $configName;
+    private string $configName;
 
     /**
      * Create and return a new Navigation instance (v3).
      *
-     * @param ContainerInterface $container
-     *
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
-     * @throws \Psr\Container\ContainerExceptionInterface
-     *
-     * @return Navigation
+     * @throws ContainerExceptionInterface
      */
     public function __invoke(ContainerInterface $container): Navigation
     {
         $config = $container->get(NavigationConfigInterface::class);
-        \assert($config instanceof NavigationConfigInterface);
+        assert($config instanceof NavigationConfigInterface);
 
         $navigation = new Navigation();
 
@@ -55,14 +59,11 @@ trait NavigationFactoryTrait
     }
 
     /**
-     * @param ContainerInterface        $container
-     * @param NavigationConfigInterface $config
+     * @return array<PageInterface>
      *
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
-     * @throws \Psr\Container\ContainerExceptionInterface
-     *
-     * @return PageInterface[]
+     * @throws ContainerExceptionInterface
      */
     private function getPages(ContainerInterface $container, NavigationConfigInterface $config): array
     {
@@ -92,16 +93,12 @@ trait NavigationFactoryTrait
     }
 
     /**
-     * @param array[]                             $pages
-     * @param PageFactoryInterface                $factory
-     * @param \Mezzio\Router\RouteResult|null     $routeResult
-     * @param \Mezzio\Router\RouterInterface|null $router
-     * @param ServerRequestInterface|null         $request
+     * @param array<string, array<mixed>> $pages
+     *
+     * @return array<PageInterface>
      *
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return PageInterface[]
+     * @throws InvalidArgumentException
      */
     private function preparePages(
         array $pages,

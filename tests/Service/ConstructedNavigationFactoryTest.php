@@ -9,6 +9,7 @@
  */
 
 declare(strict_types = 1);
+
 namespace MezzioTest\Navigation\Service;
 
 use Mezzio\Navigation\Config\NavigationConfigInterface;
@@ -23,16 +24,17 @@ use Mezzio\Navigation\Page\UriInterface;
 use Mezzio\Navigation\Service\ConstructedNavigationFactory;
 use Mezzio\Router\RouteResult;
 use Mezzio\Router\RouterInterface;
+use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
+use function assert;
+
 final class ConstructedNavigationFactoryTest extends TestCase
 {
     /**
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testCanNotInvokeWithoutConfig(): void
     {
@@ -63,15 +65,13 @@ final class ConstructedNavigationFactoryTest extends TestCase
         $this->expectExceptionMessage('Failed to find a navigation container by the name "test"');
         $this->expectExceptionCode(0);
 
-        /* @var ContainerInterface $container */
+        assert($container instanceof ContainerInterface);
         $factory($container);
     }
 
     /**
-     * @throws \PHPUnit\Framework\Exception
+     * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @return void
      */
     public function testInvoke(): void
     {
@@ -81,7 +81,7 @@ final class ConstructedNavigationFactoryTest extends TestCase
         $page2Config = [
             'type' => Uri::class,
         ];
-        $pageConfig = [
+        $pageConfig  = [
             'test' => [
                 $page1Config,
                 $page2Config,
@@ -136,7 +136,7 @@ final class ConstructedNavigationFactoryTest extends TestCase
 
         $factory = new ConstructedNavigationFactory('test');
 
-        /** @var ContainerInterface $container */
+        assert($container instanceof ContainerInterface);
         $navigation = $factory($container);
 
         self::assertInstanceOf(Navigation::class, $navigation);
@@ -148,10 +148,8 @@ final class ConstructedNavigationFactoryTest extends TestCase
     }
 
     /**
-     * @throws \PHPUnit\Framework\Exception
+     * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @return void
      */
     public function testInvokeWithRouteResult(): void
     {
@@ -161,7 +159,7 @@ final class ConstructedNavigationFactoryTest extends TestCase
         $page2Config = [
             'type' => Uri::class,
         ];
-        $pageConfig = [
+        $pageConfig  = [
             'test' => [
                 $page1Config,
                 $page2Config,
@@ -229,7 +227,7 @@ final class ConstructedNavigationFactoryTest extends TestCase
 
         $factory = new ConstructedNavigationFactory('test');
 
-        /** @var ContainerInterface $container */
+        assert($container instanceof ContainerInterface);
         $navigation = $factory($container);
 
         self::assertInstanceOf(Navigation::class, $navigation);
@@ -241,10 +239,8 @@ final class ConstructedNavigationFactoryTest extends TestCase
     }
 
     /**
-     * @throws \PHPUnit\Framework\Exception
+     * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @return void
      */
     public function testInvokeWithSubPages(): void
     {
@@ -255,7 +251,7 @@ final class ConstructedNavigationFactoryTest extends TestCase
             'type' => Uri::class,
             'pages' => [$page1Config],
         ];
-        $pageConfig = [
+        $pageConfig  = [
             'test' => [$page2Config],
         ];
 
@@ -321,7 +317,7 @@ final class ConstructedNavigationFactoryTest extends TestCase
 
         $factory = new ConstructedNavigationFactory('test');
 
-        /** @var ContainerInterface $container */
+        assert($container instanceof ContainerInterface);
         $navigation = $factory($container);
 
         self::assertInstanceOf(Navigation::class, $navigation);

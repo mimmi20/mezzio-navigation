@@ -9,6 +9,7 @@
  */
 
 declare(strict_types = 1);
+
 namespace MezzioTest\Navigation;
 
 use Mezzio\GenericAuthorization\AuthorizationInterface;
@@ -17,18 +18,20 @@ use Mezzio\Navigation\Config\NavigationConfigInterface;
 use Mezzio\Navigation\NavigationMiddleware;
 use Mezzio\Router\RouteResult;
 use Mezzio\Router\RouterInterface;
+use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use SebastianBergmann\RecursionContext\InvalidArgumentException;
+
+use function assert;
 
 final class NavigationMiddlewareTest extends TestCase
 {
     /**
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testConstructor(): void
     {
@@ -37,36 +40,32 @@ final class NavigationMiddlewareTest extends TestCase
         $authorization    = $this->createMock(AuthorizationInterface::class);
         $router           = $this->createMock(RouterInterface::class);
 
-        /** @var NavigationConfigInterface $navigationConfig */
-        /** @var UrlHelper $urlHelper */
-        /** @var AuthorizationInterface $authorization */
-        /** @var RouterInterface $router */
+        assert($navigationConfig instanceof NavigationConfigInterface);
+        assert($urlHelper instanceof UrlHelper);
+        assert($authorization instanceof AuthorizationInterface);
+        assert($router instanceof RouterInterface);
         $middleware = new NavigationMiddleware($navigationConfig, $urlHelper, $authorization, $router);
         self::assertInstanceOf(NavigationMiddleware::class, $middleware);
     }
 
     /**
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testConstructorWithoutOptionalParameters(): void
     {
         $navigationConfig = $this->createMock(NavigationConfigInterface::class);
         $urlHelper        = $this->createMock(UrlHelper::class);
 
-        /** @var NavigationConfigInterface $navigationConfig */
-        /** @var UrlHelper $urlHelper */
+        assert($navigationConfig instanceof NavigationConfigInterface);
+        assert($urlHelper instanceof UrlHelper);
         $middleware = new NavigationMiddleware($navigationConfig, $urlHelper);
         self::assertInstanceOf(NavigationMiddleware::class, $middleware);
     }
 
     /**
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testProcessWithoutRouteResult(): void
     {
@@ -100,10 +99,10 @@ final class NavigationMiddlewareTest extends TestCase
             ->method('setRouter')
             ->with($router);
 
-        /** @var NavigationConfigInterface $navigationConfig */
-        /** @var UrlHelper $urlHelper */
-        /** @var AuthorizationInterface $authorization */
-        /** @var RouterInterface $router */
+        assert($navigationConfig instanceof NavigationConfigInterface);
+        assert($urlHelper instanceof UrlHelper);
+        assert($authorization instanceof AuthorizationInterface);
+        assert($router instanceof RouterInterface);
         $middleware = new NavigationMiddleware($navigationConfig, $urlHelper, $authorization, $router);
         self::assertInstanceOf(NavigationMiddleware::class, $middleware);
 
@@ -117,8 +116,8 @@ final class NavigationMiddlewareTest extends TestCase
             ->with($request)
             ->willReturn($expectedResponse);
 
-        /** @var ServerRequestInterface $request */
-        /** @var RequestHandlerInterface $handler */
+        assert($request instanceof ServerRequestInterface);
+        assert($handler instanceof RequestHandlerInterface);
         $response = $middleware->process(
             $request,
             $handler
@@ -128,10 +127,8 @@ final class NavigationMiddlewareTest extends TestCase
     }
 
     /**
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testProcess(): void
     {
@@ -167,10 +164,10 @@ final class NavigationMiddlewareTest extends TestCase
             ->method('setRouter')
             ->with($router);
 
-        /** @var NavigationConfigInterface $navigationConfig */
-        /** @var UrlHelper $urlHelper */
-        /** @var AuthorizationInterface $authorization */
-        /** @var RouterInterface $router */
+        assert($navigationConfig instanceof NavigationConfigInterface);
+        assert($urlHelper instanceof UrlHelper);
+        assert($authorization instanceof AuthorizationInterface);
+        assert($router instanceof RouterInterface);
         $middleware = new NavigationMiddleware($navigationConfig, $urlHelper, $authorization, $router);
         self::assertInstanceOf(NavigationMiddleware::class, $middleware);
 
@@ -184,8 +181,8 @@ final class NavigationMiddlewareTest extends TestCase
             ->with($request)
             ->willReturn($expectedResponse);
 
-        /** @var ServerRequestInterface $request */
-        /** @var RequestHandlerInterface $handler */
+        assert($request instanceof ServerRequestInterface);
+        assert($handler instanceof RequestHandlerInterface);
         $response = $middleware->process(
             $request,
             $handler

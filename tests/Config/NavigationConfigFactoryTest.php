@@ -9,20 +9,22 @@
  */
 
 declare(strict_types = 1);
+
 namespace MezzioTest\Navigation\Config;
 
 use Mezzio\Navigation\Config\NavigationConfig;
 use Mezzio\Navigation\Config\NavigationConfigFactory;
 use Mezzio\Navigation\Exception\InvalidArgumentException;
+use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
+
+use function assert;
 
 final class NavigationConfigFactoryTest extends TestCase
 {
     /**
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testFactoryWithoutNavigationConfig(): void
     {
@@ -40,15 +42,13 @@ final class NavigationConfigFactoryTest extends TestCase
         $this->expectExceptionMessage('Could not find navigation configuration key');
         $this->expectExceptionCode(0);
 
-        /* @var ContainerInterface $container */
+        assert($container instanceof ContainerInterface);
         $factory($container, '');
     }
 
     /**
-     * @throws \PHPUnit\Framework\Exception
+     * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @return void
      */
     public function testFactory(): void
     {
@@ -66,7 +66,7 @@ final class NavigationConfigFactoryTest extends TestCase
 
         $factory = new NavigationConfigFactory();
 
-        /** @var ContainerInterface $container */
+        assert($container instanceof ContainerInterface);
         $config = $factory($container, '');
 
         self::assertInstanceOf(NavigationConfig::class, $config);

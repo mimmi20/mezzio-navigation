@@ -9,6 +9,7 @@
  */
 
 declare(strict_types = 1);
+
 namespace MezzioTest\Navigation\TestAsset;
 
 use Mezzio\Navigation\Page\PageInterface;
@@ -18,9 +19,6 @@ final class Page implements PageInterface
 {
     use PageTrait;
 
-    /**
-     * @return string
-     */
     public function getHref(): string
     {
         return '';

@@ -9,6 +9,7 @@
  */
 
 declare(strict_types = 1);
+
 namespace Mezzio\Navigation\Config;
 
 use Mezzio\GenericAuthorization\AuthorizationInterface;
@@ -22,75 +23,33 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 interface NavigationConfigInterface
 {
-    /**
-     * @return UrlHelper|null
-     */
     public function getUrlHelper(): ?UrlHelper;
 
-    /**
-     * @param UrlHelper $urlHelper
-     *
-     * @return void
-     */
     public function setUrlHelper(UrlHelper $urlHelper): void;
 
-    /**
-     * @return RouteResult|null
-     */
     public function getRouteResult(): ?RouteResult;
 
-    /**
-     * @param RouteResult $routeResult
-     *
-     * @return void
-     */
     public function setRouteResult(RouteResult $routeResult): void;
 
-    /**
-     * @return \Mezzio\Router\RouterInterface|null
-     */
     public function getRouter(): ?RouterInterface;
 
-    /**
-     * @param \Mezzio\Router\RouterInterface|null $router
-     *
-     * @return void
-     */
     public function setRouter(?RouterInterface $router): void;
 
-    /**
-     * @return ServerRequestInterface|null
-     */
     public function getRequest(): ?ServerRequestInterface;
 
-    /**
-     * @param ServerRequestInterface $request
-     *
-     * @return void
-     */
     public function setRequest(ServerRequestInterface $request): void;
 
-    /**
-     * @return AuthorizationInterface|null
-     */
     public function getAuthorization(): ?AuthorizationInterface;
 
-    /**
-     * @param AuthorizationInterface|null $authorization
-     *
-     * @return void
-     */
     public function setAuthorization(?AuthorizationInterface $authorization = null): void;
 
     /**
-     * @return array[]|null
+     * @return array<int|string, array<mixed>>|null
      */
     public function getPages(): ?array;
 
     /**
-     * @param array[] $pages
-     *
-     * @return void
+     * @param array<int|string, array<mixed>> $pages
      */
     public function setPages(array $pages): void;
 }

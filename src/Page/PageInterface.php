@@ -9,6 +9,7 @@
  */
 
 declare(strict_types = 1);
+
 namespace Mezzio\Navigation\Page;
 
 use Mezzio\Navigation\ContainerInterface;
@@ -27,11 +28,9 @@ interface PageInterface extends ContainerInterface
      * corresponds to setTarget(), and the option 'reset_params' corresponds to
      * the method setResetParams().
      *
-     * @param iterable $options associative array of options to set
+     * @param iterable|mixed[] $options associative array of options to set
      *
      * @throws Exception\InvalidArgumentException if invalid options are given
-     *
-     * @return void
      */
     public function setOptions(iterable $options): void;
 
@@ -41,8 +40,6 @@ interface PageInterface extends ContainerInterface
      * Sets page label
      *
      * @param string|null $label new page label
-     *
-     * @return void
      */
     public function setLabel(?string $label = null): void;
 
@@ -57,8 +54,6 @@ interface PageInterface extends ContainerInterface
      * Sets a fragment identifier
      *
      * @param string|null $fragment new fragment identifier
-     *
-     * @return void
      */
     public function setFragment(?string $fragment = null): void;
 
@@ -73,8 +68,6 @@ interface PageInterface extends ContainerInterface
      * Sets page id
      *
      * @param string|null $id [optional] id to set. Default is null, which sets no id.
-     *
-     * @return void
      */
     public function setId(?string $id = null): void;
 
@@ -90,8 +83,6 @@ interface PageInterface extends ContainerInterface
      *
      * @param string|null $class [optional] CSS class to set. Default
      *                           is null, which sets no CSS class.
-     *
-     * @return void
      */
     public function setClass(?string $class = null): void;
 
@@ -106,8 +97,6 @@ interface PageInterface extends ContainerInterface
      * Sets page CSS class
      *
      * @param string|null $liClass [optional] CSS class to set. Default is null, which sets no CSS class.
-     *
-     * @return void
      */
     public function setLiClass(?string $liClass = null): void;
 
@@ -123,8 +112,6 @@ interface PageInterface extends ContainerInterface
      *
      * @param string|null $title [optional] page title. Default is
      *                           null, which sets no title.
-     *
-     * @return void
      */
     public function setTitle(?string $title = null): void;
 
@@ -140,8 +127,6 @@ interface PageInterface extends ContainerInterface
      *
      * @param string|null $target [optional] target to set. Default is
      *                            null, which sets no target.
-     *
-     * @return void
      */
     public function setTarget(?string $target = null): void;
 
@@ -160,10 +145,8 @@ interface PageInterface extends ContainerInterface
      * prev, next, help, etc), and the value is a mixed value that could somehow
      * be considered a page.
      *
-     * @param iterable|null $relations [optional] an associative array of
-     *                                 forward links to other pages
-     *
-     * @return void
+     * @param iterable|string[]|null $relations [optional] an associative array of
+     *                                          forward links to other pages
      */
     public function setRel(?iterable $relations = null): void;
 
@@ -178,9 +161,9 @@ interface PageInterface extends ContainerInterface
      * @param string|null $relation [optional] name of relation to return. If not
      *                              given, all relations will be returned.
      *
-     * @return array|string|null an array of relations. If $relation is not
-     *                           specified, all relations will be returned in
-     *                           an associative array.
+     * @return array<string, string>|string|null an array of relations. If $relation is not
+     *                       specified, all relations will be returned in
+     *                       an associative array.
      */
     public function getRel(?string $relation = null);
 
@@ -192,10 +175,8 @@ interface PageInterface extends ContainerInterface
      * prev, next, help, etc), and the value is a mixed value that could somehow
      * be considered a page.
      *
-     * @param iterable|null $relations [optional] an associative array of
-     *                                 reverse links to other pages
-     *
-     * @return void
+     * @param iterable|string[]|null $relations [optional] an associative array of
+     *                                          reverse links to other pages
      */
     public function setRev(?iterable $relations = null): void;
 
@@ -210,9 +191,9 @@ interface PageInterface extends ContainerInterface
      * @param string|null $relation [optional] name of relation to return. If not
      *                              given, all relations will be returned.
      *
-     * @return array|string|null an array of relations. If $relation is not
-     *                           specified, all relations will be returned in
-     *                           an associative array.
+     * @return array<string, string>|string|null an array of relations. If $relation is not
+     *                       specified, all relations will be returned in
+     *                       an associative array.
      */
     public function getRev(?string $relation = null);
 
@@ -224,8 +205,6 @@ interface PageInterface extends ContainerInterface
      *                               specific order.
      *
      * @throws Exception\InvalidArgumentException if order is not integer or null
-     *
-     * @return void
      */
     public function setOrder($order = null): void;
 
@@ -244,8 +223,6 @@ interface PageInterface extends ContainerInterface
      *                         sets no resource.
      *
      * @throws Exception\InvalidArgumentException if $resource is invalid
-     *
-     * @return void
      */
     public function setResource(string $resource): void;
 
@@ -262,8 +239,6 @@ interface PageInterface extends ContainerInterface
      * @param string $privilege [optional] ACL privilege to associate
      *                          with this page. Default is null, which
      *                          sets no privilege.
-     *
-     * @return void
      */
     public function setPrivilege(string $privilege): void;
 
@@ -280,8 +255,6 @@ interface PageInterface extends ContainerInterface
      * @param string $permission [optional] permission to associate
      *                           with this page. Default is null, which
      *                           sets no permission.
-     *
-     * @return void
      */
     public function setPermission(string $permission): void;
 
@@ -298,8 +271,6 @@ interface PageInterface extends ContainerInterface
      * @param string $textDomain [optional] text domain to associate
      *                           with this page. Default is null, which
      *                           sets no text domain.
-     *
-     * @return void
      */
     public function setTextDomain(string $textDomain): void;
 
@@ -315,8 +286,6 @@ interface PageInterface extends ContainerInterface
      *
      * @param bool|string $active [optional] whether page should be
      *                            considered active or not. Default is true.
-     *
-     * @return void
      */
     public function setActive($active = true): void;
 
@@ -347,8 +316,6 @@ interface PageInterface extends ContainerInterface
      *
      * @param bool|string $visible [optional] whether page should be
      *                             considered visible or not. Default is true.
-     *
-     * @return void
      */
     public function setVisible($visible = true): void;
 
@@ -383,8 +350,6 @@ interface PageInterface extends ContainerInterface
      *                                        Default is null which will set no parent.
      *
      * @throws Exception\InvalidArgumentException
-     *
-     * @return void
      */
     public function setParent(?ContainerInterface $parent = null): void;
 
@@ -405,8 +370,6 @@ interface PageInterface extends ContainerInterface
      * @param mixed  $value    value to set
      *
      * @throws Exception\InvalidArgumentException if property name is invalid
-     *
-     * @return void
      */
     public function set(string $property, $value): void;
 
@@ -419,9 +382,9 @@ interface PageInterface extends ContainerInterface
      *
      * @param string $property property name
      *
-     * @throws Exception\InvalidArgumentException if property name is invalid
-     *
      * @return mixed the property's value or null
+     *
+     * @throws Exception\InvalidArgumentException if property name is invalid
      */
     public function get(string $property);
 
@@ -431,8 +394,6 @@ interface PageInterface extends ContainerInterface
      * @param string $relation relation name (e.g. alternate, glossary,
      *                         canonical, etc)
      * @param mixed  $value    value to set for relation
-     *
-     * @return void
      */
     public function addRel(string $relation, $value): void;
 
@@ -442,8 +403,6 @@ interface PageInterface extends ContainerInterface
      * @param string $relation relation name (e.g. alternate, glossary,
      *                         canonical, etc)
      * @param mixed  $value    value to set for relation
-     *
-     * @return void
      */
     public function addRev(string $relation, $value): void;
 
@@ -451,8 +410,6 @@ interface PageInterface extends ContainerInterface
      * Removes a forward relation from the page
      *
      * @param string $relation name of relation to remove
-     *
-     * @return void
      */
     public function removeRel(string $relation): void;
 
@@ -460,29 +417,27 @@ interface PageInterface extends ContainerInterface
      * Removes a reverse relation from the page
      *
      * @param string $relation name of relation to remove
-     *
-     * @return void
      */
     public function removeRev(string $relation): void;
 
     /**
      * Returns an array containing the defined forward relations
      *
-     * @return array defined forward relations
+     * @return array<string> defined forward relations
      */
     public function getDefinedRel(): array;
 
     /**
      * Returns an array containing the defined reverse relations
      *
-     * @return array defined reverse relations
+     * @return array<string> defined reverse relations
      */
     public function getDefinedRev(): array;
 
     /**
      * Returns custom properties as an array
      *
-     * @return array an array containing custom properties
+     * @return array<string, string> an array containing custom properties
      */
     public function getCustomProperties(): array;
 
@@ -497,8 +452,6 @@ interface PageInterface extends ContainerInterface
      * Returns href for this page
      *
      * Includes the fragment identifier if it is set.
-     *
-     * @return string
      */
     public function getHref(): string;
 }

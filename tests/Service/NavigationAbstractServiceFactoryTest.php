@@ -9,6 +9,7 @@
  */
 
 declare(strict_types = 1);
+
 namespace MezzioTest\Navigation\Service;
 
 use Interop\Container\ContainerInterface;
@@ -17,16 +18,16 @@ use Mezzio\Navigation\Exception\InvalidArgumentException;
 use Mezzio\Navigation\Navigation;
 use Mezzio\Navigation\Page\PageFactoryInterface;
 use Mezzio\Navigation\Service\NavigationAbstractServiceFactory;
+use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerExceptionInterface;
+
+use function assert;
 
 final class NavigationAbstractServiceFactoryTest extends TestCase
 {
-    /** @var NavigationAbstractServiceFactory */
-    private $factory;
+    private NavigationAbstractServiceFactory $factory;
 
-    /**
-     * @return void
-     */
     protected function setUp(): void
     {
         $this->factory = new NavigationAbstractServiceFactory();
@@ -34,10 +35,8 @@ final class NavigationAbstractServiceFactoryTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Psr\Container\ContainerExceptionInterface
-     *
-     * @return void
+     * @throws Exception
+     * @throws ContainerExceptionInterface
      */
     public function testCanNotCreateWithoutNamespace(): void
     {
@@ -47,16 +46,14 @@ final class NavigationAbstractServiceFactoryTest extends TestCase
         $container->expects(self::never())
             ->method('get');
 
-        /* @var ContainerInterface $container */
+        assert($container instanceof ContainerInterface);
         self::assertFalse($this->factory->canCreate($container, 'test'));
     }
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Psr\Container\ContainerExceptionInterface
-     *
-     * @return void
+     * @throws Exception
+     * @throws ContainerExceptionInterface
      */
     public function testCanNotCreateWithoutConfig(): void
     {
@@ -79,16 +76,14 @@ final class NavigationAbstractServiceFactoryTest extends TestCase
             ->with(NavigationConfigInterface::class)
             ->willReturn($navigationConfig);
 
-        /* @var ContainerInterface $container */
+        assert($container instanceof ContainerInterface);
         self::assertFalse($this->factory->canCreate($container, 'Mezzio\\Navigation\\Test'));
     }
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Psr\Container\ContainerExceptionInterface
-     *
-     * @return void
+     * @throws Exception
+     * @throws ContainerExceptionInterface
      */
     public function testCanCreate(): void
     {
@@ -111,16 +106,14 @@ final class NavigationAbstractServiceFactoryTest extends TestCase
             ->with(NavigationConfigInterface::class)
             ->willReturn($navigationConfig);
 
-        /* @var ContainerInterface $container */
+        assert($container instanceof ContainerInterface);
         self::assertTrue($this->factory->canCreate($container, 'Mezzio\\Navigation\\Test'));
     }
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Psr\Container\ContainerExceptionInterface
-     *
-     * @return void
+     * @throws Exception
+     * @throws ContainerExceptionInterface
      */
     public function testCanCreateLowercaed(): void
     {
@@ -143,15 +136,13 @@ final class NavigationAbstractServiceFactoryTest extends TestCase
             ->with(NavigationConfigInterface::class)
             ->willReturn($navigationConfig);
 
-        /* @var ContainerInterface $container */
+        assert($container instanceof ContainerInterface);
         self::assertTrue($this->factory->canCreate($container, 'Mezzio\\Navigation\\Test'));
     }
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testInvoke(): void
     {
@@ -176,7 +167,7 @@ final class NavigationAbstractServiceFactoryTest extends TestCase
             ->withConsecutive([NavigationConfigInterface::class], [NavigationConfigInterface::class], [])
             ->willReturnOnConsecutiveCalls($navigationConfig, $navigationConfig, $pageFactory);
 
-        /** @var ContainerInterface $container */
+        assert($container instanceof ContainerInterface);
         $navigation = ($this->factory)($container, 'Mezzio\\Navigation\\Test');
 
         self::assertInstanceOf(Navigation::class, $navigation);
@@ -184,9 +175,7 @@ final class NavigationAbstractServiceFactoryTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testInvokeLowercaed(): void
     {
@@ -211,16 +200,14 @@ final class NavigationAbstractServiceFactoryTest extends TestCase
             ->withConsecutive([NavigationConfigInterface::class], [NavigationConfigInterface::class], [])
             ->willReturnOnConsecutiveCalls($navigationConfig, $navigationConfig, $pageFactory);
 
-        /** @var ContainerInterface $container */
+        assert($container instanceof ContainerInterface);
         $navigation = ($this->factory)($container, 'Mezzio\\Navigation\\Test');
 
         self::assertInstanceOf(Navigation::class, $navigation);
     }
 
     /**
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testCanNotInvoleWithoutConfig(): void
     {
@@ -247,7 +234,7 @@ final class NavigationAbstractServiceFactoryTest extends TestCase
         $this->expectExceptionMessage('Failed to find a navigation container by the name "Mezzio\Navigation\Test"');
         $this->expectExceptionCode(0);
 
-        /* @var ContainerInterface $container */
+        assert($container instanceof ContainerInterface);
         ($this->factory)($container, 'Mezzio\\Navigation\\Test');
     }
 }

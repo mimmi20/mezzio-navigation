@@ -9,17 +9,23 @@
  */
 
 declare(strict_types = 1);
+
 namespace MezzioTest\Navigation\Page;
 
+use ErrorException;
 use Mezzio\Navigation\ContainerInterface;
 use Mezzio\Navigation\Exception\BadMethodCallException;
 use Mezzio\Navigation\Exception\InvalidArgumentException;
 use Mezzio\Navigation\Exception\OutOfBoundsException;
 use Mezzio\Navigation\Page\PageInterface;
 use Mezzio\Navigation\Page\Uri;
+use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
+
+use function assert;
+use function spl_object_hash;
 
 /**
  * Tests the class Laminas_Navigation_Page_Uri
@@ -28,14 +34,11 @@ use Psr\Http\Message\UriInterface;
  */
 final class UriTest extends TestCase
 {
-    /** @var \Mezzio\Navigation\Page\Uri */
-    private $page;
+    private Uri $page;
 
     /**
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
-     *
-     * @return void
      */
     protected function setUp(): void
     {
@@ -44,9 +47,7 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testConstructorWithoutParameters(): void
     {
@@ -55,10 +56,8 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testConstructorWithLabel(): void
     {
@@ -71,10 +70,8 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testSetOptionsWithLabel(): void
     {
@@ -87,9 +84,7 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testSetLabel(): void
     {
@@ -102,10 +97,8 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testConstructorWithFragment(): void
     {
@@ -118,10 +111,8 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testSetOptionsWithFragment(): void
     {
@@ -134,9 +125,7 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testSetFragment(): void
     {
@@ -149,10 +138,8 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testConstructorWithId(): void
     {
@@ -165,10 +152,8 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testSetOptionsWithId(): void
     {
@@ -181,9 +166,7 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testSetId(): void
     {
@@ -196,10 +179,8 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testConstructorClass(): void
     {
@@ -212,10 +193,8 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testSetOptionsWithClass(): void
     {
@@ -228,9 +207,7 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testSetClass(): void
     {
@@ -243,10 +220,8 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testConstructorLiClass(): void
     {
@@ -259,10 +234,8 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testSetOptionsWithLiClass(): void
     {
@@ -275,9 +248,7 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testSetLiClass(): void
     {
@@ -290,10 +261,8 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testConstructorTitle(): void
     {
@@ -306,10 +275,8 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testSetOptionsWithTitle(): void
     {
@@ -322,9 +289,7 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testSetTitle(): void
     {
@@ -337,10 +302,8 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testConstructorTarget(): void
     {
@@ -353,10 +316,8 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testSetOptionsWithTarget(): void
     {
@@ -369,9 +330,7 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testSetTarget(): void
     {
@@ -384,11 +343,9 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws Exception
+     * @throws InvalidArgumentException
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
-     *
-     * @return void
      */
     public function testSetRel(): void
     {
@@ -423,11 +380,9 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws Exception
+     * @throws InvalidArgumentException
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
-     *
-     * @return void
      */
     public function testSetRev(): void
     {
@@ -462,10 +417,8 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testSetParentException(): void
     {
@@ -479,10 +432,8 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testDuplicateSetParent(): void
     {
@@ -499,17 +450,15 @@ final class UriTest extends TestCase
             ->method('addPage')
             ->with($this->page);
 
-        /* @var ContainerInterface $parent */
+        assert($parent instanceof ContainerInterface);
         $this->page->setParent($parent);
         $this->page->setParent($parent);
     }
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testSetTwoParents(): void
     {
@@ -539,8 +488,8 @@ final class UriTest extends TestCase
         $parent2->expects(self::never())
             ->method('addPage');
 
-        /* @var ContainerInterface $parent1 */
-        /* @var ContainerInterface $parent2 */
+        assert($parent1 instanceof ContainerInterface);
+        assert($parent2 instanceof ContainerInterface);
         $this->page->setParent($parent1);
         self::assertSame($parent1, $this->page->getParent());
 
@@ -550,10 +499,8 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testSetOrder(): void
     {
@@ -575,9 +522,7 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws InvalidArgumentException
      */
     public function testSetOrderWithException(): void
     {
@@ -590,10 +535,8 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testSetOrderWithParent(): void
     {
@@ -613,10 +556,8 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testSetResource(): void
     {
@@ -631,9 +572,7 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testSetPrivilege(): void
     {
@@ -648,9 +587,7 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testSetPermission(): void
     {
@@ -665,9 +602,7 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testSetTextDomain(): void
     {
@@ -682,9 +617,7 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testSetVisible(): void
     {
@@ -701,10 +634,8 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testSetVisibleWithParent(): void
     {
@@ -715,7 +646,7 @@ final class UriTest extends TestCase
             ->method('isVisible')
             ->willReturn(true);
 
-        /* @var PageInterface $parent1 */
+        assert($parent1 instanceof PageInterface);
         $this->page->setParent($parent1);
 
         self::assertTrue($this->page->isVisible(true));
@@ -728,7 +659,7 @@ final class UriTest extends TestCase
             ->method('isVisible')
             ->willReturn(false);
 
-        /* @var PageInterface $parent2 */
+        assert($parent2 instanceof PageInterface);
         $this->page->setParent($parent2);
 
         self::assertFalse($this->page->isVisible(true));
@@ -757,9 +688,7 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testSetActive(): void
     {
@@ -786,10 +715,8 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testSetActiveWithPages(): void
     {
@@ -811,9 +738,7 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws InvalidArgumentException
      */
     public function testSetWithException(): void
     {
@@ -825,9 +750,7 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws InvalidArgumentException
      */
     public function testGetWithException(): void
     {
@@ -840,10 +763,8 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testGetSet(): void
     {
@@ -872,9 +793,6 @@ final class UriTest extends TestCase
         self::assertSame(['abc' => '4711'], $this->page->getCustomProperties());
     }
 
-    /**
-     * @return void
-     */
     public function testUnset(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -886,9 +804,7 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testToString(): void
     {
@@ -903,9 +819,7 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testHashCode(): void
     {
@@ -920,10 +834,8 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testUriOptionAsString(): void
     {
@@ -934,15 +846,13 @@ final class UriTest extends TestCase
             ]
         );
 
-        self::assertEquals('#', $this->page->getUri());
+        self::assertSame('#', $this->page->getUri());
     }
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testUriOptionAsNull(): void
     {
@@ -958,10 +868,8 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testSetAndGetUri(): void
     {
@@ -975,14 +883,12 @@ final class UriTest extends TestCase
         $this->page->setUri('http://www.example.com/');
         $this->page->setUri('about:blank');
 
-        self::assertEquals('about:blank', $this->page->getUri());
+        self::assertSame('about:blank', $this->page->getUri());
     }
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testGetHref(): void
     {
@@ -990,16 +896,13 @@ final class UriTest extends TestCase
 
         $this->page->setUri($uri);
 
-        self::assertEquals($uri, $this->page->getHref());
+        self::assertSame($uri, $this->page->getHref());
     }
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testIsActiveReturnsTrueWhenHasMatchingRequestUri(): void
     {
@@ -1021,7 +924,7 @@ final class UriTest extends TestCase
             ->method('getUri')
             ->willReturn($uri);
 
-        /* @var ServerRequestInterface $request */
+        assert($request instanceof ServerRequestInterface);
         $this->page->setRequest($request);
 
         self::assertSame($request, $this->page->getRequest());
@@ -1030,11 +933,8 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testIsActiveReturnsFalseOnNonMatchingRequestUri(): void
     {
@@ -1057,7 +957,7 @@ final class UriTest extends TestCase
             ->method('getUri')
             ->willReturn($uri);
 
-        /* @var ServerRequestInterface $request */
+        assert($request instanceof ServerRequestInterface);
         $this->page->setRequest($request);
 
         self::assertSame($request, $this->page->getRequest());
@@ -1066,9 +966,7 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     *
-     * @return void
+     * @throws Exception
      */
     public function testGetHrefWithFragmentIdentifier(): void
     {
@@ -1077,17 +975,15 @@ final class UriTest extends TestCase
         $this->page->setUri($uri);
         $this->page->setFragment('bar');
 
-        self::assertEquals($uri . '#bar', $this->page->getHref());
+        self::assertSame($uri . '#bar', $this->page->getHref());
 
         $this->page->setUri('#');
 
-        self::assertEquals('#bar', $this->page->getHref());
+        self::assertSame('#bar', $this->page->getHref());
     }
 
     /**
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws InvalidArgumentException
      */
     public function testAddSelfAsChild(): void
     {
@@ -1099,10 +995,8 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testAddChildPageTwice(): void
     {
@@ -1121,15 +1015,13 @@ final class UriTest extends TestCase
             ->method('setParent')
             ->with($this->page);
 
-        /* @var PageInterface $childPage */
+        assert($childPage instanceof PageInterface);
         $this->page->addPage($childPage);
         $this->page->addPage($childPage);
     }
 
     /**
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws InvalidArgumentException
      */
     public function testAddChildPageSelf(): void
     {
@@ -1141,10 +1033,8 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
-     *
-     * @return void
      */
     public function testAddPages(): void
     {
@@ -1157,10 +1047,8 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testRemovePageByIndex(): void
     {
@@ -1193,8 +1081,8 @@ final class UriTest extends TestCase
             ->method('setParent')
             ->with($this->page);
 
-        /* @var PageInterface $childPage1 */
-        /* @var PageInterface $childPage2 */
+        assert($childPage1 instanceof PageInterface);
+        assert($childPage2 instanceof PageInterface);
         $this->page->addPage($childPage1);
         $this->page->addPage($childPage2);
 
@@ -1204,10 +1092,8 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testRemovePageByObject(): void
     {
@@ -1240,8 +1126,8 @@ final class UriTest extends TestCase
             ->method('setParent')
             ->with($this->page);
 
-        /* @var PageInterface $childPage1 */
-        /* @var PageInterface $childPage2 */
+        assert($childPage1 instanceof PageInterface);
+        assert($childPage2 instanceof PageInterface);
         $this->page->addPage($childPage1);
         $this->page->addPage($childPage2);
 
@@ -1251,10 +1137,8 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testRemovePageNotByHash(): void
     {
@@ -1287,8 +1171,8 @@ final class UriTest extends TestCase
             ->method('setParent')
             ->with($this->page);
 
-        /* @var PageInterface $childPage1 */
-        /* @var PageInterface $childPage2 */
+        assert($childPage1 instanceof PageInterface);
+        assert($childPage2 instanceof PageInterface);
         $this->page->addPage($childPage1);
         $this->page->addPage($childPage2);
 
@@ -1298,10 +1182,8 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testRemovePageNotExistingPage(): void
     {
@@ -1334,8 +1216,8 @@ final class UriTest extends TestCase
             ->method('setParent')
             ->with($this->page);
 
-        /* @var PageInterface $childPage1 */
-        /* @var PageInterface $childPage2 */
+        assert($childPage1 instanceof PageInterface);
+        assert($childPage2 instanceof PageInterface);
         $this->page->addPage($childPage1);
         $this->page->addPage($childPage2);
 
@@ -1345,10 +1227,8 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testRemovePageRecursive(): void
     {
@@ -1389,8 +1269,8 @@ final class UriTest extends TestCase
             ->method('removePage')
             ->with($childPage2, true);
 
-        /* @var PageInterface $childPage1 */
-        /* @var PageInterface $childPage2 */
+        assert($childPage1 instanceof PageInterface);
+        assert($childPage2 instanceof PageInterface);
         $this->page->addPage($childPage1);
         $childPage1->addPage($childPage2);
 
@@ -1400,10 +1280,8 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testRemovePageRecursiveNotFound(): void
     {
@@ -1443,8 +1321,8 @@ final class UriTest extends TestCase
         $childPage1->expects(self::never())
             ->method('removePage');
 
-        /* @var PageInterface $childPage1 */
-        /* @var PageInterface $childPage2 */
+        assert($childPage1 instanceof PageInterface);
+        assert($childPage2 instanceof PageInterface);
         $this->page->addPage($childPage1);
         $childPage1->addPage($childPage2);
 
@@ -1454,10 +1332,8 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testHasPageByIndex(): void
     {
@@ -1490,8 +1366,8 @@ final class UriTest extends TestCase
             ->method('setParent')
             ->with($this->page);
 
-        /* @var PageInterface $childPage1 */
-        /* @var PageInterface $childPage2 */
+        assert($childPage1 instanceof PageInterface);
+        assert($childPage2 instanceof PageInterface);
         $this->page->addPage($childPage1);
         $this->page->addPage($childPage2);
 
@@ -1500,10 +1376,8 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testHasPageByObject(): void
     {
@@ -1536,8 +1410,8 @@ final class UriTest extends TestCase
             ->method('setParent')
             ->with($this->page);
 
-        /* @var PageInterface $childPage1 */
-        /* @var PageInterface $childPage2 */
+        assert($childPage1 instanceof PageInterface);
+        assert($childPage2 instanceof PageInterface);
         $this->page->addPage($childPage1);
         $this->page->addPage($childPage2);
 
@@ -1546,10 +1420,8 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testHasPageNotByHash(): void
     {
@@ -1582,8 +1454,8 @@ final class UriTest extends TestCase
             ->method('setParent')
             ->with($this->page);
 
-        /* @var PageInterface $childPage1 */
-        /* @var PageInterface $childPage2 */
+        assert($childPage1 instanceof PageInterface);
+        assert($childPage2 instanceof PageInterface);
         $this->page->addPage($childPage1);
         $this->page->addPage($childPage2);
 
@@ -1592,10 +1464,8 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testHasNotExistingPage(): void
     {
@@ -1628,8 +1498,8 @@ final class UriTest extends TestCase
             ->method('setParent')
             ->with($this->page);
 
-        /* @var PageInterface $childPage1 */
-        /* @var PageInterface $childPage2 */
+        assert($childPage1 instanceof PageInterface);
+        assert($childPage2 instanceof PageInterface);
         $this->page->addPage($childPage1);
         $this->page->addPage($childPage2);
 
@@ -1638,10 +1508,8 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testHasPageRecursive(): void
     {
@@ -1681,8 +1549,8 @@ final class UriTest extends TestCase
         $childPage1->expects(self::never())
             ->method('removePage');
 
-        /* @var PageInterface $childPage1 */
-        /* @var PageInterface $childPage2 */
+        assert($childPage1 instanceof PageInterface);
+        assert($childPage2 instanceof PageInterface);
         $this->page->addPage($childPage1);
         $childPage1->addPage($childPage2);
 
@@ -1691,10 +1559,8 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testHasPageRecursiveNotFound(): void
     {
@@ -1734,8 +1600,8 @@ final class UriTest extends TestCase
         $childPage1->expects(self::never())
             ->method('removePage');
 
-        /* @var PageInterface $childPage1 */
-        /* @var PageInterface $childPage2 */
+        assert($childPage1 instanceof PageInterface);
+        assert($childPage2 instanceof PageInterface);
         $this->page->addPage($childPage1);
         $childPage1->addPage($childPage2);
 
@@ -1744,10 +1610,8 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testHasNoVisiblePages(): void
     {
@@ -1788,8 +1652,8 @@ final class UriTest extends TestCase
             ->method('isVisible')
             ->willReturn(false);
 
-        /* @var PageInterface $childPage1 */
-        /* @var PageInterface $childPage2 */
+        assert($childPage1 instanceof PageInterface);
+        assert($childPage2 instanceof PageInterface);
         $this->page->addPage($childPage1);
         $this->page->addPage($childPage2);
 
@@ -1799,10 +1663,8 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testHasVisiblePages(): void
     {
@@ -1843,8 +1705,8 @@ final class UriTest extends TestCase
             ->method('isVisible')
             ->willReturn(true);
 
-        /* @var PageInterface $childPage1 */
-        /* @var PageInterface $childPage2 */
+        assert($childPage1 instanceof PageInterface);
+        assert($childPage2 instanceof PageInterface);
         $this->page->addPage($childPage1);
         $this->page->addPage($childPage2);
 
@@ -1854,10 +1716,8 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testFindOneBy(): void
     {
@@ -1905,8 +1765,8 @@ final class UriTest extends TestCase
             ->with($property)
             ->willReturn($value);
 
-        /* @var PageInterface $childPage1 */
-        /* @var PageInterface $childPage2 */
+        assert($childPage1 instanceof PageInterface);
+        assert($childPage2 instanceof PageInterface);
         $this->page->addPage($childPage1);
         $this->page->addPage($childPage2);
 
@@ -1915,10 +1775,8 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
      */
     public function testFindAllBy(): void
     {
@@ -1988,9 +1846,9 @@ final class UriTest extends TestCase
             ->with($property)
             ->willReturn(null);
 
-        /* @var PageInterface $childPage1 */
-        /* @var PageInterface $childPage2 */
-        /* @var PageInterface $childPage3 */
+        assert($childPage1 instanceof PageInterface);
+        assert($childPage2 instanceof PageInterface);
+        assert($childPage3 instanceof PageInterface);
         $this->page->addPage($childPage1);
         $this->page->addPage($childPage2);
         $this->page->addPage($childPage3);
@@ -1999,10 +1857,8 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws \Mezzio\Navigation\Exception\BadMethodCallException
-     * @throws \ErrorException
-     *
-     * @return void
+     * @throws BadMethodCallException
+     * @throws ErrorException
      */
     public function testCallFindAllByException(): void
     {
@@ -2017,12 +1873,10 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     * @throws \Mezzio\Navigation\Exception\BadMethodCallException
-     * @throws \ErrorException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
+     * @throws BadMethodCallException
+     * @throws ErrorException
      */
     public function testCallFindAllBy(): void
     {
@@ -2072,8 +1926,8 @@ final class UriTest extends TestCase
             ->with($property)
             ->willReturn($value);
 
-        /* @var PageInterface $childPage1 */
-        /* @var PageInterface $childPage2 */
+        assert($childPage1 instanceof PageInterface);
+        assert($childPage2 instanceof PageInterface);
         $this->page->addPage($childPage1);
         $this->page->addPage($childPage2);
 
@@ -2081,9 +1935,7 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws \Mezzio\Navigation\Exception\OutOfBoundsException
-     *
-     * @return void
+     * @throws OutOfBoundsException
      */
     public function testCurrentException(): void
     {
@@ -2096,11 +1948,9 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     * @throws \Mezzio\Navigation\Exception\OutOfBoundsException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
      */
     public function testCurrent(): void
     {
@@ -2141,8 +1991,8 @@ final class UriTest extends TestCase
         $childPage2->expects(self::never())
             ->method('get');
 
-        /* @var PageInterface $childPage1 */
-        /* @var PageInterface $childPage2 */
+        assert($childPage1 instanceof PageInterface);
+        assert($childPage2 instanceof PageInterface);
         $this->page->addPage($childPage1);
         $this->page->addPage($childPage2);
 
@@ -2170,11 +2020,9 @@ final class UriTest extends TestCase
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     * @throws \Mezzio\Navigation\Exception\OutOfBoundsException
-     *
-     * @return void
+     * @throws Exception
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
      */
     public function testRewind(): void
     {
@@ -2215,8 +2063,8 @@ final class UriTest extends TestCase
         $childPage2->expects(self::never())
             ->method('get');
 
-        /* @var PageInterface $childPage1 */
-        /* @var PageInterface $childPage2 */
+        assert($childPage1 instanceof PageInterface);
+        assert($childPage2 instanceof PageInterface);
         $this->page->addPage($childPage1);
         $this->page->addPage($childPage2);
 
