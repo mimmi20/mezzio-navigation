@@ -437,7 +437,7 @@ interface PageInterface extends ContainerInterface
     /**
      * Returns custom properties as an array
      *
-     * @return array<string, string> an array containing custom properties
+     * @return array<string, array<string, string>|bool|int|iterable|string|null> an array containing custom properties
      */
     public function getCustomProperties(): array;
 

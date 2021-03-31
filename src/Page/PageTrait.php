@@ -141,7 +141,7 @@ trait PageTrait
     /**
      * Custom page properties, used by __set(), __get() and __isset()
      *
-     * @var array<string, string>
+     * @var array<string, array<string, string>|bool|int|iterable|string|null>
      */
     private array $properties = [];
 
@@ -263,11 +263,11 @@ trait PageTrait
      * corresponds to setTarget(), and the option 'reset_params' corresponds to
      * the method setResetParams().
      *
-     * @param iterable|string[] $options associative array of options to set
+     * @param array<string>|iterable $options associative array of options to set
      *
      * @throws Exception\InvalidArgumentException if invalid options are given
      */
-    final public function setOptions(iterable $options): void
+    public function setOptions(iterable $options): void
     {
         foreach ($options as $key => $value) {
             $this->set($key, $value);
@@ -281,7 +281,7 @@ trait PageTrait
      *
      * @param string|null $label new page label
      */
-    final public function setLabel(?string $label = null): void
+    public function setLabel(?string $label = null): void
     {
         $this->label = $label;
     }
@@ -291,7 +291,7 @@ trait PageTrait
      *
      * @return string|null page label or null
      */
-    final public function getLabel(): ?string
+    public function getLabel(): ?string
     {
         return $this->label;
     }
@@ -301,7 +301,7 @@ trait PageTrait
      *
      * @param string|null $fragment new fragment identifier
      */
-    final public function setFragment(?string $fragment = null): void
+    public function setFragment(?string $fragment = null): void
     {
         $this->fragment = $fragment;
     }
@@ -311,7 +311,7 @@ trait PageTrait
      *
      * @return string|null fragment identifier
      */
-    final public function getFragment(): ?string
+    public function getFragment(): ?string
     {
         return $this->fragment;
     }
@@ -322,7 +322,7 @@ trait PageTrait
      * @param string|null $id [optional] id to set. Default is null,
      *                        which sets no id.
      */
-    final public function setId(?string $id = null): void
+    public function setId(?string $id = null): void
     {
         $this->id = $id;
     }
@@ -332,7 +332,7 @@ trait PageTrait
      *
      * @return string|null page id or null
      */
-    final public function getId(): ?string
+    public function getId(): ?string
     {
         return $this->id;
     }
@@ -342,7 +342,7 @@ trait PageTrait
      *
      * @param string|null $class [optional] CSS class to set. Default is null, which sets no CSS class.
      */
-    final public function setClass(?string $class = null): void
+    public function setClass(?string $class = null): void
     {
         $this->class = $class;
     }
@@ -352,7 +352,7 @@ trait PageTrait
      *
      * @return string|null page's CSS class or null
      */
-    final public function getClass(): ?string
+    public function getClass(): ?string
     {
         return $this->class;
     }
@@ -362,7 +362,7 @@ trait PageTrait
      *
      * @param string|null $liClass [optional] CSS class to set. Default is null, which sets no CSS class.
      */
-    final public function setLiClass(?string $liClass = null): void
+    public function setLiClass(?string $liClass = null): void
     {
         $this->liClass = $liClass;
     }
@@ -372,7 +372,7 @@ trait PageTrait
      *
      * @return string|null page's CSS class or null
      */
-    final public function getLiClass(): ?string
+    public function getLiClass(): ?string
     {
         return $this->liClass;
     }
@@ -383,7 +383,7 @@ trait PageTrait
      * @param string|null $title [optional] page title. Default is
      *                           null, which sets no title.
      */
-    final public function setTitle(?string $title = null): void
+    public function setTitle(?string $title = null): void
     {
         $this->title = $title;
     }
@@ -393,7 +393,7 @@ trait PageTrait
      *
      * @return string|null page title or null
      */
-    final public function getTitle(): ?string
+    public function getTitle(): ?string
     {
         return $this->title;
     }
@@ -404,7 +404,7 @@ trait PageTrait
      * @param string|null $target [optional] target to set. Default is
      *                            null, which sets no target.
      */
-    final public function setTarget(?string $target = null): void
+    public function setTarget(?string $target = null): void
     {
         $this->target = $target;
     }
@@ -414,7 +414,7 @@ trait PageTrait
      *
      * @return string|null page target or null
      */
-    final public function getTarget(): ?string
+    public function getTarget(): ?string
     {
         return $this->target;
     }
@@ -427,12 +427,12 @@ trait PageTrait
      * prev, next, help, etc), and the value is a mixed value that could somehow
      * be considered a page.
      *
-     * @param iterable|string[]|null $relations [optional] an associative array of forward links to other pages
+     * @param array<string, string>|iterable|null $relations [optional] an associative array of forward links to other pages
      *
      * @throws Exception\InvalidArgumentException if $relations is not an array or Traversable object
      * @throws InvalidArgumentException
      */
-    final public function setRel(?iterable $relations = null): void
+    public function setRel(?iterable $relations = null): void
     {
         $this->rel = [];
 
@@ -464,7 +464,7 @@ trait PageTrait
      *                       specified, all relations will be returned in
      *                       an associative array.
      */
-    final public function getRel(?string $relation = null)
+    public function getRel(?string $relation = null)
     {
         if (null !== $relation) {
             return $this->rel[$relation] ?? null;
@@ -481,12 +481,12 @@ trait PageTrait
      * prev, next, help, etc), and the value is a mixed value that could somehow
      * be considered a page.
      *
-     * @param iterable|string[]|null $relations [optional] an associative array of reverse links to other pages
+     * @param array<string, string>|iterable|null $relations [optional] an associative array of reverse links to other pages
      *
      * @throws Exception\InvalidArgumentException if $relations it not an array or Traversable object
      * @throws InvalidArgumentException
      */
-    final public function setRev(?iterable $relations = null): void
+    public function setRev(?iterable $relations = null): void
     {
         $this->rev = [];
 
@@ -518,7 +518,7 @@ trait PageTrait
      *                       specified, all relations will be returned in
      *                       an associative array.
      */
-    final public function getRev(?string $relation = null)
+    public function getRev(?string $relation = null)
     {
         if (null !== $relation) {
             return $this->rev[$relation] ?? null;
@@ -535,7 +535,7 @@ trait PageTrait
      *
      * @throws Exception\InvalidArgumentException
      */
-    final public function setParent(?ContainerInterface $parent = null): void
+    public function setParent(?ContainerInterface $parent = null): void
     {
         if ($parent === $this) {
             throw new Exception\InvalidArgumentException(
@@ -569,7 +569,7 @@ trait PageTrait
      *
      * @return ContainerInterface|null parent container or null
      */
-    final public function getParent(): ?ContainerInterface
+    public function getParent(): ?ContainerInterface
     {
         return $this->parent;
     }
@@ -583,7 +583,7 @@ trait PageTrait
      *
      * @throws Exception\InvalidArgumentException if order is not integer or null
      */
-    final public function setOrder($order = null): void
+    public function setOrder($order = null): void
     {
         if (is_int($order) || null === $order) {
             $this->order = $order;
@@ -608,7 +608,7 @@ trait PageTrait
      *
      * @return int|null page order or null
      */
-    final public function getOrder(): ?int
+    public function getOrder(): ?int
     {
         return $this->order;
     }
@@ -622,7 +622,7 @@ trait PageTrait
      *
      * @throws Exception\InvalidArgumentException if $resource is invalid
      */
-    final public function setResource(string $resource): void
+    public function setResource(string $resource): void
     {
         $this->resource = $resource;
     }
@@ -632,7 +632,7 @@ trait PageTrait
      *
      * @return string|null ACL resource or null
      */
-    final public function getResource(): ?string
+    public function getResource(): ?string
     {
         return $this->resource;
     }
@@ -644,7 +644,7 @@ trait PageTrait
      *                          with this page. Default is null, which
      *                          sets no privilege.
      */
-    final public function setPrivilege(string $privilege): void
+    public function setPrivilege(string $privilege): void
     {
         $this->privilege = $privilege;
     }
@@ -654,7 +654,7 @@ trait PageTrait
      *
      * @return string|null ACL privilege or null
      */
-    final public function getPrivilege(): ?string
+    public function getPrivilege(): ?string
     {
         return $this->privilege;
     }
@@ -666,7 +666,7 @@ trait PageTrait
      *                           with this page. Default is null, which
      *                           sets no permission.
      */
-    final public function setPermission(string $permission): void
+    public function setPermission(string $permission): void
     {
         $this->permission = $permission;
     }
@@ -676,7 +676,7 @@ trait PageTrait
      *
      * @return string|null permission or null
      */
-    final public function getPermission(): ?string
+    public function getPermission(): ?string
     {
         return $this->permission;
     }
@@ -688,7 +688,7 @@ trait PageTrait
      *                           with this page. Default is null, which
      *                           sets no text domain.
      */
-    final public function setTextDomain(string $textDomain): void
+    public function setTextDomain(string $textDomain): void
     {
         $this->textDomain = $textDomain;
     }
@@ -698,7 +698,7 @@ trait PageTrait
      *
      * @return string|null text domain or null
      */
-    final public function getTextDomain(): ?string
+    public function getTextDomain(): ?string
     {
         return $this->textDomain;
     }
@@ -709,7 +709,7 @@ trait PageTrait
      * @param bool|string $active [optional] whether page should be
      *                            considered active or not. Default is true.
      */
-    final public function setActive($active = true): void
+    public function setActive($active = true): void
     {
         if (is_string($active) && 'false' === mb_strtolower($active)) {
             $active = false;
@@ -727,7 +727,7 @@ trait PageTrait
      *
      * @return bool whether page should be considered active
      */
-    final public function isActive(bool $recursive = false): bool
+    public function isActive(bool $recursive = false): bool
     {
         if (null === $this->active && $recursive) {
             foreach ($this->pages as $page) {
@@ -751,7 +751,7 @@ trait PageTrait
      *
      * @return bool whether page should be considered active
      */
-    final public function getActive(bool $recursive = false): bool
+    public function getActive(bool $recursive = false): bool
     {
         return $this->isActive($recursive);
     }
@@ -762,7 +762,7 @@ trait PageTrait
      * @param bool|string $visible [optional] whether page should be
      *                             considered visible or not. Default is true.
      */
-    final public function setVisible($visible = true): void
+    public function setVisible($visible = true): void
     {
         if (is_string($visible) && 'false' === mb_strtolower($visible)) {
             $visible = false;
@@ -780,7 +780,7 @@ trait PageTrait
      *
      * @return bool whether page should be considered visible
      */
-    final public function isVisible(bool $recursive = false): bool
+    public function isVisible(bool $recursive = false): bool
     {
         if (
             $recursive
@@ -806,7 +806,7 @@ trait PageTrait
      *
      * @return bool whether page should be considered visible
      */
-    final public function getVisible(bool $recursive = false): bool
+    public function getVisible(bool $recursive = false): bool
     {
         return $this->isVisible($recursive);
     }
@@ -817,12 +817,12 @@ trait PageTrait
      * If the given property is native (id, class, title, etc), the matching
      * set method will be used. Otherwise, it will be set as a custom property.
      *
-     * @param string $property property name
-     * @param mixed  $value    value to set
+     * @param string                                              $property property name
+     * @param array<string, string>|bool|int|iterable|string|null $value    value to set
      *
      * @throws Exception\InvalidArgumentException if property name is invalid
      */
-    final public function set(string $property, $value): void
+    public function set(string $property, $value): void
     {
         if ('' === $property) {
             throw new Exception\InvalidArgumentException(
@@ -848,11 +848,11 @@ trait PageTrait
      *
      * @param string $property property name
      *
-     * @return mixed the property's value or null
+     * @return array<string, string>|bool|int|iterable|string|null the property's value or null
      *
      * @throws Exception\InvalidArgumentException if property name is invalid
      */
-    final public function get(string $property)
+    public function get(string $property)
     {
         if ('' === $property) {
             throw new Exception\InvalidArgumentException(
@@ -882,7 +882,7 @@ trait PageTrait
      *                         canonical, etc)
      * @param mixed  $value    value to set for relation
      */
-    final public function addRel(string $relation, $value): void
+    public function addRel(string $relation, $value): void
     {
         $this->rel[$relation] = $value;
     }
@@ -894,7 +894,7 @@ trait PageTrait
      *                         canonical, etc)
      * @param mixed  $value    value to set for relation
      */
-    final public function addRev(string $relation, $value): void
+    public function addRev(string $relation, $value): void
     {
         $this->rev[$relation] = $value;
     }
@@ -904,7 +904,7 @@ trait PageTrait
      *
      * @param string $relation name of relation to remove
      */
-    final public function removeRel(string $relation): void
+    public function removeRel(string $relation): void
     {
         if (!isset($this->rel[$relation])) {
             return;
@@ -918,7 +918,7 @@ trait PageTrait
      *
      * @param string $relation name of relation to remove
      */
-    final public function removeRev(string $relation): void
+    public function removeRev(string $relation): void
     {
         if (!isset($this->rev[$relation])) {
             return;
@@ -932,7 +932,7 @@ trait PageTrait
      *
      * @return array<string> defined forward relations
      */
-    final public function getDefinedRel(): array
+    public function getDefinedRel(): array
     {
         return array_keys($this->rel);
     }
@@ -942,7 +942,7 @@ trait PageTrait
      *
      * @return array<string> defined reverse relations
      */
-    final public function getDefinedRev(): array
+    public function getDefinedRev(): array
     {
         return array_keys($this->rev);
     }
@@ -950,9 +950,9 @@ trait PageTrait
     /**
      * Returns custom properties as an array
      *
-     * @return array<string, string> an array containing custom properties
+     * @return array<string, array<string, string>|bool|int|iterable|string|null> an array containing custom properties
      */
-    final public function getCustomProperties(): array
+    public function getCustomProperties(): array
     {
         return $this->properties;
     }
@@ -962,7 +962,7 @@ trait PageTrait
      *
      * @return string a hash code value for this page
      */
-    final public function hashCode(): string
+    public function hashCode(): string
     {
         return spl_object_hash($this);
     }
@@ -970,9 +970,9 @@ trait PageTrait
     /**
      * Returns an array representation of the page
      *
-     * @return array<string, array<string, string>|bool|int|string|null> associative array containing all page properties
+     * @return array<string, array<string, string>|bool|int|iterable|string|null> associative array containing all page properties
      */
-    final public function toArray(): array
+    public function toArray(): array
     {
         return array_merge(
             $this->getCustomProperties(),
