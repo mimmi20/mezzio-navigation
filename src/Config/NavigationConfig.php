@@ -33,7 +33,7 @@ final class NavigationConfig implements NavigationConfigInterface
 
     private ?AuthorizationInterface $authorization = null;
 
-    /** @var array<int|string, array<mixed>>|null */
+    /** @var array<int|string, array<string>>|null */
     private ?array $pages = null;
 
     public function getUrlHelper(): ?UrlHelper
@@ -87,7 +87,7 @@ final class NavigationConfig implements NavigationConfigInterface
     }
 
     /**
-     * @return array<int|string, array<mixed>>|null
+     * @return array<int|string, array<string>>|null
      */
     public function getPages(): ?array
     {
@@ -95,7 +95,7 @@ final class NavigationConfig implements NavigationConfigInterface
     }
 
     /**
-     * @param array<int|string, array<mixed>> $pages
+     * @param array<int|string, array<string>> $pages
      */
     public function setPages(array $pages): void
     {

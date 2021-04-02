@@ -16,6 +16,7 @@ use Laminas\Stdlib\Exception\InvalidArgumentException;
 use Mezzio\Navigation\ContainerInterface;
 use Mezzio\Navigation\ContainerTrait;
 use Mezzio\Navigation\Exception;
+use Traversable;
 
 use function array_keys;
 use function array_merge;
@@ -85,7 +86,7 @@ trait PageTrait
      *
      * @see http://www.w3.org/TR/html4/struct/links.html#h-12.3.1
      *
-     * @var array<string, string>
+     * @var array<string, array<string, string>|ContainerInterface|PageInterface|string|Traversable>
      */
     private array $rel = [];
 
@@ -94,7 +95,7 @@ trait PageTrait
      *
      * @see http://www.w3.org/TR/html4/struct/links.html#h-12.3.1
      *
-     * @var array<string, string>
+     * @var array<string, array<string, string>|ContainerInterface|PageInterface|string|Traversable>
      */
     private array $rev = [];
 
@@ -141,12 +142,12 @@ trait PageTrait
     /**
      * Custom page properties, used by __set(), __get() and __isset()
      *
-     * @var array<string, array<string, string>|bool|int|iterable|string|null>
+     * @var array<string, array<string, string>|bool|float|int|iterable|string|null>
      */
     private array $properties = [];
 
     /**
-     * @param iterable|mixed[]|null $options [optional] page options. Default is null, which should set defaults.
+     * @param array<string>|iterable|null $options [optional] page options. Default is null, which should set defaults.
      *
      * @throws Exception\InvalidArgumentException if invalid options are given
      */
@@ -166,8 +167,8 @@ trait PageTrait
      *
      * Magic overload for enabling <code>$page->propname = $value</code>.
      *
-     * @param string $name  property name
-     * @param mixed  $value value to set
+     * @param string                                                                                                                 $name  property name
+     * @param bool|float|int|iterable|array<string, (array<string>|string)>|ContainerInterface|PageInterface|string|Traversable|null $value value to set
      *
      * @throws Exception\InvalidArgumentException if property name is invalid
      */
@@ -183,7 +184,7 @@ trait PageTrait
      *
      * @param string $name property name
      *
-     * @return mixed property value or null
+     * @return bool|float|int|iterable|array<string, (array<string>|string)>|ContainerInterface|PageInterface|string|Traversable|null property value or null
      *
      * @throws Exception\InvalidArgumentException if property name is invalid
      */
@@ -427,7 +428,7 @@ trait PageTrait
      * prev, next, help, etc), and the value is a mixed value that could somehow
      * be considered a page.
      *
-     * @param array<string, string>|iterable|null $relations [optional] an associative array of forward links to other pages
+     * @param array<int|string, array<string, string>|ContainerInterface|PageInterface|string|Traversable>|Traversable $relations [optional] an associative array of forward links to other pages
      *
      * @throws Exception\InvalidArgumentException if $relations is not an array or Traversable object
      * @throws InvalidArgumentException
@@ -460,9 +461,9 @@ trait PageTrait
      * @param string|null $relation [optional] name of relation to return. If not
      *                              given, all relations will be returned.
      *
-     * @return array<string, string>|string|null an array of relations. If $relation is not
-     *                       specified, all relations will be returned in
-     *                       an associative array.
+     * @return array<int|string, array<string, string>|ContainerInterface|PageInterface|string|Traversable>|ContainerInterface|PageInterface|string|Traversable|null an array of relations. If $relation is not
+     *                           specified, all relations will be returned in
+     *                           an associative array.
      */
     public function getRel(?string $relation = null)
     {
@@ -481,7 +482,7 @@ trait PageTrait
      * prev, next, help, etc), and the value is a mixed value that could somehow
      * be considered a page.
      *
-     * @param array<string, string>|iterable|null $relations [optional] an associative array of reverse links to other pages
+     * @param array<int|string, array<string, string>|ContainerInterface|PageInterface|string|Traversable>|Traversable $relations [optional] an associative array of reverse links to other pages
      *
      * @throws Exception\InvalidArgumentException if $relations it not an array or Traversable object
      * @throws InvalidArgumentException
@@ -514,9 +515,9 @@ trait PageTrait
      * @param string|null $relation [optional] name of relation to return. If not
      *                              given, all relations will be returned.
      *
-     * @return array<string, string>|string|null an array of relations. If $relation is not
-     *                       specified, all relations will be returned in
-     *                       an associative array.
+     * @return array<int|string, array<string, string>|ContainerInterface|PageInterface|string|Traversable>|ContainerInterface|PageInterface|string|Traversable|null an array of relations. If $relation is not
+     *                           specified, all relations will be returned in
+     *                           an associative array.
      */
     public function getRev(?string $relation = null)
     {
@@ -817,8 +818,8 @@ trait PageTrait
      * If the given property is native (id, class, title, etc), the matching
      * set method will be used. Otherwise, it will be set as a custom property.
      *
-     * @param string                                              $property property name
-     * @param array<string, string>|bool|int|iterable|string|null $value    value to set
+     * @param string                                                                                                                 $property property name
+     * @param bool|float|int|iterable|array<string, (array<string>|string)>|ContainerInterface|PageInterface|string|Traversable|null $value    value to set
      *
      * @throws Exception\InvalidArgumentException if property name is invalid
      */
@@ -848,7 +849,7 @@ trait PageTrait
      *
      * @param string $property property name
      *
-     * @return array<string, string>|bool|int|iterable|string|null the property's value or null
+     * @return bool|float|int|iterable|array<string, (array<string>|string)>|ContainerInterface|PageInterface|string|Traversable|null the property's value or null
      *
      * @throws Exception\InvalidArgumentException if property name is invalid
      */
@@ -878,9 +879,9 @@ trait PageTrait
     /**
      * Adds a forward relation to the page
      *
-     * @param string $relation relation name (e.g. alternate, glossary,
-     *                         canonical, etc)
-     * @param mixed  $value    value to set for relation
+     * @param string                                                                    $relation relation name (e.g. alternate, glossary,
+     *                                                                                            canonical, etc)
+     * @param array<string, string>|ContainerInterface|PageInterface|string|Traversable $value    value to set for relation
      */
     public function addRel(string $relation, $value): void
     {
@@ -890,9 +891,9 @@ trait PageTrait
     /**
      * Adds a reverse relation to the page
      *
-     * @param string $relation relation name (e.g. alternate, glossary,
-     *                         canonical, etc)
-     * @param mixed  $value    value to set for relation
+     * @param string                                                                    $relation relation name (e.g. alternate, glossary,
+     *                                                                                            canonical, etc)
+     * @param array<string, string>|ContainerInterface|PageInterface|string|Traversable $value    value to set for relation
      */
     public function addRev(string $relation, $value): void
     {
@@ -950,7 +951,7 @@ trait PageTrait
     /**
      * Returns custom properties as an array
      *
-     * @return array<string, array<string, string>|bool|int|iterable|string|null> an array containing custom properties
+     * @return array<string, array<string, string>|bool|float|int|iterable|string|null> an array containing custom properties
      */
     public function getCustomProperties(): array
     {
@@ -970,7 +971,7 @@ trait PageTrait
     /**
      * Returns an array representation of the page
      *
-     * @return array<string, array<string, string>|bool|int|iterable|string|null> associative array containing all page properties
+     * @return array<string, array<string, string>|bool|float|int|iterable|string|null> associative array containing all page properties
      */
     public function toArray(): array
     {

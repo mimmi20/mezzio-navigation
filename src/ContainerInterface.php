@@ -118,7 +118,7 @@ interface ContainerInterface extends Countable, RecursiveIterator
     /**
      * Returns an array representation of all pages in container
      *
-     * @return array<int, array<int, array<string, string>|bool|int|string|null>>
+     * @return array<int, array<int, array<string, string>|bool|float|int|string|null>>
      */
     public function toArray(): array;
 }
