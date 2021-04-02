@@ -93,7 +93,7 @@ trait NavigationFactoryTrait
     }
 
     /**
-     * @param array<string, array<mixed>> $pages
+     * @param array<string, array<array<string>|string>> $pages
      *
      * @return array<PageInterface>
      *

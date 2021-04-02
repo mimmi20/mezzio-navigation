@@ -36,4 +36,4 @@ parameters:
     - '~Parameter #\d .* of method .* should be contravariant with parameter~'
     - '~Casting to .* something that.s already~'
     - '~Method Mezzio\\Navigation\\Navigation::toArray\(\) should return~'
-    - '~Offset .uri. does not exist on array<int, array<string, string>\|bool\|int\|string\|null>~'
+    - '~Offset .uri. does not exist on array<int, array<string, string>\|bool\|float\|int\|string\|null>~'

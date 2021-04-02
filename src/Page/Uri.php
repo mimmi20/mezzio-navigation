@@ -116,7 +116,7 @@ final class Uri implements UriInterface
     /**
      * Returns an array representation of the page
      *
-     * @return array<string, array<string, string>|bool|int|string|null>
+     * @return array<string, array<string, string>|bool|float|int|iterable|string|null>
      */
     public function toArray(): array
     {

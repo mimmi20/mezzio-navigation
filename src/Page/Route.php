@@ -344,7 +344,7 @@ final class Route implements RouteInterface
     /**
      * Returns an array representation of the page
      *
-     * @return array<string, (bool|int|string|array<string, string>|RouterInterface|RouteResult|null)> associative array containing all page properties
+     * @return array<string, array<string, string>|bool|float|int|iterable|RouteResult|RouterInterface|string|null> associative array containing all page properties
      */
     public function toArray(): array
     {
