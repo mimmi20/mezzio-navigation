@@ -29,7 +29,7 @@
     "infection/infection": "^0.21.5",
     "laminas/laminas-config": "^3.5.0",
     "laminas/laminas-servicemanager": "^3.6.4",
-    "mezzio/mezzio-helpers": "^5.4.0",
+    "mezzio/mezzio-helpers": "^5.5.0",
     "mezzio/mezzio-router": "^3.3.0",
     "mimmi20/coding-standard": "^2.1.2",
     "mimmi20/mezzio-generic-authorization": "^2.0.1",
