@@ -49,9 +49,6 @@
     "mimmi20/mezzio-navigation-laminasviewrenderer": "to use the navigation view helpers"
   },
   "config": {
-    "platform": {
-      "php": "7.4.7"
-    },
     "preferred-install": "dist",
     "sort-packages": true
   },
