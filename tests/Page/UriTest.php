@@ -1067,6 +1067,14 @@ final class UriTest extends TestCase
         $childPage1->expects(self::once())
             ->method('setParent')
             ->with($this->page);
+        $childPage1->expects(self::never())
+            ->method('isVisible');
+        $childPage1->expects(self::never())
+            ->method('get');
+        $childPage1->expects(self::never())
+            ->method('hasPage');
+        $childPage1->expects(self::never())
+            ->method('removePage');
 
         $childPage2 = $this->getMockBuilder(PageInterface::class)
             ->disableOriginalConstructor()
@@ -1080,6 +1088,14 @@ final class UriTest extends TestCase
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($this->page);
+        $childPage2->expects(self::never())
+            ->method('isVisible');
+        $childPage2->expects(self::never())
+            ->method('get');
+        $childPage2->expects(self::never())
+            ->method('hasPage');
+        $childPage2->expects(self::never())
+            ->method('removePage');
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
@@ -1112,6 +1128,14 @@ final class UriTest extends TestCase
         $childPage1->expects(self::once())
             ->method('setParent')
             ->with($this->page);
+        $childPage1->expects(self::never())
+            ->method('isVisible');
+        $childPage1->expects(self::never())
+            ->method('get');
+        $childPage1->expects(self::never())
+            ->method('hasPage');
+        $childPage1->expects(self::never())
+            ->method('removePage');
 
         $childPage2 = $this->getMockBuilder(PageInterface::class)
             ->disableOriginalConstructor()
@@ -1125,6 +1149,14 @@ final class UriTest extends TestCase
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($this->page);
+        $childPage2->expects(self::never())
+            ->method('isVisible');
+        $childPage2->expects(self::never())
+            ->method('get');
+        $childPage2->expects(self::never())
+            ->method('hasPage');
+        $childPage2->expects(self::never())
+            ->method('removePage');
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
@@ -1157,6 +1189,14 @@ final class UriTest extends TestCase
         $childPage1->expects(self::once())
             ->method('setParent')
             ->with($this->page);
+        $childPage1->expects(self::never())
+            ->method('isVisible');
+        $childPage1->expects(self::never())
+            ->method('get');
+        $childPage1->expects(self::never())
+            ->method('hasPage');
+        $childPage1->expects(self::never())
+            ->method('removePage');
 
         $childPage2 = $this->getMockBuilder(PageInterface::class)
             ->disableOriginalConstructor()
@@ -1170,6 +1210,14 @@ final class UriTest extends TestCase
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($this->page);
+        $childPage2->expects(self::never())
+            ->method('isVisible');
+        $childPage2->expects(self::never())
+            ->method('get');
+        $childPage2->expects(self::never())
+            ->method('hasPage');
+        $childPage2->expects(self::never())
+            ->method('removePage');
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
@@ -1202,6 +1250,14 @@ final class UriTest extends TestCase
         $childPage1->expects(self::once())
             ->method('setParent')
             ->with($this->page);
+        $childPage1->expects(self::never())
+            ->method('isVisible');
+        $childPage1->expects(self::never())
+            ->method('get');
+        $childPage1->expects(self::never())
+            ->method('hasPage');
+        $childPage1->expects(self::never())
+            ->method('removePage');
 
         $childPage2 = $this->getMockBuilder(PageInterface::class)
             ->disableOriginalConstructor()
@@ -1215,6 +1271,14 @@ final class UriTest extends TestCase
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($this->page);
+        $childPage2->expects(self::never())
+            ->method('isVisible');
+        $childPage2->expects(self::never())
+            ->method('get');
+        $childPage2->expects(self::never())
+            ->method('hasPage');
+        $childPage2->expects(self::never())
+            ->method('removePage');
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
@@ -1247,6 +1311,10 @@ final class UriTest extends TestCase
         $childPage1->expects(self::once())
             ->method('setParent')
             ->with($this->page);
+        $childPage1->expects(self::never())
+            ->method('isVisible');
+        $childPage1->expects(self::never())
+            ->method('get');
 
         $childPage2 = $this->getMockBuilder(PageInterface::class)
             ->disableOriginalConstructor()
@@ -1260,6 +1328,14 @@ final class UriTest extends TestCase
         $childPage2->expects(self::never())
             ->method('setParent')
             ->with($this->page);
+        $childPage2->expects(self::never())
+            ->method('isVisible');
+        $childPage2->expects(self::never())
+            ->method('get');
+        $childPage2->expects(self::never())
+            ->method('hasPage');
+        $childPage2->expects(self::never())
+            ->method('removePage');
 
         $childPage1->expects(self::once())
             ->method('hasPage')
@@ -1300,6 +1376,10 @@ final class UriTest extends TestCase
         $childPage1->expects(self::once())
             ->method('setParent')
             ->with($this->page);
+        $childPage1->expects(self::never())
+            ->method('isVisible');
+        $childPage1->expects(self::never())
+            ->method('get');
 
         $childPage2 = $this->getMockBuilder(PageInterface::class)
             ->disableOriginalConstructor()
@@ -1313,6 +1393,14 @@ final class UriTest extends TestCase
         $childPage2->expects(self::never())
             ->method('setParent')
             ->with($this->page);
+        $childPage2->expects(self::never())
+            ->method('isVisible');
+        $childPage2->expects(self::never())
+            ->method('get');
+        $childPage2->expects(self::never())
+            ->method('hasPage');
+        $childPage2->expects(self::never())
+            ->method('removePage');
 
         $childPage1->expects(self::once())
             ->method('hasPage')
@@ -1352,6 +1440,14 @@ final class UriTest extends TestCase
         $childPage1->expects(self::once())
             ->method('setParent')
             ->with($this->page);
+        $childPage1->expects(self::never())
+            ->method('isVisible');
+        $childPage1->expects(self::never())
+            ->method('get');
+        $childPage1->expects(self::never())
+            ->method('hasPage');
+        $childPage1->expects(self::never())
+            ->method('removePage');
 
         $childPage2 = $this->getMockBuilder(PageInterface::class)
             ->disableOriginalConstructor()
@@ -1365,6 +1461,14 @@ final class UriTest extends TestCase
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($this->page);
+        $childPage2->expects(self::never())
+            ->method('isVisible');
+        $childPage2->expects(self::never())
+            ->method('get');
+        $childPage2->expects(self::never())
+            ->method('hasPage');
+        $childPage2->expects(self::never())
+            ->method('removePage');
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
@@ -1396,6 +1500,14 @@ final class UriTest extends TestCase
         $childPage1->expects(self::once())
             ->method('setParent')
             ->with($this->page);
+        $childPage1->expects(self::never())
+            ->method('isVisible');
+        $childPage1->expects(self::never())
+            ->method('get');
+        $childPage1->expects(self::never())
+            ->method('hasPage');
+        $childPage1->expects(self::never())
+            ->method('removePage');
 
         $childPage2 = $this->getMockBuilder(PageInterface::class)
             ->disableOriginalConstructor()
@@ -1409,6 +1521,14 @@ final class UriTest extends TestCase
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($this->page);
+        $childPage2->expects(self::never())
+            ->method('isVisible');
+        $childPage2->expects(self::never())
+            ->method('get');
+        $childPage2->expects(self::never())
+            ->method('hasPage');
+        $childPage2->expects(self::never())
+            ->method('removePage');
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
@@ -1440,6 +1560,14 @@ final class UriTest extends TestCase
         $childPage1->expects(self::once())
             ->method('setParent')
             ->with($this->page);
+        $childPage1->expects(self::never())
+            ->method('isVisible');
+        $childPage1->expects(self::never())
+            ->method('get');
+        $childPage1->expects(self::never())
+            ->method('hasPage');
+        $childPage1->expects(self::never())
+            ->method('removePage');
 
         $childPage2 = $this->getMockBuilder(PageInterface::class)
             ->disableOriginalConstructor()
@@ -1453,6 +1581,14 @@ final class UriTest extends TestCase
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($this->page);
+        $childPage2->expects(self::never())
+            ->method('isVisible');
+        $childPage2->expects(self::never())
+            ->method('get');
+        $childPage2->expects(self::never())
+            ->method('hasPage');
+        $childPage2->expects(self::never())
+            ->method('removePage');
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
@@ -1484,6 +1620,14 @@ final class UriTest extends TestCase
         $childPage1->expects(self::once())
             ->method('setParent')
             ->with($this->page);
+        $childPage1->expects(self::never())
+            ->method('isVisible');
+        $childPage1->expects(self::never())
+            ->method('get');
+        $childPage1->expects(self::never())
+            ->method('hasPage');
+        $childPage1->expects(self::never())
+            ->method('removePage');
 
         $childPage2 = $this->getMockBuilder(PageInterface::class)
             ->disableOriginalConstructor()
@@ -1497,6 +1641,14 @@ final class UriTest extends TestCase
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($this->page);
+        $childPage2->expects(self::never())
+            ->method('isVisible');
+        $childPage2->expects(self::never())
+            ->method('get');
+        $childPage2->expects(self::never())
+            ->method('hasPage');
+        $childPage2->expects(self::never())
+            ->method('removePage');
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
@@ -1528,6 +1680,10 @@ final class UriTest extends TestCase
         $childPage1->expects(self::once())
             ->method('setParent')
             ->with($this->page);
+        $childPage1->expects(self::never())
+            ->method('isVisible');
+        $childPage1->expects(self::never())
+            ->method('get');
 
         $childPage2 = $this->getMockBuilder(PageInterface::class)
             ->disableOriginalConstructor()
@@ -1541,6 +1697,14 @@ final class UriTest extends TestCase
         $childPage2->expects(self::never())
             ->method('setParent')
             ->with($this->page);
+        $childPage2->expects(self::never())
+            ->method('isVisible');
+        $childPage2->expects(self::never())
+            ->method('get');
+        $childPage2->expects(self::never())
+            ->method('hasPage');
+        $childPage2->expects(self::never())
+            ->method('removePage');
 
         $childPage1->expects(self::once())
             ->method('hasPage')
@@ -1579,6 +1743,10 @@ final class UriTest extends TestCase
         $childPage1->expects(self::once())
             ->method('setParent')
             ->with($this->page);
+        $childPage1->expects(self::never())
+            ->method('isVisible');
+        $childPage1->expects(self::never())
+            ->method('get');
 
         $childPage2 = $this->getMockBuilder(PageInterface::class)
             ->disableOriginalConstructor()
@@ -1592,6 +1760,14 @@ final class UriTest extends TestCase
         $childPage2->expects(self::never())
             ->method('setParent')
             ->with($this->page);
+        $childPage2->expects(self::never())
+            ->method('isVisible');
+        $childPage2->expects(self::never())
+            ->method('get');
+        $childPage2->expects(self::never())
+            ->method('hasPage');
+        $childPage2->expects(self::never())
+            ->method('removePage');
 
         $childPage1->expects(self::once())
             ->method('hasPage')
@@ -1635,6 +1811,12 @@ final class UriTest extends TestCase
         $childPage1->expects(self::once())
             ->method('isVisible')
             ->willReturn(false);
+        $childPage1->expects(self::never())
+            ->method('get');
+        $childPage1->expects(self::never())
+            ->method('hasPage');
+        $childPage1->expects(self::never())
+            ->method('removePage');
 
         $childPage2 = $this->getMockBuilder(PageInterface::class)
             ->disableOriginalConstructor()
@@ -1651,6 +1833,12 @@ final class UriTest extends TestCase
         $childPage2->expects(self::once())
             ->method('isVisible')
             ->willReturn(false);
+        $childPage2->expects(self::never())
+            ->method('get');
+        $childPage2->expects(self::never())
+            ->method('hasPage');
+        $childPage2->expects(self::never())
+            ->method('removePage');
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
@@ -1688,6 +1876,12 @@ final class UriTest extends TestCase
         $childPage1->expects(self::once())
             ->method('isVisible')
             ->willReturn(false);
+        $childPage1->expects(self::never())
+            ->method('get');
+        $childPage1->expects(self::never())
+            ->method('hasPage');
+        $childPage1->expects(self::never())
+            ->method('removePage');
 
         $childPage2 = $this->getMockBuilder(PageInterface::class)
             ->disableOriginalConstructor()
@@ -1704,6 +1898,12 @@ final class UriTest extends TestCase
         $childPage2->expects(self::once())
             ->method('isVisible')
             ->willReturn(true);
+        $childPage2->expects(self::never())
+            ->method('get');
+        $childPage2->expects(self::never())
+            ->method('hasPage');
+        $childPage2->expects(self::never())
+            ->method('removePage');
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
@@ -1745,6 +1945,10 @@ final class UriTest extends TestCase
             ->method('isVisible');
         $childPage1->expects(self::never())
             ->method('get');
+        $childPage1->expects(self::never())
+            ->method('hasPage');
+        $childPage1->expects(self::never())
+            ->method('removePage');
 
         $childPage2 = $this->getMockBuilder(PageInterface::class)
             ->disableOriginalConstructor()
@@ -1764,6 +1968,10 @@ final class UriTest extends TestCase
             ->method('get')
             ->with($property)
             ->willReturn($value);
+        $childPage2->expects(self::never())
+            ->method('hasPage');
+        $childPage2->expects(self::never())
+            ->method('removePage');
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
@@ -1807,6 +2015,10 @@ final class UriTest extends TestCase
             ->method('get')
             ->with($property)
             ->willReturn($value);
+        $childPage1->expects(self::never())
+            ->method('hasPage');
+        $childPage1->expects(self::never())
+            ->method('removePage');
 
         $childPage2 = $this->getMockBuilder(PageInterface::class)
             ->disableOriginalConstructor()
@@ -1826,6 +2038,10 @@ final class UriTest extends TestCase
             ->method('get')
             ->with($property)
             ->willReturn($value);
+        $childPage2->expects(self::never())
+            ->method('hasPage');
+        $childPage2->expects(self::never())
+            ->method('removePage');
 
         $childPage3 = $this->getMockBuilder(PageInterface::class)
             ->disableOriginalConstructor()
@@ -1845,6 +2061,10 @@ final class UriTest extends TestCase
             ->method('get')
             ->with($property)
             ->willReturn(null);
+        $childPage3->expects(self::never())
+            ->method('hasPage');
+        $childPage3->expects(self::never())
+            ->method('removePage');
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
@@ -1906,6 +2126,10 @@ final class UriTest extends TestCase
             ->method('get')
             ->with($property)
             ->willReturn($value);
+        $childPage1->expects(self::never())
+            ->method('hasPage');
+        $childPage1->expects(self::never())
+            ->method('removePage');
 
         $childPage2 = $this->getMockBuilder(PageInterface::class)
             ->disableOriginalConstructor()
@@ -1925,6 +2149,10 @@ final class UriTest extends TestCase
             ->method('get')
             ->with($property)
             ->willReturn($value);
+        $childPage2->expects(self::never())
+            ->method('hasPage');
+        $childPage2->expects(self::never())
+            ->method('removePage');
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
@@ -1973,6 +2201,10 @@ final class UriTest extends TestCase
             ->method('isVisible');
         $childPage1->expects(self::never())
             ->method('get');
+        $childPage1->expects(self::never())
+            ->method('hasPage');
+        $childPage1->expects(self::never())
+            ->method('removePage');
 
         $childPage2 = $this->getMockBuilder(PageInterface::class)
             ->disableOriginalConstructor()
@@ -1990,6 +2222,10 @@ final class UriTest extends TestCase
             ->method('isVisible');
         $childPage2->expects(self::never())
             ->method('get');
+        $childPage2->expects(self::never())
+            ->method('hasPage');
+        $childPage2->expects(self::never())
+            ->method('removePage');
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
@@ -2045,6 +2281,10 @@ final class UriTest extends TestCase
             ->method('isVisible');
         $childPage1->expects(self::never())
             ->method('get');
+        $childPage1->expects(self::never())
+            ->method('hasPage');
+        $childPage1->expects(self::never())
+            ->method('removePage');
 
         $childPage2 = $this->getMockBuilder(PageInterface::class)
             ->disableOriginalConstructor()
@@ -2062,6 +2302,10 @@ final class UriTest extends TestCase
             ->method('isVisible');
         $childPage2->expects(self::never())
             ->method('get');
+        $childPage2->expects(self::never())
+            ->method('hasPage');
+        $childPage2->expects(self::never())
+            ->method('removePage');
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
