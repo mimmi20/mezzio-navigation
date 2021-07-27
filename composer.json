@@ -26,7 +26,7 @@
     "mezzio/mezzio-authorization": "*"
   },
   "require-dev": {
-    "infection/infection": "^0.23.0",
+    "infection/infection": "^0.24.0",
     "laminas/laminas-config": "^3.5.0",
     "laminas/laminas-servicemanager": "^3.7.0",
     "mezzio/mezzio-helpers": "^5.6.0",
