@@ -12,7 +12,6 @@ declare(strict_types = 1);
 
 namespace Mezzio\Navigation\Page;
 
-use Laminas\Stdlib\Exception\InvalidArgumentException;
 use Mezzio\Navigation\ContainerInterface;
 use Mezzio\Navigation\ContainerTrait;
 use Mezzio\Navigation\Exception;
@@ -430,8 +429,7 @@ trait PageTrait
      *
      * @param array<int|string, array<string, string>|ContainerInterface|PageInterface|string|Traversable>|Traversable $relations [optional] an associative array of forward links to other pages
      *
-     * @throws Exception\InvalidArgumentException if $relations is not an array or Traversable object
-     * @throws InvalidArgumentException
+     * @throws void
      */
     public function setRel(?iterable $relations = null): void
     {
@@ -484,8 +482,7 @@ trait PageTrait
      *
      * @param array<int|string, array<string, string>|ContainerInterface|PageInterface|string|Traversable>|Traversable $relations [optional] an associative array of reverse links to other pages
      *
-     * @throws Exception\InvalidArgumentException if $relations it not an array or Traversable object
-     * @throws InvalidArgumentException
+     * @throws void
      */
     public function setRev(?iterable $relations = null): void
     {
@@ -621,7 +618,7 @@ trait PageTrait
      *                         with page. Default is null, which
      *                         sets no resource.
      *
-     * @throws Exception\InvalidArgumentException if $resource is invalid
+     * @throws void
      */
     public function setResource(string $resource): void
     {

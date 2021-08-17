@@ -12,7 +12,6 @@ declare(strict_types = 1);
 
 namespace MezzioTest\Navigation;
 
-use ErrorException;
 use Mezzio\Navigation\Exception\BadMethodCallException;
 use Mezzio\Navigation\Exception\InvalidArgumentException;
 use Mezzio\Navigation\Exception\OutOfBoundsException;
@@ -30,8 +29,7 @@ final class NavigationTest extends TestCase
     private Navigation $navigation;
 
     /**
-     * @throws InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws void
      */
     protected function setUp(): void
     {
@@ -44,7 +42,6 @@ final class NavigationTest extends TestCase
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      */
     public function testSetPagesTwice(): void
     {
@@ -64,7 +61,6 @@ final class NavigationTest extends TestCase
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      */
     public function testNavigationArraySortsCorrectly(): void
     {
@@ -115,7 +111,6 @@ final class NavigationTest extends TestCase
 
     /**
      * @throws InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      */
     public function testAddPages(): void
     {
@@ -978,8 +973,7 @@ final class NavigationTest extends TestCase
     }
 
     /**
-     * @throws BadMethodCallException
-     * @throws ErrorException
+     * @throws void
      */
     public function testCallFindAllByException(): void
     {
@@ -996,8 +990,6 @@ final class NavigationTest extends TestCase
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws BadMethodCallException
-     * @throws ErrorException
      */
     public function testCallFindAllBy(): void
     {

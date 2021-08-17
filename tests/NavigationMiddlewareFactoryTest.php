@@ -158,7 +158,6 @@ final class NavigationMiddlewareFactoryTest extends TestCase
 
     /**
      * @throws Exception
-     * @throws ServiceNotCreatedException
      */
     public function testFactoryContainerExceptionRouterInterface(): void
     {
@@ -202,7 +201,6 @@ final class NavigationMiddlewareFactoryTest extends TestCase
 
     /**
      * @throws Exception
-     * @throws ServiceNotCreatedException
      */
     public function testFactoryContainerExceptionNavigationConfig(): void
     {
@@ -251,7 +249,6 @@ final class NavigationMiddlewareFactoryTest extends TestCase
 
     /**
      * @throws Exception
-     * @throws ServiceNotCreatedException
      */
     public function testFactoryContainerExceptionUrlHelper(): void
     {

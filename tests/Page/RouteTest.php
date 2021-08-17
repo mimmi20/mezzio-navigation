@@ -12,7 +12,6 @@ declare(strict_types = 1);
 
 namespace MezzioTest\Navigation\Page;
 
-use ErrorException;
 use Mezzio\Navigation\ContainerInterface;
 use Mezzio\Navigation\Exception\BadMethodCallException;
 use Mezzio\Navigation\Exception\DomainException;
@@ -37,7 +36,6 @@ final class RouteTest extends TestCase
 
     /**
      * @throws InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      */
     protected function setUp(): void
     {
@@ -385,8 +383,6 @@ final class RouteTest extends TestCase
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
-     * @throws InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      */
     public function testSetRel(): void
     {
@@ -422,8 +418,6 @@ final class RouteTest extends TestCase
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
-     * @throws InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      */
     public function testSetRev(): void
     {
@@ -598,7 +592,6 @@ final class RouteTest extends TestCase
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
-     * @throws InvalidArgumentException
      */
     public function testSetResource(): void
     {
@@ -1350,7 +1343,6 @@ final class RouteTest extends TestCase
 
     /**
      * @throws InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      */
     public function testAddPages(): void
     {
@@ -2173,8 +2165,7 @@ final class RouteTest extends TestCase
     }
 
     /**
-     * @throws BadMethodCallException
-     * @throws ErrorException
+     * @throws void
      */
     public function testCallFindAllByException(): void
     {
@@ -2191,8 +2182,6 @@ final class RouteTest extends TestCase
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws BadMethodCallException
-     * @throws ErrorException
      */
     public function testCallFindAllBy(): void
     {
