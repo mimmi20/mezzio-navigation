@@ -97,8 +97,7 @@ trait NavigationFactoryTrait
      *
      * @return array<PageInterface>
      *
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
-     * @throws InvalidArgumentException
+     * @throws void
      */
     private function preparePages(
         array $pages,

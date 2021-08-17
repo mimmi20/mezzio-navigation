@@ -14,7 +14,7 @@ namespace Mezzio\Navigation;
 
 use ErrorException;
 use Laminas\Stdlib\ErrorHandler;
-use Laminas\Stdlib\Exception\InvalidArgumentException;
+use Mezzio\Navigation\Exception\InvalidArgumentException;
 use Mezzio\Navigation\Exception\OutOfBoundsException;
 use Mezzio\Navigation\Page\PageInterface;
 use RecursiveIteratorIterator;
@@ -149,7 +149,6 @@ trait ContainerTrait
      * @param array<PageInterface> $pages pages to add
      *
      * @throws Exception\InvalidArgumentException if $pages is not array, Traversable or PageInterface
-     * @throws InvalidArgumentException
      */
     final public function addPages(iterable $pages): void
     {
@@ -169,7 +168,6 @@ trait ContainerTrait
      *
      * @param array<PageInterface> $pages pages to set
      *
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
      * @throws InvalidArgumentException
      */
     final public function setPages(iterable $pages): void
@@ -316,7 +314,7 @@ trait ContainerTrait
      *
      * @return PageInterface|null matching page or null
      *
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     final public function findOneBy(string $property, $value): ?PageInterface
     {
@@ -342,7 +340,7 @@ trait ContainerTrait
      *
      * @return array<PageInterface> array containing only Page\PageInterface instances
      *
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     final public function findAllBy(string $property, $value): array
     {
@@ -479,9 +477,7 @@ trait ContainerTrait
      *
      * Implements RecursiveIterator interface.
      *
-     * @throws \Mezzio\Navigation\Exception\InvalidArgumentException
-     * @throws OutOfBoundsException
-     * @throws InvalidArgumentException
+     * @throws void
      *
      * @codeCoverageIgnore
      */

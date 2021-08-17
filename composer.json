@@ -32,19 +32,17 @@
     "mezzio/mezzio-router": "^3.6.0",
     "mimmi20/coding-standard": "^2.4.2",
     "mimmi20/mezzio-generic-authorization": "^2.0.4",
-    "pepakriz/phpstan-exception-rules": "^0.11.7",
     "phpstan/extension-installer": "^1.1.0",
     "phpstan/phpstan": "^0.12.94",
     "phpstan/phpstan-deprecation-rules": "^0.12.6",
-    "phpstan/phpstan-phpunit": "^0.12.21",
-    "phpstan/phpstan-strict-rules": "^0.12.10",
+    "phpstan/phpstan-phpunit": "^0.12.22",
     "phpunit/phpunit": "^9.5.8"
   },
   "suggest": {
-    "laminas/laminas-config": "^3.5.0, to provide page configuration (optional, as arrays and Traversables are also allowed)",
-    "laminas/laminas-servicemanager": "^3.6.4, to use the navigation factories",
-    "mezzio/mezzio-router": "^3.3.0, to use router-based URI generation with pages",
-    "mimmi20/mezzio-generic-authorization": "^2.0.3, to provide access restrictions to pages",
+    "laminas/laminas-config": "to provide page configuration (optional, as arrays and Traversables are also allowed)",
+    "laminas/laminas-servicemanager": "to use the navigation factories",
+    "mezzio/mezzio-router": "to use router-based URI generation with pages",
+    "mimmi20/mezzio-generic-authorization": "to provide access restrictions to pages",
     "mimmi20/mezzio-navigation-laminasviewrenderer": "to use the navigation view helpers"
   },
   "config": {

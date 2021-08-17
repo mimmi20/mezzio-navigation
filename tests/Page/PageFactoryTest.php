@@ -29,8 +29,7 @@ final class PageFactoryTest extends TestCase
     private PageFactory $factory;
 
     /**
-     * @throws InvalidArgumentException
-     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws void
      */
     protected function setUp(): void
     {
