@@ -30,7 +30,7 @@
     "laminas/laminas-servicemanager": "^3.7.0",
     "mezzio/mezzio-helpers": "^5.6.0",
     "mezzio/mezzio-router": "^3.6.0",
-    "mimmi20/coding-standard": "^2.4.2",
+    "mimmi20/coding-standard": "^2.4.3",
     "mimmi20/mezzio-generic-authorization": "^2.0.4",
     "phpstan/extension-installer": "^1.1.0",
     "phpstan/phpstan": "^0.12.94",
