@@ -34,9 +34,6 @@ final class NavigationMiddleware implements MiddlewareInterface
 
     private ?RouterInterface $router = null;
 
-    /**
-     * @param ?RouterInterface $router
-     */
     public function __construct(
         Config\NavigationConfigInterface $navigationConfig,
         UrlHelper $urlHelper,
