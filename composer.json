@@ -19,7 +19,7 @@
     "php": "^7.4.3 || ^8.0.0",
     "ext-mbstring": "*",
     "laminas/laminas-stdlib": "^3.6.0",
-    "psr/container": "^1.1.1 || ^2.0.1"
+    "psr/container": "^1.1.2"
   },
   "conflict": {
     "container-interop/container-interop": "<1.2.0",
