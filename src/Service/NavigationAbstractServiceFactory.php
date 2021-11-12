@@ -20,6 +20,7 @@ use Mezzio\Navigation\Exception\InvalidArgumentException;
 use Mezzio\Navigation\Navigation;
 use Psr\Container\ContainerExceptionInterface;
 
+use function assert;
 use function mb_strlen;
 use function mb_strpos;
 use function mb_strtolower;
@@ -75,6 +76,8 @@ final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
         }
 
         $config = $container->get(NavigationConfigInterface::class);
+
+        assert($config instanceof NavigationConfigInterface);
 
         return $this->hasNamedConfig($requestedName, $config);
     }
@@ -143,7 +146,8 @@ final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
      */
     private function getNamedConfigName(ContainerInterface $container, string $name): string
     {
-        $config        = $container->get(NavigationConfigInterface::class);
+        $config = $container->get(NavigationConfigInterface::class);
+        assert($config instanceof NavigationConfigInterface);
         $withoutPrefix = $this->getConfigName($name);
 
         $pages = $config->getPages();

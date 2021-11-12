@@ -14,6 +14,7 @@ namespace Mezzio\Navigation\Page;
 
 use Mezzio\Navigation\Exception;
 
+use function assert;
 use function call_user_func;
 use function class_exists;
 use function is_string;
@@ -94,6 +95,8 @@ final class PageFactory implements PageFactoryInterface
                 $page = call_user_func($factoryCallBack, $options);
 
                 if ($page) {
+                    assert($page instanceof PageInterface);
+
                     return $page;
                 }
             }

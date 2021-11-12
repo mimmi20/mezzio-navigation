@@ -54,7 +54,7 @@ final class ConstructedNavigationFactoryTest extends TestCase
         $container = $this->getMockBuilder(ContainerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $container->expects(self::exactly(2))
+        $container->expects(self::once())
             ->method('get')
             ->withConsecutive([NavigationConfigInterface::class], [PageFactoryInterface::class])
             ->willReturnOnConsecutiveCalls($navigationConfig, $pageFactory);
