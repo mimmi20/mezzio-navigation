@@ -18,8 +18,8 @@
   "require": {
     "php": "^7.4.3 || ^8.0.0",
     "ext-mbstring": "*",
-    "laminas/laminas-stdlib": "^3.6.0",
-    "psr/container": "^1.1.1 || ^2.0.1"
+    "laminas/laminas-stdlib": "^3.6.1",
+    "psr/container": "^1.1.2 || ^2.0.2"
   },
   "conflict": {
     "container-interop/container-interop": "<1.2.0",
@@ -33,9 +33,9 @@
     "mimmi20/coding-standard": "^2.5.0",
     "mimmi20/mezzio-generic-authorization": "^2.0.5",
     "phpstan/extension-installer": "^1.1.0",
-    "phpstan/phpstan": "^0.12.99",
-    "phpstan/phpstan-deprecation-rules": "^0.12.6",
-    "phpstan/phpstan-phpunit": "^0.12.22",
+    "phpstan/phpstan": "^1.1.2",
+    "phpstan/phpstan-deprecation-rules": "^1.0.0",
+    "phpstan/phpstan-phpunit": "^1.0.0",
     "phpunit/phpunit": "^9.5.10"
   },
   "suggest": {

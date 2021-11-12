@@ -67,8 +67,7 @@ trait NavigationFactoryTrait
      */
     private function getPages(ContainerInterface $container, NavigationConfigInterface $config): array
     {
-        $pages   = $config->getPages();
-        $factory = $container->get(PageFactoryInterface::class);
+        $pages = $config->getPages();
 
         if (
             null === $pages
@@ -82,6 +81,10 @@ trait NavigationFactoryTrait
                 )
             );
         }
+
+        $factory = $container->get(PageFactoryInterface::class);
+
+        assert($factory instanceof PageFactoryInterface);
 
         return $this->preparePages(
             $pages[$this->configName],

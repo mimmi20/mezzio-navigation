@@ -19,6 +19,7 @@ use Mezzio\Router\RouterInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 
+use function assert;
 use function sprintf;
 
 final class NavigationMiddlewareFactory
@@ -85,6 +86,7 @@ final class NavigationMiddlewareFactory
         if ($container->has(AuthorizationInterface::class)) {
             try {
                 $authorization = $container->get(AuthorizationInterface::class);
+                assert($authorization instanceof AuthorizationInterface);
             } catch (ContainerExceptionInterface $e) {
                 throw new InvalidArgumentException(
                     sprintf(
@@ -99,6 +101,7 @@ final class NavigationMiddlewareFactory
         if ($container->has(RouterInterface::class)) {
             try {
                 $router = $container->get(RouterInterface::class);
+                assert($router instanceof RouterInterface);
             } catch (ContainerExceptionInterface $e) {
                 throw new InvalidArgumentException(
                     sprintf(
@@ -133,6 +136,9 @@ final class NavigationMiddlewareFactory
                 )
             );
         }
+
+        assert($navigationConfig instanceof Config\NavigationConfigInterface);
+        assert($urlHelper instanceof UrlHelper);
 
         return new NavigationMiddleware(
             $navigationConfig,
