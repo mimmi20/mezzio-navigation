@@ -27,6 +27,7 @@
   },
   "require-dev": {
     "laminas/laminas-config": "^3.7.0",
+    "laminas/laminas-dependency-plugin": "^2.2.0",
     "laminas/laminas-servicemanager": "^3.10.0",
     "mezzio/mezzio-helpers": "^5.7.0",
     "mezzio/mezzio-router": "^3.7.0",
@@ -36,7 +37,8 @@
     "phpstan/phpstan": "^1.2.0",
     "phpstan/phpstan-deprecation-rules": "^1.0.0",
     "phpstan/phpstan-phpunit": "^1.0.0",
-    "phpunit/phpunit": "^9.5.10"
+    "phpunit/phpunit": "^9.5.10",
+    "rector/rector": "^0.12.5"
   },
   "suggest": {
     "laminas/laminas-config": "to provide page configuration (optional, as arrays and Traversables are also allowed)",
