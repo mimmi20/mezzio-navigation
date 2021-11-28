@@ -124,7 +124,7 @@ final class Route implements RouteInterface
                 }
             }
 
-            if (0 < count($pageParams) && count(array_intersect_assoc($reqParams, $pageParams)) === count($pageParams)) {
+            if ([] !== $pageParams && count(array_intersect_assoc($reqParams, $pageParams)) === count($pageParams)) {
                 $this->active = true;
 
                 return true;

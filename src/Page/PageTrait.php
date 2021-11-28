@@ -555,7 +555,7 @@ trait PageTrait
         $this->parent = $parent;
 
         // add to parent if page and not already a child
-        if (null === $this->parent || $this->parent->hasPage($this, false)) {
+        if (!$this->parent instanceof ContainerInterface || $this->parent->hasPage($this, false)) {
             return;
         }
 
@@ -594,7 +594,7 @@ trait PageTrait
         }
 
         // notify parent, if any
-        if (null === $this->parent) {
+        if (!$this->parent instanceof ContainerInterface) {
             return;
         }
 
@@ -784,10 +784,9 @@ trait PageTrait
             $recursive
             && null !== $this->parent
             && $this->parent instanceof PageInterface
+            && !$this->parent->isVisible($recursive)
         ) {
-            if (!$this->parent->isVisible($recursive)) {
-                return false;
-            }
+            return false;
         }
 
         return $this->visible;

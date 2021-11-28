@@ -178,7 +178,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(\Rector\CodeQuality\Rector\FuncCall\CallUserFuncWithArrowFunctionToInlineRector::class);
     $services->set(\Rector\CodingStyle\Rector\FuncCall\CountArrayToEmptyArrayComparisonRector::class);
     $services->set(\Rector\CodeQuality\Rector\Identical\FlipTypeControlToUseExclusiveTypeRector::class);
-    $services->set(\Rector\CodeQuality\Rector\PropertyFetch\ExplicitMethodCallOverMagicGetSetRector::class);
     $services->set(\Rector\CodeQuality\Rector\Do_\DoWhileBreakFalseToIfElseRector::class);
 
     // PRIVATIZATION
