@@ -1,13 +1,12 @@
 {
   "name": "mimmi20/mezzio-navigation",
-  "type": "library",
   "description": "Provides a Navigation for Mezzio.",
+  "license": "MIT",
+  "type": "library",
   "keywords": [
     "laminas",
     "mezzio"
   ],
-  "homepage": "https://github.com/mimmi20/mezzio-navigation",
-  "license": "MIT",
   "authors": [
     {
       "name": "Thomas Müller",
@@ -15,17 +14,19 @@
       "role": "Developer"
     }
   ],
+  "homepage": "https://github.com/mimmi20/mezzio-navigation",
+  "support": {
+    "issues": "https://github.com/mimmi20/mezzio-navigation/issues",
+    "source": "https://github.com/mimmi20/mezzio-navigation"
+  },
   "require": {
     "php": "^7.4.3 || ^8.0.0",
     "ext-mbstring": "*",
-    "laminas/laminas-stdlib": "^3.6.1",
+    "laminas/laminas-stdlib": "^3.6.2",
     "psr/container": "^1.1.2 || ^2.0.2"
   },
-  "conflict": {
-    "container-interop/container-interop": "<1.2.0",
-    "mezzio/mezzio-authorization": "*"
-  },
   "require-dev": {
+    "ergebnis/composer-normalize": "^2.18.0",
     "laminas/laminas-config": "^3.7.0",
     "laminas/laminas-dependency-plugin": "^2.2.0",
     "laminas/laminas-servicemanager": "^3.10.0",
@@ -38,7 +39,11 @@
     "phpstan/phpstan-deprecation-rules": "^1.0.0",
     "phpstan/phpstan-phpunit": "^1.0.0",
     "phpunit/phpunit": "^9.5.10",
-    "rector/rector": "^0.12.5"
+    "rector/rector": "^0.12.6"
+  },
+  "conflict": {
+    "container-interop/container-interop": "<1.2.0",
+    "mezzio/mezzio-authorization": "*"
   },
   "suggest": {
     "laminas/laminas-config": "to provide page configuration (optional, as arrays and Traversables are also allowed)",
@@ -46,15 +51,6 @@
     "mezzio/mezzio-router": "to use router-based URI generation with pages",
     "mimmi20/mezzio-generic-authorization": "to provide access restrictions to pages",
     "mimmi20/mezzio-navigation-laminasviewrenderer": "to use the navigation view helpers"
-  },
-  "config": {
-    "preferred-install": "dist",
-    "sort-packages": true
-  },
-  "extra": {
-    "laminas": {
-      "config-provider": "Mezzio\\Navigation\\ConfigProvider"
-    }
   },
   "autoload": {
     "psr-4": {
@@ -66,8 +62,13 @@
       "MezzioTest\\Navigation\\": "tests/"
     }
   },
-  "support": {
-    "issues": "https://github.com/mimmi20/mezzio-navigation/issues",
-    "source": "https://github.com/mimmi20/mezzio-navigation"
+  "config": {
+    "preferred-install": "dist",
+    "sort-packages": true
+  },
+  "extra": {
+    "laminas": {
+      "config-provider": "Mezzio\\Navigation\\ConfigProvider"
+    }
   }
 }
