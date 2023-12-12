@@ -20,6 +20,7 @@
         <exclude name="CyclomaticComplexity"/>
         <exclude name="NPathComplexity"/>
         <exclude name="ExcessiveMethodLength"/>
+        <exclude name="ExcessivePublicCount"/>
     </rule>
 
     <rule ref="rulesets/controversial.xml"/>
