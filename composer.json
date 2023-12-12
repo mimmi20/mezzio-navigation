@@ -36,7 +36,7 @@
         "laminas/laminas-config": "^3.9.0",
         "laminas/laminas-servicemanager": "^3.22.1",
         "mezzio/mezzio-helpers": "^5.16.0",
-        "mezzio/mezzio-router": "^3.7.0",
+        "mezzio/mezzio-router": "^3.17.0",
         "mimmi20/coding-standard": "^5.2.2",
         "mimmi20/mezzio-generic-authorization": "^3.0.3",
         "nikic/php-parser": "^v4.18.0",
