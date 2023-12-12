@@ -35,7 +35,7 @@
     "mimmi20/coding-standard": "^2.5.2",
     "mimmi20/mezzio-generic-authorization": "^2.0.5",
     "phpstan/extension-installer": "^1.1.0",
-    "phpstan/phpstan": "^1.2.0",
+    "phpstan/phpstan": "^1.10.49",
     "phpstan/phpstan-deprecation-rules": "^1.0.0",
     "phpstan/phpstan-phpunit": "^1.0.0",
     "phpunit/phpunit": "^9.5.10",
