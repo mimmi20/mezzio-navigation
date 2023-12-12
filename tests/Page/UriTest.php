@@ -2,7 +2,7 @@
 /**
  * This file is part of the mimmi20/mezzio-navigation package.
  *
- * Copyright (c) 2020-2021, Thomas Mueller <mimmi20@live.de>
+ * Copyright (c) 2020-2023, Thomas Mueller <mimmi20@live.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,14 +10,15 @@
 
 declare(strict_types = 1);
 
-namespace MezzioTest\Navigation\Page;
+namespace Mimmi20\MezzioTest\Navigation\Page;
 
-use Mezzio\Navigation\ContainerInterface;
-use Mezzio\Navigation\Exception\BadMethodCallException;
-use Mezzio\Navigation\Exception\InvalidArgumentException;
-use Mezzio\Navigation\Exception\OutOfBoundsException;
-use Mezzio\Navigation\Page\PageInterface;
-use Mezzio\Navigation\Page\Uri;
+use Mimmi20\Mezzio\Navigation\ContainerInterface;
+use Mimmi20\Mezzio\Navigation\Exception\BadMethodCallException;
+use Mimmi20\Mezzio\Navigation\Exception\InvalidArgumentException;
+use Mimmi20\Mezzio\Navigation\Exception\OutOfBoundsException;
+use Mimmi20\Mezzio\Navigation\Page\PageInterface;
+use Mimmi20\Mezzio\Navigation\Page\Uri;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
@@ -28,32 +29,25 @@ use function spl_object_hash;
 
 /**
  * Tests the class Laminas_Navigation_Page_Uri
- *
- * @group      Laminas_Navigation
  */
+#[Group('Laminas_Navigation')]
 final class UriTest extends TestCase
 {
     private Uri $page;
 
-    /**
-     * @throws InvalidArgumentException
-     */
+    /** @throws InvalidArgumentException */
     protected function setUp(): void
     {
         $this->page = new Uri();
     }
 
-    /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     */
+    /** @throws Exception */
     public function testConstructorWithoutParameters(): void
     {
         self::assertSame([], $this->page->getPages());
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -67,7 +61,6 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -80,10 +73,7 @@ final class UriTest extends TestCase
         self::assertSame($label, $this->page->getLabel());
     }
 
-    /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     */
+    /** @throws Exception */
     public function testSetLabel(): void
     {
         $label = 'test';
@@ -94,7 +84,6 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -108,7 +97,6 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -121,10 +109,7 @@ final class UriTest extends TestCase
         self::assertSame($fragment, $this->page->getFragment());
     }
 
-    /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     */
+    /** @throws Exception */
     public function testSetFragment(): void
     {
         $fragment = 'test';
@@ -135,7 +120,6 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -149,7 +133,6 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -162,10 +145,7 @@ final class UriTest extends TestCase
         self::assertSame($id, $this->page->getId());
     }
 
-    /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     */
+    /** @throws Exception */
     public function testSetId(): void
     {
         $id = 'test';
@@ -176,7 +156,6 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -190,7 +169,6 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -203,10 +181,7 @@ final class UriTest extends TestCase
         self::assertSame($class, $this->page->getClass());
     }
 
-    /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     */
+    /** @throws Exception */
     public function testSetClass(): void
     {
         $class = 'test';
@@ -217,7 +192,6 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -231,7 +205,6 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -244,10 +217,7 @@ final class UriTest extends TestCase
         self::assertSame($class, $this->page->getLiClass());
     }
 
-    /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     */
+    /** @throws Exception */
     public function testSetLiClass(): void
     {
         $class = 'test';
@@ -258,7 +228,6 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -272,7 +241,6 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -285,10 +253,7 @@ final class UriTest extends TestCase
         self::assertSame($title, $this->page->getTitle());
     }
 
-    /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     */
+    /** @throws Exception */
     public function testSetTitle(): void
     {
         $title = 'test';
@@ -299,7 +264,6 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -313,7 +277,6 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -326,10 +289,7 @@ final class UriTest extends TestCase
         self::assertSame($target, $this->page->getTarget());
     }
 
-    /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     */
+    /** @throws Exception */
     public function testSetTarget(): void
     {
         $target = 'test';
@@ -339,10 +299,7 @@ final class UriTest extends TestCase
         self::assertSame($target, $this->page->getTarget());
     }
 
-    /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     */
+    /** @throws Exception */
     public function testSetRel(): void
     {
         $relValue = 'test1';
@@ -357,7 +314,7 @@ final class UriTest extends TestCase
         self::assertSame([$relKey => $relValue], $this->page->getRel());
         self::assertSame($relValue, $this->page->getRel($relKey));
 
-        self::assertCount(1, (array) $this->page->getRel());
+        self::assertCount(1, $this->page->getRel());
 
         $this->page->addRel('test2', 'test2');
 
@@ -374,10 +331,7 @@ final class UriTest extends TestCase
         self::assertSame(['test2'], $this->page->getDefinedRel());
     }
 
-    /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     */
+    /** @throws Exception */
     public function testSetRev(): void
     {
         $revValue = 'test1';
@@ -392,7 +346,7 @@ final class UriTest extends TestCase
         self::assertSame([$revKey => $revValue], $this->page->getRev());
         self::assertSame($revValue, $this->page->getRev($revKey));
 
-        self::assertCount(1, (array) $this->page->getRev());
+        self::assertCount(1, $this->page->getRev());
 
         $this->page->addRev('test2', 'test2');
 
@@ -410,7 +364,6 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -450,7 +403,6 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -492,7 +444,6 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -516,19 +467,6 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws InvalidArgumentException
-     */
-    public function testSetOrderWithException(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Invalid argument: $order must be a string, an integer or null');
-        $this->expectExceptionCode(0);
-
-        $this->page->setOrder([]);
-    }
-
-    /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -548,10 +486,7 @@ final class UriTest extends TestCase
         self::assertSame($order, $this->page->getOrder());
     }
 
-    /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     */
+    /** @throws Exception */
     public function testSetResource(): void
     {
         $resource = 'test';
@@ -563,10 +498,7 @@ final class UriTest extends TestCase
         self::assertSame($resource, $this->page->getResource());
     }
 
-    /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     */
+    /** @throws Exception */
     public function testSetPrivilege(): void
     {
         $privilege = 'test';
@@ -578,10 +510,7 @@ final class UriTest extends TestCase
         self::assertSame($privilege, $this->page->getPrivilege());
     }
 
-    /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     */
+    /** @throws Exception */
     public function testSetPermission(): void
     {
         $permission = 'test';
@@ -593,10 +522,7 @@ final class UriTest extends TestCase
         self::assertSame($permission, $this->page->getPermission());
     }
 
-    /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     */
+    /** @throws Exception */
     public function testSetTextDomain(): void
     {
         $textDomain = 'test';
@@ -608,10 +534,7 @@ final class UriTest extends TestCase
         self::assertSame($textDomain, $this->page->getTextDomain());
     }
 
-    /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     */
+    /** @throws Exception */
     public function testSetVisible(): void
     {
         $visible = false;
@@ -626,7 +549,6 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -679,10 +601,7 @@ final class UriTest extends TestCase
         self::assertFalse($this->page->getVisible());
     }
 
-    /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     */
+    /** @throws Exception */
     public function testSetActive(): void
     {
         $active = true;
@@ -707,7 +626,6 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -730,9 +648,7 @@ final class UriTest extends TestCase
         self::assertTrue($this->page->getActive(true));
     }
 
-    /**
-     * @throws InvalidArgumentException
-     */
+    /** @throws InvalidArgumentException */
     public function testSetWithException(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -742,9 +658,7 @@ final class UriTest extends TestCase
         $this->page->set('', null);
     }
 
-    /**
-     * @throws InvalidArgumentException
-     */
+    /** @throws InvalidArgumentException */
     public function testGetWithException(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -755,7 +669,6 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -786,6 +699,7 @@ final class UriTest extends TestCase
         self::assertSame(['abc' => '4711'], $this->page->getCustomProperties());
     }
 
+    /** @throws void */
     public function testUnset(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -795,10 +709,7 @@ final class UriTest extends TestCase
         unset($this->page->target);
     }
 
-    /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     */
+    /** @throws Exception */
     public function testToString(): void
     {
         self::assertSame('', (string) $this->page);
@@ -810,10 +721,7 @@ final class UriTest extends TestCase
         self::assertSame($label, (string) $this->page);
     }
 
-    /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     */
+    /** @throws Exception */
     public function testHashCode(): void
     {
         $label = 'test';
@@ -826,7 +734,6 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -836,14 +743,13 @@ final class UriTest extends TestCase
             [
                 'label' => 'foo',
                 'uri' => '#',
-            ]
+            ],
         );
 
         self::assertSame('#', $this->page->getUri());
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -853,14 +759,13 @@ final class UriTest extends TestCase
             [
                 'label' => 'foo',
                 'uri' => null,
-            ]
+            ],
         );
 
         self::assertNull($this->page->getUri(), 'getUri() should return null');
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -870,7 +775,7 @@ final class UriTest extends TestCase
             [
                 'label' => 'foo',
                 'uri' => '#',
-            ]
+            ],
         );
 
         $this->page->setUri('http://www.example.com/');
@@ -879,10 +784,7 @@ final class UriTest extends TestCase
         self::assertSame('about:blank', $this->page->getUri());
     }
 
-    /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     */
+    /** @throws Exception */
     public function testGetHref(): void
     {
         $uri = 'spotify:album:4YzcWwBUSzibRsqD9Sgu4A';
@@ -893,7 +795,6 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -904,7 +805,7 @@ final class UriTest extends TestCase
             [
                 'label' => 'foo',
                 'uri' => $url,
-            ]
+            ],
         );
 
         $uri = $this->createMock(UriInterface::class);
@@ -925,7 +826,6 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -937,7 +837,7 @@ final class UriTest extends TestCase
             [
                 'label' => 'foo',
                 'uri' => $url1,
-            ]
+            ],
         );
 
         $uri = $this->createMock(UriInterface::class);
@@ -957,10 +857,7 @@ final class UriTest extends TestCase
         self::assertFalse($this->page->isActive());
     }
 
-    /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     */
+    /** @throws Exception */
     public function testGetHrefWithFragmentIdentifier(): void
     {
         $uri = 'http://www.example.com/foo.html';
@@ -975,9 +872,7 @@ final class UriTest extends TestCase
         self::assertSame('#bar', $this->page->getHref());
     }
 
-    /**
-     * @throws InvalidArgumentException
-     */
+    /** @throws InvalidArgumentException */
     public function testAddSelfAsChild(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -1013,9 +908,7 @@ final class UriTest extends TestCase
         $this->page->addPage($childPage);
     }
 
-    /**
-     * @throws InvalidArgumentException
-     */
+    /** @throws InvalidArgumentException */
     public function testAddChildPageSelf(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -1025,9 +918,7 @@ final class UriTest extends TestCase
         $this->page->addPage($this->page);
     }
 
-    /**
-     * @throws InvalidArgumentException
-     */
+    /** @throws InvalidArgumentException */
     public function testAddPages(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -1038,7 +929,6 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -1099,7 +989,6 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -1160,68 +1049,6 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     * @throws InvalidArgumentException
-     */
-    public function testRemovePageNotByHash(): void
-    {
-        $code1 = 'code 1';
-        $code2 = 'code 2';
-
-        $childPage1 = $this->getMockBuilder(PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $childPage1->expects(self::once())
-            ->method('hashCode')
-            ->willReturn($code1);
-        $childPage1->expects(self::once())
-            ->method('getOrder')
-            ->willReturn(1);
-        $childPage1->expects(self::once())
-            ->method('setParent')
-            ->with($this->page);
-        $childPage1->expects(self::never())
-            ->method('isVisible');
-        $childPage1->expects(self::never())
-            ->method('get');
-        $childPage1->expects(self::never())
-            ->method('hasPage');
-        $childPage1->expects(self::never())
-            ->method('removePage');
-
-        $childPage2 = $this->getMockBuilder(PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $childPage2->expects(self::once())
-            ->method('hashCode')
-            ->willReturn($code2);
-        $childPage2->expects(self::once())
-            ->method('getOrder')
-            ->willReturn(null);
-        $childPage2->expects(self::once())
-            ->method('setParent')
-            ->with($this->page);
-        $childPage2->expects(self::never())
-            ->method('isVisible');
-        $childPage2->expects(self::never())
-            ->method('get');
-        $childPage2->expects(self::never())
-            ->method('hasPage');
-        $childPage2->expects(self::never())
-            ->method('removePage');
-
-        assert($childPage1 instanceof PageInterface);
-        assert($childPage2 instanceof PageInterface);
-        $this->page->addPage($childPage1);
-        $this->page->addPage($childPage2);
-
-        self::assertFalse($this->page->removePage($code1));
-        self::assertSame([$code1 => $childPage1, $code2 => $childPage2], $this->page->getPages());
-    }
-
-    /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -1282,7 +1109,6 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -1347,7 +1173,6 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -1411,7 +1236,6 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -1471,7 +1295,6 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -1531,67 +1354,6 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     * @throws InvalidArgumentException
-     */
-    public function testHasPageNotByHash(): void
-    {
-        $code1 = 'code 1';
-        $code2 = 'code 2';
-
-        $childPage1 = $this->getMockBuilder(PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $childPage1->expects(self::once())
-            ->method('hashCode')
-            ->willReturn($code1);
-        $childPage1->expects(self::once())
-            ->method('getOrder')
-            ->willReturn(1);
-        $childPage1->expects(self::once())
-            ->method('setParent')
-            ->with($this->page);
-        $childPage1->expects(self::never())
-            ->method('isVisible');
-        $childPage1->expects(self::never())
-            ->method('get');
-        $childPage1->expects(self::never())
-            ->method('hasPage');
-        $childPage1->expects(self::never())
-            ->method('removePage');
-
-        $childPage2 = $this->getMockBuilder(PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $childPage2->expects(self::once())
-            ->method('hashCode')
-            ->willReturn($code2);
-        $childPage2->expects(self::once())
-            ->method('getOrder')
-            ->willReturn(null);
-        $childPage2->expects(self::once())
-            ->method('setParent')
-            ->with($this->page);
-        $childPage2->expects(self::never())
-            ->method('isVisible');
-        $childPage2->expects(self::never())
-            ->method('get');
-        $childPage2->expects(self::never())
-            ->method('hasPage');
-        $childPage2->expects(self::never())
-            ->method('removePage');
-
-        assert($childPage1 instanceof PageInterface);
-        assert($childPage2 instanceof PageInterface);
-        $this->page->addPage($childPage1);
-        $this->page->addPage($childPage2);
-
-        self::assertFalse($this->page->hasPage($code1));
-    }
-
-    /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -1651,7 +1413,6 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -1714,7 +1475,6 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -1777,7 +1537,6 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -1842,7 +1601,6 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -1907,7 +1665,6 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -1974,7 +1731,6 @@ final class UriTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -2068,22 +1824,21 @@ final class UriTest extends TestCase
         self::assertSame([$childPage2, $childPage1], $this->page->findAllBy($property, $value));
     }
 
-    /**
-     * @throws void
-     */
+    /** @throws void */
     public function testCallFindAllByException(): void
     {
         $value = 'test';
 
         $this->expectException(BadMethodCallException::class);
-        $this->expectExceptionMessage('Bad method call: Unknown method Mezzio\Navigation\Page\Uri::findAlllByTest');
+        $this->expectExceptionMessage(
+            'Bad method call: Unknown method Mimmi20\Mezzio\Navigation\Page\Uri::findAlllByTest',
+        );
         $this->expectExceptionCode(0);
 
         $this->page->findAlllByTest($value);
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -2151,20 +1906,19 @@ final class UriTest extends TestCase
         self::assertSame([$childPage2, $childPage1], $this->page->findAllByRoute($value));
     }
 
-    /**
-     * @throws OutOfBoundsException
-     */
+    /** @throws OutOfBoundsException */
     public function testCurrentException(): void
     {
         $this->expectException(OutOfBoundsException::class);
-        $this->expectExceptionMessage('container is currently empty, could not find any key in internal iterator');
+        $this->expectExceptionMessage(
+            'container is currently empty, could not find any key in internal iterator',
+        );
         $this->expectExceptionCode(0);
 
         $this->page->current();
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      * @throws OutOfBoundsException
@@ -2237,14 +1991,15 @@ final class UriTest extends TestCase
         self::assertFalse($this->page->valid());
 
         $this->expectException(OutOfBoundsException::class);
-        $this->expectExceptionMessage('Corruption detected in container; invalid key found in internal iterator');
+        $this->expectExceptionMessage(
+            'Corruption detected in container; invalid key found in internal iterator',
+        );
         $this->expectExceptionCode(0);
 
         self::assertSame($childPage1, $this->page->current());
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      * @throws OutOfBoundsException

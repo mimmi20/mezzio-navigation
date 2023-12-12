@@ -1,12 +1,18 @@
 # https://help.github.com/en/categories/automating-your-workflow-with-github-actions
 
-name: 'Reaction Comments'
+# file-version: 1.0
+
+name: "Reaction Comments"
 
 on:
   issue_comment:
-    types: [created, edited]
+    types:
+      - "created"
+      - "edited"
   pull_request_review_comment:
-    types: [created, edited]
+    types:
+      - "created"
+      - "edited"
 
 permissions:
   actions: write
@@ -15,11 +21,11 @@ permissions:
 
 jobs:
   action:
-    runs-on: ubuntu-latest
+    runs-on: "ubuntu-22.04"
     steps:
-      - uses: dessant/reaction-comments@v2
+      - uses: "dessant/reaction-comments@v3"
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
           issue-comment: >
             :wave: @{comment-author}, would you like to leave
             a reaction instead?

@@ -2,7 +2,7 @@
 /**
  * This file is part of the mimmi20/mezzio-navigation package.
  *
- * Copyright (c) 2020-2021, Thomas Mueller <mimmi20@live.de>
+ * Copyright (c) 2020-2023, Thomas Mueller <mimmi20@live.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,12 +10,12 @@
 
 declare(strict_types = 1);
 
-namespace Mezzio\Navigation;
+namespace Mimmi20\Mezzio\Navigation;
 
-use Mezzio\GenericAuthorization\AuthorizationInterface;
 use Mezzio\Helper\UrlHelper;
 use Mezzio\Router\RouteResult;
 use Mezzio\Router\RouterInterface;
+use Mimmi20\Mezzio\GenericAuthorization\AuthorizationInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -26,29 +26,21 @@ use Psr\Http\Server\RequestHandlerInterface;
  */
 final class NavigationMiddleware implements MiddlewareInterface
 {
-    private Config\NavigationConfigInterface $navigationConfig;
-
-    private UrlHelper $urlHelper;
-
-    private ?AuthorizationInterface $authorization = null;
-
-    private ?RouterInterface $router = null;
-
+    /** @throws void */
     public function __construct(
-        Config\NavigationConfigInterface $navigationConfig,
-        UrlHelper $urlHelper,
-        ?AuthorizationInterface $authorization = null,
-        ?RouterInterface $router = null
+        private readonly Config\NavigationConfigInterface $navigationConfig,
+        private readonly UrlHelper $urlHelper,
+        private readonly AuthorizationInterface | null $authorization = null,
+        private readonly RouterInterface | null $router = null,
     ) {
-        $this->navigationConfig = $navigationConfig;
-        $this->urlHelper        = $urlHelper;
-        $this->authorization    = $authorization;
-        $this->router           = $router;
+        // nothing to do
     }
 
     /**
      * Inject the UrlHelper instance with a RouteResult, if present as a request attribute.
      * Injects the helper, and then dispatches the next middleware.
+     *
+     * @throws void
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {

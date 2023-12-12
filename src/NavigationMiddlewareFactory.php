@@ -2,7 +2,7 @@
 /**
  * This file is part of the mimmi20/mezzio-navigation package.
  *
- * Copyright (c) 2020-2021, Thomas Mueller <mimmi20@live.de>
+ * Copyright (c) 2020-2023, Thomas Mueller <mimmi20@live.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,12 +10,12 @@
 
 declare(strict_types = 1);
 
-namespace Mezzio\Navigation;
+namespace Mimmi20\Mezzio\Navigation;
 
-use Mezzio\GenericAuthorization\AuthorizationInterface;
 use Mezzio\Helper\UrlHelper;
-use Mezzio\Navigation\Exception\InvalidArgumentException;
 use Mezzio\Router\RouterInterface;
+use Mimmi20\Mezzio\GenericAuthorization\AuthorizationInterface;
+use Mimmi20\Mezzio\Navigation\Exception\InvalidArgumentException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 
@@ -24,17 +24,16 @@ use function sprintf;
 
 final class NavigationMiddlewareFactory
 {
-    private string $navigationConfigName;
-
-    private string $urlHelperServiceName;
-
     /**
      * Allow varying behavior based on URL helper service name.
+     *
+     * @throws void
      */
-    public function __construct(string $navigationConfigName = Config\NavigationConfigInterface::class, string $urlHelperServiceName = UrlHelper::class)
-    {
-        $this->navigationConfigName = $navigationConfigName;
-        $this->urlHelperServiceName = $urlHelperServiceName;
+    public function __construct(
+        private readonly string $navigationConfigName = Config\NavigationConfigInterface::class,
+        private readonly string $urlHelperServiceName = UrlHelper::class,
+    ) {
+        // nothing to do
     }
 
     /**
@@ -42,13 +41,13 @@ final class NavigationMiddlewareFactory
      *
      * @param array<string, string> $data
      *
-     * @return NavigationMiddlewareFactory
+     * @throws void
      */
     public static function __set_state(array $data): self
     {
         return new self(
             $data['navigationConfigName'] ?? Config\NavigationConfigInterface::class,
-            $data['urlHelperServiceName'] ?? UrlHelper::class
+            $data['urlHelperServiceName'] ?? UrlHelper::class,
         );
     }
 
@@ -65,8 +64,8 @@ final class NavigationMiddlewareFactory
                 sprintf(
                     '%s requires a %s service at instantiation; none found',
                     NavigationMiddleware::class,
-                    $this->navigationConfigName
-                )
+                    $this->navigationConfigName,
+                ),
             );
         }
 
@@ -75,8 +74,8 @@ final class NavigationMiddlewareFactory
                 sprintf(
                     '%s requires a %s service at instantiation; none found',
                     NavigationMiddleware::class,
-                    $this->urlHelperServiceName
-                )
+                    $this->urlHelperServiceName,
+                ),
             );
         }
 
@@ -87,13 +86,13 @@ final class NavigationMiddlewareFactory
             try {
                 $authorization = $container->get(AuthorizationInterface::class);
                 assert($authorization instanceof AuthorizationInterface);
-            } catch (ContainerExceptionInterface $e) {
+            } catch (ContainerExceptionInterface) {
                 throw new InvalidArgumentException(
                     sprintf(
                         'Cannot create %s service; could not initialize dependency %s',
                         NavigationMiddleware::class,
-                        AuthorizationInterface::class
-                    )
+                        AuthorizationInterface::class,
+                    ),
                 );
             }
         }
@@ -102,49 +101,44 @@ final class NavigationMiddlewareFactory
             try {
                 $router = $container->get(RouterInterface::class);
                 assert($router instanceof RouterInterface);
-            } catch (ContainerExceptionInterface $e) {
+            } catch (ContainerExceptionInterface) {
                 throw new InvalidArgumentException(
                     sprintf(
                         'Cannot create %s service; could not initialize dependency %s',
                         NavigationMiddleware::class,
-                        RouterInterface::class
-                    )
+                        RouterInterface::class,
+                    ),
                 );
             }
         }
 
         try {
             $navigationConfig = $container->get($this->navigationConfigName);
-        } catch (ContainerExceptionInterface $e) {
+        } catch (ContainerExceptionInterface) {
             throw new InvalidArgumentException(
                 sprintf(
                     'Cannot create %s service; could not initialize dependency %s',
                     NavigationMiddleware::class,
-                    $this->navigationConfigName
-                )
+                    $this->navigationConfigName,
+                ),
             );
         }
 
         try {
             $urlHelper = $container->get($this->urlHelperServiceName);
-        } catch (ContainerExceptionInterface $e) {
+        } catch (ContainerExceptionInterface) {
             throw new InvalidArgumentException(
                 sprintf(
                     'Cannot create %s service; could not initialize dependency %s',
                     NavigationMiddleware::class,
-                    $this->urlHelperServiceName
-                )
+                    $this->urlHelperServiceName,
+                ),
             );
         }
 
         assert($navigationConfig instanceof Config\NavigationConfigInterface);
         assert($urlHelper instanceof UrlHelper);
 
-        return new NavigationMiddleware(
-            $navigationConfig,
-            $urlHelper,
-            $authorization,
-            $router
-        );
+        return new NavigationMiddleware($navigationConfig, $urlHelper, $authorization, $router);
     }
 }

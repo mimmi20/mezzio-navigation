@@ -2,7 +2,7 @@
 /**
  * This file is part of the mimmi20/mezzio-navigation package.
  *
- * Copyright (c) 2020-2021, Thomas Mueller <mimmi20@live.de>
+ * Copyright (c) 2020-2023, Thomas Mueller <mimmi20@live.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,17 +10,18 @@
 
 declare(strict_types = 1);
 
-namespace Mezzio\Navigation\Service;
+namespace Mimmi20\Mezzio\Navigation\Service;
 
-use Interop\Container\ContainerInterface;
-use Laminas\ServiceManager\AbstractFactoryInterface;
+use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 use Laminas\ServiceManager\ServiceLocatorInterface;
-use Mezzio\Navigation\Config\NavigationConfigInterface;
-use Mezzio\Navigation\Exception\InvalidArgumentException;
-use Mezzio\Navigation\Navigation;
+use Mimmi20\Mezzio\Navigation\Config\NavigationConfigInterface;
+use Mimmi20\Mezzio\Navigation\Exception\InvalidArgumentException;
+use Mimmi20\Mezzio\Navigation\Navigation;
 use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
 
 use function assert;
+use function get_debug_type;
 use function mb_strlen;
 use function mb_strpos;
 use function mb_strtolower;
@@ -38,7 +39,7 @@ final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
     /**
      * Service manager factory prefix
      */
-    public const SERVICE_PREFIX = 'Mezzio\\Navigation\\';
+    public const SERVICE_PREFIX = 'Mimmi20\\Mezzio\\Navigation\\';
 
     /**
      * @param string            $requestedName
@@ -50,10 +51,10 @@ final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
      */
-    public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null): Navigation
+    public function __invoke(ContainerInterface $container, $requestedName, array | null $options = null): Navigation
     {
         $factory = new ConstructedNavigationFactory(
-            $this->getNamedConfigName($container, $requestedName)
+            $this->getNamedConfigName($container, $requestedName),
         );
 
         return $factory($container);
@@ -63,7 +64,7 @@ final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
      * Can we create a navigation by the requested name? (v3)
      *
      * @param string $requestedName Name by which service was requested, must
-     *                              start with Mezzio\Navigation\
+     *                              start with Mimmi20\Mezzio\Navigation\
      *
      * @throws ContainerExceptionInterface
      *
@@ -71,7 +72,7 @@ final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
      */
     public function canCreate(ContainerInterface $container, $requestedName): bool
     {
-        if (0 !== mb_strpos($requestedName, self::SERVICE_PREFIX)) {
+        if (mb_strpos($requestedName, self::SERVICE_PREFIX) !== 0) {
             return false;
         }
 
@@ -105,6 +106,8 @@ final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
      * @param string $name
      * @param string $requestedName
      *
+     * @throws void
+     *
      * @codeCoverageIgnore
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
@@ -116,6 +119,8 @@ final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
 
     /**
      * Extract config name from service name
+     *
+     * @throws void
      */
     private function getConfigName(string $name): string
     {
@@ -124,6 +129,8 @@ final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
 
     /**
      * Does the configuration have a matching named section?
+     *
+     * @throws void
      */
     private function hasNamedConfig(string $name, NavigationConfigInterface $config): bool
     {
@@ -147,7 +154,15 @@ final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
     private function getNamedConfigName(ContainerInterface $container, string $name): string
     {
         $config = $container->get(NavigationConfigInterface::class);
-        assert($config instanceof NavigationConfigInterface);
+        assert(
+            $config instanceof NavigationConfigInterface,
+            sprintf(
+                '$config should be an Instance of %s, but was %s',
+                NavigationConfigInterface::class,
+                get_debug_type($config),
+            ),
+        );
+
         $withoutPrefix = $this->getConfigName($name);
 
         $pages = $config->getPages();
@@ -161,7 +176,7 @@ final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
         }
 
         throw new InvalidArgumentException(
-            sprintf('Failed to find a navigation container by the name "%s"', $name)
+            sprintf('Failed to find a navigation container by the name "%s"', $name),
         );
     }
 }

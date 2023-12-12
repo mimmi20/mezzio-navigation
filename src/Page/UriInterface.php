@@ -2,7 +2,7 @@
 /**
  * This file is part of the mimmi20/mezzio-navigation package.
  *
- * Copyright (c) 2020-2021, Thomas Mueller <mimmi20@live.de>
+ * Copyright (c) 2020-2023, Thomas Mueller <mimmi20@live.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,7 +10,7 @@
 
 declare(strict_types = 1);
 
-namespace Mezzio\Navigation\Page;
+namespace Mimmi20\Mezzio\Navigation\Page;
 
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -23,15 +23,21 @@ interface UriInterface extends PageInterface
      * Sets page URI
      *
      * @param string|null $uri page URI, must a string or null
+     *
+     * @throws void
      */
-    public function setUri(?string $uri): void;
+    public function setUri(string | null $uri): void;
 
     /**
      * Returns URI
+     *
+     * @throws void
      */
-    public function getUri(): ?string;
+    public function getUri(): string | null;
 
-    public function getRequest(): ?ServerRequestInterface;
+    /** @throws void */
+    public function getRequest(): ServerRequestInterface | null;
 
-    public function setRequest(?ServerRequestInterface $request): void;
+    /** @throws void */
+    public function setRequest(ServerRequestInterface | null $request): void;
 }

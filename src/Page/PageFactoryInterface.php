@@ -2,7 +2,7 @@
 /**
  * This file is part of the mimmi20/mezzio-navigation package.
  *
- * Copyright (c) 2020-2021, Thomas Mueller <mimmi20@live.de>
+ * Copyright (c) 2020-2023, Thomas Mueller <mimmi20@live.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,26 +10,26 @@
 
 declare(strict_types = 1);
 
-namespace Mezzio\Navigation\Page;
+namespace Mimmi20\Mezzio\Navigation\Page;
 
-use Mezzio\Navigation\Exception;
+use Mimmi20\Mezzio\Navigation\Exception;
 
 /**
- * Base class for Mezzio\Navigation\Page pages
+ * Base class for Mimmi20\Mezzio\Navigation\Page pages
  */
 interface PageFactoryInterface
 {
     /**
-     * Factory for Mezzio\Navigation\Page classes
+     * Factory for Mimmi20\Mezzio\Navigation\Page classes
      * A specific type to construct can be specified by specifying the key
      * 'type' in $options. If type is 'uri' or 'route', the type will be resolved
-     * to Mezzio\Navigation\Page\Uri or Mezzio\Navigation\Page\Route. Any other value
+     * to Mimmi20\Mezzio\Navigation\Page\Uri or Mimmi20\Mezzio\Navigation\Page\Route. Any other value
      * for 'type' will be considered the full name of the class to construct.
-     * A valid custom page class must implement Mezzio\Navigation\Page\PageInterface.
+     * A valid custom page class must implement Mimmi20\Mezzio\Navigation\Page\PageInterface.
      * If 'type' is not given, the type of page to construct will be determined
      * by the following rules:
-     * - If $options contains the key 'route', a Mezzio\Navigation\Page\Route page will be created.
-     * - If $options contains the key 'uri', a Mezzio\Navigation\Page\Uri page will be created.
+     * - If $options contains the key 'route', a Mimmi20\Mezzio\Navigation\Page\Route page will be created.
+     * - If $options contains the key 'uri', a Mimmi20\Mezzio\Navigation\Page\Uri page will be created.
      *
      * @param array<string, array<string>|bool|string> $options options used for creating page
      *

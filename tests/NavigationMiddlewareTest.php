@@ -2,7 +2,7 @@
 /**
  * This file is part of the mimmi20/mezzio-navigation package.
  *
- * Copyright (c) 2020-2021, Thomas Mueller <mimmi20@live.de>
+ * Copyright (c) 2020-2023, Thomas Mueller <mimmi20@live.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,29 +10,25 @@
 
 declare(strict_types = 1);
 
-namespace MezzioTest\Navigation;
+namespace Mimmi20\MezzioTest\Navigation;
 
-use Mezzio\GenericAuthorization\AuthorizationInterface;
 use Mezzio\Helper\UrlHelper;
-use Mezzio\Navigation\Config\NavigationConfigInterface;
-use Mezzio\Navigation\NavigationMiddleware;
 use Mezzio\Router\RouteResult;
 use Mezzio\Router\RouterInterface;
+use Mimmi20\Mezzio\GenericAuthorization\AuthorizationInterface;
+use Mimmi20\Mezzio\Navigation\Config\NavigationConfigInterface;
+use Mimmi20\Mezzio\Navigation\NavigationMiddleware;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use SebastianBergmann\RecursionContext\InvalidArgumentException;
 
 use function assert;
 
 final class NavigationMiddlewareTest extends TestCase
 {
-    /**
-     * @throws Exception
-     * @throws InvalidArgumentException
-     */
+    /** @throws Exception */
     public function testConstructor(): void
     {
         $navigationConfig = $this->createMock(NavigationConfigInterface::class);
@@ -48,10 +44,7 @@ final class NavigationMiddlewareTest extends TestCase
         self::assertInstanceOf(NavigationMiddleware::class, $middleware);
     }
 
-    /**
-     * @throws Exception
-     * @throws InvalidArgumentException
-     */
+    /** @throws Exception */
     public function testConstructorWithoutOptionalParameters(): void
     {
         $navigationConfig = $this->createMock(NavigationConfigInterface::class);
@@ -63,10 +56,7 @@ final class NavigationMiddlewareTest extends TestCase
         self::assertInstanceOf(NavigationMiddleware::class, $middleware);
     }
 
-    /**
-     * @throws Exception
-     * @throws InvalidArgumentException
-     */
+    /** @throws Exception */
     public function testProcessWithoutRouteResult(): void
     {
         $urlHelper     = $this->createMock(UrlHelper::class);
@@ -118,18 +108,12 @@ final class NavigationMiddlewareTest extends TestCase
 
         assert($request instanceof ServerRequestInterface);
         assert($handler instanceof RequestHandlerInterface);
-        $response = $middleware->process(
-            $request,
-            $handler
-        );
+        $response = $middleware->process($request, $handler);
 
         self::assertSame($expectedResponse, $response);
     }
 
-    /**
-     * @throws Exception
-     * @throws InvalidArgumentException
-     */
+    /** @throws Exception */
     public function testProcess(): void
     {
         $urlHelper     = $this->createMock(UrlHelper::class);
@@ -183,10 +167,7 @@ final class NavigationMiddlewareTest extends TestCase
 
         assert($request instanceof ServerRequestInterface);
         assert($handler instanceof RequestHandlerInterface);
-        $response = $middleware->process(
-            $request,
-            $handler
-        );
+        $response = $middleware->process($request, $handler);
 
         self::assertSame($expectedResponse, $response);
     }

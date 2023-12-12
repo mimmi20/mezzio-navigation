@@ -2,7 +2,7 @@
 /**
  * This file is part of the mimmi20/mezzio-navigation package.
  *
- * Copyright (c) 2020-2021, Thomas Mueller <mimmi20@live.de>
+ * Copyright (c) 2020-2023, Thomas Mueller <mimmi20@live.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,31 +10,28 @@
 
 declare(strict_types = 1);
 
-namespace MezzioTest\Navigation;
+namespace Mimmi20\MezzioTest\Navigation;
 
-use Mezzio\Navigation\Config\NavigationConfig;
-use Mezzio\Navigation\Config\NavigationConfigInterface;
-use Mezzio\Navigation\ConfigProvider;
-use Mezzio\Navigation\Navigation;
-use Mezzio\Navigation\NavigationMiddleware;
-use Mezzio\Navigation\Service\NavigationAbstractServiceFactory;
+use Mimmi20\Mezzio\Navigation\Config\NavigationConfig;
+use Mimmi20\Mezzio\Navigation\Config\NavigationConfigInterface;
+use Mimmi20\Mezzio\Navigation\ConfigProvider;
+use Mimmi20\Mezzio\Navigation\Navigation;
+use Mimmi20\Mezzio\Navigation\NavigationMiddleware;
+use Mimmi20\Mezzio\Navigation\Service\NavigationAbstractServiceFactory;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
-use SebastianBergmann\RecursionContext\InvalidArgumentException;
 
 final class ConfigProviderTest extends TestCase
 {
     private ConfigProvider $provider;
 
+    /** @throws void */
     protected function setUp(): void
     {
         $this->provider = new ConfigProvider();
     }
 
-    /**
-     * @throws Exception
-     * @throws InvalidArgumentException
-     */
+    /** @throws Exception */
     public function testProviderDefinesExpectedFactoryServices(): void
     {
         $dependencies = $this->provider->getDependencyConfig();
@@ -58,10 +55,7 @@ final class ConfigProviderTest extends TestCase
         self::assertArrayHasKey(NavigationConfigInterface::class, $aliases);
     }
 
-    /**
-     * @throws Exception
-     * @throws InvalidArgumentException
-     */
+    /** @throws Exception */
     public function testInvocationReturnsArrayWithDependencies(): void
     {
         $config = ($this->provider)();

@@ -7,8 +7,8 @@
 ## Code Status
 
 [![codecov](https://codecov.io/gh/mimmi20/mezzio-navigation/branch/master/graph/badge.svg)](https://codecov.io/gh/mimmi20/mezzio-navigation)
-[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/mimmi20/mezzio-navigation.svg)](http://isitmaintained.com/project/mimmi20/mezzio-navigation "Average time to resolve an issue")
-[![Percentage of issues still open](http://isitmaintained.com/badge/open/mimmi20/mezzio-navigation.svg)](http://isitmaintained.com/project/mimmi20/mezzio-navigation "Percentage of issues still open")
+[![Average time to resolve an issue](https://isitmaintained.com/badge/resolution/mimmi20/mezzio-navigation.svg)](https://isitmaintained.com/project/mimmi20/mezzio-navigation "Average time to resolve an issue")
+[![Percentage of issues still open](https://isitmaintained.com/badge/open/mimmi20/mezzio-navigation.svg)](https://isitmaintained.com/project/mimmi20/mezzio-navigation "Percentage of issues still open")
 
 # Introduction
 
@@ -100,8 +100,8 @@ Traversable object, or a `Mezzio\Navigation\Page\PageInterface` instance.
 > Page objects is made in the Navigation Factories.
 
 ```php
-use Mezzio\Navigation\Navigation;
-use Mezzio\Navigation\Config\NavigationConfigInterface;
+use Mimmi20\Mezzio\Navigation\Navigation;
+use Mimmi20\Mezzio\Navigation\Config\NavigationConfigInterface;
 
 /*
  * Create a container from an array
@@ -136,8 +136,8 @@ Adding pages to a container can be done with the methods `addPage()`,
 
 ```php
 use Laminas\Config\Config;
-use Mezzio\Navigation\Navigation;
-use Mezzio\Navigation\Page\PageFactory;
+use Mimmi20\Mezzio\Navigation\Navigation;
+use Mimmi20\Mezzio\Navigation\Page\PageFactory;
 
 // create container
 $container = new Navigation();
@@ -170,7 +170,7 @@ correspond to the `order` a page has. `removePages()` will remove all pages in
 the container.
 
 ```php
-use Mezzio\Navigation\Navigation;
+use Mimmi20\Mezzio\Navigation\Navigation;
 
 $navigationConfig = $serviceLocator->get(NavigationConfigInterface::class);
 $navigationConfig->setPages([
@@ -210,7 +210,7 @@ Removing a page recursively can be done with the second parameter of
 the `removePage()` method, which expects a `boolean` value.
 
 ```php
-use Mezzio\Navigation\Navigation;
+use Mimmi20\Mezzio\Navigation\Navigation;
 
 $navigationConfig = $serviceLocator->get(NavigationConfigInterface::class);
 $navigationConfig->setPages(
@@ -264,7 +264,7 @@ Other combinations include `findByLabel(...)`, `findOneByTitle(...)`,
 such as `findByFoo('bar')`.
 
 ```php
-use Mezzio\Navigation\Navigation;
+use Mimmi20\Mezzio\Navigation\Navigation;
 
 $navigationConfig = $serviceLocator->get(NavigationConfigInterface::class);
 $navigationConfig->setPages([
@@ -362,7 +362,7 @@ container recursively, use the `RecursiveIteratorIterator` class.
 
 ```php
 use RecursiveIteratorIterator;
-use Mezzio\Navigation\Navigation;
+use Mimmi20\Mezzio\Navigation\Navigation;
 
 /*
  * Create a container from an array
@@ -441,7 +441,7 @@ Converts the container and the pages in it to a (nested) array. This can be usef
 for serializing and debugging.
 
 ```php
-use Mezzio\Navigation\Navigation;
+use Mimmi20\Mezzio\Navigation\Navigation;
 
 $navigationConfig = $serviceLocator->get(NavigationConfigInterface::class);
 $navigationConfig->setPages([
@@ -620,7 +620,7 @@ pages    | `array\|Travsersable\|null`                                     | `NU
 > The following example demonstrates custom properties:
 >
 > ```php
-> $page = new Mezzio\Navigation\Page\Route();
+> $page = new Mimmi20\Mezzio\Navigation\Page\Route();
 > $page->foo     = 'bar';
 > $page->meaning = 42;
 >
@@ -663,7 +663,7 @@ This example demonstrates that Route pages determine whether they are active by
 using the params found in the route match object.
 
 ```php
-use Mezzio\Navigation\Page;
+use Mimmi20\Mezzio\Navigation\Page;
 
 /**
  * Dispatched request:
@@ -748,8 +748,8 @@ The only thing a custom page class needs to implement is the `getHref()` method.
 ```php
 namespace My;
 
-use Mezzio\Navigation\Page\PageInterface;
-use Mezzio\Navigation\Page\PageTrait;
+use Mimmi20\Mezzio\Navigation\Page\PageInterface;
+use Mimmi20\Mezzio\Navigation\Page\PageTrait;
 
 class Page implements PageInterface
 {
@@ -769,7 +769,7 @@ When adding properties to an extended page, there is no need to override/modify
 ```php
 namespace My\Navigation;
 
-use Mezzio\Navigation\Page\PageInterface;
+use Mimmi20\Mezzio\Navigation\Page\PageInterface;
 
 class Page implements PageInterface
 {
@@ -826,7 +826,7 @@ will be created, respectively.
 ### Creating an Route page using the page factory
 
 ```php
-use Mezzio\Navigation\Page\PageInterface;
+use Mimmi20\Mezzio\Navigation\Page\PageInterface;
 
 // Route page, as "route" is defined
 $page = (new PageFactory())->factory([
@@ -844,7 +844,7 @@ $page = (new PageFactory())->factory([
 ### Creating a URI page using the page factory
 
 ```php
-use Mezzio\Navigation\Page\PageInterface;
+use Mimmi20\Mezzio\Navigation\Page\PageInterface;
 
 // URI page, as "uri" is present, with now MVC options
 $page = (new PageFactory())->factory([
@@ -880,7 +880,7 @@ a class name to instantiate.
 ```php
 namespace My\Navigation;
 
-use Mezzio\Navigation\Page\PageInterface;
+use Mimmi20\Mezzio\Navigation\Page\PageInterface;
 
 class Page extends PageInterface
 {

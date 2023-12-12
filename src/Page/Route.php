@@ -2,7 +2,7 @@
 /**
  * This file is part of the mimmi20/mezzio-navigation package.
  *
- * Copyright (c) 2020-2021, Thomas Mueller <mimmi20@live.de>
+ * Copyright (c) 2020-2023, Thomas Mueller <mimmi20@live.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,12 +10,12 @@
 
 declare(strict_types = 1);
 
-namespace Mezzio\Navigation\Page;
+namespace Mimmi20\Mezzio\Navigation\Page;
 
-use Mezzio\Navigation\Exception;
 use Mezzio\Router\Exception\RuntimeException;
 use Mezzio\Router\RouteResult;
 use Mezzio\Router\RouterInterface;
+use Mimmi20\Mezzio\Navigation\Exception;
 
 use function array_intersect_assoc;
 use function array_merge;
@@ -42,7 +42,7 @@ final class Route implements RouteInterface
      *
      * @var array<string, string>|string|null
      */
-    private $query;
+    private array | string | null $query = null;
 
     /**
      * Params to use when assembling URL
@@ -58,7 +58,7 @@ final class Route implements RouteInterface
      *
      * @see getHref()
      */
-    private ?string $route = null;
+    private string | null $route = null;
 
     /**
      * Cached href
@@ -67,12 +67,12 @@ final class Route implements RouteInterface
      * called more than once during the lifetime of a request. If a property
      * is updated, the cache is invalidated.
      */
-    private ?string $hrefCache = null;
+    private string | null $hrefCache = null;
 
     /**
      * RouteInterface matches; used for routing parameters and testing validity
      */
-    private ?RouteResult $routeMatch = null;
+    private RouteResult | null $routeMatch = null;
 
     /**
      * If true and set routeMatch than getHref will use routeMatch params
@@ -85,9 +85,7 @@ final class Route implements RouteInterface
      *
      * @see getHref()
      */
-    private ?RouterInterface $router = null;
-
-    // Accessors:
+    private RouterInterface | null $router = null;
 
     /**
      * Returns whether page should be considered active or not
@@ -100,20 +98,24 @@ final class Route implements RouteInterface
      *                        false.
      *
      * @return bool whether page should be considered active or not
+     *
+     * @throws void
      */
     public function isActive(bool $recursive = false): bool
     {
-        if (null === $this->active) {
+        if ($this->active === null) {
             $reqParams  = [];
             $pageParams = $this->getParams();
 
-            if (null !== $this->getRouteMatch()) {
+            if ($this->getRouteMatch() !== null) {
                 $reqParams = $this->getRouteMatch()->getMatchedParams();
 
-                if (null !== $this->getRoute()) {
+                if ($this->getRoute() !== null) {
                     if (
                         $this->getRouteMatch()->getMatchedRouteName() === $this->getRoute()
-                        && (count(array_intersect_assoc($reqParams, $pageParams)) === count($pageParams))
+                        && (count(array_intersect_assoc($reqParams, $pageParams)) === count(
+                            $pageParams,
+                        ))
                     ) {
                         $this->active = true;
 
@@ -124,7 +126,10 @@ final class Route implements RouteInterface
                 }
             }
 
-            if ([] !== $pageParams && count(array_intersect_assoc($reqParams, $pageParams)) === count($pageParams)) {
+            if (
+                $pageParams !== []
+                && count(array_intersect_assoc($reqParams, $pageParams)) === count($pageParams)
+            ) {
                 $this->active = true;
 
                 return true;
@@ -156,15 +161,15 @@ final class Route implements RouteInterface
         if (!$this->router instanceof RouterInterface) {
             throw new Exception\DomainException(
                 __METHOD__
-                . ' cannot execute as no Mezzio\Router\RouterInterface instance is composed'
+                . ' cannot execute as no Mezzio\Router\RouterInterface instance is composed',
             );
         }
 
         $name = null;
 
-        if (null !== $this->getRoute()) {
+        if ($this->getRoute() !== null) {
             $name = $this->getRoute();
-        } elseif (null !== $this->getRouteMatch() && !$this->getRouteMatch()->isFailure()) {
+        } elseif ($this->getRouteMatch() !== null && !$this->getRouteMatch()->isFailure()) {
             $name = $this->getRouteMatch()->getMatchedRouteName();
         }
 
@@ -176,21 +181,23 @@ final class Route implements RouteInterface
 
         // Add the fragment identifier if it is set
         $fragment = $this->getFragment();
-        if (null !== $fragment) {
+
+        if ($fragment !== null) {
             $options['fragment'] = $fragment;
         }
 
         $query = $this->getQuery();
-        if (null !== $query) {
+
+        if ($query !== null) {
             $options['query'] = $query;
         }
 
         $params = $this->getParams();
 
-        if ($this->useRouteMatch() && null !== $this->getRouteMatch()) {
+        if ($this->useRouteMatch() && $this->getRouteMatch() !== null) {
             $params = array_merge(
                 $this->getRouteMatch()->getMatchedParams(),
-                $params
+                $params,
             );
         }
 
@@ -205,8 +212,10 @@ final class Route implements RouteInterface
      * @see getHref()
      *
      * @param array<string, string>|string|null $query URL query part
+     *
+     * @throws void
      */
-    public function setQuery($query): void
+    public function setQuery(array | string | null $query): void
     {
         $this->query     = $query;
         $this->hrefCache = null;
@@ -218,8 +227,10 @@ final class Route implements RouteInterface
      * @see getHref()
      *
      * @return array<string, string>|string|null URL query part (as an array or string) or null
+     *
+     * @throws void
      */
-    public function getQuery()
+    public function getQuery(): array | string | null
     {
         return $this->query;
     }
@@ -230,6 +241,8 @@ final class Route implements RouteInterface
      * @see getHref()
      *
      * @param array<int|string, string> $params [optional] page params
+     *
+     * @throws void
      */
     public function setParams(array $params = []): void
     {
@@ -243,6 +256,8 @@ final class Route implements RouteInterface
      * @see getHref()
      *
      * @return array<int|string, string> page params
+     *
+     * @throws void
      */
     public function getParams(): array
     {
@@ -260,9 +275,9 @@ final class Route implements RouteInterface
      */
     public function setRoute(string $route): void
     {
-        if ('' === $route) {
+        if ($route === '') {
             throw new Exception\InvalidArgumentException(
-                'Invalid argument: $route must be a non-empty string'
+                'Invalid argument: $route must be a non-empty string',
             );
         }
 
@@ -276,22 +291,28 @@ final class Route implements RouteInterface
      * @see getHref()
      *
      * @return string|null route name
+     *
+     * @throws void
      */
-    public function getRoute(): ?string
+    public function getRoute(): string | null
     {
         return $this->route;
     }
 
     /**
      * Get the route match.
+     *
+     * @throws void
      */
-    public function getRouteMatch(): ?RouteResult
+    public function getRouteMatch(): RouteResult | null
     {
         return $this->routeMatch;
     }
 
     /**
      * Set route match object from which parameters will be retrieved
+     *
+     * @throws void
      */
     public function setRouteMatch(RouteResult $matches): void
     {
@@ -300,6 +321,8 @@ final class Route implements RouteInterface
 
     /**
      * Get the useRouteMatch flag
+     *
+     * @throws void
      */
     public function useRouteMatch(): bool
     {
@@ -312,6 +335,8 @@ final class Route implements RouteInterface
      * @see getHref()
      *
      * @param bool $useRouteMatch [optional]
+     *
+     * @throws void
      */
     public function setUseRouteMatch(bool $useRouteMatch = true): void
     {
@@ -321,8 +346,10 @@ final class Route implements RouteInterface
 
     /**
      * Get the router.
+     *
+     * @throws void
      */
-    public function getRouter(): ?RouterInterface
+    public function getRouter(): RouterInterface | null
     {
         return $this->router;
     }
@@ -333,8 +360,10 @@ final class Route implements RouteInterface
      * @see getHref()
      *
      * @param RouterInterface|null $router Router
+     *
+     * @throws void
      */
-    public function setRouter(?RouterInterface $router): void
+    public function setRouter(RouterInterface | null $router): void
     {
         $this->router = $router;
     }
@@ -345,6 +374,8 @@ final class Route implements RouteInterface
      * Returns an array representation of the page
      *
      * @return array<string, array<string, string>|bool|float|int|iterable|RouteResult|RouterInterface|string|null> associative array containing all page properties
+     *
+     * @throws void
      */
     public function toArray(): array
     {
@@ -355,7 +386,7 @@ final class Route implements RouteInterface
                 'route' => $this->getRoute(),
                 'router' => $this->getRouter(),
                 'route_match' => $this->getRouteMatch(),
-            ]
+            ],
         );
     }
 }

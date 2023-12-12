@@ -2,7 +2,7 @@
 /**
  * This file is part of the mimmi20/mezzio-navigation package.
  *
- * Copyright (c) 2020-2021, Thomas Mueller <mimmi20@live.de>
+ * Copyright (c) 2020-2023, Thomas Mueller <mimmi20@live.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,7 +10,7 @@
 
 declare(strict_types = 1);
 
-namespace Mezzio\Navigation\Page;
+namespace Mimmi20\Mezzio\Navigation\Page;
 
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -30,37 +30,43 @@ final class Uri implements UriInterface
     /**
      * Page URI
      */
-    private ?string $uri = null;
+    private string | null $uri = null;
 
     /**
      * Request object used to determine uri path
      */
-    private ?ServerRequestInterface $request = null;
+    private ServerRequestInterface | null $request = null;
 
     /**
      * Sets page URI
      *
      * @param string|null $uri page URI, must a string or null
+     *
+     * @throws void
      */
-    public function setUri(?string $uri): void
+    public function setUri(string | null $uri): void
     {
         $this->uri = $uri;
     }
 
     /**
      * Returns URI
+     *
+     * @throws void
      */
-    public function getUri(): ?string
+    public function getUri(): string | null
     {
         return $this->uri;
     }
 
-    public function getRequest(): ?ServerRequestInterface
+    /** @throws void */
+    public function getRequest(): ServerRequestInterface | null
     {
         return $this->request;
     }
 
-    public function setRequest(?ServerRequestInterface $request): void
+    /** @throws void */
+    public function setRequest(ServerRequestInterface | null $request): void
     {
         $this->request = $request;
     }
@@ -69,14 +75,16 @@ final class Uri implements UriInterface
      * Returns href for this page
      *
      * Includes the fragment identifier if it is set.
+     *
+     * @throws void
      */
     public function getHref(): string
     {
         $uri      = (string) $this->getUri();
         $fragment = $this->getFragment();
 
-        if (null !== $fragment) {
-            if ('#' === mb_substr($uri, -1)) {
+        if ($fragment !== null) {
+            if (mb_substr($uri, -1) === '#') {
                 return $uri . $fragment;
             }
 
@@ -97,6 +105,8 @@ final class Uri implements UriInterface
      *                        false.
      *
      * @return bool whether page should be considered active or not
+     *
+     * @throws void
      */
     public function isActive(bool $recursive = false): bool
     {
@@ -117,6 +127,8 @@ final class Uri implements UriInterface
      * Returns an array representation of the page
      *
      * @return array<string, array<string, string>|bool|float|int|iterable|string|null>
+     *
+     * @throws void
      */
     public function toArray(): array
     {
@@ -124,7 +136,7 @@ final class Uri implements UriInterface
             $this->toParentArray(),
             [
                 'uri' => $this->getUri(),
-            ]
+            ],
         );
     }
 }

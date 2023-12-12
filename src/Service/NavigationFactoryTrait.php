@@ -2,7 +2,7 @@
 /**
  * This file is part of the mimmi20/mezzio-navigation package.
  *
- * Copyright (c) 2020-2021, Thomas Mueller <mimmi20@live.de>
+ * Copyright (c) 2020-2023, Thomas Mueller <mimmi20@live.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,18 +10,18 @@
 
 declare(strict_types = 1);
 
-namespace Mezzio\Navigation\Service;
+namespace Mimmi20\Mezzio\Navigation\Service;
 
-use Mezzio\Navigation\Config\NavigationConfigInterface;
-use Mezzio\Navigation\Exception;
-use Mezzio\Navigation\Exception\InvalidArgumentException;
-use Mezzio\Navigation\Navigation;
-use Mezzio\Navigation\Page\PageFactoryInterface;
-use Mezzio\Navigation\Page\PageInterface;
-use Mezzio\Navigation\Page\RouteInterface;
-use Mezzio\Navigation\Page\UriInterface;
 use Mezzio\Router\RouteResult;
 use Mezzio\Router\RouterInterface;
+use Mimmi20\Mezzio\Navigation\Config\NavigationConfigInterface;
+use Mimmi20\Mezzio\Navigation\Exception;
+use Mimmi20\Mezzio\Navigation\Exception\InvalidArgumentException;
+use Mimmi20\Mezzio\Navigation\Navigation;
+use Mimmi20\Mezzio\Navigation\Page\PageFactoryInterface;
+use Mimmi20\Mezzio\Navigation\Page\PageInterface;
+use Mimmi20\Mezzio\Navigation\Page\RouteInterface;
+use Mimmi20\Mezzio\Navigation\Page\UriInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -70,15 +70,15 @@ trait NavigationFactoryTrait
         $pages = $config->getPages();
 
         if (
-            null === $pages
+            $pages === null
             || !array_key_exists($this->configName, $pages)
             || !is_array($pages[$this->configName])
         ) {
             throw new Exception\InvalidArgumentException(
                 sprintf(
                     'Failed to find a navigation container by the name "%s"',
-                    $this->configName
-                )
+                    $this->configName,
+                ),
             );
         }
 
@@ -91,7 +91,7 @@ trait NavigationFactoryTrait
             $factory,
             $config->getRouteResult(),
             $config->getRouter(),
-            $config->getRequest()
+            $config->getRequest(),
         );
     }
 
@@ -105,16 +105,22 @@ trait NavigationFactoryTrait
     private function preparePages(
         array $pages,
         PageFactoryInterface $factory,
-        ?RouteResult $routeResult = null,
-        ?RouterInterface $router = null,
-        ?ServerRequestInterface $request = null
+        RouteResult | null $routeResult = null,
+        RouterInterface | null $router = null,
+        ServerRequestInterface | null $request = null,
     ): array {
         return array_map(
             function (array $pageConfig) use ($factory, $routeResult, $router, $request): PageInterface {
                 $subPages = null;
 
                 if (array_key_exists('pages', $pageConfig) && is_array($pageConfig['pages'])) {
-                    $subPages = $this->preparePages($pageConfig['pages'], $factory, $routeResult, $router, $request);
+                    $subPages = $this->preparePages(
+                        $pageConfig['pages'],
+                        $factory,
+                        $routeResult,
+                        $router,
+                        $request,
+                    );
                 }
 
                 unset($pageConfig['pages']);
@@ -122,7 +128,7 @@ trait NavigationFactoryTrait
                 $page = $factory->factory($pageConfig);
 
                 if ($page instanceof RouteInterface) {
-                    if (null !== $routeResult) {
+                    if ($routeResult !== null) {
                         $page->setRouteMatch($routeResult);
                     }
 
@@ -131,13 +137,13 @@ trait NavigationFactoryTrait
                     $page->setRequest($request);
                 }
 
-                if (null !== $subPages) {
+                if ($subPages !== null) {
                     $page->setPages($subPages);
                 }
 
                 return $page;
             },
-            $pages
+            $pages,
         );
     }
 }
