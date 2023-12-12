@@ -30,7 +30,7 @@
     "laminas/laminas-config": "^3.7.0",
     "laminas/laminas-dependency-plugin": "^2.2.0",
     "laminas/laminas-servicemanager": "^3.10.0",
-    "mezzio/mezzio-helpers": "^5.7.0",
+    "mezzio/mezzio-helpers": "^5.9.0",
     "mezzio/mezzio-router": "^3.7.0",
     "mimmi20/coding-standard": "^2.5.2",
     "mimmi20/mezzio-generic-authorization": "^2.0.5",
