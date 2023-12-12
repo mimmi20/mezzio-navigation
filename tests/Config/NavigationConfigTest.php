@@ -2,7 +2,7 @@
 /**
  * This file is part of the mimmi20/mezzio-navigation package.
  *
- * Copyright (c) 2020-2021, Thomas Mueller <mimmi20@live.de>
+ * Copyright (c) 2020-2023, Thomas Mueller <mimmi20@live.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,17 +10,16 @@
 
 declare(strict_types = 1);
 
-namespace MezzioTest\Navigation\Config;
+namespace Mimmi20\MezzioTest\Navigation\Config;
 
-use Mezzio\GenericAuthorization\AuthorizationInterface;
 use Mezzio\Helper\UrlHelper;
-use Mezzio\Navigation\Config\NavigationConfig;
 use Mezzio\Router\RouteResult;
 use Mezzio\Router\RouterInterface;
+use Mimmi20\Mezzio\GenericAuthorization\AuthorizationInterface;
+use Mimmi20\Mezzio\Navigation\Config\NavigationConfig;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
-use SebastianBergmann\RecursionContext\InvalidArgumentException;
 
 use function assert;
 
@@ -28,15 +27,13 @@ final class NavigationConfigTest extends TestCase
 {
     private NavigationConfig $config;
 
+    /** @throws void */
     protected function setUp(): void
     {
         $this->config = new NavigationConfig();
     }
 
-    /**
-     * @throws Exception
-     * @throws InvalidArgumentException
-     */
+    /** @throws Exception */
     public function testSetUrlHelper(): void
     {
         self::assertNull($this->config->getUrlHelper());
@@ -49,10 +46,7 @@ final class NavigationConfigTest extends TestCase
         self::assertSame($helper, $this->config->getUrlHelper());
     }
 
-    /**
-     * @throws Exception
-     * @throws InvalidArgumentException
-     */
+    /** @throws Exception */
     public function testSetRouteResult(): void
     {
         self::assertNull($this->config->getRouteResult());
@@ -65,10 +59,7 @@ final class NavigationConfigTest extends TestCase
         self::assertSame($routeResult, $this->config->getRouteResult());
     }
 
-    /**
-     * @throws Exception
-     * @throws InvalidArgumentException
-     */
+    /** @throws Exception */
     public function testSetRouter(): void
     {
         self::assertNull($this->config->getRouter());
@@ -81,10 +72,7 @@ final class NavigationConfigTest extends TestCase
         self::assertSame($router, $this->config->getRouter());
     }
 
-    /**
-     * @throws Exception
-     * @throws InvalidArgumentException
-     */
+    /** @throws Exception */
     public function testSetRequest(): void
     {
         self::assertNull($this->config->getRequest());
@@ -97,10 +85,7 @@ final class NavigationConfigTest extends TestCase
         self::assertSame($request, $this->config->getRequest());
     }
 
-    /**
-     * @throws Exception
-     * @throws InvalidArgumentException
-     */
+    /** @throws Exception */
     public function testSetAuthorization(): void
     {
         self::assertNull($this->config->getAuthorization());
@@ -113,10 +98,7 @@ final class NavigationConfigTest extends TestCase
         self::assertSame($authorization, $this->config->getAuthorization());
     }
 
-    /**
-     * @throws Exception
-     * @throws InvalidArgumentException
-     */
+    /** @throws Exception */
     public function testSetPages(): void
     {
         self::assertNull($this->config->getPages());

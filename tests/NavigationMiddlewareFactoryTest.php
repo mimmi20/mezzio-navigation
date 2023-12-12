@@ -2,7 +2,7 @@
 /**
  * This file is part of the mimmi20/mezzio-navigation package.
  *
- * Copyright (c) 2020-2021, Thomas Mueller <mimmi20@live.de>
+ * Copyright (c) 2020-2023, Thomas Mueller <mimmi20@live.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,17 +10,17 @@
 
 declare(strict_types = 1);
 
-namespace MezzioTest\Navigation;
+namespace Mimmi20\MezzioTest\Navigation;
 
 use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
-use Mezzio\GenericAuthorization\AuthorizationInterface;
 use Mezzio\Helper\UrlHelper;
-use Mezzio\Navigation\Config\NavigationConfigInterface;
-use Mezzio\Navigation\Exception\InvalidArgumentException;
-use Mezzio\Navigation\Exception\MissingHelperException;
-use Mezzio\Navigation\NavigationMiddleware;
-use Mezzio\Navigation\NavigationMiddlewareFactory;
 use Mezzio\Router\RouterInterface;
+use Mimmi20\Mezzio\GenericAuthorization\AuthorizationInterface;
+use Mimmi20\Mezzio\Navigation\Config\NavigationConfigInterface;
+use Mimmi20\Mezzio\Navigation\Exception\InvalidArgumentException;
+use Mimmi20\Mezzio\Navigation\Exception\MissingHelperException;
+use Mimmi20\Mezzio\Navigation\NavigationMiddleware;
+use Mimmi20\Mezzio\Navigation\NavigationMiddlewareFactory;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
@@ -32,6 +32,8 @@ final class NavigationMiddlewareFactoryTest extends TestCase
 {
     /**
      * @throws Exception
+     * @throws MissingHelperException
+     * @throws InvalidArgumentException
      */
     public function testFactoryWithoutNavigationConfig(): void
     {
@@ -52,8 +54,8 @@ final class NavigationMiddlewareFactoryTest extends TestCase
             sprintf(
                 '%s requires a %s service at instantiation; none found',
                 NavigationMiddleware::class,
-                NavigationConfigInterface::class
-            )
+                NavigationConfigInterface::class,
+            ),
         );
         $this->expectExceptionCode(0);
 
@@ -63,16 +65,30 @@ final class NavigationMiddlewareFactoryTest extends TestCase
 
     /**
      * @throws Exception
+     * @throws MissingHelperException
+     * @throws InvalidArgumentException
      */
     public function testFactoryWithoutUrlHelper(): void
     {
         $container = $this->getMockBuilder(ContainerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $container->expects(self::exactly(2))
+        $matcher   = self::exactly(2);
+        $container->expects($matcher)
             ->method('has')
-            ->withConsecutive([NavigationConfigInterface::class], [UrlHelper::class])
-            ->willReturnOnConsecutiveCalls(true, false);
+            ->willReturnCallback(
+                static function (string $id) use ($matcher): bool {
+                    match ($matcher->numberOfInvocations()) {
+                        1 => self::assertSame(NavigationConfigInterface::class, $id),
+                        default => self::assertSame(UrlHelper::class, $id),
+                    };
+
+                    return match ($matcher->numberOfInvocations()) {
+                        1 => true,
+                        default => false,
+                    };
+                },
+            );
         $container->expects(self::never())
             ->method('get');
 
@@ -83,8 +99,8 @@ final class NavigationMiddlewareFactoryTest extends TestCase
             sprintf(
                 '%s requires a %s service at instantiation; none found',
                 NavigationMiddleware::class,
-                UrlHelper::class
-            )
+                UrlHelper::class,
+            ),
         );
         $this->expectExceptionCode(0);
 
@@ -94,7 +110,8 @@ final class NavigationMiddlewareFactoryTest extends TestCase
 
     /**
      * @throws Exception
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws MissingHelperException
+     * @throws InvalidArgumentException
      */
     public function testFactory(): void
     {
@@ -106,14 +123,41 @@ final class NavigationMiddlewareFactoryTest extends TestCase
         $container = $this->getMockBuilder(ContainerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $container->expects(self::exactly(4))
+        $matcher   = self::exactly(4);
+        $container->expects($matcher)
             ->method('has')
-            ->withConsecutive([NavigationConfigInterface::class], [UrlHelper::class], [AuthorizationInterface::class], [RouterInterface::class])
-            ->willReturnOnConsecutiveCalls(true, true, true, true);
-        $container->expects(self::exactly(4))
+            ->willReturnCallback(
+                static function (string $id) use ($matcher): bool {
+                    match ($matcher->numberOfInvocations()) {
+                        1 => self::assertSame(NavigationConfigInterface::class, $id),
+                        3 => self::assertSame(AuthorizationInterface::class, $id),
+                        4 => self::assertSame(RouterInterface::class, $id),
+                        default => self::assertSame(UrlHelper::class, $id),
+                    };
+
+                    return true;
+                },
+            );
+        $matcher = self::exactly(4);
+        $container->expects($matcher)
             ->method('get')
-            ->withConsecutive([AuthorizationInterface::class], [RouterInterface::class], [NavigationConfigInterface::class], [UrlHelper::class])
-            ->willReturnOnConsecutiveCalls($authorization, $router, $navigationConfig, $urlHelper);
+            ->willReturnCallback(
+                static function (string $id) use ($matcher, $authorization, $router, $navigationConfig, $urlHelper): mixed {
+                    match ($matcher->numberOfInvocations()) {
+                        1 => self::assertSame(AuthorizationInterface::class, $id),
+                        2 => self::assertSame(RouterInterface::class, $id),
+                        3 => self::assertSame(NavigationConfigInterface::class, $id),
+                        default => self::assertSame(UrlHelper::class, $id),
+                    };
+
+                    return match ($matcher->numberOfInvocations()) {
+                        1 => $authorization,
+                        2 => $router,
+                        3 => $navigationConfig,
+                        default => $urlHelper,
+                    };
+                },
+            );
 
         $factory = new NavigationMiddlewareFactory();
 
@@ -124,6 +168,8 @@ final class NavigationMiddlewareFactoryTest extends TestCase
 
     /**
      * @throws Exception
+     * @throws MissingHelperException
+     * @throws InvalidArgumentException
      */
     public function testFactoryContainerExceptionAuthorizationInterface(): void
     {
@@ -131,10 +177,20 @@ final class NavigationMiddlewareFactoryTest extends TestCase
         $container = $this->getMockBuilder(ContainerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $container->expects(self::exactly(3))
+        $matcher   = self::exactly(3);
+        $container->expects($matcher)
             ->method('has')
-            ->withConsecutive([NavigationConfigInterface::class], [UrlHelper::class], [AuthorizationInterface::class])
-            ->willReturnOnConsecutiveCalls(true, true, true);
+            ->willReturnCallback(
+                static function (string $id) use ($matcher): bool {
+                    match ($matcher->numberOfInvocations()) {
+                        1 => self::assertSame(NavigationConfigInterface::class, $id),
+                        3 => self::assertSame(AuthorizationInterface::class, $id),
+                        default => self::assertSame(UrlHelper::class, $id),
+                    };
+
+                    return true;
+                },
+            );
         $container->expects(self::once())
             ->method('get')
             ->with(AuthorizationInterface::class)
@@ -147,8 +203,8 @@ final class NavigationMiddlewareFactoryTest extends TestCase
             sprintf(
                 'Cannot create %s service; could not initialize dependency %s',
                 NavigationMiddleware::class,
-                AuthorizationInterface::class
-            )
+                AuthorizationInterface::class,
+            ),
         );
         $this->expectExceptionCode(0);
 
@@ -158,6 +214,8 @@ final class NavigationMiddlewareFactoryTest extends TestCase
 
     /**
      * @throws Exception
+     * @throws MissingHelperException
+     * @throws InvalidArgumentException
      */
     public function testFactoryContainerExceptionRouterInterface(): void
     {
@@ -166,21 +224,36 @@ final class NavigationMiddlewareFactoryTest extends TestCase
         $container     = $this->getMockBuilder(ContainerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $container->expects(self::exactly(4))
+        $matcher       = self::exactly(4);
+        $container->expects($matcher)
             ->method('has')
-            ->withConsecutive([NavigationConfigInterface::class], [UrlHelper::class], [AuthorizationInterface::class], [RouterInterface::class])
-            ->willReturnOnConsecutiveCalls(true, true, true, true);
-        $container->expects(self::exactly(2))
-            ->method('get')
-            ->withConsecutive([AuthorizationInterface::class], [RouterInterface::class])
             ->willReturnCallback(
-                static function ($argument) use ($authorization, $exception) {
-                    if (AuthorizationInterface::class === $argument) {
-                        return $authorization;
-                    }
+                static function (string $id) use ($matcher): bool {
+                    match ($matcher->numberOfInvocations()) {
+                        1 => self::assertSame(NavigationConfigInterface::class, $id),
+                        3 => self::assertSame(AuthorizationInterface::class, $id),
+                        4 => self::assertSame(RouterInterface::class, $id),
+                        default => self::assertSame(UrlHelper::class, $id),
+                    };
 
-                    throw $exception;
-                }
+                    return true;
+                },
+            );
+        $matcher = self::exactly(2);
+        $container->expects($matcher)
+            ->method('get')
+            ->willReturnCallback(
+                static function (string $id) use ($matcher, $authorization, $exception): mixed {
+                    match ($matcher->numberOfInvocations()) {
+                        1 => self::assertSame(AuthorizationInterface::class, $id),
+                        default => self::assertSame(RouterInterface::class, $id),
+                    };
+
+                    return match ($matcher->numberOfInvocations()) {
+                        1 => $authorization,
+                        default => throw $exception,
+                    };
+                },
             );
 
         $factory = new NavigationMiddlewareFactory();
@@ -190,8 +263,8 @@ final class NavigationMiddlewareFactoryTest extends TestCase
             sprintf(
                 'Cannot create %s service; could not initialize dependency %s',
                 NavigationMiddleware::class,
-                RouterInterface::class
-            )
+                RouterInterface::class,
+            ),
         );
         $this->expectExceptionCode(0);
 
@@ -201,6 +274,8 @@ final class NavigationMiddlewareFactoryTest extends TestCase
 
     /**
      * @throws Exception
+     * @throws MissingHelperException
+     * @throws InvalidArgumentException
      */
     public function testFactoryContainerExceptionNavigationConfig(): void
     {
@@ -210,25 +285,38 @@ final class NavigationMiddlewareFactoryTest extends TestCase
         $container     = $this->getMockBuilder(ContainerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $container->expects(self::exactly(4))
+        $matcher       = self::exactly(4);
+        $container->expects($matcher)
             ->method('has')
-            ->withConsecutive([NavigationConfigInterface::class], [UrlHelper::class], [AuthorizationInterface::class], [RouterInterface::class])
-            ->willReturnOnConsecutiveCalls(true, true, true, true);
-        $container->expects(self::exactly(3))
-            ->method('get')
-            ->withConsecutive([AuthorizationInterface::class], [RouterInterface::class], [NavigationConfigInterface::class])
             ->willReturnCallback(
-                static function ($argument) use ($authorization, $router, $exception) {
-                    if (AuthorizationInterface::class === $argument) {
-                        return $authorization;
-                    }
+                static function (string $id) use ($matcher): bool {
+                    match ($matcher->numberOfInvocations()) {
+                        1 => self::assertSame(NavigationConfigInterface::class, $id),
+                        3 => self::assertSame(AuthorizationInterface::class, $id),
+                        4 => self::assertSame(RouterInterface::class, $id),
+                        default => self::assertSame(UrlHelper::class, $id),
+                    };
 
-                    if (RouterInterface::class === $argument) {
-                        return $router;
-                    }
+                    return true;
+                },
+            );
+        $matcher = self::exactly(3);
+        $container->expects($matcher)
+            ->method('get')
+            ->willReturnCallback(
+                static function (string $id) use ($matcher, $authorization, $router, $exception): mixed {
+                    match ($matcher->numberOfInvocations()) {
+                        1 => self::assertSame(AuthorizationInterface::class, $id),
+                        2 => self::assertSame(RouterInterface::class, $id),
+                        default => self::assertSame(NavigationConfigInterface::class, $id),
+                    };
 
-                    throw $exception;
-                }
+                    return match ($matcher->numberOfInvocations()) {
+                        1 => $authorization,
+                        2 => $router,
+                        default => throw $exception,
+                    };
+                },
             );
 
         $factory = new NavigationMiddlewareFactory();
@@ -238,8 +326,8 @@ final class NavigationMiddlewareFactoryTest extends TestCase
             sprintf(
                 'Cannot create %s service; could not initialize dependency %s',
                 NavigationMiddleware::class,
-                NavigationConfigInterface::class
-            )
+                NavigationConfigInterface::class,
+            ),
         );
         $this->expectExceptionCode(0);
 
@@ -249,6 +337,8 @@ final class NavigationMiddlewareFactoryTest extends TestCase
 
     /**
      * @throws Exception
+     * @throws MissingHelperException
+     * @throws InvalidArgumentException
      */
     public function testFactoryContainerExceptionUrlHelper(): void
     {
@@ -259,29 +349,40 @@ final class NavigationMiddlewareFactoryTest extends TestCase
         $container        = $this->getMockBuilder(ContainerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $container->expects(self::exactly(4))
+        $matcher          = self::exactly(4);
+        $container->expects($matcher)
             ->method('has')
-            ->withConsecutive([NavigationConfigInterface::class], [UrlHelper::class], [AuthorizationInterface::class], [RouterInterface::class])
-            ->willReturnOnConsecutiveCalls(true, true, true, true);
-        $container->expects(self::exactly(4))
-            ->method('get')
-            ->withConsecutive([AuthorizationInterface::class], [RouterInterface::class], [NavigationConfigInterface::class], [UrlHelper::class])
             ->willReturnCallback(
-                static function ($argument) use ($authorization, $router, $navigationConfig, $exception) {
-                    if (AuthorizationInterface::class === $argument) {
-                        return $authorization;
-                    }
+                static function (string $id) use ($matcher): bool {
+                    match ($matcher->numberOfInvocations()) {
+                        1 => self::assertSame(NavigationConfigInterface::class, $id),
+                        3 => self::assertSame(AuthorizationInterface::class, $id),
+                        4 => self::assertSame(RouterInterface::class, $id),
+                        default => self::assertSame(UrlHelper::class, $id),
+                    };
 
-                    if (RouterInterface::class === $argument) {
-                        return $router;
-                    }
+                    return true;
+                },
+            );
+        $matcher = self::exactly(4);
+        $container->expects($matcher)
+            ->method('get')
+            ->willReturnCallback(
+                static function (string $id) use ($matcher, $authorization, $router, $navigationConfig, $exception): mixed {
+                    match ($matcher->numberOfInvocations()) {
+                        1 => self::assertSame(AuthorizationInterface::class, $id),
+                        2 => self::assertSame(RouterInterface::class, $id),
+                        3 => self::assertSame(NavigationConfigInterface::class, $id),
+                        default => self::assertSame(UrlHelper::class, $id),
+                    };
 
-                    if (NavigationConfigInterface::class === $argument) {
-                        return $navigationConfig;
-                    }
-
-                    throw $exception;
-                }
+                    return match ($matcher->numberOfInvocations()) {
+                        1 => $authorization,
+                        2 => $router,
+                        3 => $navigationConfig,
+                        default => throw $exception,
+                    };
+                },
             );
 
         $factory = new NavigationMiddlewareFactory();
@@ -291,8 +392,8 @@ final class NavigationMiddlewareFactoryTest extends TestCase
             sprintf(
                 'Cannot create %s service; could not initialize dependency %s',
                 NavigationMiddleware::class,
-                UrlHelper::class
-            )
+                UrlHelper::class,
+            ),
         );
         $this->expectExceptionCode(0);
 
@@ -302,7 +403,8 @@ final class NavigationMiddlewareFactoryTest extends TestCase
 
     /**
      * @throws Exception
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws MissingHelperException
+     * @throws InvalidArgumentException
      */
     public function testFactoryAllowsSerialization(): void
     {
@@ -317,20 +419,47 @@ final class NavigationMiddlewareFactoryTest extends TestCase
         $container = $this->getMockBuilder(ContainerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $container->expects(self::exactly(4))
+        $matcher   = self::exactly(4);
+        $container->expects($matcher)
             ->method('has')
-            ->withConsecutive([$navigationConfigName], [$urlHelperServiceName], [AuthorizationInterface::class], [RouterInterface::class])
-            ->willReturnOnConsecutiveCalls(true, true, true, true);
-        $container->expects(self::exactly(4))
+            ->willReturnCallback(
+                static function (string $id) use ($matcher, $navigationConfigName, $urlHelperServiceName): bool {
+                    match ($matcher->numberOfInvocations()) {
+                        1 => self::assertSame($navigationConfigName, $id),
+                        2 => self::assertSame($urlHelperServiceName, $id),
+                        4 => self::assertSame(RouterInterface::class, $id),
+                        default => self::assertSame(AuthorizationInterface::class, $id),
+                    };
+
+                    return true;
+                },
+            );
+        $matcher = self::exactly(4);
+        $container->expects($matcher)
             ->method('get')
-            ->withConsecutive([AuthorizationInterface::class], [RouterInterface::class], [$navigationConfigName], [$urlHelperServiceName])
-            ->willReturnOnConsecutiveCalls($authorization, $router, $navigationConfig, $urlHelper);
+            ->willReturnCallback(
+                static function (string $id) use ($matcher, $authorization, $router, $navigationConfigName, $urlHelperServiceName, $navigationConfig, $urlHelper): mixed {
+                    match ($matcher->numberOfInvocations()) {
+                        1 => self::assertSame(AuthorizationInterface::class, $id),
+                        2 => self::assertSame(RouterInterface::class, $id),
+                        3 => self::assertSame($navigationConfigName, $id),
+                        default => self::assertSame($urlHelperServiceName, $id),
+                    };
+
+                    return match ($matcher->numberOfInvocations()) {
+                        1 => $authorization,
+                        2 => $router,
+                        3 => $navigationConfig,
+                        default => $urlHelper,
+                    };
+                },
+            );
 
         $factory = NavigationMiddlewareFactory::__set_state(
             [
                 'navigationConfigName' => $navigationConfigName,
                 'urlHelperServiceName' => $urlHelperServiceName,
-            ]
+            ],
         );
 
         self::assertInstanceOf(NavigationMiddlewareFactory::class, $factory);

@@ -2,7 +2,7 @@
 /**
  * This file is part of the mimmi20/mezzio-navigation package.
  *
- * Copyright (c) 2020-2021, Thomas Mueller <mimmi20@live.de>
+ * Copyright (c) 2020-2023, Thomas Mueller <mimmi20@live.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,92 +10,102 @@
 
 declare(strict_types = 1);
 
-namespace Mezzio\Navigation\Config;
+namespace Mimmi20\Mezzio\Navigation\Config;
 
-use Mezzio\GenericAuthorization\AuthorizationInterface;
 use Mezzio\Helper\UrlHelper;
 use Mezzio\Router\RouteResult;
 use Mezzio\Router\RouterInterface;
+use Mimmi20\Mezzio\GenericAuthorization\AuthorizationInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * A simple container class for {@link \Mezzio\Navigation\Page} pages
+ * A simple container class for {@link \Mimmi20\Mezzio\Navigation\Page} pages
  */
 final class NavigationConfig implements NavigationConfigInterface
 {
-    private ?UrlHelper $urlHelper = null;
-
-    private ?RouteResult $routeResult = null;
-
-    private ?RouterInterface $router = null;
-
-    private ?ServerRequestInterface $request = null;
-
-    private ?AuthorizationInterface $authorization = null;
+    private UrlHelper | null $urlHelper                  = null;
+    private RouteResult | null $routeResult              = null;
+    private RouterInterface | null $router               = null;
+    private ServerRequestInterface | null $request       = null;
+    private AuthorizationInterface | null $authorization = null;
 
     /** @var array<int|string, array<string>>|null */
-    private ?array $pages = null;
+    private array | null $pages = null;
 
-    public function getUrlHelper(): ?UrlHelper
+    /** @throws void */
+    public function getUrlHelper(): UrlHelper | null
     {
         return $this->urlHelper;
     }
 
+    /** @throws void */
     public function setUrlHelper(UrlHelper $urlHelper): void
     {
         $this->urlHelper = $urlHelper;
     }
 
-    public function getRouteResult(): ?RouteResult
+    /** @throws void */
+    public function getRouteResult(): RouteResult | null
     {
         return $this->routeResult;
     }
 
+    /** @throws void */
     public function setRouteResult(RouteResult $routeResult): void
     {
         $this->routeResult = $routeResult;
     }
 
-    public function getRouter(): ?RouterInterface
+    /** @throws void */
+    public function getRouter(): RouterInterface | null
     {
         return $this->router;
     }
 
-    public function setRouter(?RouterInterface $router): void
+    /** @throws void */
+    public function setRouter(RouterInterface | null $router): void
     {
         $this->router = $router;
     }
 
-    public function getRequest(): ?ServerRequestInterface
+    /** @throws void */
+    public function getRequest(): ServerRequestInterface | null
     {
         return $this->request;
     }
 
+    /** @throws void */
     public function setRequest(ServerRequestInterface $request): void
     {
         $this->request = $request;
     }
 
-    public function getAuthorization(): ?AuthorizationInterface
+    /** @throws void */
+    public function getAuthorization(): AuthorizationInterface | null
     {
         return $this->authorization;
     }
 
-    public function setAuthorization(?AuthorizationInterface $authorization = null): void
+    /** @throws void */
+    public function setAuthorization(AuthorizationInterface | null $authorization = null): void
     {
         $this->authorization = $authorization;
     }
 
     /**
-     * @return array<int|string, array<string>>|null
+     * @return array<int|string, array<string, array<array<string>|string>>>|null
+     *
+     * @throws void
      */
-    public function getPages(): ?array
+    public function getPages(): array | null
     {
         return $this->pages;
     }
 
     /**
      * @param array<int|string, array<string>> $pages
+     *
+     * @throws void
      */
     public function setPages(array $pages): void
     {

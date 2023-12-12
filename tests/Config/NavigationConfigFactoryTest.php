@@ -2,7 +2,7 @@
 /**
  * This file is part of the mimmi20/mezzio-navigation package.
  *
- * Copyright (c) 2020-2021, Thomas Mueller <mimmi20@live.de>
+ * Copyright (c) 2020-2023, Thomas Mueller <mimmi20@live.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,13 +10,14 @@
 
 declare(strict_types = 1);
 
-namespace MezzioTest\Navigation\Config;
+namespace Mimmi20\MezzioTest\Navigation\Config;
 
-use Mezzio\Navigation\Config\NavigationConfig;
-use Mezzio\Navigation\Config\NavigationConfigFactory;
-use Mezzio\Navigation\Exception\InvalidArgumentException;
+use Mimmi20\Mezzio\Navigation\Config\NavigationConfig;
+use Mimmi20\Mezzio\Navigation\Config\NavigationConfigFactory;
+use Mimmi20\Mezzio\Navigation\Exception\InvalidArgumentException;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 
 use function assert;
@@ -25,6 +26,8 @@ final class NavigationConfigFactoryTest extends TestCase
 {
     /**
      * @throws Exception
+     * @throws InvalidArgumentException
+     * @throws ContainerExceptionInterface
      */
     public function testFactoryWithoutNavigationConfig(): void
     {
@@ -48,6 +51,8 @@ final class NavigationConfigFactoryTest extends TestCase
 
     /**
      * @throws Exception
+     * @throws InvalidArgumentException
+     * @throws ContainerExceptionInterface
      */
     public function testFactoryWithoutNavigationConfig2(): void
     {
@@ -71,6 +76,8 @@ final class NavigationConfigFactoryTest extends TestCase
 
     /**
      * @throws Exception
+     * @throws InvalidArgumentException
+     * @throws ContainerExceptionInterface
      */
     public function testFactoryWithoutNavigationConfig3(): void
     {
@@ -96,7 +103,8 @@ final class NavigationConfigFactoryTest extends TestCase
 
     /**
      * @throws Exception
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws InvalidArgumentException
+     * @throws ContainerExceptionInterface
      */
     public function testFactory(): void
     {

@@ -2,7 +2,7 @@
 /**
  * This file is part of the mimmi20/mezzio-navigation package.
  *
- * Copyright (c) 2020-2021, Thomas Mueller <mimmi20@live.de>
+ * Copyright (c) 2020-2023, Thomas Mueller <mimmi20@live.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,9 +10,9 @@
 
 declare(strict_types = 1);
 
-namespace Mezzio\Navigation\Config;
+namespace Mimmi20\Mezzio\Navigation\Config;
 
-use Mezzio\Navigation\Exception\InvalidArgumentException;
+use Mimmi20\Mezzio\Navigation\Exception\InvalidArgumentException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 
@@ -36,8 +36,11 @@ final class NavigationConfigFactory
      *
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
      */
-    public function __invoke(ContainerInterface $container, string $requestedName, ?array $options = null): NavigationConfig
-    {
+    public function __invoke(
+        ContainerInterface $container,
+        string $requestedName,
+        array | null $options = null,
+    ): NavigationConfig {
         $configuration = $container->get('config');
 
         if (

@@ -2,7 +2,7 @@
 /**
  * This file is part of the mimmi20/mezzio-navigation package.
  *
- * Copyright (c) 2020-2021, Thomas Mueller <mimmi20@live.de>
+ * Copyright (c) 2020-2023, Thomas Mueller <mimmi20@live.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,13 +10,13 @@
 
 declare(strict_types = 1);
 
-namespace MezzioTest\Navigation;
+namespace Mimmi20\MezzioTest\Navigation;
 
-use Mezzio\Navigation\Exception\BadMethodCallException;
-use Mezzio\Navigation\Exception\InvalidArgumentException;
-use Mezzio\Navigation\Exception\OutOfBoundsException;
-use Mezzio\Navigation\Navigation;
-use Mezzio\Navigation\Page;
+use Mimmi20\Mezzio\Navigation\Exception\BadMethodCallException;
+use Mimmi20\Mezzio\Navigation\Exception\InvalidArgumentException;
+use Mimmi20\Mezzio\Navigation\Exception\OutOfBoundsException;
+use Mimmi20\Mezzio\Navigation\Navigation;
+use Mimmi20\Mezzio\Navigation\Page;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 
@@ -28,9 +28,7 @@ final class NavigationTest extends TestCase
 {
     private Navigation $navigation;
 
-    /**
-     * @throws void
-     */
+    /** @throws void */
     protected function setUp(): void
     {
         $this->navigation = new Navigation();
@@ -39,7 +37,6 @@ final class NavigationTest extends TestCase
     /**
      * Testing that navigation order is done correctly
      *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -58,7 +55,6 @@ final class NavigationTest extends TestCase
     /**
      * Testing that navigation order is done correctly
      *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -109,9 +105,7 @@ final class NavigationTest extends TestCase
         $this->navigation->addPage($childPage);
     }
 
-    /**
-     * @throws InvalidArgumentException
-     */
+    /** @throws InvalidArgumentException */
     public function testAddPages(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -122,7 +116,6 @@ final class NavigationTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -175,7 +168,6 @@ final class NavigationTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -228,60 +220,6 @@ final class NavigationTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     * @throws InvalidArgumentException
-     */
-    public function testRemovePageNotByHash(): void
-    {
-        $code1 = 'code 1';
-        $code2 = 'code 2';
-
-        $childPage1 = $this->getMockBuilder(Page\PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $childPage1->expects(self::once())
-            ->method('hashCode')
-            ->willReturn($code1);
-        $childPage1->expects(self::once())
-            ->method('getOrder')
-            ->willReturn(1);
-        $childPage1->expects(self::once())
-            ->method('setParent')
-            ->with($this->navigation);
-        $childPage1->expects(self::never())
-            ->method('hasPage');
-        $childPage1->expects(self::never())
-            ->method('removePage');
-
-        $childPage2 = $this->getMockBuilder(Page\PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $childPage2->expects(self::once())
-            ->method('hashCode')
-            ->willReturn($code2);
-        $childPage2->expects(self::once())
-            ->method('getOrder')
-            ->willReturn(null);
-        $childPage2->expects(self::once())
-            ->method('setParent')
-            ->with($this->navigation);
-        $childPage2->expects(self::never())
-            ->method('hasPage');
-        $childPage2->expects(self::never())
-            ->method('removePage');
-
-        assert($childPage1 instanceof Page\PageInterface);
-        assert($childPage2 instanceof Page\PageInterface);
-        $this->navigation->addPage($childPage1);
-        $this->navigation->addPage($childPage2);
-
-        self::assertFalse($this->navigation->removePage($code1));
-        self::assertSame([$code1 => $childPage1, $code2 => $childPage2], $this->navigation->getPages());
-    }
-
-    /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -334,7 +272,6 @@ final class NavigationTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -391,7 +328,6 @@ final class NavigationTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -447,7 +383,6 @@ final class NavigationTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -491,7 +426,6 @@ final class NavigationTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -535,51 +469,6 @@ final class NavigationTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     * @throws InvalidArgumentException
-     */
-    public function testHasPageNotByHash(): void
-    {
-        $code1 = 'code 1';
-        $code2 = 'code 2';
-
-        $childPage1 = $this->getMockBuilder(Page\PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $childPage1->expects(self::once())
-            ->method('hashCode')
-            ->willReturn($code1);
-        $childPage1->expects(self::once())
-            ->method('getOrder')
-            ->willReturn(1);
-        $childPage1->expects(self::once())
-            ->method('setParent')
-            ->with($this->navigation);
-
-        $childPage2 = $this->getMockBuilder(Page\PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $childPage2->expects(self::once())
-            ->method('hashCode')
-            ->willReturn($code2);
-        $childPage2->expects(self::once())
-            ->method('getOrder')
-            ->willReturn(null);
-        $childPage2->expects(self::once())
-            ->method('setParent')
-            ->with($this->navigation);
-
-        assert($childPage1 instanceof Page\PageInterface);
-        assert($childPage2 instanceof Page\PageInterface);
-        $this->navigation->addPage($childPage1);
-        $this->navigation->addPage($childPage2);
-
-        self::assertFalse($this->navigation->hasPage($code1));
-    }
-
-    /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -623,7 +512,6 @@ final class NavigationTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -674,7 +562,6 @@ final class NavigationTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -725,7 +612,6 @@ final class NavigationTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -778,7 +664,6 @@ final class NavigationTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -831,7 +716,6 @@ final class NavigationTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -890,7 +774,6 @@ final class NavigationTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -972,22 +855,21 @@ final class NavigationTest extends TestCase
         self::assertSame([$childPage2, $childPage1], $this->navigation->findAllBy($property, $value));
     }
 
-    /**
-     * @throws void
-     */
+    /** @throws void */
     public function testCallFindAllByException(): void
     {
         $value = 'test';
 
         $this->expectException(BadMethodCallException::class);
-        $this->expectExceptionMessage('Bad method call: Unknown method Mezzio\Navigation\Navigation::findAlllByTest');
+        $this->expectExceptionMessage(
+            'Bad method call: Unknown method Mimmi20\Mezzio\Navigation\Navigation::findAlllByTest',
+        );
         $this->expectExceptionCode(0);
 
         $this->navigation->findAlllByTest($value);
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -1047,20 +929,19 @@ final class NavigationTest extends TestCase
         self::assertSame([$childPage2, $childPage1], $this->navigation->findAllByRoute($value));
     }
 
-    /**
-     * @throws OutOfBoundsException
-     */
+    /** @throws OutOfBoundsException */
     public function testCurrentException(): void
     {
         $this->expectException(OutOfBoundsException::class);
-        $this->expectExceptionMessage('container is currently empty, could not find any key in internal iterator');
+        $this->expectExceptionMessage(
+            'container is currently empty, could not find any key in internal iterator',
+        );
         $this->expectExceptionCode(0);
 
         $this->navigation->current();
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      * @throws OutOfBoundsException
@@ -1125,14 +1006,15 @@ final class NavigationTest extends TestCase
         self::assertFalse($this->navigation->valid());
 
         $this->expectException(OutOfBoundsException::class);
-        $this->expectExceptionMessage('Corruption detected in container; invalid key found in internal iterator');
+        $this->expectExceptionMessage(
+            'Corruption detected in container; invalid key found in internal iterator',
+        );
         $this->expectExceptionCode(0);
 
         self::assertSame($childPage1, $this->navigation->current());
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      * @throws OutOfBoundsException

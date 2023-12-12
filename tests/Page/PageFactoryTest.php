@@ -2,7 +2,7 @@
 /**
  * This file is part of the mimmi20/mezzio-navigation package.
  *
- * Copyright (c) 2020-2021, Thomas Mueller <mimmi20@live.de>
+ * Copyright (c) 2020-2023, Thomas Mueller <mimmi20@live.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,15 +10,15 @@
 
 declare(strict_types = 1);
 
-namespace MezzioTest\Navigation\Page;
+namespace Mimmi20\MezzioTest\Navigation\Page;
 
-use Mezzio\Navigation\Exception\InvalidArgumentException;
-use Mezzio\Navigation\Page\PageFactory;
-use Mezzio\Navigation\Page\PageInterface;
-use Mezzio\Navigation\Page\Route;
-use Mezzio\Navigation\Page\Uri;
-use MezzioTest\Navigation\TestAsset\InvalidPage;
-use MezzioTest\Navigation\TestAsset\Page;
+use Mimmi20\Mezzio\Navigation\Exception\InvalidArgumentException;
+use Mimmi20\Mezzio\Navigation\Page\PageFactory;
+use Mimmi20\Mezzio\Navigation\Page\PageInterface;
+use Mimmi20\Mezzio\Navigation\Page\Route;
+use Mimmi20\Mezzio\Navigation\Page\Uri;
+use Mimmi20\MezzioTest\Navigation\TestAsset\InvalidPage;
+use Mimmi20\MezzioTest\Navigation\TestAsset\Page;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 
@@ -28,17 +28,13 @@ final class PageFactoryTest extends TestCase
 {
     private PageFactory $factory;
 
-    /**
-     * @throws void
-     */
+    /** @throws void */
     protected function setUp(): void
     {
         $this->factory = new PageFactory();
     }
 
-    /**
-     * @throws InvalidArgumentException
-     */
+    /** @throws InvalidArgumentException */
     public function testFactoryInvalidType(): void
     {
         $options = ['type' => 'test'];
@@ -51,14 +47,13 @@ final class PageFactoryTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
     public function testDetectFactoryPage(): void
     {
         PageFactory::addFactory(
-            static function (array $page): ?PageInterface {
+            static function (array $page): PageInterface | null {
                 if (isset($page['factory_uri'])) {
                     return new Uri($page);
                 }
@@ -68,7 +63,7 @@ final class PageFactoryTest extends TestCase
                 }
 
                 return null;
-            }
+            },
         );
 
         self::assertInstanceOf(
@@ -77,8 +72,8 @@ final class PageFactoryTest extends TestCase
                 [
                     'label' => 'URI Page',
                     'factory_uri' => '#',
-                ]
-            )
+                ],
+            ),
         );
 
         self::assertInstanceOf(
@@ -87,13 +82,12 @@ final class PageFactoryTest extends TestCase
                 [
                     'label' => 'URI Page',
                     'factory_mvc' => '#',
-                ]
-            )
+                ],
+            ),
         );
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -104,7 +98,7 @@ final class PageFactoryTest extends TestCase
                 [
                     'label' => 'MVC Page',
                     'route' => 'home',
-                ]
+                ],
             ),
         ];
 
@@ -112,7 +106,6 @@ final class PageFactoryTest extends TestCase
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -122,14 +115,13 @@ final class PageFactoryTest extends TestCase
             [
                 'label' => 'URI Page',
                 'uri' => '#',
-            ]
+            ],
         );
 
         self::assertInstanceOf(Uri::class, $page);
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -140,14 +132,13 @@ final class PageFactoryTest extends TestCase
                 'label' => 'MVC Page',
                 'route' => 'index',
                 'uri' => '#',
-            ]
+            ],
         );
 
         self::assertInstanceOf(Route::class, $page);
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -157,14 +148,13 @@ final class PageFactoryTest extends TestCase
             [
                 'type' => 'route',
                 'label' => 'MVC Page',
-            ]
+            ],
         );
 
         self::assertInstanceOf(Route::class, $mvcPage);
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -175,14 +165,13 @@ final class PageFactoryTest extends TestCase
                 'type' => 'uri',
                 'label' => 'URI Page',
                 'uri' => 'http://www.example.com/',
-            ]
+            ],
         );
 
         self::assertInstanceOf(Uri::class, $uriPage);
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
      */
@@ -192,15 +181,13 @@ final class PageFactoryTest extends TestCase
             [
                 'type' => Page::class,
                 'label' => 'My Custom Page',
-            ]
+            ],
         );
 
         self::assertInstanceOf(Page::class, $page);
     }
 
-    /**
-     * @throws InvalidArgumentException
-     */
+    /** @throws InvalidArgumentException */
     public function testShouldFailForInvalidType(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -208,8 +195,8 @@ final class PageFactoryTest extends TestCase
             sprintf(
                 'Invalid argument: Detected type "%s", which is not an instance of %s',
                 InvalidPage::class,
-                PageInterface::class
-            )
+                PageInterface::class,
+            ),
         );
         $this->expectExceptionCode(0);
 
@@ -217,13 +204,11 @@ final class PageFactoryTest extends TestCase
             [
                 'type' => InvalidPage::class,
                 'label' => 'My Invalid Page',
-            ]
+            ],
         );
     }
 
-    /**
-     * @throws InvalidArgumentException
-     */
+    /** @throws InvalidArgumentException */
     public function testShouldFailIfUnableToDetermineType(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -231,7 +216,7 @@ final class PageFactoryTest extends TestCase
         $this->expectExceptionCode(0);
 
         $this->factory->factory(
-            ['label' => 'My Invalid Page']
+            ['label' => 'My Invalid Page'],
         );
     }
 }

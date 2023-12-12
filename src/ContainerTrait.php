@@ -2,7 +2,7 @@
 /**
  * This file is part of the mimmi20/mezzio-navigation package.
  *
- * Copyright (c) 2020-2021, Thomas Mueller <mimmi20@live.de>
+ * Copyright (c) 2020-2023, Thomas Mueller <mimmi20@live.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,13 +10,14 @@
 
 declare(strict_types = 1);
 
-namespace Mezzio\Navigation;
+namespace Mimmi20\Mezzio\Navigation;
 
 use ErrorException;
 use Laminas\Stdlib\ErrorHandler;
-use Mezzio\Navigation\Exception\InvalidArgumentException;
-use Mezzio\Navigation\Exception\OutOfBoundsException;
-use Mezzio\Navigation\Page\PageInterface;
+use Mimmi20\Mezzio\Navigation\Exception\BadMethodCallException;
+use Mimmi20\Mezzio\Navigation\Exception\InvalidArgumentException;
+use Mimmi20\Mezzio\Navigation\Exception\OutOfBoundsException;
+use Mimmi20\Mezzio\Navigation\Page\PageInterface;
 use RecursiveIteratorIterator;
 
 use function array_key_exists;
@@ -36,7 +37,7 @@ use function sprintf;
 use const E_WARNING;
 
 /**
- * Trait for Mezzio\Navigation\Page classes.
+ * Trait for Mimmi20\Mezzio\Navigation\Page classes.
  */
 trait ContainerTrait
 {
@@ -73,12 +74,10 @@ trait ContainerTrait
      * @param string       $method    method name
      * @param array<mixed> $arguments method arguments
      *
-     * @return mixed
-     *
-     * @throws Exception\BadMethodCallException if method does not exist
+     * @throws BadMethodCallException if method does not exist
      * @throws ErrorException
      */
-    public function __call(string $method, array $arguments)
+    public function __call(string $method, array $arguments): mixed
     {
         ErrorHandler::start(E_WARNING);
 
@@ -86,14 +85,14 @@ trait ContainerTrait
         $error  = ErrorHandler::stop();
 
         if (!$result) {
-            throw new Exception\BadMethodCallException(
+            throw new BadMethodCallException(
                 sprintf(
                     'Bad method call: Unknown method %s::%s',
                     static::class,
-                    $method
+                    $method,
                 ),
                 0,
-                $error
+                $error,
             );
         }
 
@@ -104,6 +103,8 @@ trait ContainerTrait
 
     /**
      * Notifies container that the order of pages are updated
+     *
+     * @throws void
      */
     final public function notifyOrderUpdated(): void
     {
@@ -117,14 +118,12 @@ trait ContainerTrait
      *
      * @param PageInterface $page page to add
      *
-     * @throws Exception\InvalidArgumentException if page is invalid
+     * @throws InvalidArgumentException if page is invalid
      */
     final public function addPage(PageInterface $page): void
     {
         if ($page === $this) {
-            throw new Exception\InvalidArgumentException(
-                'A page cannot have itself as a parent'
-            );
+            throw new InvalidArgumentException('A page cannot have itself as a parent');
         }
 
         $hash = $page->hashCode();
@@ -148,14 +147,14 @@ trait ContainerTrait
      *
      * @param array<PageInterface> $pages pages to add
      *
-     * @throws Exception\InvalidArgumentException if $pages is not array, Traversable or PageInterface
+     * @throws InvalidArgumentException if $pages is not array, Traversable or PageInterface
      */
     final public function addPages(iterable $pages): void
     {
         foreach ($pages as $page) {
             if (!$page instanceof PageInterface) {
-                throw new Exception\InvalidArgumentException(
-                    'Invalid argument: $page must be an Instance of PageInterface'
+                throw new InvalidArgumentException(
+                    'Invalid argument: $page must be an Instance of PageInterface',
                 );
             }
 
@@ -180,6 +179,8 @@ trait ContainerTrait
      * Returns pages in the container
      *
      * @return array<PageInterface>
+     *
+     * @throws void
      */
     final public function getPages(): array
     {
@@ -193,8 +194,10 @@ trait ContainerTrait
      * @param bool              $recursive [optional] whether to remove recursively
      *
      * @return bool whether the removal was successful
+     *
+     * @throws void
      */
-    final public function removePage($page, bool $recursive = false): bool
+    final public function removePage(int | PageInterface $page, bool $recursive = false): bool
     {
         if ($page instanceof PageInterface) {
             $hash = $page->hashCode();
@@ -235,6 +238,8 @@ trait ContainerTrait
 
     /**
      * Removes all pages in container
+     *
+     * @throws void
      */
     final public function removePages(): void
     {
@@ -249,12 +254,14 @@ trait ContainerTrait
      * @param bool              $recursive [optional] whether to search recursively. Default is false.
      *
      * @return bool whether page is in container
+     *
+     * @throws void
      */
-    final public function hasPage($page, bool $recursive = false): bool
+    final public function hasPage(int | PageInterface $page, bool $recursive = false): bool
     {
         if ($page instanceof PageInterface) {
             $hash = $page->hashCode();
-        } elseif (is_int($page)) {
+        } else {
             $this->sort();
 
             $hash = array_search($page, $this->index, true);
@@ -262,8 +269,6 @@ trait ContainerTrait
             if (!$hash) {
                 return false;
             }
-        } else {
-            return false;
         }
 
         if (array_key_exists($hash, $this->index)) {
@@ -287,6 +292,8 @@ trait ContainerTrait
      * @param bool $onlyVisible whether to check only visible pages
      *
      * @return bool whether container has any pages
+     *
+     * @throws void
      */
     final public function hasPages(bool $onlyVisible = false): bool
     {
@@ -303,7 +310,7 @@ trait ContainerTrait
             return false;
         }
 
-        return [] !== $this->index;
+        return $this->index !== [];
     }
 
     /**
@@ -316,7 +323,7 @@ trait ContainerTrait
      *
      * @throws InvalidArgumentException
      */
-    final public function findOneBy(string $property, $value): ?PageInterface
+    final public function findOneBy(string $property, mixed $value): PageInterface | null
     {
         $iterator = new RecursiveIteratorIterator($this, RecursiveIteratorIterator::SELF_FIRST);
 
@@ -342,7 +349,7 @@ trait ContainerTrait
      *
      * @throws InvalidArgumentException
      */
-    final public function findAllBy(string $property, $value): array
+    final public function findAllBy(string $property, mixed $value): array
     {
         $found = [];
 
@@ -364,13 +371,16 @@ trait ContainerTrait
     /**
      * Returns an array representation of all pages in container
      *
-     * @return array<int, array<int, array<string, string>|bool|float|int|string|null>>
+     * @return array<int<0, max>, array<int, mixed>>
+     *
+     * @throws void
      */
     final public function toArray(): array
     {
         $this->sort();
         $pages   = [];
         $indexes = array_keys($this->index);
+
         foreach ($indexes as $hash) {
             $pages[] = $this->pages[$hash]->toArray();
         }
@@ -386,22 +396,23 @@ trait ContainerTrait
      *
      * @return PageInterface current page
      *
-     * @throws Exception\OutOfBoundsException if the index is invalid
+     * @throws OutOfBoundsException if the index is invalid
      */
     final public function current(): PageInterface
     {
-        if ([] === $this->index) {
-            throw new Exception\OutOfBoundsException(
-                'container is currently empty, could not find any key in internal iterator'
+        if ($this->index === []) {
+            throw new OutOfBoundsException(
+                'container is currently empty, could not find any key in internal iterator',
             );
         }
 
         $this->sort();
 
         $hash = key($this->index);
-        if (null === $hash || !isset($this->pages[$hash])) {
-            throw new Exception\OutOfBoundsException(
-                'Corruption detected in container; invalid key found in internal iterator'
+
+        if ($hash === null || !isset($this->pages[$hash])) {
+            throw new OutOfBoundsException(
+                'Corruption detected in container; invalid key found in internal iterator',
             );
         }
 
@@ -414,6 +425,8 @@ trait ContainerTrait
      * Implements RecursiveIterator interface.
      *
      * @return string hash code of current page
+     *
+     * @throws void
      */
     final public function key(): string
     {
@@ -426,6 +439,8 @@ trait ContainerTrait
      * Moves index pointer to next page in the container
      *
      * Implements RecursiveIterator interface.
+     *
+     * @throws void
      */
     final public function next(): void
     {
@@ -438,6 +453,8 @@ trait ContainerTrait
      * Sets index pointer to first page in the container
      *
      * Implements RecursiveIterator interface.
+     *
+     * @throws void
      */
     final public function rewind(): void
     {
@@ -450,12 +467,14 @@ trait ContainerTrait
      * Checks if container index is valid
      *
      * Implements RecursiveIterator interface.
+     *
+     * @throws void
      */
     final public function valid(): bool
     {
         $this->sort();
 
-        return false !== current($this->index) && null !== current($this->index);
+        return current($this->index) !== false && current($this->index) !== null;
     }
 
     /**
@@ -481,15 +500,11 @@ trait ContainerTrait
      *
      * @codeCoverageIgnore
      */
-    final public function getChildren(): ?PageInterface
+    final public function getChildren(): PageInterface | null
     {
         $hash = key($this->index);
 
-        if (isset($this->pages[$hash])) {
-            return $this->pages[$hash];
-        }
-
-        return null;
+        return $this->pages[$hash] ?? null;
     }
 
     // Countable interface:
@@ -500,6 +515,8 @@ trait ContainerTrait
      * Implements Countable interface.
      *
      * @return int number of pages in the container
+     *
+     * @throws void
      */
     final public function count(): int
     {
@@ -510,6 +527,8 @@ trait ContainerTrait
 
     /**
      * Sorts the page index according to page order
+     *
+     * @throws void
      */
     private function sort(): void
     {
@@ -523,7 +542,7 @@ trait ContainerTrait
         foreach ($this->pages as $hash => $page) {
             $order = $page->getOrder();
 
-            if (null === $order) {
+            if ($order === null) {
                 $newIndex[$hash] = $index;
                 ++$index;
             } else {

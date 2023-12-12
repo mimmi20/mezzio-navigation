@@ -2,7 +2,7 @@
 /**
  * This file is part of the mimmi20/mezzio-navigation package.
  *
- * Copyright (c) 2020-2021, Thomas Mueller <mimmi20@live.de>
+ * Copyright (c) 2020-2023, Thomas Mueller <mimmi20@live.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,22 +10,23 @@
 
 declare(strict_types = 1);
 
-namespace MezzioTest\Navigation\Service;
+namespace Mimmi20\MezzioTest\Navigation\Service;
 
-use Mezzio\Navigation\Config\NavigationConfigInterface;
-use Mezzio\Navigation\Exception\InvalidArgumentException;
-use Mezzio\Navigation\Navigation;
-use Mezzio\Navigation\Page\PageFactoryInterface;
-use Mezzio\Navigation\Page\PageInterface;
-use Mezzio\Navigation\Page\Route;
-use Mezzio\Navigation\Page\RouteInterface;
-use Mezzio\Navigation\Page\Uri;
-use Mezzio\Navigation\Page\UriInterface;
-use Mezzio\Navigation\Service\DefaultNavigationFactory;
 use Mezzio\Router\RouteResult;
 use Mezzio\Router\RouterInterface;
+use Mimmi20\Mezzio\Navigation\Config\NavigationConfigInterface;
+use Mimmi20\Mezzio\Navigation\Exception\InvalidArgumentException;
+use Mimmi20\Mezzio\Navigation\Navigation;
+use Mimmi20\Mezzio\Navigation\Page\PageFactoryInterface;
+use Mimmi20\Mezzio\Navigation\Page\PageInterface;
+use Mimmi20\Mezzio\Navigation\Page\Route;
+use Mimmi20\Mezzio\Navigation\Page\RouteInterface;
+use Mimmi20\Mezzio\Navigation\Page\Uri;
+use Mimmi20\Mezzio\Navigation\Page\UriInterface;
+use Mimmi20\Mezzio\Navigation\Service\DefaultNavigationFactory;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -35,6 +36,7 @@ final class DefaultNavigationFactoryTest extends TestCase
 {
     private DefaultNavigationFactory $factory;
 
+    /** @throws void */
     protected function setUp(): void
     {
         $this->factory = new DefaultNavigationFactory();
@@ -42,6 +44,9 @@ final class DefaultNavigationFactoryTest extends TestCase
 
     /**
      * @throws Exception
+     * @throws InvalidArgumentException
+     * @throws ContainerExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      */
     public function testCanNotInvokeWithoutConfig(): void
     {
@@ -56,17 +61,13 @@ final class DefaultNavigationFactoryTest extends TestCase
             ->method('getPages')
             ->willReturn($pages);
 
-        $pageFactory = $this->getMockBuilder(PageFactoryInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
         $container = $this->getMockBuilder(ContainerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
         $container->expects(self::once())
             ->method('get')
-            ->withConsecutive([NavigationConfigInterface::class], [PageFactoryInterface::class])
-            ->willReturnOnConsecutiveCalls($navigationConfig, $pageFactory);
+            ->with(NavigationConfigInterface::class)
+            ->willReturn($navigationConfig);
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Failed to find a navigation container by the name "default"');
@@ -78,7 +79,9 @@ final class DefaultNavigationFactoryTest extends TestCase
 
     /**
      * @throws Exception
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws InvalidArgumentException
+     * @throws ContainerExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      */
     public function testInvoke(): void
     {
@@ -128,18 +131,42 @@ final class DefaultNavigationFactoryTest extends TestCase
         $pageFactory = $this->getMockBuilder(PageFactoryInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $pageFactory->expects(self::exactly(2))
+        $matcher     = self::exactly(2);
+        $pageFactory->expects($matcher)
             ->method('factory')
-            ->withConsecutive([$page1Config], [$page2Config])
-            ->willReturnOnConsecutiveCalls($page1, $page2);
+            ->willReturnCallback(
+                static function (array $options) use ($matcher, $page1Config, $page2Config, $page1, $page2): PageInterface {
+                    match ($matcher->numberOfInvocations()) {
+                        1 => self::assertSame($page1Config, $options),
+                        default => self::assertSame($page2Config, $options),
+                    };
+
+                    return match ($matcher->numberOfInvocations()) {
+                        1 => $page1,
+                        default => $page2,
+                    };
+                },
+            );
 
         $container = $this->getMockBuilder(ContainerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $container->expects(self::exactly(2))
+        $matcher   = self::exactly(2);
+        $container->expects($matcher)
             ->method('get')
-            ->withConsecutive([NavigationConfigInterface::class], [PageFactoryInterface::class])
-            ->willReturnOnConsecutiveCalls($navigationConfig, $pageFactory);
+            ->willReturnCallback(
+                static function (string $id) use ($matcher, $navigationConfig, $pageFactory): mixed {
+                    match ($matcher->numberOfInvocations()) {
+                        1 => self::assertSame(NavigationConfigInterface::class, $id),
+                        default => self::assertSame(PageFactoryInterface::class, $id),
+                    };
+
+                    return match ($matcher->numberOfInvocations()) {
+                        1 => $navigationConfig,
+                        default => $pageFactory,
+                    };
+                },
+            );
 
         assert($container instanceof ContainerInterface);
         $navigation = ($this->factory)($container);
@@ -154,7 +181,9 @@ final class DefaultNavigationFactoryTest extends TestCase
 
     /**
      * @throws Exception
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws InvalidArgumentException
+     * @throws ContainerExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      */
     public function testInvokeWithRouteResult(): void
     {
@@ -217,18 +246,42 @@ final class DefaultNavigationFactoryTest extends TestCase
         $pageFactory = $this->getMockBuilder(PageFactoryInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $pageFactory->expects(self::exactly(2))
+        $matcher     = self::exactly(2);
+        $pageFactory->expects($matcher)
             ->method('factory')
-            ->withConsecutive([$page1Config], [$page2Config])
-            ->willReturnOnConsecutiveCalls($page1, $page2);
+            ->willReturnCallback(
+                static function (array $options) use ($matcher, $page1Config, $page2Config, $page1, $page2): PageInterface {
+                    match ($matcher->numberOfInvocations()) {
+                        1 => self::assertSame($page1Config, $options),
+                        default => self::assertSame($page2Config, $options),
+                    };
+
+                    return match ($matcher->numberOfInvocations()) {
+                        1 => $page1,
+                        default => $page2,
+                    };
+                },
+            );
 
         $container = $this->getMockBuilder(ContainerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $container->expects(self::exactly(2))
+        $matcher   = self::exactly(2);
+        $container->expects($matcher)
             ->method('get')
-            ->withConsecutive([NavigationConfigInterface::class], [PageFactoryInterface::class])
-            ->willReturnOnConsecutiveCalls($navigationConfig, $pageFactory);
+            ->willReturnCallback(
+                static function (string $id) use ($matcher, $navigationConfig, $pageFactory): mixed {
+                    match ($matcher->numberOfInvocations()) {
+                        1 => self::assertSame(NavigationConfigInterface::class, $id),
+                        default => self::assertSame(PageFactoryInterface::class, $id),
+                    };
+
+                    return match ($matcher->numberOfInvocations()) {
+                        1 => $navigationConfig,
+                        default => $pageFactory,
+                    };
+                },
+            );
 
         assert($container instanceof ContainerInterface);
         $navigation = ($this->factory)($container);
@@ -243,7 +296,9 @@ final class DefaultNavigationFactoryTest extends TestCase
 
     /**
      * @throws Exception
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws InvalidArgumentException
+     * @throws ContainerExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      */
     public function testInvokeWithSubPages(): void
     {
@@ -305,18 +360,42 @@ final class DefaultNavigationFactoryTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
         unset($page2Config['pages']);
-        $pageFactory->expects(self::exactly(2))
+        $matcher = self::exactly(2);
+        $pageFactory->expects($matcher)
             ->method('factory')
-            ->withConsecutive([$page1Config], [$page2Config])
-            ->willReturnOnConsecutiveCalls($page2, $page1);
+            ->willReturnCallback(
+                static function (array $options) use ($matcher, $page1Config, $page2Config, $page1, $page2): PageInterface {
+                    match ($matcher->numberOfInvocations()) {
+                        1 => self::assertSame($page1Config, $options),
+                        default => self::assertSame($page2Config, $options),
+                    };
+
+                    return match ($matcher->numberOfInvocations()) {
+                        1 => $page2,
+                        default => $page1,
+                    };
+                },
+            );
 
         $container = $this->getMockBuilder(ContainerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $container->expects(self::exactly(2))
+        $matcher   = self::exactly(2);
+        $container->expects($matcher)
             ->method('get')
-            ->withConsecutive([NavigationConfigInterface::class], [PageFactoryInterface::class])
-            ->willReturnOnConsecutiveCalls($navigationConfig, $pageFactory);
+            ->willReturnCallback(
+                static function (string $id) use ($matcher, $navigationConfig, $pageFactory): mixed {
+                    match ($matcher->numberOfInvocations()) {
+                        1 => self::assertSame(NavigationConfigInterface::class, $id),
+                        default => self::assertSame(PageFactoryInterface::class, $id),
+                    };
+
+                    return match ($matcher->numberOfInvocations()) {
+                        1 => $navigationConfig,
+                        default => $pageFactory,
+                    };
+                },
+            );
 
         assert($container instanceof ContainerInterface);
         $navigation = ($this->factory)($container);

@@ -2,7 +2,7 @@
 /**
  * This file is part of the mimmi20/mezzio-navigation package.
  *
- * Copyright (c) 2020-2021, Thomas Mueller <mimmi20@live.de>
+ * Copyright (c) 2020-2023, Thomas Mueller <mimmi20@live.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,19 +10,24 @@
 
 declare(strict_types = 1);
 
-namespace Mezzio\Navigation;
+namespace Mimmi20\Mezzio\Navigation;
 
 use Countable;
-use Mezzio\Navigation\Page\PageInterface;
+use Mimmi20\Mezzio\Navigation\Exception\InvalidArgumentException;
+use Mimmi20\Mezzio\Navigation\Page\PageInterface;
 use RecursiveIterator;
 
 /**
- * ContainerInterface class for Mezzio\Navigation\Navigation classes.
+ * ContainerInterface class for Mimmi20\Mezzio\Navigation\Navigation classes.
+ *
+ * @extends RecursiveIterator<string, PageInterface>
  */
 interface ContainerInterface extends Countable, RecursiveIterator
 {
     /**
      * Notifies container that the order of pages are updated
+     *
+     * @throws void
      */
     public function notifyOrderUpdated(): void;
 
@@ -33,23 +38,25 @@ interface ContainerInterface extends Countable, RecursiveIterator
      *
      * @param PageInterface $page page to add
      *
-     * @throws Exception\InvalidArgumentException if page is invalid
+     * @throws InvalidArgumentException if page is invalid
      */
     public function addPage(PageInterface $page): void;
 
     /**
      * Adds several pages at once
      *
-     * @param array<PageInterface>|iterable $pages pages to add
+     * @param iterable<PageInterface> $pages pages to add
      *
-     * @throws Exception\InvalidArgumentException
+     * @throws InvalidArgumentException if $pages is not array, Traversable or PageInterface
      */
     public function addPages(iterable $pages): void;
 
     /**
      * Sets pages this container should have, removing existing pages
      *
-     * @param array<PageInterface>|iterable $pages pages to set
+     * @param iterable<PageInterface> $pages pages to set
+     *
+     * @throws InvalidArgumentException
      */
     public function setPages(iterable $pages): void;
 
@@ -57,6 +64,8 @@ interface ContainerInterface extends Countable, RecursiveIterator
      * Returns pages in the container
      *
      * @return array<PageInterface>
+     *
+     * @throws void
      */
     public function getPages(): array;
 
@@ -67,11 +76,15 @@ interface ContainerInterface extends Countable, RecursiveIterator
      * @param bool              $recursive [optional] whether to remove recursively
      *
      * @return bool whether the removal was successful
+     *
+     * @throws void
      */
-    public function removePage($page, bool $recursive = false): bool;
+    public function removePage(int | PageInterface $page, bool $recursive = false): bool;
 
     /**
      * Removes all pages in container
+     *
+     * @throws void
      */
     public function removePages(): void;
 
@@ -82,8 +95,10 @@ interface ContainerInterface extends Countable, RecursiveIterator
      * @param bool              $recursive [optional] whether to search recursively. Default is false.
      *
      * @return bool whether page is in container
+     *
+     * @throws void
      */
-    public function hasPage($page, bool $recursive = false): bool;
+    public function hasPage(int | PageInterface $page, bool $recursive = false): bool;
 
     /**
      * Returns true if container contains any pages
@@ -91,6 +106,8 @@ interface ContainerInterface extends Countable, RecursiveIterator
      * @param bool $onlyVisible whether to check only visible pages
      *
      * @return bool whether container has any pages
+     *
+     * @throws void
      */
     public function hasPages(bool $onlyVisible = false): bool;
 
@@ -101,8 +118,10 @@ interface ContainerInterface extends Countable, RecursiveIterator
      * @param mixed  $value    value to match property against
      *
      * @return PageInterface|null matching page or null
+     *
+     * @throws InvalidArgumentException
      */
-    public function findOneBy(string $property, $value): ?PageInterface;
+    public function findOneBy(string $property, mixed $value): PageInterface | null;
 
     /**
      * Returns all child pages matching $property == $value, or an empty array
@@ -112,13 +131,17 @@ interface ContainerInterface extends Countable, RecursiveIterator
      * @param mixed  $value    value to match property against
      *
      * @return array<PageInterface>
+     *
+     * @throws InvalidArgumentException
      */
-    public function findAllBy(string $property, $value): array;
+    public function findAllBy(string $property, mixed $value): array;
 
     /**
      * Returns an array representation of all pages in container
      *
-     * @return array<int, array<int, array<string, string>|bool|float|int|string|null>>
+     * @return array<int<0, max>, array<int, mixed>>
+     *
+     * @throws void
      */
     public function toArray(): array;
 }
