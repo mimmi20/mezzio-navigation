@@ -29,7 +29,7 @@ final class NavigationConfig implements NavigationConfigInterface
     private ServerRequestInterface | null $request       = null;
     private AuthorizationInterface | null $authorization = null;
 
-    /** @var array<int|string, array<string>>|null */
+    /** @var array<array<string>>|null */
     private array | null $pages = null;
 
     /** @throws void */
@@ -93,7 +93,7 @@ final class NavigationConfig implements NavigationConfigInterface
     }
 
     /**
-     * @return array<int|string, array<string, array<array<string>|string>>>|null
+     * @return array<array<string>>|null
      *
      * @throws void
      */
@@ -103,7 +103,7 @@ final class NavigationConfig implements NavigationConfigInterface
     }
 
     /**
-     * @param array<int|string, array<string>> $pages
+     * @param array<array<string>> $pages
      *
      * @throws void
      */

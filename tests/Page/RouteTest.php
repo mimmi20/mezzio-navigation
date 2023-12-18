@@ -480,10 +480,7 @@ final class RouteTest extends TestCase
         self::assertSame($parent2, $this->page->getParent());
     }
 
-    /**
-     * @throws Exception
-     * @throws InvalidArgumentException
-     */
+    /** @throws Exception */
     public function testSetOrder(): void
     {
         $order = 42;

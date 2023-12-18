@@ -12,9 +12,11 @@ declare(strict_types = 1);
 
 namespace Mimmi20\Mezzio\Navigation\Exception;
 
+use Throwable;
+
 /**
  * Navigation exception
  */
-interface ExceptionInterface
+interface ExceptionInterface extends Throwable
 {
 }

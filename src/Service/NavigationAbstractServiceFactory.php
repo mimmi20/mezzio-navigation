@@ -13,7 +13,6 @@ declare(strict_types = 1);
 namespace Mimmi20\Mezzio\Navigation\Service;
 
 use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
-use Laminas\ServiceManager\ServiceLocatorInterface;
 use Mimmi20\Mezzio\Navigation\Config\NavigationConfigInterface;
 use Mimmi20\Mezzio\Navigation\Exception\InvalidArgumentException;
 use Mimmi20\Mezzio\Navigation\Navigation;
@@ -47,6 +46,7 @@ final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
      *
      * @throws ContainerExceptionInterface
      * @throws InvalidArgumentException
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
@@ -81,40 +81,6 @@ final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
         assert($config instanceof NavigationConfigInterface);
 
         return $this->hasNamedConfig($requestedName, $config);
-    }
-
-    /**
-     * Determine if we can create a service with name
-     *
-     * @param string $name
-     * @param string $requestedName
-     *
-     * @throws ContainerExceptionInterface
-     *
-     * @codeCoverageIgnore
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
-     */
-    public function canCreateServiceWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName): bool
-    {
-        return $this->canCreate($serviceLocator, $requestedName);
-    }
-
-    /**
-     * Create service with name
-     *
-     * @param string $name
-     * @param string $requestedName
-     *
-     * @throws void
-     *
-     * @codeCoverageIgnore
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
-     * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
-     */
-    public function createServiceWithName(ServiceLocatorInterface $serviceLocator, $name, $requestedName): Navigation
-    {
-        return $this($serviceLocator, $requestedName);
     }
 
     /**
