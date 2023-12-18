@@ -15,7 +15,6 @@ namespace Mimmi20\Mezzio\Navigation\Page;
 use Mimmi20\Mezzio\Navigation\ContainerInterface;
 use Mimmi20\Mezzio\Navigation\ContainerTrait;
 use Mimmi20\Mezzio\Navigation\Exception;
-use Traversable;
 
 use function array_keys;
 use function array_merge;
@@ -84,7 +83,7 @@ trait PageTrait
      *
      * @see http://www.w3.org/TR/html4/struct/links.html#h-12.3.1
      *
-     * @var array<string, array<string, string>|ContainerInterface|PageInterface|string|Traversable>
+     * @var array<ContainerInterface<PageInterface>|iterable<string>|PageInterface|string>
      */
     private array $rel = [];
 
@@ -93,7 +92,7 @@ trait PageTrait
      *
      * @see http://www.w3.org/TR/html4/struct/links.html#h-12.3.1
      *
-     * @var array<string, array<string, string>|ContainerInterface|PageInterface|string|Traversable>
+     * @var array<ContainerInterface<PageInterface>|iterable<string>|PageInterface|string>
      */
     private array $rev = [];
 
@@ -134,18 +133,20 @@ trait PageTrait
 
     /**
      * Parent container
+     *
+     * @var ContainerInterface<PageInterface>|null
      */
     private ContainerInterface | null $parent = null;
 
     /**
      * Custom page properties, used by __set(), __get() and __isset()
      *
-     * @var array<string, array<string, string>|bool|float|int|iterable|string|null>
+     * @var array<string, bool|ContainerInterface<PageInterface>|float|int|iterable<string, (array<string>|string)>|PageInterface|string|null>
      */
     private array $properties = [];
 
     /**
-     * @param array<string>|iterable|null $options [optional] page options. Default is null, which should set defaults.
+     * @param iterable<string, array<string>|bool|string|null>|null $options [optional] page options. Default is null, which should set defaults.
      *
      * @throws Exception\InvalidArgumentException if invalid options are given
      */
@@ -165,8 +166,8 @@ trait PageTrait
      *
      * Magic overload for enabling <code>$page->propname = $value</code>.
      *
-     * @param string                                                                                               $name  property name
-     * @param bool|ContainerInterface|float|int|iterable<string, (array<string>|string)>|PageInterface|string|null $value value to set
+     * @param string                                                                                                              $name  property name
+     * @param bool|ContainerInterface<PageInterface>|float|int|iterable<string, (array<string>|string)>|PageInterface|string|null $value value to set
      *
      * @throws Exception\InvalidArgumentException if property name is invalid
      */
@@ -184,7 +185,7 @@ trait PageTrait
      *
      * @param string $name property name
      *
-     * @return bool|ContainerInterface|float|int|iterable<string, (array<string>|string)>|PageInterface|string|null property value or null
+     * @return bool|ContainerInterface<PageInterface>|float|int|iterable<string, (array<string>|string)>|PageInterface|string|null property value or null
      *
      * @throws Exception\InvalidArgumentException if property name is invalid
      */
@@ -271,7 +272,7 @@ trait PageTrait
      * corresponds to setTarget(), and the option 'reset_params' corresponds to
      * the method setResetParams().
      *
-     * @param array<string>|iterable $options associative array of options to set
+     * @param iterable<string, array<string>|bool|string|null> $options associative array of options to set
      *
      * @throws Exception\InvalidArgumentException if invalid options are given
      */
@@ -462,7 +463,7 @@ trait PageTrait
      * prev, next, help, etc), and the value is a mixed value that could somehow
      * be considered a page.
      *
-     * @param iterable<int|string, ContainerInterface|iterable<string, string>|PageInterface|string>|null $relations [optional] an associative array of forward links to other pages
+     * @param iterable<ContainerInterface<PageInterface>|iterable<string>|PageInterface|string>|null $relations [optional] an associative array of forward links to other pages
      *
      * @throws void
      */
@@ -494,7 +495,7 @@ trait PageTrait
      * @param string|null $relation [optional] name of relation to return. If not
      *                              given, all relations will be returned.
      *
-     * @return ContainerInterface|iterable<int|string, array<string, string>|ContainerInterface|PageInterface|string|Traversable>|PageInterface|string|null an array of relations. If $relation is not
+     * @return ContainerInterface<PageInterface>|iterable<ContainerInterface<PageInterface>|iterable<string>|PageInterface|string>|PageInterface|string|null an array of relations. If $relation is not
      *                           specified, all relations will be returned in
      *                           an associative array.
      *
@@ -518,7 +519,7 @@ trait PageTrait
      * prev, next, help, etc), and the value is a mixed value that could somehow
      * be considered a page.
      *
-     * @param iterable<int|string, ContainerInterface|iterable<string, string>|PageInterface|string>|null $relations [optional] an associative array of reverse links to other pages
+     * @param iterable<ContainerInterface<PageInterface>|iterable<string>|PageInterface|string>|null $relations [optional] an associative array of reverse links to other pages
      *
      * @throws void
      */
@@ -550,7 +551,7 @@ trait PageTrait
      * @param string|null $relation [optional] name of relation to return. If not
      *                              given, all relations will be returned.
      *
-     * @return ContainerInterface|iterable<int|string, ContainerInterface|iterable<string, string>|PageInterface|string>|PageInterface|string|null an array of relations. If $relation is not
+     * @return ContainerInterface<PageInterface>|iterable<ContainerInterface<PageInterface>|iterable<string>|PageInterface|string>|PageInterface|string|null an array of relations. If $relation is not
      *                           specified, all relations will be returned in
      *                           an associative array.
      *
@@ -569,7 +570,7 @@ trait PageTrait
     /**
      * Sets parent container
      *
-     * @param ContainerInterface|null $parent [optional] new parent to set.
+     * @param ContainerInterface<PageInterface>|null $parent [optional] new parent to set.
      *                                        Default is null which will set no parent.
      *
      * @throws Exception\InvalidArgumentException
@@ -604,7 +605,7 @@ trait PageTrait
     /**
      * Returns parent container
      *
-     * @return ContainerInterface|null parent container or null
+     * @return ContainerInterface<PageInterface>|null parent container or null
      *
      * @throws void
      */
@@ -620,7 +621,7 @@ trait PageTrait
      *                               Default is null, which sets no
      *                               specific order.
      *
-     * @throws Exception\InvalidArgumentException if order is not integer or null
+     * @throws void
      */
     public function setOrder(int | float | string | null $order = null): void
     {
@@ -874,8 +875,8 @@ trait PageTrait
      * If the given property is native (id, class, title, etc), the matching
      * set method will be used. Otherwise, it will be set as a custom property.
      *
-     * @param string                                                                                               $property property name
-     * @param bool|ContainerInterface|float|int|iterable<string, (array<string>|string)>|PageInterface|string|null $value    value to set
+     * @param string                                                                                                              $property property name
+     * @param bool|ContainerInterface<PageInterface>|float|int|iterable<string, (array<string>|string)>|PageInterface|string|null $value    value to set
      *
      * @throws Exception\InvalidArgumentException if property name is invalid
      */
@@ -907,7 +908,7 @@ trait PageTrait
      *
      * @param string $property property name
      *
-     * @return bool|ContainerInterface|float|int|iterable<string, (array<string>|string)>|PageInterface|string|null the property's value or null
+     * @return bool|ContainerInterface<PageInterface>|float|int|iterable<string, (array<string>|string)>|PageInterface|string|null the property's value or null
      *
      * @throws Exception\InvalidArgumentException if property name is invalid
      */
@@ -934,32 +935,28 @@ trait PageTrait
     /**
      * Adds a forward relation to the page
      *
-     * @param string                                                                    $relation relation name (e.g. alternate, glossary,
-     *                                                                                            canonical, etc)
-     * @param array<string, string>|ContainerInterface|PageInterface|string|Traversable $value    value to set for relation
+     * @param string                                                                  $relation relation name (e.g. alternate, glossary,
+     *                                                                                          canonical, etc)
+     * @param ContainerInterface<PageInterface>|iterable<string>|PageInterface|string $value    value to set for relation
      *
      * @throws void
      */
-    public function addRel(
-        string $relation,
-        array | ContainerInterface | PageInterface | string | Traversable $value,
-    ): void {
+    public function addRel(string $relation, iterable | ContainerInterface | PageInterface | string $value): void
+    {
         $this->rel[$relation] = $value;
     }
 
     /**
      * Adds a reverse relation to the page
      *
-     * @param string                                                                    $relation relation name (e.g. alternate, glossary,
-     *                                                                                            canonical, etc)
-     * @param array<string, string>|ContainerInterface|PageInterface|string|Traversable $value    value to set for relation
+     * @param string                                                                  $relation relation name (e.g. alternate, glossary,
+     *                                                                                          canonical, etc)
+     * @param ContainerInterface<PageInterface>|iterable<string>|PageInterface|string $value    value to set for relation
      *
      * @throws void
      */
-    public function addRev(
-        string $relation,
-        array | ContainerInterface | PageInterface | string | Traversable $value,
-    ): void {
+    public function addRev(string $relation, iterable | ContainerInterface | PageInterface | string $value): void
+    {
         $this->rev[$relation] = $value;
     }
 
@@ -998,7 +995,7 @@ trait PageTrait
     /**
      * Returns an array containing the defined forward relations
      *
-     * @return array<string> defined forward relations
+     * @return array<int, (int|string)> defined forward relations
      *
      * @throws void
      */
@@ -1010,7 +1007,7 @@ trait PageTrait
     /**
      * Returns an array containing the defined reverse relations
      *
-     * @return array<string> defined reverse relations
+     * @return array<int, (int|string)> defined reverse relations
      *
      * @throws void
      */
@@ -1022,7 +1019,7 @@ trait PageTrait
     /**
      * Returns custom properties as an array
      *
-     * @return array<string, array<string, string>|bool|float|int|iterable|string|null> an array containing custom properties
+     * @return array<string, bool|ContainerInterface<PageInterface>|float|int|iterable<string, (array<string>|string)>|PageInterface|string|null> an array containing custom properties
      *
      * @throws void
      */
@@ -1046,7 +1043,7 @@ trait PageTrait
     /**
      * Returns an array representation of the page
      *
-     * @return array<string, array<string, string>|bool|float|int|iterable|string|null> associative array containing all page properties
+     * @return array<mixed> associative array containing all page properties
      *
      * @throws void
      */

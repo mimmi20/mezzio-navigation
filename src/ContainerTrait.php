@@ -371,7 +371,7 @@ trait ContainerTrait
     /**
      * Returns an array representation of all pages in container
      *
-     * @return array<int<0, max>, array<int, mixed>>
+     * @return array<mixed>
      *
      * @throws void
      */

@@ -14,10 +14,11 @@ namespace Mimmi20\Mezzio\Navigation\Page;
 
 use Mimmi20\Mezzio\Navigation\ContainerInterface;
 use Mimmi20\Mezzio\Navigation\Exception;
-use Traversable;
 
 /**
  * Interface for Mimmi20\Mezzio\Navigation\Page pages
+ *
+ * @extends ContainerInterface<PageInterface>
  */
 interface PageInterface extends ContainerInterface
 {
@@ -29,7 +30,7 @@ interface PageInterface extends ContainerInterface
      * corresponds to setTarget(), and the option 'reset_params' corresponds to
      * the method setResetParams().
      *
-     * @param iterable<string> $options associative array of options to set
+     * @param iterable<string, array<string>|bool|string> $options associative array of options to set
      *
      * @throws Exception\InvalidArgumentException if invalid options are given
      */
@@ -174,7 +175,7 @@ interface PageInterface extends ContainerInterface
      * prev, next, help, etc), and the value is a mixed value that could somehow
      * be considered a page.
      *
-     * @param iterable<int|string, ContainerInterface|iterable<string, string>|PageInterface|string>|null $relations [optional] an associative array of
+     * @param iterable<ContainerInterface<PageInterface>|iterable<string>|PageInterface|string>|null $relations [optional] an associative array of
      *                                                                                                                            forward links to other pages
      *
      * @throws void
@@ -192,7 +193,7 @@ interface PageInterface extends ContainerInterface
      * @param string|null $relation [optional] name of relation to return. If not
      *                              given, all relations will be returned.
      *
-     * @return ContainerInterface|iterable<int|string, ContainerInterface|iterable<string, string>|PageInterface|string>|PageInterface|string|null an array of relations. If $relation is not
+     * @return ContainerInterface<PageInterface>|iterable<ContainerInterface<PageInterface>|iterable<string>|PageInterface|string>|PageInterface|string|null an array of relations. If $relation is not
      *                           specified, all relations will be returned in
      *                           an associative array.
      *
@@ -208,7 +209,7 @@ interface PageInterface extends ContainerInterface
      * prev, next, help, etc), and the value is a mixed value that could somehow
      * be considered a page.
      *
-     * @param iterable<int|string, ContainerInterface|iterable<string, string>|PageInterface|string>|null $relations [optional] an associative array of
+     * @param iterable<ContainerInterface<PageInterface>|iterable<string>|PageInterface|string>|null $relations [optional] an associative array of
      *                                                                                                                            reverse links to other pages
      *
      * @throws void
@@ -226,7 +227,7 @@ interface PageInterface extends ContainerInterface
      * @param string|null $relation [optional] name of relation to return. If not
      *                              given, all relations will be returned.
      *
-     * @return ContainerInterface|iterable<int|string, ContainerInterface|iterable<string, string>|PageInterface|string>|PageInterface|string|null an array of relations. If $relation is not
+     * @return ContainerInterface<PageInterface>|iterable<ContainerInterface<PageInterface>|iterable<string>|PageInterface|string>|PageInterface|string|null an array of relations. If $relation is not
      *                           specified, all relations will be returned in
      *                           an associative array.
      *
@@ -241,7 +242,6 @@ interface PageInterface extends ContainerInterface
      *                               Default is null, which sets no
      *                               specific order.
      *
-     * @throws Exception\InvalidArgumentException if order is not integer or null
      * @throws void
      */
     public function setOrder(int | float | string | null $order = null): void;
@@ -263,7 +263,6 @@ interface PageInterface extends ContainerInterface
      *                         sets no resource.
      *
      * @throws Exception\InvalidArgumentException if $resource is invalid
-     * @throws void
      */
     public function setResource(string $resource): void;
 
@@ -412,7 +411,7 @@ interface PageInterface extends ContainerInterface
     /**
      * Sets parent container
      *
-     * @param ContainerInterface|null $parent [optional] new parent to set.
+     * @param ContainerInterface<PageInterface>|null $parent [optional] new parent to set.
      *                                        Default is null which will set no parent.
      *
      * @throws Exception\InvalidArgumentException
@@ -422,7 +421,7 @@ interface PageInterface extends ContainerInterface
     /**
      * Returns parent container
      *
-     * @return ContainerInterface|null parent container or null
+     * @return ContainerInterface<PageInterface>|null parent container or null
      *
      * @throws void
      */
@@ -434,8 +433,8 @@ interface PageInterface extends ContainerInterface
      * If the given property is native (id, class, title, etc), the matching
      * set method will be used. Otherwise, it will be set as a custom property.
      *
-     * @param string                                              $property property name
-     * @param bool|float|int|iterable<string, string>|string|null $value    value to set
+     * @param string                                                                                                              $property property name
+     * @param bool|ContainerInterface<PageInterface>|float|int|iterable<string, (array<string>|string)>|PageInterface|string|null $value    value to set
      *
      * @throws Exception\InvalidArgumentException if property name is invalid
      */
@@ -450,7 +449,7 @@ interface PageInterface extends ContainerInterface
      *
      * @param string $property property name
      *
-     * @return bool|float|int|iterable<string, string>|string|null the property's value or null
+     * @return bool|ContainerInterface<PageInterface>|float|int|iterable<string, (array<string>|string)>|PageInterface|string|null the property's value or null
      *
      * @throws Exception\InvalidArgumentException if property name is invalid
      */
@@ -459,24 +458,22 @@ interface PageInterface extends ContainerInterface
     /**
      * Adds a forward relation to the page
      *
-     * @param string                                                                    $relation relation name (e.g. alternate, glossary,
-     *                                                                                            canonical, etc)
-     * @param array<string, string>|ContainerInterface|PageInterface|string|Traversable $value    value to set for relation
+     * @param string                                                                  $relation relation name (e.g. alternate, glossary, canonical, etc)
+     * @param ContainerInterface<PageInterface>|iterable<string>|PageInterface|string $value    value to set for relation
      *
      * @throws void
      */
-    public function addRel(string $relation, array | ContainerInterface | self | string | Traversable $value): void;
+    public function addRel(string $relation, iterable | ContainerInterface | self | string $value): void;
 
     /**
      * Adds a reverse relation to the page
      *
-     * @param string                                                                    $relation relation name (e.g. alternate, glossary,
-     *                                                                                            canonical, etc)
-     * @param array<string, string>|ContainerInterface|PageInterface|string|Traversable $value    value to set for relation
+     * @param string                                                                  $relation relation name (e.g. alternate, glossary, canonical, etc)
+     * @param ContainerInterface<PageInterface>|iterable<string>|PageInterface|string $value    value to set for relation
      *
      * @throws void
      */
-    public function addRev(string $relation, array | ContainerInterface | self | string | Traversable $value): void;
+    public function addRev(string $relation, iterable | ContainerInterface | self | string $value): void;
 
     /**
      * Removes a forward relation from the page
@@ -499,7 +496,7 @@ interface PageInterface extends ContainerInterface
     /**
      * Returns an array containing the defined forward relations
      *
-     * @return array<string> defined forward relations
+     * @return array<int, (int|string)> defined forward relations
      *
      * @throws void
      */
@@ -508,7 +505,7 @@ interface PageInterface extends ContainerInterface
     /**
      * Returns an array containing the defined reverse relations
      *
-     * @return array<string> defined reverse relations
+     * @return array<int, (int|string)> defined reverse relations
      *
      * @throws void
      */
@@ -517,7 +514,7 @@ interface PageInterface extends ContainerInterface
     /**
      * Returns custom properties as an array
      *
-     * @return array<string, array<string, string>|bool|float|int|iterable|string|null> an array containing custom properties
+     * @return array<string, bool|ContainerInterface<PageInterface>|float|int|iterable<string, (array<string>|string)>|PageInterface|string|null> an array containing custom properties
      *
      * @throws void
      */

@@ -20,7 +20,8 @@ use RecursiveIterator;
 /**
  * ContainerInterface class for Mimmi20\Mezzio\Navigation\Navigation classes.
  *
- * @extends RecursiveIterator<string, PageInterface>
+ * @template TPage of PageInterface
+ * @extends RecursiveIterator<string, TPage>
  */
 interface ContainerInterface extends Countable, RecursiveIterator
 {
@@ -139,7 +140,7 @@ interface ContainerInterface extends Countable, RecursiveIterator
     /**
      * Returns an array representation of all pages in container
      *
-     * @return array<int<0, max>, array<int, mixed>>
+     * @return array<mixed>
      *
      * @throws void
      */

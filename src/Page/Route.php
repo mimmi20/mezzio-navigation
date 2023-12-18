@@ -373,7 +373,7 @@ final class Route implements RouteInterface
     /**
      * Returns an array representation of the page
      *
-     * @return array<string, array<string, string>|bool|float|int|iterable|RouteResult|RouterInterface|string|null> associative array containing all page properties
+     * @return array<mixed> associative array containing all page properties
      *
      * @throws void
      */

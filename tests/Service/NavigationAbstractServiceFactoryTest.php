@@ -141,6 +141,7 @@ final class NavigationAbstractServiceFactoryTest extends TestCase
      * @throws Exception
      * @throws InvalidArgumentException
      * @throws ContainerExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      */
     public function testInvoke(): void
     {
@@ -197,6 +198,7 @@ final class NavigationAbstractServiceFactoryTest extends TestCase
      * @throws Exception
      * @throws InvalidArgumentException
      * @throws ContainerExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      */
     public function testInvokeLowercased(): void
     {
@@ -253,6 +255,7 @@ final class NavigationAbstractServiceFactoryTest extends TestCase
      * @throws Exception
      * @throws InvalidArgumentException
      * @throws ContainerExceptionInterface
+     * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      */
     public function testCanNotInvoleWithoutConfig(): void
     {

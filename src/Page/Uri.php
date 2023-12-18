@@ -126,7 +126,7 @@ final class Uri implements UriInterface
     /**
      * Returns an array representation of the page
      *
-     * @return array<string, array<string, string>|bool|float|int|iterable|string|null>
+     * @return array<mixed>
      *
      * @throws void
      */
