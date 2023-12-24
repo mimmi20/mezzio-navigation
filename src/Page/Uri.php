@@ -84,11 +84,15 @@ final class Uri implements UriInterface
         $fragment = $this->getFragment();
 
         if ($fragment !== null) {
-            if (mb_substr($uri, -1) === '#') {
-                return $uri . $fragment;
+            if (mb_substr($fragment, 0, 1) !== '#') {
+                $fragment = '#' . $fragment;
             }
 
-            return $uri . '#' . $fragment;
+            if (mb_substr($uri, -1) === '#') {
+                return mb_substr($uri, 0, -1) . $fragment;
+            }
+
+            return $uri . $fragment;
         }
 
         return $uri;
