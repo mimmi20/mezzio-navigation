@@ -10,7 +10,7 @@
 [![Average time to resolve an issue](https://isitmaintained.com/badge/resolution/mimmi20/mezzio-navigation.svg)](https://isitmaintained.com/project/mimmi20/mezzio-navigation "Average time to resolve an issue")
 [![Percentage of issues still open](https://isitmaintained.com/badge/open/mimmi20/mezzio-navigation.svg)](https://isitmaintained.com/project/mimmi20/mezzio-navigation "Percentage of issues still open")
 
-# Introduction
+## Introduction
 
 This component provides a component for managing trees of pointers to web pages.
 Simply put: It can be used for creating menus, breadcrumbs, links, and sitemaps,
@@ -25,7 +25,7 @@ You can install the mezzio-navigation library with
 [Composer](https://getcomposer.org):
 
 ```bash
-$ composer require mimmi20/mezzio-navigation
+composer require mimmi20/mezzio-navigation
 ```
 
 ## Pages and Containers
@@ -72,17 +72,17 @@ We provide one rendering libary.
 The renderer is installable via [Composer](https://getcomposer.org):
 
 ```bash
-$ composer require mimmi20/mezzio-navigation-laminasviewrenderer
+composer require mimmi20/mezzio-navigation-laminasviewrenderer
 ```
 
-# Containers
+## Containers
 
 Containers have methods for adding, retrieving, deleting, and iterating pages.
 Containers implement the [SPL](http://php.net/spl) interfaces
 `RecursiveIterator` and `Countable`, meaning that a container can be iterated
 using the SPL `RecursiveIteratorIterator` class.
 
-## Creating containers
+### Creating containers
 
 `Mezzio\Navigation\ContainerInterface` can not be instantiated directly. Use
 `Mezzio\Navigation\Navigation` if you want to instantiate a container.
@@ -93,7 +93,7 @@ via options will eventually be passed to the `addPage()` method of the container
 class, which means that each element in the options can be also be an array,
 Traversable object, or a `Mezzio\Navigation\Page\PageInterface` instance.
 
-### Creating a container using an array
+#### Creating a container using an array
 
 > Unlike in [Laminas Navigation](https://github.com/laminas/laminas-navigation) it is not possible
 > to add an arrray config to Mezzio Navigation directly. Converting an array config into a list of
@@ -126,7 +126,7 @@ $navigationConfig->setPages([
 $container = $serviceLocator->get(Navigation::class);
 ```
 
-## Adding pages
+### Adding pages
 
 Adding pages to a container can be done with the methods `addPage()`,
 `addPages()`, or `setPages()`.  See examples below for explanation.
@@ -162,7 +162,7 @@ $container->addPages($pages);
 $container->setPages($pages);
 ```
 
-## Removing pages
+### Removing pages
 
 Removing pages can be done with `removePage()` or `removePages()`.
 `removePage()` accepts an instance of a page or an integer. Integer arguments
@@ -204,7 +204,7 @@ $container->removePage(200);    // removes Page 2
 $container->removePages();      // removes all pages
 ```
 
-### Remove a page recursively
+#### Remove a page recursively
 
 Removing a page recursively can be done with the second parameter of
 the `removePage()` method, which expects a `boolean` value.
@@ -242,7 +242,7 @@ $container->removePage(
 );
 ```
 
-## Finding pages
+### Finding pages
 
 Containers have two finder methods for retrieving pages. Each recursively
 searches the container testing for properties with values that match the one
@@ -355,7 +355,7 @@ $found = $container->findAllByfoo('bar');
 $found = $container->findAllByController('index');
 ```
 
-## Iterating containers
+### Iterating containers
 
 `Mezzio\Navigation\ContainerInterface` extends `RecursiveIterator`.  iterate a
 container recursively, use the `RecursiveIteratorIterator` class.
@@ -412,9 +412,9 @@ foreach ($it as $page) {
 }
 ```
 
-## Other operations
+### Other operations
 
-### hasPage
+#### hasPage
 
 ```php
 hasPage(PageInterface $page) : bool
@@ -422,7 +422,7 @@ hasPage(PageInterface $page) : bool
 
 Check if the container has the given page.
 
-### hasPages
+#### hasPages
 
 ```php
 hasPages() : bool
@@ -431,7 +431,7 @@ hasPages() : bool
 Checks if there are any pages in the container, and is equivalent to
 `count($container) > 0`.
 
-### toArray
+#### toArray
 
 ```php
 toArray() : array
@@ -555,7 +555,7 @@ array(2) {
 */
 ```
 
-# Pages
+## Pages
 
 mezzio-navigation ships with two page types:
 
@@ -568,11 +568,11 @@ property `uri`, which give you the full flexibility to link off-site pages or do
 other things with the generated links (e.g. a URI that turns into `<a href="#">foo<a>`).
 
 > Route Pages replace the MVC Pages from [Laminas Navigation](https://github.com/laminas/laminas-navigation).
-
+> 
 > Unlike in [Laminas Navigation](https://github.com/laminas/laminas-navigation) the options `controller` and `action`
 > are not supported, 
 
-## Common page features
+### Common page features
 
 All page classes must extend `Mezzio\Navigation\Page\PageInterface`, and will thus
 share a common set of features and properties. Most notably, they share the
@@ -587,23 +587,23 @@ Read more on extending `Mezzio\Navigation\Page\PageInterface` in the section
 
 ### Common page options
 
-Key      | Type                                                            | Default | Description
--------- | --------------------------------------------------------------- | ------- | -----------
-label    | `string`                                                        | `NULL`  | A page label, such as 'Home' or 'Blog'.
-fragment | `string\|null`                                                  | `NULL`  | A fragment identifier (anchor identifier) pointing to an anchor within a resource that is subordinate to another, primary resource. The fragment identifier introduced by a hash mark "#". Example: ``http://www.example.org/foo.html#bar`` (*bar* is the fragment identifier)
-id       | `string\|integer`                                               | `NULL`  | An *id* tag/attribute that may be used when rendering the page, typically in an anchor element.
-class    | `string`                                                        | `NULL`  | A *CSS* class that may be used when rendering the page, typically in an anchor element.
-liClass  | `string`                                                        | `NULL`  | A *CSS* class that may be used when rendering the page, typically in an li element around the anchor element.
-title    | `string`                                                        | `NULL`  | A short page description, typically for using as the title attribute in an anchor.
-target   | `string`                                                        | `NULL`  | Specifies a target that may be used for the page, typically in an anchor element.
-rel      | `array`                                                         | `[]`    | Specifies forward relations for the page. Each element in the array is a key-value pair, where the key designates the relation/link type, and the value is a pointer to the linked page. An example of a key-value pair is ``'alternate' => 'format/plain.html'``. To allow full flexibility, there are no restrictions on relation values. The value does not have to be a string. Read more about ``rel`` and ``rev`` in the section on the Links helper.
-rev      | `array`                                                         | `[]`    | Specifies reverse relations for the page. Works exactly like rel.
-order    | `string\|integer\|null`                                         | `NULL`  | Works like order for elements in ``Laminas\Form``. If specified, the page will be iterated in a specific order, meaning you can force a page to be iterated before others by setting the order attribute to a low number, e.g. -100. If a String is given, it must parse to a valid int. If ``NULL`` is given, it will be reset, meaning the order in which the page was added to the container will be used.
-resource | `string\|Laminas\Permissions\Acl\Resource\ResourceInterface\|null` | `NULL`  | ACL resource to associate with the page. Read more in the section on ACL integration in view helpers.
-privilege| `string\|null`                                                  | `NULL`  | ACL privilege to associate with the page. Read more in the section on ACL integration in view helpers.
-active   | `boolean`                                                       | `FALSE` | Whether the page should be considered active for the current request. If active is FALSE or not given, MVC pages will check its properties against the request object upon calling ``$page->isActive()``.
-visible  | `boolean`                                                       | `TRUE`  | Whether page should be visible for the user, or just be a part of the structure. Invisible pages are skipped by view helpers.
-pages    | `array\|Travsersable\|null`                                     | `NULL`  | Child pages of the page. This could be an array or `Traversable` object containing either page options that can be passed to the `factory()` method, `PageInterface` instances, or a mixture of both.
+| Key       | Type                                                            | Default | Description|
+|-----------| --------------------------------------------------------------- | ------- | -----------|
+| label     | `string`                                                        | `NULL`  | A page label, such as 'Home' or 'Blog'.|
+| fragment  | `string\|null`                                                  | `NULL`  | A fragment identifier (anchor identifier) pointing to an anchor within a resource that is subordinate to another, primary resource. The fragment identifier introduced by a hash mark "#". Example: ``http://www.example.org/foo.html#bar`` (*bar* is the fragment identifier)|
+| id        | `string\|integer`                                               | `NULL`  | An *id* tag/attribute that may be used when rendering the page, typically in an anchor element.|
+| class     | `string`                                                        | `NULL`  | A *CSS* class that may be used when rendering the page, typically in an anchor element.|
+| liClass   | `string`                                                        | `NULL`  | A *CSS* class that may be used when rendering the page, typically in an li element around the anchor element.|
+| title     | `string`                                                        | `NULL`  | A short page description, typically for using as the title attribute in an anchor.|
+| target    | `string`                                                        | `NULL`  | Specifies a target that may be used for the page, typically in an anchor element.|
+| rel       | `array`                                                         | `[]`    | Specifies forward relations for the page. Each element in the array is a key-value pair, where the key designates the relation/link type, and the value is a pointer to the linked page. An example of a key-value pair is ``'alternate' => 'format/plain.html'``. To allow full flexibility, there are no restrictions on relation values. The value does not have to be a string. Read more about ``rel`` and ``rev`` in the section on the Links helper.|
+| rev       | `array`                                                         | `[]`    | Specifies reverse relations for the page. Works exactly like rel.|
+| order     | `string\|integer\|null`                                         | `NULL`  | Works like order for elements in ``Laminas\Form``. If specified, the page will be iterated in a specific order, meaning you can force a page to be iterated before others by setting the order attribute to a low number, e.g. -100. If a String is given, it must parse to a valid int. If ``NULL`` is given, it will be reset, meaning the order in which the page was added to the container will be used.|
+| resource  | `string\|Laminas\Permissions\Acl\Resource\ResourceInterface\|null` | `NULL`  | ACL resource to associate with the page. Read more in the section on ACL integration in view helpers.|
+| privilege | `string\|null`                                                  | `NULL`  | ACL privilege to associate with the page. Read more in the section on ACL integration in view helpers.|
+| active    | `boolean`                                                       | `FALSE` | Whether the page should be considered active for the current request. If active is FALSE or not given, MVC pages will check its properties against the request object upon calling ``$page->isActive()``.|
+| visible   | `boolean`                                                       | `TRUE`  | Whether page should be visible for the user, or just be a part of the structure. Invisible pages are skipped by view helpers.|
+| pages     | `array\|Travsersable\|null`                                     | `NULL`  | Child pages of the page. This could be an array or `Traversable` object containing either page options that can be passed to the `factory()` method, `PageInterface` instances, or a mixture of both.|
 
 > #### Custom properties
 >
@@ -616,7 +616,7 @@ pages    | `array\|Travsersable\|null`                                     | `NU
 >
 > Both native and custom properties can be set using `$page->set($name, $value)`
 > and retrieved using `$page->get($name)`, or by using magic methods.
-
+> 
 > The following example demonstrates custom properties:
 >
 > ```php
@@ -631,14 +631,14 @@ pages    | `array\|Travsersable\|null`                                     | `NU
 > }
 > ```
 
-## Route pages
+### Route pages
 
 Routes can be used with Route pages. If a page has a route, this route will be
 used in `getHref()` to generate `href` attributes, and the `isActive()` method will compare the
 `Mezzio\Router\RouteResult` params with the page's params to determine if the page
 is active.
 
-### useRouteMatch flag
+#### useRouteMatch flag
 
 If you want to re-use any matched route parameters
 when generating a link, you can do so via the `useRouteMatch` flag. This is
@@ -646,18 +646,18 @@ particularly useful when creating segment routes that include the currently
 selected language or locale as an initial segment, as it ensures the links
 generated all include the matched value.
 
-### Route page options
+#### Route page options
 
-Key          | Type                              | Default | Description
------------- | --------------------------------- | ------- | -----------
-params       | `array`                           | `[]`    | User params to use when generating `href` to the page.
-route        | `string`                          | `NULL`  | Route name to use when generating `href` to the page.
-routeMatch   | `LMezzio\Router\RouteResult`      | `NULL`  | `RouteInterface` matches used for routing parameters and testing validity.
-useRouteMatch| `boolean`                         | `FALSE` | If true, then the `getHref()` method will use the `routeMatch` parameters to assemble the URI.
-router       | `Mezzio\Router\RouterInterface`   | `NULL`  | Router for assembling URLs.
-query        | `array`                           | `[]`    | Query string arguments to use when generating `href` to page.
+| Key           | Type                              | Default | Description|
+|---------------| --------------------------------- | ------- | -----------|
+| params        | `array`                           | `[]`    | User params to use when generating `href` to the page.|
+| route         | `string`                          | `NULL`  | Route name to use when generating `href` to the page.|
+| routeMatch    | `LMezzio\Router\RouteResult`      | `NULL`  | `RouteInterface` matches used for routing parameters and testing validity.|
+| useRouteMatch | `boolean`                         | `FALSE` | If true, then the `getHref()` method will use the `routeMatch` parameters to assemble the URI.|
+| router        | `Mezzio\Router\RouterInterface`   | `NULL`  | Router for assembling URLs.|
+| query         | `array`                           | `[]`    | Query string arguments to use when generating `href` to page.|
 
-### isActive() determines if page is active
+#### isActive() determines if page is active
 
 This example demonstrates that Route pages determine whether they are active by
 using the params found in the route match object.
@@ -706,7 +706,7 @@ $page = new Page\Route([
 $page->isActive(); // returns false
 ```
 
-## URI Pages
+### URI Pages
 
 Pages of type `Mezzio\Navigation\Page\Uri` can be used to link to pages on other
 domains or sites, or to implement custom logic for the page. In addition to the
@@ -722,13 +722,13 @@ common page options, a URI page takes only one additional option, a `uri`. The
 > `$page->setActive()` or specify the `active` as a page option during
 > instantiation.
 
-### URI page options
+#### URI page options
 
-Key | Type     | Default | Description
---- | -------- | ------- | -----------
-uri | `string` | `NULL`  | URI to page. This can be any string or `NULL`.
+| Key  | Type     | Default | Description|
+|------| -------- | ------- | -----------|
+| uri  | `string` | `NULL`  | URI to page. This can be any string or `NULL`.|
 
-## Creating custom page types
+### Creating custom page types
 
 When implementing `Mezzio\Navigation\Page\PageInterface` and using the `Mezzio\Navigation\Page\PageTrait`, there is usually no need to
 override the constructor or the `setOptions()` method. The page constructor
@@ -741,7 +741,7 @@ method if it exists. If the method does not exist, the option will be set as a
 custom property of the page, and be accessible via `$internalId =
 $page->internal_id;` or `$internalId = $page->get('internal_id');`.
 
-### Basic custom page example
+#### Basic custom page example
 
 The only thing a custom page class needs to implement is the `getHref()` method.
 
@@ -761,7 +761,7 @@ class Page implements PageInterface
 }
 ```
 
-### A custom page with properties
+#### A custom page with properties
 
 When adding properties to an extended page, there is no need to override/modify
 `setOptions()`.
@@ -810,7 +810,7 @@ $page = new Page([
 ]);
 ```
 
-## Creating pages using the page factory
+### Creating pages using the page factory
 
 All pages (also custom classes), can be created using the page factory,
 `Mezzio\Navigation\Page\PageFactory`. The factory accepts either an
@@ -823,7 +823,7 @@ If `type` is given, the factory will assume the value to be the name of the
 class that should be created. If the value is `route` or `uri`, an Route or URI page
 will be created, respectively.
 
-### Creating an Route page using the page factory
+#### Creating an Route page using the page factory
 
 ```php
 use Mimmi20\Mezzio\Navigation\Page\PageInterface;
@@ -841,7 +841,7 @@ $page = (new PageFactory())->factory([
 ]);
 ```
 
-### Creating a URI page using the page factory
+#### Creating a URI page using the page factory
 
 ```php
 use Mimmi20\Mezzio\Navigation\Page\PageInterface;
@@ -872,7 +872,7 @@ $page = (new PageFactory())->factory([
 ]);
 ```
 
-### Creating a custom page type using the page factory
+#### Creating a custom page type using the page factory
 
 To create a custom page type using the factory, use the option `type` to specify
 a class name to instantiate.
@@ -900,9 +900,9 @@ $page = (new PageFactory())->factory([
 ]);
 ```
 
-# Quick Start
+## Quick Start
 
-## Usage in a mezzio-based application
+### Usage in a mezzio-based application
 
 The fastest way to get up and running with mezzio-navigation is:
 
@@ -911,7 +911,7 @@ The fastest way to get up and running with mezzio-navigation is:
   in your application configuration.
 - Render your container using a navigation view helper within your view scripts.
 
-### Register mezzio-navigation as module
+#### Register mezzio-navigation as module
 
 Edit the application configuration file `config/application.config.php`:
 
@@ -927,7 +927,7 @@ return [
 ];
 ```
 
-### Add the NavigationMiddleware to the pipeline
+#### Add the NavigationMiddleware to the pipeline
 
 ```php
 <?php
@@ -940,7 +940,7 @@ return [
 ];
 ```
 
-### Navigation container configuration
+#### Navigation container configuration
 
 Add the container definition to your configuration file, e.g.
 `config/autoload/global.php`:
@@ -976,7 +976,7 @@ return [
 ];
 ```
 
-### Render the navigation
+#### Render the navigation
 
 Mezzio support multiple view renders. 
 
