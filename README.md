@@ -25,7 +25,7 @@ You can install the mezzio-navigation library with
 [Composer](https://getcomposer.org):
 
 ```bash
-$ composer require mimmi20/mezzio-navigation
+composer require mimmi20/mezzio-navigation
 ```
 
 ## Pages and Containers
@@ -568,7 +568,7 @@ property `uri`, which give you the full flexibility to link off-site pages or do
 other things with the generated links (e.g. a URI that turns into `<a href="#">foo<a>`).
 
 > Route Pages replace the MVC Pages from [Laminas Navigation](https://github.com/laminas/laminas-navigation).
-
+> 
 > Unlike in [Laminas Navigation](https://github.com/laminas/laminas-navigation) the options `controller` and `action`
 > are not supported, 
 
@@ -616,7 +616,7 @@ Read more on extending `Mezzio\Navigation\Page\PageInterface` in the section
 >
 > Both native and custom properties can be set using `$page->set($name, $value)`
 > and retrieved using `$page->get($name)`, or by using magic methods.
-
+> 
 > The following example demonstrates custom properties:
 >
 > ```php
