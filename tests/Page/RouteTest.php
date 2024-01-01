@@ -23,7 +23,6 @@ use Mimmi20\Mezzio\Navigation\Exception\OutOfBoundsException;
 use Mimmi20\Mezzio\Navigation\Page\PageInterface;
 use Mimmi20\Mezzio\Navigation\Page\Route;
 use PHPUnit\Framework\Exception;
-use PHPUnit\Framework\SkippedWithMessageException;
 use PHPUnit\Framework\TestCase;
 
 use function assert;
@@ -2154,62 +2153,5 @@ final class RouteTest extends TestCase
         self::assertSame($childPage2, $this->page->current());
         self::assertSame($code2, $this->page->key());
         self::assertTrue($this->page->valid());
-    }
-
-    /**
-     * @ throws \PHPUnit\Framework\Exception
-     * @ throws \Mimmi20\Mezzio\Navigation\Exception\InvalidArgumentException
-     *
-     * @throws SkippedWithMessageException
-     */
-    public function testHasChildren(): never
-    {
-        self::markTestSkipped();
-//        self::assertFalse($this->page->hasChildren());
-//
-//        $code1 = 'code 1';
-//        $code2 = 'code 2';
-//
-//        $childPage1 = $this->getMockBuilder(PageInterface::class)
-//            ->disableOriginalConstructor()
-//            ->getMock();
-//        $childPage1->expects(self::once())
-//            ->method('hashCode')
-//            ->willReturn($code1);
-//        $childPage1->expects(self::exactly(2))
-//            ->method('getOrder')
-//            ->willReturn(1);
-//        $childPage1->expects(self::once())
-//            ->method('setParent')
-//            ->with($this->page);
-//        $childPage1->expects(self::never())
-//            ->method('isVisible');
-//        $childPage1->expects(self::never())
-//            ->method('get');
-//
-//        $childPage2 = $this->getMockBuilder(PageInterface::class)
-//            ->disableOriginalConstructor()
-//            ->getMock();
-//        $childPage2->expects(self::once())
-//            ->method('hashCode')
-//            ->willReturn($code2);
-//        $childPage2->expects(self::exactly(2))
-//            ->method('getOrder')
-//            ->willReturn(null);
-//        $childPage2->expects(self::once())
-//            ->method('setParent')
-//            ->with($this->page);
-//        $childPage2->expects(self::never())
-//            ->method('isVisible');
-//        $childPage2->expects(self::never())
-//            ->method('get');
-//
-//        /* @var PageInterface $childPage1 */
-//        /* @var PageInterface $childPage2 */
-//        $this->page->addPage($childPage1);
-//        $this->page->addPage($childPage2);
-//
-//        self::assertTrue($this->page->hasPages());
-//        self::assertTrue($this->page->hasChildren());
     }
 }

@@ -27,7 +27,6 @@ use function asort;
 use function assert;
 use function count;
 use function current;
-use function is_int;
 use function key;
 use function next;
 use function preg_match;
@@ -201,7 +200,7 @@ trait ContainerTrait
     {
         if ($page instanceof PageInterface) {
             $hash = $page->hashCode();
-        } elseif (is_int($page)) {
+        } else {
             $this->sort();
 
             $hash = array_search($page, $this->index, true);
@@ -209,8 +208,6 @@ trait ContainerTrait
             if (!$hash) {
                 return false;
             }
-        } else {
-            return false;
         }
 
         if (isset($this->pages[$hash])) {
