@@ -27,7 +27,6 @@ use function asort;
 use function assert;
 use function count;
 use function current;
-use function is_int;
 use function key;
 use function next;
 use function preg_match;
