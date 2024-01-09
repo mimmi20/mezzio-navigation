@@ -103,8 +103,7 @@ final class Uri implements UriInterface
      *
      * This method will compare the page properties against the request uri.
      *
-     * @param bool $recursive
-     *                        [optional] whether page should be considered
+     * @param bool $recursive [optional] whether page should be considered
      *                        active if any child pages are active. Default is
      *                        false.
      *
