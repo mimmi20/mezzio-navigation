@@ -919,8 +919,7 @@ Edit the application configuration file `config/application.config.php`:
 <?php
 return [
     'modules' => [
-        'Laminas\Router',
-        'Laminas\Log',
+        'Mezzio\Router',
         'Mezzio\Navigation', // <-- Add this line
         // ...
     ],
@@ -934,10 +933,20 @@ return [
 return [
     'middleware' => [
         'Mezzio\Authentication\AuthenticationMiddleware', // <-- not required
-        'Mezzio\Navigation\NavigationMiddleware', // <-- Add this line
+        'Mimmi20\Mezzio\Navigation\NavigationMiddleware', // <-- Add this line
         // ...
     ],
 ];
+```
+
+If you need the Navigation inside the Layout, and the Layout is used also for the Not-Found-Page, you have to add the Middleware in the Pipeline before the Routing.
+
+```php
+    $app->pipe(\Mimmi20\Mezzio\Navigation\NavigationMiddleware::class);
+
+    // Register the routing middleware in the middleware pipeline.
+    // This middleware registers the Mezzio\Router\RouteResult request attribute.
+    $app->pipe(RouteMiddleware::class);
 ```
 
 #### Navigation container configuration
