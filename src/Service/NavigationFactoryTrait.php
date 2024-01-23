@@ -15,7 +15,6 @@ namespace Mimmi20\Mezzio\Navigation\Service;
 use Mezzio\Router\RouteResult;
 use Mezzio\Router\RouterInterface;
 use Mimmi20\Mezzio\Navigation\Config\NavigationConfigInterface;
-use Mimmi20\Mezzio\Navigation\Exception;
 use Mimmi20\Mezzio\Navigation\Exception\InvalidArgumentException;
 use Mimmi20\Mezzio\Navigation\Navigation;
 use Mimmi20\Mezzio\Navigation\Page\PageFactoryInterface;
@@ -74,7 +73,7 @@ trait NavigationFactoryTrait
             || !array_key_exists($this->configName, $pages)
             || !is_array($pages[$this->configName])
         ) {
-            throw new Exception\InvalidArgumentException(
+            throw new InvalidArgumentException(
                 sprintf(
                     'Failed to find a navigation container by the name "%s"',
                     $this->configName,
