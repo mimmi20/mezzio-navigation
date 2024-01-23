@@ -55,7 +55,7 @@ final class NavigationMiddlewareFactory
      * Create and return a NavigationMiddleware instance.
      *
      * @throws Exception\MissingHelperException   if the UrlHelper service is missing
-     * @throws Exception\InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function __invoke(ContainerInterface $container): NavigationMiddleware
     {
