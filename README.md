@@ -7,8 +7,11 @@
 ## Code Status
 
 [![codecov](https://codecov.io/gh/mimmi20/mezzio-navigation/branch/master/graph/badge.svg)](https://codecov.io/gh/mimmi20/mezzio-navigation)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/3d4958aa28643e3646ec/test_coverage)](https://codeclimate.com/github/mimmi20/mezzio-navigation/test_coverage)
 [![Average time to resolve an issue](https://isitmaintained.com/badge/resolution/mimmi20/mezzio-navigation.svg)](https://isitmaintained.com/project/mimmi20/mezzio-navigation "Average time to resolve an issue")
 [![Percentage of issues still open](https://isitmaintained.com/badge/open/mimmi20/mezzio-navigation.svg)](https://isitmaintained.com/project/mimmi20/mezzio-navigation "Percentage of issues still open")
+[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fmimmi20%2Fmezzio-navigation%2Fmaster)](https://dashboard.stryker-mutator.io/reports/github.com/mimmi20/mezzio-navigation/master)
+[![Maintainability](https://api.codeclimate.com/v1/badges/3d4958aa28643e3646ec/maintainability)](https://codeclimate.com/github/mimmi20/mezzio-navigation/maintainability)
 
 ## Introduction
 
