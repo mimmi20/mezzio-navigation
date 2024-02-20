@@ -76,7 +76,7 @@ final class NavigationAbstractServiceFactoryTest extends TestCase
             ->willReturn($navigationConfig);
 
         assert($container instanceof ContainerInterface);
-        self::assertFalse($this->factory->canCreate($container, 'Mimmi20\\Mezzio\\Navigation\\Test'));
+        self::assertFalse($this->factory->canCreate($container, 'Mimmi20\Mezzio\Navigation\Test'));
     }
 
     /**
@@ -105,7 +105,7 @@ final class NavigationAbstractServiceFactoryTest extends TestCase
             ->willReturn($navigationConfig);
 
         assert($container instanceof ContainerInterface);
-        self::assertTrue($this->factory->canCreate($container, 'Mimmi20\\Mezzio\\Navigation\\Test'));
+        self::assertTrue($this->factory->canCreate($container, 'Mimmi20\Mezzio\Navigation\Test'));
     }
 
     /**
@@ -134,7 +134,7 @@ final class NavigationAbstractServiceFactoryTest extends TestCase
             ->willReturn($navigationConfig);
 
         assert($container instanceof ContainerInterface);
-        self::assertTrue($this->factory->canCreate($container, 'Mimmi20\\Mezzio\\Navigation\\Test'));
+        self::assertTrue($this->factory->canCreate($container, 'Mimmi20\Mezzio\Navigation\Test'));
     }
 
     /**
@@ -189,7 +189,7 @@ final class NavigationAbstractServiceFactoryTest extends TestCase
             );
 
         assert($container instanceof ContainerInterface);
-        $navigation = ($this->factory)($container, 'Mimmi20\\Mezzio\\Navigation\\Test');
+        $navigation = ($this->factory)($container, 'Mimmi20\Mezzio\Navigation\Test');
 
         self::assertInstanceOf(Navigation::class, $navigation);
     }
@@ -246,7 +246,7 @@ final class NavigationAbstractServiceFactoryTest extends TestCase
             );
 
         assert($container instanceof ContainerInterface);
-        $navigation = ($this->factory)($container, 'Mimmi20\\Mezzio\\Navigation\\Test');
+        $navigation = ($this->factory)($container, 'Mimmi20\Mezzio\Navigation\Test');
 
         self::assertInstanceOf(Navigation::class, $navigation);
     }
@@ -285,6 +285,6 @@ final class NavigationAbstractServiceFactoryTest extends TestCase
         $this->expectExceptionCode(0);
 
         assert($container instanceof ContainerInterface);
-        ($this->factory)($container, 'Mimmi20\\Mezzio\\Navigation\\Test');
+        ($this->factory)($container, 'Mimmi20\Mezzio\Navigation\Test');
     }
 }
