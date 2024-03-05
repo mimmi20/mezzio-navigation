@@ -34,7 +34,7 @@
     "ext-xmlwriter": "*",
     "infection/infection": "^0.27.10",
     "laminas/laminas-config": "^3.9.0",
-    "laminas/laminas-servicemanager": "^4.0.0",
+    "laminas/laminas-servicemanager": "^3.22.1 || ^4.0.0",
     "mezzio/mezzio-helpers": "^5.16.0",
     "mezzio/mezzio-router": "^3.17.0",
     "mimmi20/coding-standard": "^5.2.17",
