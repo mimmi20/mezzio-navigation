@@ -23,7 +23,11 @@
     "php": "^8.1.0",
     "ext-mbstring": "*",
     "laminas/laminas-stdlib": "^3.19.0",
-    "psr/container": "^1.1.2 || ^2.0.2"
+    "mimmi20/mezzio-generic-authorization": "^3.0",
+    "psr/container": "^1.1.2 || ^2.0.2",
+    "psr/http-message": "^2.0",
+    "psr/http-server-handler": "^1.0",
+    "psr/http-server-middleware": "^1.0"
   },
   "require-dev": {
     "ext-ctype": "*",
@@ -38,7 +42,6 @@
     "mezzio/mezzio-helpers": "^5.16.0",
     "mezzio/mezzio-router": "^3.17.0",
     "mimmi20/coding-standard": "^5.2.17",
-    "mimmi20/mezzio-generic-authorization": "^3.0.5",
     "nikic/php-parser": "^v4.18.0",
     "phpstan/extension-installer": "^1.3.1",
     "phpstan/phpstan": "^1.10.60",
