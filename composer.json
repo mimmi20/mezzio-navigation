@@ -41,10 +41,10 @@
     "mimmi20/mezzio-generic-authorization": "^3.0.5",
     "nikic/php-parser": "^v4.18.0",
     "phpstan/extension-installer": "^1.3.1",
-    "phpstan/phpstan": "^1.10.59",
+    "phpstan/phpstan": "^1.10.60",
     "phpstan/phpstan-deprecation-rules": "^1.1.4",
     "phpstan/phpstan-phpunit": "^1.3.16",
-    "phpunit/phpunit": "^10.5.11",
+    "phpunit/phpunit": "^10.5.12",
     "rector/rector": "^1.0.2"
   },
   "conflict": {
