@@ -462,7 +462,7 @@ $navigationConfig->setPages([
             ],
             [
                 'label' => 'Page 2.2',
-               'uri'   => '#',
+                'uri'   => '#',
             ],
         ],
     ],
