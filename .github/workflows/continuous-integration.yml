@@ -90,7 +90,7 @@ jobs:
           persist-credentials: false
 
       - name: "Install PHP"
-        uses: "shivammathur/setup-php@2.30.3"
+        uses: "shivammathur/setup-php@2.30.4"
         with:
           php-version: "${{ matrix.php-version }}"
           extensions: "none, phar, json, opcache, ctype, curl, dom, iconv, intl, mbstring, simplexml, tokenizer, xml, xmlwriter"
@@ -146,7 +146,7 @@ jobs:
           persist-credentials: false
 
       - name: "Install PHP"
-        uses: "shivammathur/setup-php@2.30.3"
+        uses: "shivammathur/setup-php@2.30.4"
         with:
           php-version: "${{ matrix.php-version }}"
           extensions: "none, phar, json, opcache, ctype, curl, dom, iconv, intl, mbstring, simplexml, tokenizer, xml, xmlwriter"
@@ -186,7 +186,7 @@ jobs:
         run: "vendor/bin/infection --show-mutations --only-covered --min-covered-msi=85 --min-msi=85 --coverage=.build/coverage --logger-github --no-progress -vv"
 
       - name: "Upload coverage to Codeclimate"
-        uses: "paambaati/codeclimate-action@v5.0.0"
+        uses: "paambaati/codeclimate-action@v6.0.0"
         env:
           CC_TEST_REPORTER_ID: "${{ secrets.CODECLIMATE_API_KEY }}"
         with:
