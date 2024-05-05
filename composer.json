@@ -20,7 +20,7 @@
     "source": "https://github.com/mimmi20/mezzio-navigation"
   },
   "require": {
-    "php": "^8.1.0",
+    "php": "~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0",
     "ext-mbstring": "*",
     "laminas/laminas-stdlib": "^3.19.0",
     "mimmi20/mezzio-generic-authorization": "^3.0.5",
