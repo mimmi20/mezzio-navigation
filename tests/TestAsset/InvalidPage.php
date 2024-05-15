@@ -18,6 +18,8 @@ final class InvalidPage
      * Returns the page's href
      *
      * @throws void
+     *
+     * @api
      */
     public function getHref(): string
     {

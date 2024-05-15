@@ -23,6 +23,8 @@ final class NavigationConfigFactory
 {
     /**
      * Top-level configuration key indicating navigation configuration
+     *
+     * @api
      */
     public const CONFIG_KEY = 'navigation';
 

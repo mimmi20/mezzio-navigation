@@ -99,7 +99,7 @@ trait NavigationFactoryTrait
      *
      * @return array<PageInterface>
      *
-     * @throws void
+     * @throws InvalidArgumentException
      */
     private function preparePages(
         array $pages,

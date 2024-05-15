@@ -37,6 +37,8 @@ final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
 {
     /**
      * Service manager factory prefix
+     *
+     * @api
      */
     public const SERVICE_PREFIX = 'Mimmi20\Mezzio\Navigation\\';
 
