@@ -123,6 +123,8 @@ final class PageFactory implements PageFactoryInterface
      * @param (Closure(array<string, array<string>|bool|string>): ?PageInterface) $callback Any callable variable
      *
      * @throws void
+     *
+     * @api
      */
     public static function addFactory(Closure $callback): void
     {

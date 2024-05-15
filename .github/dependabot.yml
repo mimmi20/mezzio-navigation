@@ -55,9 +55,12 @@ updates:
       - dependency-name: "laminas/laminas-servicemanager"
         versions:
           - ">= 0"
-#      - dependency-name: phpunit/phpunit
-#        versions:
-#          - ">= 0"
+      - dependency-name: "nikic/php-parser"
+        versions:
+          - ">= 0"
+      - dependency-name: "infection/infection"
+        versions:
+          - ">= 0"
 
   - package-ecosystem: "github-actions"
 
