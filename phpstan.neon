@@ -15,13 +15,13 @@ parameters:
     - %currentWorkingDirectory%/vendor/squizlabs/php_codesniffer/src/Util/Tokens.php
 
   # reports occurrences of type-checking functions always evaluated to true
-  checkAlwaysTrueCheckTypeFunctionCall: false
+  checkAlwaysTrueCheckTypeFunctionCall: false # todo: fix
 
   # reports instanceof occurrences always evaluated to true
   checkAlwaysTrueInstanceof: true
 
   # reports === and !== occurrences always evaluated to true
-  checkAlwaysTrueStrictComparison: false
+  checkAlwaysTrueStrictComparison: false # todo: fix
 
   # enable stricter analysis of benevolent union types
   checkBenevolentUnionTypes: true
@@ -36,7 +36,7 @@ parameters:
   checkFunctionNameCase: true
 
   # be strict about values with an unspecified (implicit mixed) type
-  checkImplicitMixed: false
+  checkImplicitMixed: false # todo: fix
 
   # reports references to built-in classes with incorrect name case
   checkInternalClassCaseSensitivity: true
@@ -72,7 +72,7 @@ parameters:
   reportMaybesInMethodSignatures: true
 
   # reports violations of property type invariance
-  reportMaybesInPropertyPhpDocTypes: false
+  reportMaybesInPropertyPhpDocTypes: false # todo: fix
 
   # reports violations of parameter type contravariance and return type covariance in static methods
   reportStaticMethodSignatures: true
@@ -111,6 +111,11 @@ parameters:
     constants: true
     local_methods: true
 
+  type_perfect:
+    null_over_false: true
+    no_mixed: true
+    narrow_param: true
+
   ignoreErrors:
     - '~Call to an undefined method Mimmi20\\Mezzio\\Navigation\\(Navigation|Page\\(Route|Uri))::findAlll?By(Route|Test)~'
     - '~Parameter #1 \$pages of method Mimmi20\\Mezzio\\Navigation\\(Navigation|Page\\(Route|Uri))::addPages\(\) expects iterable<Mimmi20\\Mezzio\\Navigation\\Page\\PageInterface>, array<int, string> given~'
@@ -121,8 +126,6 @@ parameters:
 
 rules:
   # code complexity
-  - Symplify\PHPStanRules\Rules\Explicit\NoMixedPropertyFetcherRule
-  - Symplify\PHPStanRules\Rules\Explicit\NoMixedMethodCallerRule
   # - Symplify\PHPStanRules\Rules\NoDynamicNameRule
   # - Symplify\PHPStanRules\Rules\NoReturnArrayVariableListRule # todo: fix
 
@@ -132,24 +135,13 @@ rules:
   - Symplify\PHPStanRules\Rules\Domain\RequireExceptionNamespaceRule
   - Symplify\PHPStanRules\Rules\Domain\RequireAttributeNamespaceRule
   - Symplify\PHPStanRules\Rules\Enum\RequireUniqueEnumConstantRule
-  - Symplify\PHPStanRules\Rules\ForbiddenParamTypeRemovalRule
   - Symplify\PHPStanRules\Rules\PreventParentMethodVisibilityOverrideRule
 
   # paths
-  - Symplify\PHPStanRules\Rules\NoMissingDirPathRule
-  - Symplify\PHPStanRules\Rules\NoReferenceRule # References are required
-  - Symplify\PHPStanRules\Rules\NoArrayAccessOnObjectRule
-
-  - Symplify\PHPStanRules\Rules\NoNullableArrayPropertyRule
-
-  # dead-code
-  - Symplify\PHPStanRules\Rules\NoIssetOnObjectRule
+  - Symplify\PHPStanRules\Rules\NoReferenceRule
 
   # explicit naming
   - Symplify\PHPStanRules\Rules\ForbiddenMultipleClassLikeInOneFileRule
-
-  # comlexity
-  - Symplify\PHPStanRules\Rules\NarrowType\NoReturnFalseInNonBoolClassMethodRule
 
   - Symplify\PHPStanRules\Rules\Complexity\ForbiddenArrayMethodCallRule
   # - Symplify\PHPStanRules\Rules\CheckRequiredInterfaceInContractNamespaceRule
@@ -159,7 +151,7 @@ rules:
 
   # regexes
   - Symplify\PHPStanRules\Rules\AnnotateRegexClassConstWithRegexLinkRule
-  # - Symplify\PHPStanRules\Rules\NoInlineStringRegexRule
+  # - Symplify\PHPStanRules\Rules\NoInlineStringRegexRule # todo fix
   - Symplify\PHPStanRules\Rules\RegexSuffixInRegexConstantRule
 
   # naming
@@ -167,8 +159,4 @@ rules:
   - Symplify\PHPStanRules\Rules\NoReturnSetterMethodRule
   - Symplify\PHPStanRules\Rules\UppercaseConstantRule
   - Symplify\PHPStanRules\Rules\ClassNameRespectsParentSuffixRule
-  - Symplify\PHPStanRules\Rules\CheckTypehintCallerTypeRule
   - Symplify\PHPStanRules\Rules\CheckClassNamespaceFollowPsr4Rule
-
-includes:
-  - vendor/symplify/phpstan-rules/config/collector-rules.neon
