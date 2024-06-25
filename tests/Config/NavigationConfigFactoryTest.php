@@ -46,7 +46,7 @@ final class NavigationConfigFactoryTest extends TestCase
         $this->expectExceptionCode(0);
 
         assert($container instanceof ContainerInterface);
-        $factory($container, '');
+        $factory($container);
     }
 
     /**
@@ -71,7 +71,7 @@ final class NavigationConfigFactoryTest extends TestCase
         $this->expectExceptionCode(0);
 
         assert($container instanceof ContainerInterface);
-        $factory($container, '');
+        $factory($container);
     }
 
     /**
@@ -98,7 +98,7 @@ final class NavigationConfigFactoryTest extends TestCase
         $this->expectExceptionCode(0);
 
         assert($container instanceof ContainerInterface);
-        $factory($container, '');
+        $factory($container);
     }
 
     /**
@@ -123,7 +123,7 @@ final class NavigationConfigFactoryTest extends TestCase
         $factory = new NavigationConfigFactory();
 
         assert($container instanceof ContainerInterface);
-        $config = $factory($container, '');
+        $config = $factory($container);
 
         self::assertInstanceOf(NavigationConfig::class, $config);
 
