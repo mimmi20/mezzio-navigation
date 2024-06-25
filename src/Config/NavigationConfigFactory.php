@@ -31,18 +31,11 @@ final class NavigationConfigFactory
     /**
      * Create and return a new Navigation instance.
      *
-     * @param array<mixed>|null $options
-     *
      * @throws ContainerExceptionInterface
      * @throws InvalidArgumentException
-     *
-     * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
      */
-    public function __invoke(
-        ContainerInterface $container,
-        string $requestedName,
-        array | null $options = null,
-    ): NavigationConfig {
+    public function __invoke(ContainerInterface $container): NavigationConfig
+    {
         $configuration = $container->get('config');
 
         if (
