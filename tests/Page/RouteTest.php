@@ -808,7 +808,7 @@ final class RouteTest extends TestCase
 
         unset($this->page->test, $this->page->test);
 
-        self::assertFalse(isset($this->page->test));
+        self::assertObjectNotHasProperty('test', $this->page);
         self::assertSame(['abc' => '4711'], $this->page->getCustomProperties());
     }
 
