@@ -23,7 +23,7 @@
     "php": "~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0",
     "ext-mbstring": "*",
     "laminas/laminas-stdlib": "^3.19.0",
-    "mimmi20/mezzio-generic-authorization": "^3.0.6",
+    "mimmi20/mezzio-generic-authorization": "^3.0.7",
     "psr/container": "^1.1.2 || ^2.0.2",
     "psr/http-message": "^2.0",
     "psr/http-server-handler": "^1.0.2",
@@ -45,7 +45,7 @@
     "nikic/php-parser": "^4.19.1 || ^5.0.2",
     "phpstan/extension-installer": "^1.4.3",
     "phpstan/phpstan": "^1.12.3",
-    "phpstan/phpstan-deprecation-rules": "^1.2.0",
+    "phpstan/phpstan-deprecation-rules": "^1.2.1",
     "phpstan/phpstan-phpunit": "^1.4.0",
     "phpunit/phpunit": "^10.5.26",
     "rector/rector": "^1.2.5",
@@ -53,7 +53,7 @@
     "symplify/phpstan-rules": "^13.0.1",
     "tomasvotruba/cognitive-complexity": "^0.2.3",
     "tomasvotruba/type-coverage": "^0.3.1",
-    "tomasvotruba/unused-public": "^0.3.11"
+    "tomasvotruba/unused-public": "^0.4.0"
   },
   "conflict": {
     "container-interop/container-interop": "<1.2.0",
