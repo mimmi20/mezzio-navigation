@@ -86,4 +86,7 @@ updates:
     commit-message:
       prefix: "github-actions"
 
+    ignore:
+      - dependency-name: "mimmi20/ci"
+
     rebase-strategy: "auto"
