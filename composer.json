@@ -44,7 +44,7 @@
     "mimmi20/coding-standard": "^5.2.44",
     "nikic/php-parser": "^4.19.1 || ^5.0.2",
     "phpstan/extension-installer": "^1.4.3",
-    "phpstan/phpstan": "^1.12.7",
+    "phpstan/phpstan": "^1.12.8",
     "phpstan/phpstan-deprecation-rules": "^1.2.1",
     "phpstan/phpstan-phpunit": "^1.4.0",
     "phpunit/phpunit": "^10.5.26",
