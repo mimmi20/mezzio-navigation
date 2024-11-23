@@ -12,14 +12,14 @@ declare(strict_types = 1);
 
 namespace Mimmi20\MezzioTest\Navigation\TestAsset;
 
+use Mimmi20\Mezzio\Navigation\Page\AbstractPage;
 use Mimmi20\Mezzio\Navigation\Page\PageInterface;
-use Mimmi20\Mezzio\Navigation\Page\PageTrait;
+use Override;
 
-final class Page implements PageInterface
+final class Page extends AbstractPage implements PageInterface
 {
-    use PageTrait;
-
     /** @throws void */
+    #[Override]
     public function getHref(): string
     {
         return '';

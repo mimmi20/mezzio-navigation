@@ -12,14 +12,10 @@ declare(strict_types = 1);
 
 namespace Mimmi20\Mezzio\Navigation;
 
-use Mimmi20\Mezzio\Navigation\Page\PageInterface;
-
 /**
  * A simple container class for {@link \Mimmi20\Mezzio\Navigation\Navigation} pages
- *
- * @implements ContainerInterface<PageInterface>
  */
-final class Navigation implements ContainerInterface
+final class Navigation extends AbstractContainer
 {
-    use ContainerTrait;
+    // nothing to do here
 }

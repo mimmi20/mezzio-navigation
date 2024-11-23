@@ -22,6 +22,7 @@ use Mimmi20\Mezzio\Navigation\Exception\InvalidArgumentException;
 use Mimmi20\Mezzio\Navigation\Exception\OutOfBoundsException;
 use Mimmi20\Mezzio\Navigation\Page\PageInterface;
 use Mimmi20\Mezzio\Navigation\Page\Route;
+use Override;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 
@@ -33,6 +34,7 @@ final class RouteTest extends TestCase
     private Route $page;
 
     /** @throws InvalidArgumentException */
+    #[Override]
     protected function setUp(): void
     {
         $this->page = new Route();

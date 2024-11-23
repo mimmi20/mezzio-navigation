@@ -24,6 +24,7 @@ use Mimmi20\Mezzio\Navigation\Page\RouteInterface;
 use Mimmi20\Mezzio\Navigation\Page\Uri;
 use Mimmi20\Mezzio\Navigation\Page\UriInterface;
 use Mimmi20\Mezzio\Navigation\Service\DefaultNavigationFactory;
+use Override;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerExceptionInterface;
@@ -37,6 +38,7 @@ final class DefaultNavigationFactoryTest extends TestCase
     private DefaultNavigationFactory $factory;
 
     /** @throws void */
+    #[Override]
     protected function setUp(): void
     {
         $this->factory = new DefaultNavigationFactory();

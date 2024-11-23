@@ -138,7 +138,6 @@ Adding pages to a container can be done with the methods `addPage()`,
 > the PageInterface are allowed. The PageFactory may be used to use an array config.
 
 ```php
-use Laminas\Config\Config;
 use Mimmi20\Mezzio\Navigation\Navigation;
 use Mimmi20\Mezzio\Navigation\Page\PageFactory;
 

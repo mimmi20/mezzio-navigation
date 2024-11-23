@@ -22,7 +22,7 @@ use Psr\Container\ContainerInterface;
 use function assert;
 use function sprintf;
 
-final class NavigationMiddlewareFactory
+final readonly class NavigationMiddlewareFactory
 {
     /**
      * Allow varying behavior based on URL helper service name.
@@ -30,8 +30,8 @@ final class NavigationMiddlewareFactory
      * @throws void
      */
     public function __construct(
-        private readonly string $navigationConfigName = Config\NavigationConfigInterface::class,
-        private readonly string $urlHelperServiceName = UrlHelper::class,
+        private string $navigationConfigName = Config\NavigationConfigInterface::class,
+        private string $urlHelperServiceName = UrlHelper::class,
     ) {
         // nothing to do
     }

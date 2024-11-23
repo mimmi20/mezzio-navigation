@@ -16,6 +16,7 @@ use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 use Mimmi20\Mezzio\Navigation\Config\NavigationConfigInterface;
 use Mimmi20\Mezzio\Navigation\Exception\InvalidArgumentException;
 use Mimmi20\Mezzio\Navigation\Navigation;
+use Override;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 
@@ -40,21 +41,23 @@ final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
      *
      * @api
      */
-    public const SERVICE_PREFIX = 'Mimmi20\Mezzio\Navigation\\';
+    public const string SERVICE_PREFIX = 'Mimmi20\Mezzio\Navigation\\';
 
     /**
-     * @param string            $requestedName
      * @param array<mixed>|null $options
      *
      * @throws ContainerExceptionInterface
      * @throws InvalidArgumentException
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array | null $options = null): Navigation
-    {
+    #[Override]
+    public function __invoke(
+        ContainerInterface $container,
+        string $requestedName,
+        array | null $options = null,
+    ): Navigation {
         $factory = new ConstructedNavigationFactory(
             $this->getNamedConfigName($container, $requestedName),
         );
@@ -69,10 +72,9 @@ final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
      *                              start with Mimmi20\Mezzio\Navigation\
      *
      * @throws ContainerExceptionInterface
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
-    public function canCreate(ContainerInterface $container, $requestedName): bool
+    #[Override]
+    public function canCreate(ContainerInterface $container, string $requestedName): bool
     {
         if (mb_strpos($requestedName, self::SERVICE_PREFIX) !== 0) {
             return false;

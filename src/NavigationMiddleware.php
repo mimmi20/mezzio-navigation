@@ -16,6 +16,7 @@ use Mezzio\Helper\UrlHelper;
 use Mezzio\Router\RouteResult;
 use Mezzio\Router\RouterInterface;
 use Mimmi20\Mezzio\GenericAuthorization\AuthorizationInterface;
+use Override;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -24,14 +25,14 @@ use Psr\Http\Server\RequestHandlerInterface;
 /**
  * Pipeline middleware for injecting a UrlHelper with a RouteResult.
  */
-final class NavigationMiddleware implements MiddlewareInterface
+final readonly class NavigationMiddleware implements MiddlewareInterface
 {
     /** @throws void */
     public function __construct(
-        private readonly Config\NavigationConfigInterface $navigationConfig,
-        private readonly UrlHelper $urlHelper,
-        private readonly AuthorizationInterface | null $authorization = null,
-        private readonly RouterInterface | null $router = null,
+        private Config\NavigationConfigInterface $navigationConfig,
+        private UrlHelper $urlHelper,
+        private AuthorizationInterface | null $authorization = null,
+        private RouterInterface | null $router = null,
     ) {
         // nothing to do
     }
@@ -42,6 +43,7 @@ final class NavigationMiddleware implements MiddlewareInterface
      *
      * @throws void
      */
+    #[Override]
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $result = $request->getAttribute(RouteResult::class);
