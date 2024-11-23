@@ -33,6 +33,10 @@ updates:
       include: "scope"
       prefix: "composer"
 
+    ignore:
+      - dependency-name: "psr/container"
+      - dependency-name: "laminas/laminas-servicemanager"
+
     rebase-strategy: "auto"
 
   - package-ecosystem: "github-actions"
