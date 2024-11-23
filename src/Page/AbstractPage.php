@@ -12,9 +12,11 @@ declare(strict_types = 1);
 
 namespace Mimmi20\Mezzio\Navigation\Page;
 
+use Mimmi20\Mezzio\Navigation\AbstractContainer;
 use Mimmi20\Mezzio\Navigation\ContainerInterface;
-use Mimmi20\Mezzio\Navigation\ContainerTrait;
 use Mimmi20\Mezzio\Navigation\Exception;
+use Override;
+use Stringable;
 
 use function array_keys;
 use function array_merge;
@@ -30,16 +32,12 @@ use function ucwords;
 /**
  * Base class for Mimmi20\Mezzio\Navigation\Page pages
  */
-trait PageTrait
+abstract class AbstractPage extends AbstractContainer implements PageInterface, Stringable
 {
-    use ContainerTrait {
-        toArray as parentToArray;
-    }
-
     /**
      * Page label
      */
-    private string | null $label = null;
+    protected string | null $label = null;
 
     /**
      * Fragment identifier (anchor identifier)
@@ -51,32 +49,32 @@ trait PageTrait
      *
      * @see http://www.w3.org/TR/html401/intro/intro.html#fragment-uri
      */
-    private string | null $fragment = null;
+    protected string | null $fragment = null;
 
     /**
      * Page id
      */
-    private string | null $id = null;
+    protected string | null $id = null;
 
     /**
      * Style class for this page (CSS)
      */
-    private string | null $class = null;
+    protected string | null $class = null;
 
     /**
      * Style class for the container around this page (CSS)
      */
-    private string | null $liClass = null;
+    protected string | null $liClass = null;
 
     /**
      * A more descriptive title for this page
      */
-    private string | null $title = null;
+    protected string | null $title = null;
 
     /**
      * This page's target
      */
-    private string | null $target = null;
+    protected string | null $target = null;
 
     /**
      * Forward links to other pages
@@ -85,7 +83,7 @@ trait PageTrait
      *
      * @var array<ContainerInterface<PageInterface>|iterable<string>|PageInterface|string>
      */
-    private array $rel = [];
+    protected array $rel = [];
 
     /**
      * Reverse links to other pages
@@ -94,56 +92,56 @@ trait PageTrait
      *
      * @var array<ContainerInterface<PageInterface>|iterable<string>|PageInterface|string>
      */
-    private array $rev = [];
+    protected array $rev = [];
 
     /**
      * Page order used by parent container
      */
-    private int | null $order = null;
+    protected int | null $order = null;
 
     /**
      * resource associated with this page
      */
-    private string | null $resource = null;
+    protected string | null $resource = null;
 
     /**
      * ACL privilege associated with this page
      */
-    private string | null $privilege = null;
-
-    /**
-     * Permission associated with this page
-     */
-    private string | null $permission = null;
+    protected string | null $privilege = null;
 
     /**
      * Text domain for Translator
      */
-    private string | null $textDomain = null;
+    protected string | null $textDomain = null;
 
     /**
      * Whether this page should be considered active
      */
-    private bool | null $active = null;
+    protected bool | null $active = null;
 
     /**
      * Whether this page should be considered visible
      */
-    private bool $visible = true;
+    protected bool $visible = true;
 
     /**
      * Parent container
      *
      * @var ContainerInterface<PageInterface>|null
      */
-    private ContainerInterface | null $parent = null;
+    protected ContainerInterface | null $parent = null;
 
     /**
      * Custom page properties, used by __set(), __get() and __isset()
      *
      * @var array<string, bool|ContainerInterface<PageInterface>|float|int|iterable<string, (array<string>|string)>|PageInterface|string|null>
      */
-    private array $properties = [];
+    protected array $properties = [];
+
+    /**
+     * Permission associated with this page
+     */
+    private string | null $permission = null;
 
     /**
      * @param iterable<string, array<string>|bool|string|null>|null $options [optional] page options. Default is null, which should set defaults.
@@ -212,7 +210,7 @@ trait PageTrait
      */
     public function __isset(string $name): bool
     {
-        $method = 'get' . static::normalizePropertyName($name);
+        $method = 'get' . self::normalizePropertyName($name);
 
         if (method_exists($this, $method)) {
             return true;
@@ -232,7 +230,7 @@ trait PageTrait
      */
     public function __unset(string $name): void
     {
-        $method = 'set' . static::normalizePropertyName($name);
+        $method = 'set' . self::normalizePropertyName($name);
 
         if (method_exists($this, $method)) {
             throw new Exception\InvalidArgumentException(
@@ -259,6 +257,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function __toString(): string
     {
         return (string) $this->label;
@@ -276,6 +275,7 @@ trait PageTrait
      *
      * @throws Exception\InvalidArgumentException if invalid options are given
      */
+    #[Override]
     public function setOptions(iterable $options): void
     {
         foreach ($options as $key => $value) {
@@ -292,6 +292,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function setLabel(string | null $label = null): void
     {
         $this->label = $label;
@@ -304,6 +305,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function getLabel(): string | null
     {
         return $this->label;
@@ -316,6 +318,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function setFragment(string | null $fragment = null): void
     {
         $this->fragment = $fragment;
@@ -328,6 +331,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function getFragment(): string | null
     {
         return $this->fragment;
@@ -340,6 +344,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function setId(string | null $id = null): void
     {
         $this->id = $id;
@@ -352,6 +357,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function getId(): string | null
     {
         return $this->id;
@@ -364,6 +370,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function setClass(string | null $class = null): void
     {
         $this->class = $class;
@@ -376,6 +383,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function getClass(): string | null
     {
         return $this->class;
@@ -388,6 +396,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function setLiClass(string | null $liClass = null): void
     {
         $this->liClass = $liClass;
@@ -400,6 +409,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function getLiClass(): string | null
     {
         return $this->liClass;
@@ -413,6 +423,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function setTitle(string | null $title = null): void
     {
         $this->title = $title;
@@ -425,6 +436,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function getTitle(): string | null
     {
         return $this->title;
@@ -438,6 +450,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function setTarget(string | null $target = null): void
     {
         $this->target = $target;
@@ -450,6 +463,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function getTarget(): string | null
     {
         return $this->target;
@@ -467,6 +481,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function setRel(iterable | null $relations = null): void
     {
         $this->rel = [];
@@ -501,6 +516,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function getRel(
         string | null $relation = null,
     ): iterable | ContainerInterface | PageInterface | string | null {
@@ -523,6 +539,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function setRev(iterable | null $relations = null): void
     {
         $this->rev = [];
@@ -557,6 +574,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function getRev(
         string | null $relation = null,
     ): iterable | ContainerInterface | PageInterface | string | null {
@@ -575,6 +593,7 @@ trait PageTrait
      *
      * @throws Exception\InvalidArgumentException
      */
+    #[Override]
     public function setParent(ContainerInterface | null $parent = null): void
     {
         if ($parent === $this) {
@@ -609,6 +628,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function getParent(): ContainerInterface | null
     {
         return $this->parent;
@@ -623,6 +643,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function setOrder(int | float | string | null $order = null): void
     {
         $this->order = is_int($order) || $order === null ? $order : (int) $order;
@@ -642,6 +663,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function getOrder(): int | null
     {
         return $this->order;
@@ -656,6 +678,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function setResource(string $resource): void
     {
         $this->resource = $resource;
@@ -668,6 +691,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function getResource(): string | null
     {
         return $this->resource;
@@ -682,6 +706,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function setPrivilege(string $privilege): void
     {
         $this->privilege = $privilege;
@@ -694,6 +719,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function getPrivilege(): string | null
     {
         return $this->privilege;
@@ -708,6 +734,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function setPermission(string $permission): void
     {
         $this->permission = $permission;
@@ -720,6 +747,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function getPermission(): string | null
     {
         return $this->permission;
@@ -734,6 +762,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function setTextDomain(string $textDomain): void
     {
         $this->textDomain = $textDomain;
@@ -746,6 +775,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function getTextDomain(): string | null
     {
         return $this->textDomain;
@@ -759,6 +789,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function setActive(bool | string $active = true): void
     {
         if (is_string($active) && mb_strtolower($active) === 'false') {
@@ -779,6 +810,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function isActive(bool $recursive = false): bool
     {
         if ($this->active === null && $recursive) {
@@ -805,6 +837,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function getActive(bool $recursive = false): bool
     {
         return $this->isActive($recursive);
@@ -818,6 +851,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function setVisible(bool | string $visible = true): void
     {
         if (is_string($visible) && mb_strtolower($visible) === 'false') {
@@ -838,6 +872,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function isVisible(bool $recursive = false): bool
     {
         if (
@@ -864,6 +899,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function getVisible(bool $recursive = false): bool
     {
         return $this->isVisible($recursive);
@@ -880,6 +916,7 @@ trait PageTrait
      *
      * @throws Exception\InvalidArgumentException if property name is invalid
      */
+    #[Override]
     public function set(
         string $property,
         bool | float | int | iterable | ContainerInterface | PageInterface | string | null $value,
@@ -890,7 +927,7 @@ trait PageTrait
             );
         }
 
-        $method = 'set' . static::normalizePropertyName($property);
+        $method = 'set' . self::normalizePropertyName($property);
 
         if ($method !== 'setOptions' && method_exists($this, $method)) {
             $this->{$method}($value);
@@ -912,6 +949,7 @@ trait PageTrait
      *
      * @throws Exception\InvalidArgumentException if property name is invalid
      */
+    #[Override]
     public function get(
         string $property,
     ): bool | float | int | iterable | ContainerInterface | PageInterface | string | null {
@@ -921,7 +959,7 @@ trait PageTrait
             );
         }
 
-        $method = 'get' . static::normalizePropertyName($property);
+        $method = 'get' . self::normalizePropertyName($property);
 
         if (method_exists($this, $method)) {
             return $this->{$method}();
@@ -941,6 +979,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function addRel(string $relation, iterable | ContainerInterface | PageInterface | string $value): void
     {
         $this->rel[$relation] = $value;
@@ -955,6 +994,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function addRev(string $relation, iterable | ContainerInterface | PageInterface | string $value): void
     {
         $this->rev[$relation] = $value;
@@ -967,6 +1007,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function removeRel(string $relation): void
     {
         if (!isset($this->rel[$relation])) {
@@ -983,6 +1024,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function removeRev(string $relation): void
     {
         if (!isset($this->rev[$relation])) {
@@ -999,6 +1041,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function getDefinedRel(): array
     {
         return array_keys($this->rel);
@@ -1011,6 +1054,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function getDefinedRev(): array
     {
         return array_keys($this->rev);
@@ -1023,6 +1067,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function getCustomProperties(): array
     {
         return $this->properties;
@@ -1035,6 +1080,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function hashCode(): string
     {
         return spl_object_hash($this);
@@ -1047,6 +1093,7 @@ trait PageTrait
      *
      * @throws void
      */
+    #[Override]
     public function toArray(): array
     {
         return array_merge(
@@ -1067,7 +1114,7 @@ trait PageTrait
                 'active' => $this->isActive(),
                 'visible' => $this->isVisible(),
                 'type' => static::class,
-                'pages' => $this->parentToArray(),
+                'pages' => parent::toArray(),
             ],
         );
     }

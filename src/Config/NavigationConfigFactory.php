@@ -26,7 +26,7 @@ final class NavigationConfigFactory
      *
      * @api
      */
-    public const CONFIG_KEY = 'navigation';
+    public const string CONFIG_KEY = 'navigation';
 
     /**
      * Create and return a new Navigation instance.

@@ -17,6 +17,7 @@ use Mezzio\Router\RouteResult;
 use Mezzio\Router\RouterInterface;
 use Mimmi20\Mezzio\GenericAuthorization\AuthorizationInterface;
 use Mimmi20\Mezzio\Navigation\Config\NavigationConfig;
+use Override;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
@@ -28,6 +29,7 @@ final class NavigationConfigTest extends TestCase
     private NavigationConfig $config;
 
     /** @throws void */
+    #[Override]
     protected function setUp(): void
     {
         $this->config = new NavigationConfig();

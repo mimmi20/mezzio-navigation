@@ -18,6 +18,7 @@ use Mimmi20\Mezzio\Navigation\Exception\InvalidArgumentException;
 use Mimmi20\Mezzio\Navigation\Exception\OutOfBoundsException;
 use Mimmi20\Mezzio\Navigation\Page\PageInterface;
 use Mimmi20\Mezzio\Navigation\Page\Uri;
+use Override;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
@@ -36,6 +37,7 @@ final class UriTest extends TestCase
     private Uri $page;
 
     /** @throws InvalidArgumentException */
+    #[Override]
     protected function setUp(): void
     {
         $this->page = new Uri();

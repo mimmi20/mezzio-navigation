@@ -18,6 +18,7 @@ use Mimmi20\Mezzio\Navigation\ConfigProvider;
 use Mimmi20\Mezzio\Navigation\Navigation;
 use Mimmi20\Mezzio\Navigation\NavigationMiddleware;
 use Mimmi20\Mezzio\Navigation\Service\NavigationAbstractServiceFactory;
+use Override;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 
@@ -26,6 +27,7 @@ final class ConfigProviderTest extends TestCase
     private ConfigProvider $provider;
 
     /** @throws void */
+    #[Override]
     protected function setUp(): void
     {
         $this->provider = new ConfigProvider();

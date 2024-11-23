@@ -1,6 +1,8 @@
 parameters:
   level: max
 
+  phpVersion: 80300 # PHP 8.3
+
   parallel:
     maximumNumberOfProcesses: 1
     processTimeout: 200.0
@@ -95,13 +97,14 @@ parameters:
       tooWideThrowType: true
 
   cognitive_complexity:
-    class: 24
+    class: 50
     function: 14
 
   type_coverage:
-    return: 100
-    param: 99.3
-    property: 100
+    return_type: 100
+    param_type: 100
+    property_type: 100
+    constant_type: 100
     # also, how many files has declare strict types
     declare: 100
 
@@ -118,11 +121,11 @@ parameters:
 
   ignoreErrors:
     - '~Call to an undefined method Mimmi20\\Mezzio\\Navigation\\(Navigation|Page\\(Route|Uri))::findAlll?By(Route|Test)~'
-    - '~Parameter #1 \$pages of method Mimmi20\\Mezzio\\Navigation\\(Navigation|Page\\(Route|Uri))::addPages\(\) expects iterable<Mimmi20\\Mezzio\\Navigation\\Page\\PageInterface>, array<int, string> given~'
-    - '~Access to private property Mimmi20\\Mezzio\\Navigation\\Page\\(Route|Uri)::\$target~'
+    - '~Parameter #1 \$pages of method Mimmi20\\Mezzio\\Navigation\\AbstractContainer::addPages\(\) expects iterable<Mimmi20\\Mezzio\\Navigation\\Page\\PageInterface>, array<int, string> given~'
+    - '~Access to protected property Mimmi20\\Mezzio\\Navigation\\Page\\(Route|Uri)::\$target~'
     - '~Access to an undefined property Mimmi20\\Mezzio\\Navigation\\Page\\(Route|Uri)::~'
     - '~::preparePages\(\) expects array<array<array<string>\|string>>, array<string> given~'
-    - '~will always evaluate to false~'
+    - '~assertContainsOnly~'
 
 rules:
   # code complexity

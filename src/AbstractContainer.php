@@ -18,6 +18,7 @@ use Mimmi20\Mezzio\Navigation\Exception\BadMethodCallException;
 use Mimmi20\Mezzio\Navigation\Exception\InvalidArgumentException;
 use Mimmi20\Mezzio\Navigation\Exception\OutOfBoundsException;
 use Mimmi20\Mezzio\Navigation\Page\PageInterface;
+use Override;
 use RecursiveIteratorIterator;
 
 use function array_key_exists;
@@ -37,27 +38,29 @@ use const E_WARNING;
 
 /**
  * Trait for Mimmi20\Mezzio\Navigation\Page classes.
+ *
+ * @implements ContainerInterface<PageInterface>
  */
-trait ContainerTrait
+abstract class AbstractContainer implements ContainerInterface
 {
     /**
      * Contains sub pages
      *
      * @var array<PageInterface>
      */
-    private array $pages = [];
+    protected array $pages = [];
 
     /**
      * An index that contains the order in which to iterate pages
      *
      * @var array<string, int|null>
      */
-    private array $index = [];
+    protected array $index = [];
 
     /**
      * Whether index is dirty and needs to be re-arranged
      */
-    private bool $dirtyIndex = false;
+    protected bool $dirtyIndex = false;
 
     /**
      * Magic overload: Proxy calls to finder methods
@@ -105,6 +108,7 @@ trait ContainerTrait
      *
      * @throws void
      */
+    #[Override]
     final public function notifyOrderUpdated(): void
     {
         $this->dirtyIndex = true;
@@ -119,6 +123,7 @@ trait ContainerTrait
      *
      * @throws InvalidArgumentException if page is invalid
      */
+    #[Override]
     final public function addPage(PageInterface $page): void
     {
         if ($page === $this) {
@@ -148,6 +153,7 @@ trait ContainerTrait
      *
      * @throws InvalidArgumentException if $pages is not array, Traversable or PageInterface
      */
+    #[Override]
     final public function addPages(iterable $pages): void
     {
         foreach ($pages as $page) {
@@ -168,6 +174,7 @@ trait ContainerTrait
      *
      * @throws InvalidArgumentException
      */
+    #[Override]
     final public function setPages(iterable $pages): void
     {
         $this->removePages();
@@ -181,6 +188,7 @@ trait ContainerTrait
      *
      * @throws void
      */
+    #[Override]
     final public function getPages(): array
     {
         return $this->pages;
@@ -196,6 +204,7 @@ trait ContainerTrait
      *
      * @throws void
      */
+    #[Override]
     final public function removePage(int | PageInterface $page, bool $recursive = false): bool
     {
         if ($page instanceof PageInterface) {
@@ -238,6 +247,7 @@ trait ContainerTrait
      *
      * @throws void
      */
+    #[Override]
     final public function removePages(): void
     {
         $this->pages = [];
@@ -254,6 +264,7 @@ trait ContainerTrait
      *
      * @throws void
      */
+    #[Override]
     final public function hasPage(int | PageInterface $page, bool $recursive = false): bool
     {
         if ($page instanceof PageInterface) {
@@ -292,6 +303,7 @@ trait ContainerTrait
      *
      * @throws void
      */
+    #[Override]
     final public function hasPages(bool $onlyVisible = false): bool
     {
         if ($onlyVisible) {
@@ -320,6 +332,7 @@ trait ContainerTrait
      *
      * @throws InvalidArgumentException
      */
+    #[Override]
     final public function findOneBy(string $property, mixed $value): PageInterface | null
     {
         $iterator = new RecursiveIteratorIterator($this, RecursiveIteratorIterator::SELF_FIRST);
@@ -346,6 +359,7 @@ trait ContainerTrait
      *
      * @throws InvalidArgumentException
      */
+    #[Override]
     final public function findAllBy(string $property, mixed $value): array
     {
         $found = [];
@@ -372,7 +386,8 @@ trait ContainerTrait
      *
      * @throws void
      */
-    final public function toArray(): array
+    #[Override]
+    public function toArray(): array
     {
         $this->sort();
         $pages   = [];
@@ -395,6 +410,7 @@ trait ContainerTrait
      *
      * @throws OutOfBoundsException if the index is invalid
      */
+    #[Override]
     final public function current(): PageInterface
     {
         if ($this->index === []) {
@@ -425,6 +441,7 @@ trait ContainerTrait
      *
      * @throws void
      */
+    #[Override]
     final public function key(): string
     {
         $this->sort();
@@ -439,6 +456,7 @@ trait ContainerTrait
      *
      * @throws void
      */
+    #[Override]
     final public function next(): void
     {
         $this->sort();
@@ -453,6 +471,7 @@ trait ContainerTrait
      *
      * @throws void
      */
+    #[Override]
     final public function rewind(): void
     {
         $this->sort();
@@ -467,6 +486,7 @@ trait ContainerTrait
      *
      * @throws void
      */
+    #[Override]
     final public function valid(): bool
     {
         $this->sort();
@@ -483,6 +503,7 @@ trait ContainerTrait
      *
      * @throws OutOfBoundsException
      */
+    #[Override]
     final public function hasChildren(): bool
     {
         return $this->valid() && $this->current()->hasPages();
@@ -497,6 +518,7 @@ trait ContainerTrait
      *
      * @codeCoverageIgnore
      */
+    #[Override]
     final public function getChildren(): PageInterface | null
     {
         $hash = key($this->index);
@@ -515,6 +537,7 @@ trait ContainerTrait
      *
      * @throws void
      */
+    #[Override]
     final public function count(): int
     {
         return count($this->index);

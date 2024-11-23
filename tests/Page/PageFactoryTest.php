@@ -19,6 +19,7 @@ use Mimmi20\Mezzio\Navigation\Page\Route;
 use Mimmi20\Mezzio\Navigation\Page\Uri;
 use Mimmi20\MezzioTest\Navigation\TestAsset\InvalidPage;
 use Mimmi20\MezzioTest\Navigation\TestAsset\Page;
+use Override;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 
@@ -29,6 +30,7 @@ final class PageFactoryTest extends TestCase
     private PageFactory $factory;
 
     /** @throws void */
+    #[Override]
     protected function setUp(): void
     {
         $this->factory = new PageFactory();

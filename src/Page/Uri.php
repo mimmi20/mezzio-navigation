@@ -12,6 +12,7 @@ declare(strict_types = 1);
 
 namespace Mimmi20\Mezzio\Navigation\Page;
 
+use Override;
 use Psr\Http\Message\ServerRequestInterface;
 
 use function array_merge;
@@ -20,13 +21,8 @@ use function mb_substr;
 /**
  * Represents a page that is defined by specifying a URI
  */
-final class Uri implements UriInterface
+final class Uri extends AbstractPage implements UriInterface
 {
-    use PageTrait {
-        isActive as isActiveParent;
-        toArray as toParentArray;
-    }
-
     /**
      * Page URI
      */
@@ -44,6 +40,7 @@ final class Uri implements UriInterface
      *
      * @throws void
      */
+    #[Override]
     public function setUri(string | null $uri): void
     {
         $this->uri = $uri;
@@ -54,18 +51,21 @@ final class Uri implements UriInterface
      *
      * @throws void
      */
+    #[Override]
     public function getUri(): string | null
     {
         return $this->uri;
     }
 
     /** @throws void */
+    #[Override]
     public function getRequest(): ServerRequestInterface | null
     {
         return $this->request;
     }
 
     /** @throws void */
+    #[Override]
     public function setRequest(ServerRequestInterface | null $request): void
     {
         $this->request = $request;
@@ -78,6 +78,7 @@ final class Uri implements UriInterface
      *
      * @throws void
      */
+    #[Override]
     public function getHref(): string
     {
         $uri      = (string) $this->getUri();
@@ -111,6 +112,7 @@ final class Uri implements UriInterface
      *
      * @throws void
      */
+    #[Override]
     public function isActive(bool $recursive = false): bool
     {
         if (
@@ -123,7 +125,7 @@ final class Uri implements UriInterface
             return true;
         }
 
-        return $this->isActiveParent($recursive);
+        return parent::isActive($recursive);
     }
 
     /**
@@ -133,10 +135,11 @@ final class Uri implements UriInterface
      *
      * @throws void
      */
+    #[Override]
     public function toArray(): array
     {
         return array_merge(
-            $this->toParentArray(),
+            parent::toArray(),
             [
                 'uri' => $this->getUri(),
             ],

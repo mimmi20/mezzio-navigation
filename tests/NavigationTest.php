@@ -17,6 +17,7 @@ use Mimmi20\Mezzio\Navigation\Exception\InvalidArgumentException;
 use Mimmi20\Mezzio\Navigation\Exception\OutOfBoundsException;
 use Mimmi20\Mezzio\Navigation\Navigation;
 use Mimmi20\Mezzio\Navigation\Page;
+use Override;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 
@@ -29,6 +30,7 @@ final class NavigationTest extends TestCase
     private Navigation $navigation;
 
     /** @throws void */
+    #[Override]
     protected function setUp(): void
     {
         $this->navigation = new Navigation();

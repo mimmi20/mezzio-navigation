@@ -14,6 +14,7 @@ namespace Mimmi20\Mezzio\Navigation\Page;
 
 use Closure;
 use Mimmi20\Mezzio\Navigation\Exception;
+use Override;
 
 use function assert;
 use function call_user_func;
@@ -52,6 +53,7 @@ final class PageFactory implements PageFactoryInterface
      *
      * @throws Exception\InvalidArgumentException
      */
+    #[Override]
     public function factory(array $options): PageInterface
     {
         if (isset($options['type'])) {

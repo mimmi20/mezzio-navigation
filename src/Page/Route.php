@@ -16,6 +16,7 @@ use Mezzio\Router\Exception\RuntimeException;
 use Mezzio\Router\RouteResult;
 use Mezzio\Router\RouterInterface;
 use Mimmi20\Mezzio\Navigation\Exception;
+use Override;
 
 use function array_intersect_assoc;
 use function array_merge;
@@ -30,13 +31,8 @@ use function is_string;
  * ModuleRouteListener; to remove the requirement on that component, they are
  * reproduced here.
  */
-final class Route implements RouteInterface
+final class Route extends AbstractPage implements RouteInterface
 {
-    use PageTrait {
-        isActive as isActiveParent;
-        toArray as toParentArray;
-    }
-
     /**
      * URL query part to use when assembling URL
      *
@@ -101,6 +97,7 @@ final class Route implements RouteInterface
      *
      * @throws void
      */
+    #[Override]
     public function isActive(bool $recursive = false): bool
     {
         if ($this->active === null) {
@@ -122,7 +119,7 @@ final class Route implements RouteInterface
                         return true;
                     }
 
-                    return $this->isActiveParent($recursive);
+                    return parent::isActive($recursive);
                 }
             }
 
@@ -136,7 +133,7 @@ final class Route implements RouteInterface
             }
         }
 
-        return $this->isActiveParent($recursive);
+        return parent::isActive($recursive);
     }
 
     /**
@@ -152,6 +149,7 @@ final class Route implements RouteInterface
      * @throws Exception\DomainException if no router is set
      * @throws RuntimeException
      */
+    #[Override]
     public function getHref(): string
     {
         if ($this->hrefCache) {
@@ -215,6 +213,7 @@ final class Route implements RouteInterface
      *
      * @throws void
      */
+    #[Override]
     public function setQuery(array | string | null $query): void
     {
         $this->query     = $query;
@@ -230,6 +229,7 @@ final class Route implements RouteInterface
      *
      * @throws void
      */
+    #[Override]
     public function getQuery(): array | string | null
     {
         return $this->query;
@@ -244,6 +244,7 @@ final class Route implements RouteInterface
      *
      * @throws void
      */
+    #[Override]
     public function setParams(array $params = []): void
     {
         $this->params    = $params;
@@ -259,6 +260,7 @@ final class Route implements RouteInterface
      *
      * @throws void
      */
+    #[Override]
     public function getParams(): array
     {
         return $this->params;
@@ -273,6 +275,7 @@ final class Route implements RouteInterface
      *
      * @throws Exception\InvalidArgumentException if invalid $route is given
      */
+    #[Override]
     public function setRoute(string $route): void
     {
         if ($route === '') {
@@ -294,6 +297,7 @@ final class Route implements RouteInterface
      *
      * @throws void
      */
+    #[Override]
     public function getRoute(): string | null
     {
         return $this->route;
@@ -304,6 +308,7 @@ final class Route implements RouteInterface
      *
      * @throws void
      */
+    #[Override]
     public function getRouteMatch(): RouteResult | null
     {
         return $this->routeMatch;
@@ -314,6 +319,7 @@ final class Route implements RouteInterface
      *
      * @throws void
      */
+    #[Override]
     public function setRouteMatch(RouteResult $matches): void
     {
         $this->routeMatch = $matches;
@@ -324,6 +330,7 @@ final class Route implements RouteInterface
      *
      * @throws void
      */
+    #[Override]
     public function useRouteMatch(): bool
     {
         return $this->useRouteMatch;
@@ -338,6 +345,7 @@ final class Route implements RouteInterface
      *
      * @throws void
      */
+    #[Override]
     public function setUseRouteMatch(bool $useRouteMatch = true): void
     {
         $this->useRouteMatch = $useRouteMatch;
@@ -349,6 +357,7 @@ final class Route implements RouteInterface
      *
      * @throws void
      */
+    #[Override]
     public function getRouter(): RouterInterface | null
     {
         return $this->router;
@@ -363,6 +372,7 @@ final class Route implements RouteInterface
      *
      * @throws void
      */
+    #[Override]
     public function setRouter(RouterInterface | null $router): void
     {
         $this->router = $router;
@@ -377,10 +387,11 @@ final class Route implements RouteInterface
      *
      * @throws void
      */
+    #[Override]
     public function toArray(): array
     {
         return array_merge(
-            $this->toParentArray(),
+            parent::toArray(),
             [
                 'params' => $this->getParams(),
                 'route' => $this->getRoute(),
