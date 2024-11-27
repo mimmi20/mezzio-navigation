@@ -908,24 +908,27 @@ $page = (new PageFactory())->factory([
 
 The fastest way to get up and running with mezzio-navigation is:
 
-- Register mezzio-navigation as module.
+- Register mezzio-navigation or use the Component Installer.
+- Add the Middleware to the Pipeline.
 - Define navigation container configuration under the top-level `navigation` key
   in your application configuration.
 - Render your container using a navigation view helper within your view scripts.
 
-#### Register mezzio-navigation as module
+#### Register mezzio-navigation
 
-Edit the application configuration file `config/application.config.php`:
+Edit the application configuration file `config/config.php`:
 
 ```php
 <?php
-return [
-    'modules' => [
-        'Mezzio\Router',
-        'Mezzio\Navigation', // <-- Add this line
+// ...
+$aggregator = new ConfigAggregator(
+    [
+        // ...
+        \Mimmi20\Mezzio\Navigation\ConfigProvider::class, // <-- Add this line
         // ...
     ],
-];
+    $cacheConfig['config_cache_path'],
+);
 ```
 
 #### Add the NavigationMiddleware to the pipeline
@@ -944,7 +947,7 @@ return [
 If you need the Navigation inside the Layout, and the Layout is used also for the Not-Found-Page, you have to add the Middleware in the Pipeline before the Routing.
 
 ```php
-    $app->pipe(\Mimmi20\Mezzio\Navigation\NavigationMiddleware::class);
+    $app->pipe(\Mimmi20\Mezzio\Navigation\NavigationMiddleware::class); // <-- Add this line
 
     // Register the routing middleware in the middleware pipeline.
     // This middleware registers the Mezzio\Router\RouteResult request attribute.
