@@ -909,7 +909,7 @@ $page = (new PageFactory())->factory([
 The fastest way to get up and running with mezzio-navigation is:
 
 - Register mezzio-navigation or use the Component Installer.
-- add the Middleware to the Pipeline.
+- Add the Middleware to the Pipeline.
 - Define navigation container configuration under the top-level `navigation` key
   in your application configuration.
 - Render your container using a navigation view helper within your view scripts.
