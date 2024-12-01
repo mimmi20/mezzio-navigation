@@ -383,7 +383,7 @@ final class Route extends AbstractPage implements RouteInterface
     /**
      * Returns an array representation of the page
      *
-     * @return array<mixed> associative array containing all page properties
+     * @return array<string, mixed> associative array containing all page properties
      *
      * @throws void
      */

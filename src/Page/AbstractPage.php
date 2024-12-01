@@ -81,7 +81,7 @@ abstract class AbstractPage extends AbstractContainer implements PageInterface, 
      *
      * @see http://www.w3.org/TR/html4/struct/links.html#h-12.3.1
      *
-     * @var array<ContainerInterface<PageInterface>|iterable<string>|PageInterface|string>
+     * @var array<string, ContainerInterface<PageInterface>|iterable<string, string>|PageInterface|string>
      */
     protected array $rel = [];
 
@@ -90,7 +90,7 @@ abstract class AbstractPage extends AbstractContainer implements PageInterface, 
      *
      * @see http://www.w3.org/TR/html4/struct/links.html#h-12.3.1
      *
-     * @var array<ContainerInterface<PageInterface>|iterable<string>|PageInterface|string>
+     * @var array<string, ContainerInterface<PageInterface>|iterable<string, string>|PageInterface|string>
      */
     protected array $rev = [];
 
@@ -144,7 +144,7 @@ abstract class AbstractPage extends AbstractContainer implements PageInterface, 
     private string | null $permission = null;
 
     /**
-     * @param iterable<string, array<string>|bool|string|null>|null $options [optional] page options. Default is null, which should set defaults.
+     * @param iterable<string, array<string, string>|bool|string|null>|null $options [optional] page options. Default is null, which should set defaults.
      *
      * @throws Exception\InvalidArgumentException if invalid options are given
      */
@@ -164,8 +164,8 @@ abstract class AbstractPage extends AbstractContainer implements PageInterface, 
      *
      * Magic overload for enabling <code>$page->propname = $value</code>.
      *
-     * @param string                                                                                                              $name  property name
-     * @param bool|ContainerInterface<PageInterface>|float|int|iterable<string, (array<string>|string)>|PageInterface|string|null $value value to set
+     * @param string                                                                                                                      $name  property name
+     * @param bool|ContainerInterface<PageInterface>|float|int|iterable<string, (array<string, string>|string)>|PageInterface|string|null $value value to set
      *
      * @throws Exception\InvalidArgumentException if property name is invalid
      */
@@ -183,7 +183,7 @@ abstract class AbstractPage extends AbstractContainer implements PageInterface, 
      *
      * @param string $name property name
      *
-     * @return bool|ContainerInterface<PageInterface>|float|int|iterable<string, (array<string>|string)>|PageInterface|string|null property value or null
+     * @return bool|ContainerInterface<PageInterface>|float|int|iterable<string, (array<string, string>|string)>|PageInterface|string|null property value or null
      *
      * @throws Exception\InvalidArgumentException if property name is invalid
      */
@@ -271,7 +271,7 @@ abstract class AbstractPage extends AbstractContainer implements PageInterface, 
      * corresponds to setTarget(), and the option 'reset_params' corresponds to
      * the method setResetParams().
      *
-     * @param iterable<string, array<string>|bool|string|null> $options associative array of options to set
+     * @param iterable<string, array<string, string>|bool|string|null> $options associative array of options to set
      *
      * @throws Exception\InvalidArgumentException if invalid options are given
      */
@@ -477,7 +477,7 @@ abstract class AbstractPage extends AbstractContainer implements PageInterface, 
      * prev, next, help, etc), and the value is a mixed value that could somehow
      * be considered a page.
      *
-     * @param iterable<ContainerInterface<PageInterface>|iterable<string>|PageInterface|string>|null $relations [optional] an associative array of forward links to other pages
+     * @param iterable<int|string, ContainerInterface<PageInterface>|iterable<string, string>|PageInterface|string>|null $relations [optional] an associative array of forward links to other pages
      *
      * @throws void
      */
@@ -510,7 +510,7 @@ abstract class AbstractPage extends AbstractContainer implements PageInterface, 
      * @param string|null $relation [optional] name of relation to return. If not
      *                              given, all relations will be returned.
      *
-     * @return ContainerInterface<PageInterface>|iterable<ContainerInterface<PageInterface>|iterable<string>|PageInterface|string>|PageInterface|string|null an array of relations. If $relation is not
+     * @return ContainerInterface<PageInterface>|iterable<string, ContainerInterface<PageInterface>|iterable<string, string>|PageInterface|string>|PageInterface|string|null an array of relations. If $relation is not
      *                           specified, all relations will be returned in
      *                           an associative array.
      *
@@ -535,7 +535,7 @@ abstract class AbstractPage extends AbstractContainer implements PageInterface, 
      * prev, next, help, etc), and the value is a mixed value that could somehow
      * be considered a page.
      *
-     * @param iterable<ContainerInterface<PageInterface>|iterable<string>|PageInterface|string>|null $relations [optional] an associative array of reverse links to other pages
+     * @param iterable<int|string, ContainerInterface<PageInterface>|iterable<string, string>|PageInterface|string>|null $relations [optional] an associative array of reverse links to other pages
      *
      * @throws void
      */
@@ -568,7 +568,7 @@ abstract class AbstractPage extends AbstractContainer implements PageInterface, 
      * @param string|null $relation [optional] name of relation to return. If not
      *                              given, all relations will be returned.
      *
-     * @return ContainerInterface<PageInterface>|iterable<ContainerInterface<PageInterface>|iterable<string>|PageInterface|string>|PageInterface|string|null an array of relations. If $relation is not
+     * @return ContainerInterface<PageInterface>|iterable<string, ContainerInterface<PageInterface>|iterable<string, string>|PageInterface|string>|PageInterface|string|null an array of relations. If $relation is not
      *                           specified, all relations will be returned in
      *                           an associative array.
      *
@@ -911,8 +911,8 @@ abstract class AbstractPage extends AbstractContainer implements PageInterface, 
      * If the given property is native (id, class, title, etc), the matching
      * set method will be used. Otherwise, it will be set as a custom property.
      *
-     * @param string                                                                                                              $property property name
-     * @param bool|ContainerInterface<PageInterface>|float|int|iterable<string, (array<string>|string)>|PageInterface|string|null $value    value to set
+     * @param string                                                                                                                      $property property name
+     * @param bool|ContainerInterface<PageInterface>|float|int|iterable<string, (array<string, string>|string)>|PageInterface|string|null $value    value to set
      *
      * @throws Exception\InvalidArgumentException if property name is invalid
      */
@@ -945,7 +945,7 @@ abstract class AbstractPage extends AbstractContainer implements PageInterface, 
      *
      * @param string $property property name
      *
-     * @return bool|ContainerInterface<PageInterface>|float|int|iterable<string, (array<string>|string)>|PageInterface|string|null the property's value or null
+     * @return bool|ContainerInterface<PageInterface>|float|int|iterable<string, (array<string, string>|string)>|PageInterface|string|null the property's value or null
      *
      * @throws Exception\InvalidArgumentException if property name is invalid
      */
@@ -973,9 +973,8 @@ abstract class AbstractPage extends AbstractContainer implements PageInterface, 
     /**
      * Adds a forward relation to the page
      *
-     * @param string                                                                  $relation relation name (e.g. alternate, glossary,
-     *                                                                                          canonical, etc)
-     * @param ContainerInterface<PageInterface>|iterable<string>|PageInterface|string $value    value to set for relation
+     * @param string                                                                          $relation relation name (e.g. alternate, glossary, canonical, etc)
+     * @param ContainerInterface<PageInterface>|iterable<string, string>|PageInterface|string $value    value to set for relation
      *
      * @throws void
      */
@@ -988,9 +987,8 @@ abstract class AbstractPage extends AbstractContainer implements PageInterface, 
     /**
      * Adds a reverse relation to the page
      *
-     * @param string                                                                  $relation relation name (e.g. alternate, glossary,
-     *                                                                                          canonical, etc)
-     * @param ContainerInterface<PageInterface>|iterable<string>|PageInterface|string $value    value to set for relation
+     * @param string                                                                          $relation relation name (e.g. alternate, glossary, canonical, etc)
+     * @param ContainerInterface<PageInterface>|iterable<string, string>|PageInterface|string $value    value to set for relation
      *
      * @throws void
      */
@@ -1037,7 +1035,7 @@ abstract class AbstractPage extends AbstractContainer implements PageInterface, 
     /**
      * Returns an array containing the defined forward relations
      *
-     * @return array<int, (int|string)> defined forward relations
+     * @return array<int, string> defined forward relations
      *
      * @throws void
      */
@@ -1050,7 +1048,7 @@ abstract class AbstractPage extends AbstractContainer implements PageInterface, 
     /**
      * Returns an array containing the defined reverse relations
      *
-     * @return array<int, (int|string)> defined reverse relations
+     * @return array<int, string> defined reverse relations
      *
      * @throws void
      */
@@ -1063,7 +1061,7 @@ abstract class AbstractPage extends AbstractContainer implements PageInterface, 
     /**
      * Returns custom properties as an array
      *
-     * @return array<string, bool|ContainerInterface<PageInterface>|float|int|iterable<string, (array<string>|string)>|PageInterface|string|null> an array containing custom properties
+     * @return array<string, bool|ContainerInterface<PageInterface>|float|int|iterable<string, (array<string, string>|string)>|PageInterface|string|null> an array containing custom properties
      *
      * @throws void
      */
@@ -1089,7 +1087,7 @@ abstract class AbstractPage extends AbstractContainer implements PageInterface, 
     /**
      * Returns an array representation of the page
      *
-     * @return array<mixed> associative array containing all page properties
+     * @return array<string, mixed> associative array containing all page properties
      *
      * @throws void
      */

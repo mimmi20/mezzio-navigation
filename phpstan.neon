@@ -121,10 +121,10 @@ parameters:
 
   ignoreErrors:
     - '~Call to an undefined method Mimmi20\\Mezzio\\Navigation\\(Navigation|Page\\(Route|Uri))::findAlll?By(Route|Test)~'
-    - '~Parameter #1 \$pages of method Mimmi20\\Mezzio\\Navigation\\AbstractContainer::addPages\(\) expects iterable<Mimmi20\\Mezzio\\Navigation\\Page\\PageInterface>, array<int, string> given~'
+    - '~Parameter #1 \$pages of method Mimmi20\\Mezzio\\Navigation\\AbstractContainer::addPages\(\) expects iterable<int\|string, Mimmi20\\Mezzio\\Navigation\\Page\\PageInterface>, array<int, string> given~'
     - '~Access to protected property Mimmi20\\Mezzio\\Navigation\\Page\\(Route|Uri)::\$target~'
     - '~Access to an undefined property Mimmi20\\Mezzio\\Navigation\\Page\\(Route|Uri)::~'
-    - '~::preparePages\(\) expects array<array<array<string>\|string>>, array<string> given~'
+    - '~::preparePages\(\) expects array<string, array<string, array<string, string>\|string>>, array<string, string> given~'
     - '~assertContainsOnly~'
 
 rules:

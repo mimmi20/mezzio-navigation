@@ -76,12 +76,12 @@ final class NavigationTest extends TestCase
 
         self::assertCount(3, $pages);
         self::assertCount(3, $this->navigation);
-        self::assertIsArray($pages[0]);
-        self::assertSame('page3', $pages[0]['uri'], var_export($pages, true));
-        self::assertIsArray($pages[1]);
-        self::assertSame('page1', $pages[1]['uri']);
-        self::assertIsArray($pages[2]);
-        self::assertSame('page2', $pages[2]['uri']);
+        self::assertIsArray($pages[$page3->hashCode()]);
+        self::assertSame('page3', $pages[$page3->hashCode()]['uri'], var_export($pages, true));
+        self::assertIsArray($pages[$page1->hashCode()]);
+        self::assertSame('page1', $pages[$page1->hashCode()]['uri']);
+        self::assertIsArray($pages[$page2->hashCode()]);
+        self::assertSame('page2', $pages[$page2->hashCode()]['uri']);
     }
 
     /**

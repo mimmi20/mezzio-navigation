@@ -54,14 +54,14 @@ interface NavigationConfigInterface
     public function setAuthorization(AuthorizationInterface | null $authorization = null): void;
 
     /**
-     * @return array<array<string>>|null
+     * @return array<int, array<string, string>>|null
      *
      * @throws void
      */
     public function getPages(): array | null;
 
     /**
-     * @param array<array<string>> $pages
+     * @param array<int, array<string, string>> $pages
      *
      * @throws void
      */
