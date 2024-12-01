@@ -46,7 +46,7 @@ interface ContainerInterface extends Countable, RecursiveIterator
     /**
      * Adds several pages at once
      *
-     * @param iterable<PageInterface> $pages pages to add
+     * @param iterable<int|string, PageInterface> $pages pages to add
      *
      * @throws InvalidArgumentException if $pages is not array, Traversable or PageInterface
      */
@@ -55,7 +55,7 @@ interface ContainerInterface extends Countable, RecursiveIterator
     /**
      * Sets pages this container should have, removing existing pages
      *
-     * @param iterable<PageInterface> $pages pages to set
+     * @param iterable<int|string, PageInterface> $pages pages to set
      *
      * @throws InvalidArgumentException
      */
@@ -64,7 +64,7 @@ interface ContainerInterface extends Countable, RecursiveIterator
     /**
      * Returns pages in the container
      *
-     * @return array<PageInterface>
+     * @return array<string, PageInterface>
      *
      * @throws void
      */
@@ -131,7 +131,7 @@ interface ContainerInterface extends Countable, RecursiveIterator
      * @param string $property name of property to match against
      * @param mixed  $value    value to match property against
      *
-     * @return array<PageInterface>
+     * @return array<int, PageInterface>
      *
      * @throws InvalidArgumentException
      */
@@ -140,7 +140,7 @@ interface ContainerInterface extends Countable, RecursiveIterator
     /**
      * Returns an array representation of all pages in container
      *
-     * @return array<mixed>
+     * @return array<int|string, mixed>
      *
      * @throws void
      */

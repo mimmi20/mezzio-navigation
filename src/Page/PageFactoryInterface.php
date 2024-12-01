@@ -31,7 +31,7 @@ interface PageFactoryInterface
      * - If $options contains the key 'route', a Mimmi20\Mezzio\Navigation\Page\Route page will be created.
      * - If $options contains the key 'uri', a Mimmi20\Mezzio\Navigation\Page\Uri page will be created.
      *
-     * @param array<string, array<string>|bool|string> $options options used for creating page
+     * @param array<string, array<string, string>|bool|string> $options options used for creating page
      *
      * @return PageInterface a page instance
      *

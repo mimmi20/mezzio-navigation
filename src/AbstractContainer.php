@@ -46,7 +46,7 @@ abstract class AbstractContainer implements ContainerInterface
     /**
      * Contains sub pages
      *
-     * @var array<PageInterface>
+     * @var array<string, PageInterface>
      */
     protected array $pages = [];
 
@@ -73,8 +73,8 @@ abstract class AbstractContainer implements ContainerInterface
      * $nav->findAllByClass('foo'); // $nav->findAllBy('class', 'foo');
      * </code>
      *
-     * @param string       $method    method name
-     * @param array<mixed> $arguments method arguments
+     * @param string            $method    method name
+     * @param array<int, mixed> $arguments method arguments
      *
      * @throws BadMethodCallException if method does not exist
      * @throws ErrorException
@@ -149,7 +149,7 @@ abstract class AbstractContainer implements ContainerInterface
     /**
      * Adds several pages at once
      *
-     * @param array<PageInterface> $pages pages to add
+     * @param array<int|string, PageInterface> $pages pages to add
      *
      * @throws InvalidArgumentException if $pages is not array, Traversable or PageInterface
      */
@@ -170,7 +170,7 @@ abstract class AbstractContainer implements ContainerInterface
     /**
      * Sets pages this container should have, removing existing pages
      *
-     * @param array<PageInterface> $pages pages to set
+     * @param array<int|string, PageInterface> $pages pages to set
      *
      * @throws InvalidArgumentException
      */
@@ -184,7 +184,7 @@ abstract class AbstractContainer implements ContainerInterface
     /**
      * Returns pages in the container
      *
-     * @return array<PageInterface>
+     * @return array<string, PageInterface>
      *
      * @throws void
      */
@@ -355,7 +355,7 @@ abstract class AbstractContainer implements ContainerInterface
      * @param string $property name of property to match against
      * @param mixed  $value    value to match property against
      *
-     * @return array<PageInterface> array containing only Page\PageInterface instances
+     * @return array<int, PageInterface> array containing only Page\PageInterface instances
      *
      * @throws InvalidArgumentException
      */
@@ -382,7 +382,7 @@ abstract class AbstractContainer implements ContainerInterface
     /**
      * Returns an array representation of all pages in container
      *
-     * @return array<mixed>
+     * @return array<string, mixed>
      *
      * @throws void
      */
@@ -394,7 +394,7 @@ abstract class AbstractContainer implements ContainerInterface
         $indexes = array_keys($this->index);
 
         foreach ($indexes as $hash) {
-            $pages[] = $this->pages[$hash]->toArray();
+            $pages[$hash] = $this->pages[$hash]->toArray();
         }
 
         return $pages;

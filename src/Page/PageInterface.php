@@ -30,7 +30,7 @@ interface PageInterface extends ContainerInterface
      * corresponds to setTarget(), and the option 'reset_params' corresponds to
      * the method setResetParams().
      *
-     * @param iterable<string, array<string>|bool|string> $options associative array of options to set
+     * @param iterable<string, array<string, string>|bool|string> $options associative array of options to set
      *
      * @throws Exception\InvalidArgumentException if invalid options are given
      */
@@ -175,7 +175,7 @@ interface PageInterface extends ContainerInterface
      * prev, next, help, etc), and the value is a mixed value that could somehow
      * be considered a page.
      *
-     * @param iterable<ContainerInterface<PageInterface>|iterable<string>|PageInterface|string>|null $relations [optional] an associative array of
+     * @param iterable<int|string, ContainerInterface<PageInterface>|iterable<string, string>|PageInterface|string>|null $relations [optional] an associative array of
      *                                                                                                                            forward links to other pages
      *
      * @throws void
@@ -193,7 +193,7 @@ interface PageInterface extends ContainerInterface
      * @param string|null $relation [optional] name of relation to return. If not
      *                              given, all relations will be returned.
      *
-     * @return ContainerInterface<PageInterface>|iterable<ContainerInterface<PageInterface>|iterable<string>|PageInterface|string>|PageInterface|string|null an array of relations. If $relation is not
+     * @return ContainerInterface<PageInterface>|iterable<ContainerInterface<PageInterface>|iterable<string, string>|PageInterface|string>|PageInterface|string|null an array of relations. If $relation is not
      *                           specified, all relations will be returned in
      *                           an associative array.
      *
@@ -209,7 +209,7 @@ interface PageInterface extends ContainerInterface
      * prev, next, help, etc), and the value is a mixed value that could somehow
      * be considered a page.
      *
-     * @param iterable<ContainerInterface<PageInterface>|iterable<string>|PageInterface|string>|null $relations [optional] an associative array of
+     * @param iterable<int|string, ContainerInterface<PageInterface>|iterable<string, string>|PageInterface|string>|null $relations [optional] an associative array of
      *                                                                                                                            reverse links to other pages
      *
      * @throws void
@@ -227,7 +227,7 @@ interface PageInterface extends ContainerInterface
      * @param string|null $relation [optional] name of relation to return. If not
      *                              given, all relations will be returned.
      *
-     * @return ContainerInterface<PageInterface>|iterable<ContainerInterface<PageInterface>|iterable<string>|PageInterface|string>|PageInterface|string|null an array of relations. If $relation is not
+     * @return ContainerInterface<PageInterface>|iterable<ContainerInterface<PageInterface>|iterable<string, string>|PageInterface|string>|PageInterface|string|null an array of relations. If $relation is not
      *                           specified, all relations will be returned in
      *                           an associative array.
      *
@@ -433,8 +433,8 @@ interface PageInterface extends ContainerInterface
      * If the given property is native (id, class, title, etc), the matching
      * set method will be used. Otherwise, it will be set as a custom property.
      *
-     * @param string                                                                                                              $property property name
-     * @param bool|ContainerInterface<PageInterface>|float|int|iterable<string, (array<string>|string)>|PageInterface|string|null $value    value to set
+     * @param string                                                                                                                      $property property name
+     * @param bool|ContainerInterface<PageInterface>|float|int|iterable<string, (array<string, string>|string)>|PageInterface|string|null $value    value to set
      *
      * @throws Exception\InvalidArgumentException if property name is invalid
      */
@@ -449,7 +449,7 @@ interface PageInterface extends ContainerInterface
      *
      * @param string $property property name
      *
-     * @return bool|ContainerInterface<PageInterface>|float|int|iterable<string, (array<string>|string)>|PageInterface|string|null the property's value or null
+     * @return bool|ContainerInterface<PageInterface>|float|int|iterable<string, (array<string, string>|string)>|PageInterface|string|null the property's value or null
      *
      * @throws Exception\InvalidArgumentException if property name is invalid
      */
@@ -458,8 +458,8 @@ interface PageInterface extends ContainerInterface
     /**
      * Adds a forward relation to the page
      *
-     * @param string                                                                  $relation relation name (e.g. alternate, glossary, canonical, etc)
-     * @param ContainerInterface<PageInterface>|iterable<string>|PageInterface|string $value    value to set for relation
+     * @param string                                                                          $relation relation name (e.g. alternate, glossary, canonical, etc)
+     * @param ContainerInterface<PageInterface>|iterable<string, string>|PageInterface|string $value    value to set for relation
      *
      * @throws void
      */
@@ -468,8 +468,8 @@ interface PageInterface extends ContainerInterface
     /**
      * Adds a reverse relation to the page
      *
-     * @param string                                                                  $relation relation name (e.g. alternate, glossary, canonical, etc)
-     * @param ContainerInterface<PageInterface>|iterable<string>|PageInterface|string $value    value to set for relation
+     * @param string                                                                          $relation relation name (e.g. alternate, glossary, canonical, etc)
+     * @param ContainerInterface<PageInterface>|iterable<string, string>|PageInterface|string $value    value to set for relation
      *
      * @throws void
      */
@@ -496,7 +496,7 @@ interface PageInterface extends ContainerInterface
     /**
      * Returns an array containing the defined forward relations
      *
-     * @return array<int, (int|string)> defined forward relations
+     * @return array<int, string> defined forward relations
      *
      * @throws void
      */
@@ -505,7 +505,7 @@ interface PageInterface extends ContainerInterface
     /**
      * Returns an array containing the defined reverse relations
      *
-     * @return array<int, (int|string)> defined reverse relations
+     * @return array<int, string> defined reverse relations
      *
      * @throws void
      */
@@ -514,7 +514,7 @@ interface PageInterface extends ContainerInterface
     /**
      * Returns custom properties as an array
      *
-     * @return array<string, bool|ContainerInterface<PageInterface>|float|int|iterable<string, (array<string>|string)>|PageInterface|string|null> an array containing custom properties
+     * @return array<string, bool|ContainerInterface<PageInterface>|float|int|iterable<string, (array<string, string>|string)>|PageInterface|string|null> an array containing custom properties
      *
      * @throws void
      */

@@ -58,7 +58,7 @@ trait NavigationFactoryTrait
     }
 
     /**
-     * @return array<PageInterface>
+     * @return array<string, PageInterface>
      *
      * @throws InvalidArgumentException
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
@@ -95,9 +95,9 @@ trait NavigationFactoryTrait
     }
 
     /**
-     * @param array<array<array<string>|string>> $pages
+     * @param array<string, array<string, array<string, string>|string>> $pages
      *
-     * @return array<PageInterface>
+     * @return array<string, PageInterface>
      *
      * @throws InvalidArgumentException
      */

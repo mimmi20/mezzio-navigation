@@ -131,7 +131,7 @@ final class Uri extends AbstractPage implements UriInterface
     /**
      * Returns an array representation of the page
      *
-     * @return array<mixed>
+     * @return array<string, mixed>
      *
      * @throws void
      */

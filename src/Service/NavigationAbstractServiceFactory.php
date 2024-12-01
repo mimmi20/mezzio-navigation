@@ -44,8 +44,8 @@ final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
     public const string SERVICE_PREFIX = 'Mimmi20\Mezzio\Navigation\\';
 
     /**
-     * @param array<mixed>|null $options
-     * @param string            $requestedName Name by which service was requested, must start with Mimmi20\Mezzio\Navigation\
+     * @param array<int|string, mixed>|null $options
+     * @param string                        $requestedName Name by which service was requested, must start with Mimmi20\Mezzio\Navigation\
      *
      * @throws ContainerExceptionInterface
      * @throws InvalidArgumentException

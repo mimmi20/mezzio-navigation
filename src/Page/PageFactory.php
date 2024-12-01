@@ -31,7 +31,7 @@ final class PageFactory implements PageFactoryInterface
     /**
      * Static factories list for factory pages
      *
-     * @var array<(Closure(array<string, array<string>|bool|string>): ?PageInterface)>
+     * @var array<(Closure(array<string, array<string, string>|bool|string>): ?PageInterface)>
      */
     private static array $factories = [];
 
@@ -47,7 +47,7 @@ final class PageFactory implements PageFactoryInterface
      * - If $options contains the key 'route', a Mimmi20\Mezzio\Navigation\Page\Route page will be created.
      * - If $options contains the key 'uri', a Mimmi20\Mezzio\Navigation\Page\Uri page will be created.
      *
-     * @param array<string, array<string>|bool|string> $options options used for creating page
+     * @param array<string, array<string, string>|bool|string> $options options used for creating page
      *
      * @return PageInterface a page instance
      *
@@ -122,7 +122,7 @@ final class PageFactory implements PageFactoryInterface
     /**
      * Add static factory for self::factory function
      *
-     * @param (Closure(array<string, array<string>|bool|string>): ?PageInterface) $callback Any callable variable
+     * @param (Closure(array<string, array<string, string>|bool|string>): ?PageInterface) $callback Any callable variable
      *
      * @throws void
      *
