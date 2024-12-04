@@ -23,7 +23,7 @@
     "php": "~8.3.0 || ~8.4.0 || ~8.5.0",
     "ext-mbstring": "*",
     "laminas/laminas-stdlib": "^3.20.0",
-    "mimmi20/mezzio-generic-authorization": "^3.0.7",
+    "mimmi20/mezzio-generic-authorization": "^4.0.0",
     "psr/container": "^1.1.2",
     "psr/http-message": "^2.0",
     "psr/http-server-handler": "^1.0.2",
