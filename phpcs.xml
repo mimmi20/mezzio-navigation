@@ -17,4 +17,5 @@
     <file>tests</file>
     <file>.php-cs-fixer.php</file>
     <file>rector.php</file>
+    <file>composer-dependency-analyser.php</file>
 </ruleset>
