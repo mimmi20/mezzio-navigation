@@ -41,7 +41,7 @@
     "mezzio/mezzio-helpers": "^5.17.0",
     "mezzio/mezzio-router": "^3.18.0",
     "mimmi20/coding-standard": "^6.0.1",
-    "nikic/php-parser": "^5.3.1",
+    "nikic/php-parser": "^5.4.0",
     "phpstan/extension-installer": "^1.4.3",
     "phpstan/phpstan": "^1.12.9",
     "phpstan/phpstan-deprecation-rules": "^1.2.1",
