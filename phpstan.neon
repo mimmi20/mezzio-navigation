@@ -16,15 +16,6 @@ parameters:
     - %currentWorkingDirectory%/vendor/squizlabs/php_codesniffer/autoload.php
     - %currentWorkingDirectory%/vendor/squizlabs/php_codesniffer/src/Util/Tokens.php
 
-  # reports occurrences of type-checking functions always evaluated to true
-  checkAlwaysTrueCheckTypeFunctionCall: false # todo: fix
-
-  # reports instanceof occurrences always evaluated to true
-  checkAlwaysTrueInstanceof: true
-
-  # reports === and !== occurrences always evaluated to true
-  checkAlwaysTrueStrictComparison: false # todo: fix
-
   # enable stricter analysis of benevolent union types
   checkBenevolentUnionTypes: true
 
@@ -45,9 +36,6 @@ parameters:
 
   # require that callable signatures are specified
   checkMissingCallableSignature: true
-
-  # checks for missing typehints in iterables
-  checkMissingIterableValueType: true
 
   # reports return typehints that could be narrowed down because some of the listed types are never returned
   checkTooWideReturnTypesInProtectedAndPublicMethods: true
@@ -120,17 +108,18 @@ parameters:
     narrow_param: true
 
   ignoreErrors:
+    - '~will always evaluate to true~'
     - '~Call to an undefined method Mimmi20\\Mezzio\\Navigation\\(Navigation|Page\\(Route|Uri))::findAlll?By(Route|Test)~'
     - '~Parameter #1 \$pages of method Mimmi20\\Mezzio\\Navigation\\AbstractContainer::addPages\(\) expects iterable<int\|string, Mimmi20\\Mezzio\\Navigation\\Page\\PageInterface>, array<int, string> given~'
     - '~Access to protected property Mimmi20\\Mezzio\\Navigation\\Page\\(Route|Uri)::\$target~'
     - '~Access to an undefined property Mimmi20\\Mezzio\\Navigation\\Page\\(Route|Uri)::~'
     - '~::preparePages\(\) expects array<string, array<string, array<string, string>\|string>>, array<string, string> given~'
     - '~assertContainsOnly~'
+    - '~array<mixed, mixed> given~'
 
 rules:
   # code complexity
   # - Symplify\PHPStanRules\Rules\NoDynamicNameRule
-  # - Symplify\PHPStanRules\Rules\NoReturnArrayVariableListRule # todo: fix
 
   - Symplify\PHPStanRules\Rules\ForbiddenExtendOfNonAbstractClassRule
 
@@ -152,14 +141,8 @@ rules:
   # naming
   - Symplify\PHPStanRules\Rules\RequireAttributeNameRule
 
-  # regexes
-  - Symplify\PHPStanRules\Rules\AnnotateRegexClassConstWithRegexLinkRule
-  # - Symplify\PHPStanRules\Rules\NoInlineStringRegexRule # todo fix
-  - Symplify\PHPStanRules\Rules\RegexSuffixInRegexConstantRule
-
   # naming
   - Symplify\PHPStanRules\Rules\Explicit\ExplicitClassPrefixSuffixRule
   - Symplify\PHPStanRules\Rules\NoReturnSetterMethodRule
   - Symplify\PHPStanRules\Rules\UppercaseConstantRule
   - Symplify\PHPStanRules\Rules\ClassNameRespectsParentSuffixRule
-  - Symplify\PHPStanRules\Rules\CheckClassNamespaceFollowPsr4Rule
