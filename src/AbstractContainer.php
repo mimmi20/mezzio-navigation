@@ -3,7 +3,7 @@
 /**
  * This file is part of the mimmi20/mezzio-navigation package.
  *
- * Copyright (c) 2020-2024, Thomas Mueller <mimmi20@live.de>
+ * Copyright (c) 2020-2025, Thomas Mueller <mimmi20@live.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -534,7 +534,7 @@ abstract class AbstractContainer implements ContainerInterface
      *
      * Implements Countable interface.
      *
-     * @return int number of pages in the container
+     * @return int<0, max> number of pages in the container
      *
      * @throws void
      */
