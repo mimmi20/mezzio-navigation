@@ -52,12 +52,14 @@ final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
      * @throws InvalidArgumentException
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter
      */
     #[Override]
-    public function __invoke(ContainerInterface $container, $requestedName, array | null $options = null): Navigation
-    {
+    public function __invoke(
+        ContainerInterface $container,
+        string $requestedName,
+        array | null $options = null,
+    ): Navigation {
         $factory = new ConstructedNavigationFactory(
             $this->getNamedConfigName($container, $requestedName),
         );
@@ -71,11 +73,9 @@ final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
      * @param string $requestedName Name by which service was requested, must start with Mimmi20\Mezzio\Navigation\
      *
      * @throws ContainerExceptionInterface
-     *
-     * @phpcsSuppress SlevomatCodingStandard.TypeHints.ParameterTypeHint.MissingNativeTypeHint
      */
     #[Override]
-    public function canCreate(ContainerInterface $container, $requestedName): bool
+    public function canCreate(ContainerInterface $container, string $requestedName): bool
     {
         if (mb_strpos($requestedName, self::SERVICE_PREFIX) !== 0) {
             return false;
