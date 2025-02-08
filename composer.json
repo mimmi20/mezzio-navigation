@@ -22,6 +22,7 @@
   "require": {
     "php": "~8.3.0 || ~8.4.0 || ~8.5.0",
     "ext-mbstring": "*",
+    "laminas/laminas-servicemanager": "^3.23.0",
     "laminas/laminas-stdlib": "^3.20.0",
     "mimmi20/mezzio-generic-authorization": "^4.0.0",
     "psr/container": "^1.1.2",
@@ -37,7 +38,6 @@
     "ext-xml": "*",
     "ext-xmlwriter": "*",
     "infection/infection": "^0.29.10",
-    "laminas/laminas-servicemanager": "^3.23.0",
     "mezzio/mezzio-helpers": "^5.17.0",
     "mezzio/mezzio-router": "^3.18.0",
     "mimmi20/coding-standard": "^6.0.10",
@@ -62,7 +62,6 @@
   },
   "suggest": {
     "laminas/laminas-config": "to provide page configuration (optional, as arrays and Traversables are also allowed)",
-    "laminas/laminas-servicemanager": "to use the navigation factories",
     "mezzio/mezzio-router": "to use router-based URI generation with pages",
     "mimmi20/mezzio-generic-authorization": "to provide access restrictions to pages",
     "mimmi20/mezzio-navigation-laminasviewrenderer": "to use the navigation view helpers"

@@ -522,14 +522,17 @@ final class RouteTest extends TestCase
         self::assertSame($order, $this->page->getOrder());
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     public function testSetResource(): void
     {
         $resource = 'test';
 
         self::assertNull($this->page->getResource());
 
-        $this->page->setResource($resource);
+        $this->page->setRoute($resource);
 
         self::assertSame($resource, $this->page->getResource());
     }
@@ -544,18 +547,6 @@ final class RouteTest extends TestCase
         $this->page->setPrivilege($privilege);
 
         self::assertSame($privilege, $this->page->getPrivilege());
-    }
-
-    /** @throws Exception */
-    public function testSetPermission(): void
-    {
-        $permission = 'test';
-
-        self::assertNull($this->page->getPermission());
-
-        $this->page->setPermission($permission);
-
-        self::assertSame($permission, $this->page->getPermission());
     }
 
     /** @throws Exception */
@@ -1150,9 +1141,8 @@ final class RouteTest extends TestCase
             'rel' => [],
             'rev' => [],
             'order' => null,
-            'resource' => null,
+            'resource' => 'testRoute',
             'privilege' => null,
-            'permission' => null,
             'active' => false,
             'visible' => true,
             'type' => Route::class,

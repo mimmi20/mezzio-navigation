@@ -13,6 +13,7 @@ declare(strict_types = 1);
 
 namespace Mimmi20\Mezzio\Navigation\Page;
 
+use Mimmi20\Mezzio\Navigation\Exception;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
@@ -41,4 +42,15 @@ interface UriInterface extends PageInterface
 
     /** @throws void */
     public function setRequest(ServerRequestInterface | null $request): void;
+
+    /**
+     * Sets resource associated with this page
+     *
+     * @param string $resource [optional] resource to associate
+     *                         with page. Default is null, which
+     *                         sets no resource.
+     *
+     * @throws Exception\InvalidArgumentException if $resource is invalid
+     */
+    public function setResource(string $resource): void;
 }

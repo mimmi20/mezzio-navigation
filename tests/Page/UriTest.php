@@ -511,18 +511,6 @@ final class UriTest extends TestCase
     }
 
     /** @throws Exception */
-    public function testSetPermission(): void
-    {
-        $permission = 'test';
-
-        self::assertNull($this->page->getPermission());
-
-        $this->page->setPermission($permission);
-
-        self::assertSame($permission, $this->page->getPermission());
-    }
-
-    /** @throws Exception */
     public function testSetTextDomain(): void
     {
         $textDomain = 'test';

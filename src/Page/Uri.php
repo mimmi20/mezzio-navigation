@@ -30,6 +30,11 @@ final class Uri extends AbstractPage implements UriInterface
     private string | null $uri = null;
 
     /**
+     * resource associated with this page
+     */
+    private string | null $resource = null;
+
+    /**
      * Request object used to determine uri path
      */
     private ServerRequestInterface | null $request = null;
@@ -127,6 +132,34 @@ final class Uri extends AbstractPage implements UriInterface
         }
 
         return parent::isActive($recursive);
+    }
+
+    /**
+     * Sets resource associated with this page
+     *
+     * @param string $resource [optional] resource to associate
+     *                         with page. Default is null, which
+     *                         sets no resource.
+     *
+     * @throws void
+     */
+    #[Override]
+    public function setResource(string $resource): void
+    {
+        $this->resource = $resource;
+    }
+
+    /**
+     * Returns resource associated with this page
+     *
+     * @return string|null resource or null
+     *
+     * @throws void
+     */
+    #[Override]
+    public function getResource(): string | null
+    {
+        return $this->resource;
     }
 
     /**

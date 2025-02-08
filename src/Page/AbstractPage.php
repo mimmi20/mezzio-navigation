@@ -101,12 +101,7 @@ abstract class AbstractPage extends AbstractContainer implements PageInterface, 
     protected int | null $order = null;
 
     /**
-     * resource associated with this page
-     */
-    protected string | null $resource = null;
-
-    /**
-     * ACL privilege associated with this page
+     * privilege associated with this page
      */
     protected string | null $privilege = null;
 
@@ -138,11 +133,6 @@ abstract class AbstractPage extends AbstractContainer implements PageInterface, 
      * @var array<string, bool|ContainerInterface<PageInterface>|float|int|iterable<string, (array<string>|string)>|PageInterface|string|null>
      */
     protected array $properties = [];
-
-    /**
-     * Permission associated with this page
-     */
-    private string | null $permission = null;
 
     /**
      * @param iterable<string, array<string, string>|bool|string|null>|null $options [optional] page options. Default is null, which should set defaults.
@@ -671,37 +661,9 @@ abstract class AbstractPage extends AbstractContainer implements PageInterface, 
     }
 
     /**
-     * Sets ACL resource associated with this page
-     *
-     * @param string $resource [optional] resource to associate
-     *                         with page. Default is null, which
-     *                         sets no resource.
-     *
-     * @throws void
-     */
-    #[Override]
-    public function setResource(string $resource): void
-    {
-        $this->resource = $resource;
-    }
-
-    /**
-     * Returns ACL resource associated with this page
-     *
-     * @return string|null ACL resource or null
-     *
-     * @throws void
-     */
-    #[Override]
-    public function getResource(): string | null
-    {
-        return $this->resource;
-    }
-
-    /**
      * Sets privilege associated with this page
      *
-     * @param string $privilege [optional] ACL privilege to associate
+     * @param string $privilege [optional] privilege to associate
      *                          with this page. Default is null, which
      *                          sets no privilege.
      *
@@ -714,9 +676,9 @@ abstract class AbstractPage extends AbstractContainer implements PageInterface, 
     }
 
     /**
-     * Returns ACL privilege associated with this page
+     * Returns privilege associated with this page
      *
-     * @return string|null ACL privilege or null
+     * @return string|null privilege or null
      *
      * @throws void
      */
@@ -724,34 +686,6 @@ abstract class AbstractPage extends AbstractContainer implements PageInterface, 
     public function getPrivilege(): string | null
     {
         return $this->privilege;
-    }
-
-    /**
-     * Sets permission associated with this page
-     *
-     * @param string $permission [optional] permission to associate
-     *                           with this page. Default is null, which
-     *                           sets no permission.
-     *
-     * @throws void
-     */
-    #[Override]
-    public function setPermission(string $permission): void
-    {
-        $this->permission = $permission;
-    }
-
-    /**
-     * Returns permission associated with this page
-     *
-     * @return string|null permission or null
-     *
-     * @throws void
-     */
-    #[Override]
-    public function getPermission(): string | null
-    {
-        return $this->permission;
     }
 
     /**
@@ -1109,7 +1043,6 @@ abstract class AbstractPage extends AbstractContainer implements PageInterface, 
                 'order' => $this->getOrder(),
                 'resource' => $this->getResource(),
                 'privilege' => $this->getPrivilege(),
-                'permission' => $this->getPermission(),
                 'active' => $this->isActive(),
                 'visible' => $this->isVisible(),
                 'type' => static::class,

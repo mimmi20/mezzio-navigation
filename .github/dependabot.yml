@@ -31,11 +31,11 @@ updates:
 
     commit-message:
       include: "scope"
-      prefix: "composer"
+      prefix: "composer (master)"
 
     ignore:
-      - dependency-name: "psr/container"
       - dependency-name: "laminas/laminas-servicemanager"
+      - dependency-name: "psr/container"
 
     rebase-strategy: "auto"
 
@@ -62,7 +62,72 @@ updates:
     target-branch: "master"
 
     commit-message:
-      prefix: "github-actions"
+      prefix: "github-actions (master)"
+
+    ignore:
+      - dependency-name: "mimmi20/ci"
+      - dependency-name: "release-drafter/release-drafter"
+
+    rebase-strategy: "auto"
+
+  - package-ecosystem: "composer"
+
+    directory: "/"
+
+    schedule:
+      interval: "daily"
+      time: "04:00"
+      timezone: "Europe/Berlin"
+
+    open-pull-requests-limit: 10
+
+    reviewers:
+      - "mimmi20"
+
+    assignees:
+      - "mimmi20"
+
+    labels:
+      - "dependencies"
+
+    versioning-strategy: "increase"
+
+    target-branch: "5.x"
+
+    commit-message:
+      include: "scope"
+      prefix: "composer (5.x)"
+
+    ignore:
+      - dependency-name: "laminas/laminas-servicemanager"
+      - dependency-name: "psr/container"
+
+    rebase-strategy: "auto"
+
+  - package-ecosystem: "github-actions"
+
+    directory: "/"
+
+    schedule:
+      interval: "daily"
+      time: "04:00"
+      timezone: "Europe/Berlin"
+
+    open-pull-requests-limit: 10
+
+    reviewers:
+      - "mimmi20"
+
+    assignees:
+      - "mimmi20"
+
+    labels:
+      - "dependencies"
+
+    target-branch: "5.x"
+
+    commit-message:
+      prefix: "github-actions (5.x)"
 
     ignore:
       - dependency-name: "mimmi20/ci"
