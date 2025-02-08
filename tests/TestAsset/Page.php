@@ -25,4 +25,11 @@ final class Page extends AbstractPage implements PageInterface
     {
         return '';
     }
+
+    /** @throws void */
+    #[Override]
+    public function getResource(): string | null
+    {
+        return null;
+    }
 }

@@ -305,6 +305,19 @@ final class Route extends AbstractPage implements RouteInterface
     }
 
     /**
+     * Returns resource associated with this page
+     *
+     * @return string|null resource or null
+     *
+     * @throws void
+     */
+    #[Override]
+    public function getResource(): string | null
+    {
+        return $this->route;
+    }
+
+    /**
      * Get the route match.
      *
      * @throws void

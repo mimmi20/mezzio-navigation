@@ -289,7 +289,6 @@ $navigationConfig->setPages([
                 'type'   => 'uri',
                 'label'  => 'Page 1.3',
                 'uri'    => 'page-1.3',
-                'action' => 'about',
             ],
         ],
     ],
@@ -297,15 +296,12 @@ $navigationConfig->setPages([
         'label'      => 'Page 2',
         'id'         => 'page_2_and_3',
         'class'      => 'my-class',
-        'module'     => 'page2',
-        'controller' => 'index',
-        'action'     => 'page1',
+        'route'      => 'index1',
     ],
     [
         'label'      => 'Page 3',
         'id'         => 'page_2_and_3',
-        'module'     => 'page3',
-        'controller' => 'index',
+        'route'      => 'index2',
     ],
 ]);
 $container = $serviceLocator->get(Navigation::class);
@@ -589,23 +585,22 @@ Read more on extending `Mezzio\Navigation\Page\PageInterface` in the section
 
 ### Common page options
 
-| Key       | Type                                                            | Default | Description|
-|-----------| --------------------------------------------------------------- | ------- | -----------|
-| label     | `string`                                                        | `NULL`  | A page label, such as 'Home' or 'Blog'.|
-| fragment  | `string\|null`                                                  | `NULL`  | A fragment identifier (anchor identifier) pointing to an anchor within a resource that is subordinate to another, primary resource. The fragment identifier introduced by a hash mark "#". Example: ``http://www.example.org/foo.html#bar`` (*bar* is the fragment identifier)|
-| id        | `string\|integer`                                               | `NULL`  | An *id* tag/attribute that may be used when rendering the page, typically in an anchor element.|
-| class     | `string`                                                        | `NULL`  | A *CSS* class that may be used when rendering the page, typically in an anchor element.|
-| liClass   | `string`                                                        | `NULL`  | A *CSS* class that may be used when rendering the page, typically in an li element around the anchor element.|
-| title     | `string`                                                        | `NULL`  | A short page description, typically for using as the title attribute in an anchor.|
-| target    | `string`                                                        | `NULL`  | Specifies a target that may be used for the page, typically in an anchor element.|
-| rel       | `array`                                                         | `[]`    | Specifies forward relations for the page. Each element in the array is a key-value pair, where the key designates the relation/link type, and the value is a pointer to the linked page. An example of a key-value pair is ``'alternate' => 'format/plain.html'``. To allow full flexibility, there are no restrictions on relation values. The value does not have to be a string. Read more about ``rel`` and ``rev`` in the section on the Links helper.|
-| rev       | `array`                                                         | `[]`    | Specifies reverse relations for the page. Works exactly like rel.|
-| order     | `string\|integer\|null`                                         | `NULL`  | Works like order for elements in ``Laminas\Form``. If specified, the page will be iterated in a specific order, meaning you can force a page to be iterated before others by setting the order attribute to a low number, e.g. -100. If a String is given, it must parse to a valid int. If ``NULL`` is given, it will be reset, meaning the order in which the page was added to the container will be used.|
-| resource  | `string\|Laminas\Permissions\Acl\Resource\ResourceInterface\|null` | `NULL`  | ACL resource to associate with the page. Read more in the section on ACL integration in view helpers.|
-| privilege | `string\|null`                                                  | `NULL`  | ACL privilege to associate with the page. Read more in the section on ACL integration in view helpers.|
-| active    | `boolean`                                                       | `FALSE` | Whether the page should be considered active for the current request. If active is FALSE or not given, MVC pages will check its properties against the request object upon calling ``$page->isActive()``.|
-| visible   | `boolean`                                                       | `TRUE`  | Whether page should be visible for the user, or just be a part of the structure. Invisible pages are skipped by view helpers.|
-| pages     | `array\|Travsersable\|null`                                     | `NULL`  | Child pages of the page. This could be an array or `Traversable` object containing either page options that can be passed to the `factory()` method, `PageInterface` instances, or a mixture of both.|
+| Key       | Type                        | Default | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+|-----------|-----------------------------|---------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| label     | `string`                    | `NULL`  | A page label, such as 'Home' or 'Blog'.                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| fragment  | `string\|null`              | `NULL`  | A fragment identifier (anchor identifier) pointing to an anchor within a resource that is subordinate to another, primary resource. The fragment identifier introduced by a hash mark "#". Example: ``http://www.example.org/foo.html#bar`` (*bar* is the fragment identifier)                                                                                                                                                                              |
+| id        | `string\|integer`           | `NULL`  | An *id* tag/attribute that may be used when rendering the page, typically in an anchor element.                                                                                                                                                                                                                                                                                                                                                             |
+| class     | `string`                    | `NULL`  | A *CSS* class that may be used when rendering the page, typically in an anchor element.                                                                                                                                                                                                                                                                                                                                                                     |
+| liClass   | `string`                    | `NULL`  | A *CSS* class that may be used when rendering the page, typically in an li element around the anchor element.                                                                                                                                                                                                                                                                                                                                               |
+| title     | `string`                    | `NULL`  | A short page description, typically for using as the title attribute in an anchor.                                                                                                                                                                                                                                                                                                                                                                          |
+| target    | `string`                    | `NULL`  | Specifies a target that may be used for the page, typically in an anchor element.                                                                                                                                                                                                                                                                                                                                                                           |
+| rel       | `array`                     | `[]`    | Specifies forward relations for the page. Each element in the array is a key-value pair, where the key designates the relation/link type, and the value is a pointer to the linked page. An example of a key-value pair is ``'alternate' => 'format/plain.html'``. To allow full flexibility, there are no restrictions on relation values. The value does not have to be a string. Read more about ``rel`` and ``rev`` in the section on the Links helper. |
+| rev       | `array`                     | `[]`    | Specifies reverse relations for the page. Works exactly like rel.                                                                                                                                                                                                                                                                                                                                                                                           |
+| order     | `string\|integer\|null`     | `NULL`  | Works like order for elements in ``Laminas\Form``. If specified, the page will be iterated in a specific order, meaning you can force a page to be iterated before others by setting the order attribute to a low number, e.g. -100. If a String is given, it must parse to a valid int. If ``NULL`` is given, it will be reset, meaning the order in which the page was added to the container will be used.                                               |
+| privilege | `string\|null`              | `NULL`  | privilege to associate with the page. Read more in the section on ACL integration in view helpers.                                                                                                                                                                                                                                                                                                                                                          |
+| active    | `boolean`                   | `FALSE` | Whether the page should be considered active for the current request. If active is FALSE or not given, MVC pages will check its properties against the request object upon calling ``$page->isActive()``.                                                                                                                                                                                                                                                   |
+| visible   | `boolean`                   | `TRUE`  | Whether page should be visible for the user, or just be a part of the structure. Invisible pages are skipped by view helpers.                                                                                                                                                                                                                                                                                                                               |
+| pages     | `array\|Travsersable\|null` | `NULL`  | Child pages of the page. This could be an array or `Traversable` object containing either page options that can be passed to the `factory()` method, `PageInterface` instances, or a mixture of both.                                                                                                                                                                                                                                                       |
 
 > #### Custom properties
 >
@@ -650,14 +645,14 @@ generated all include the matched value.
 
 #### Route page options
 
-| Key           | Type                              | Default | Description|
-|---------------| --------------------------------- | ------- | -----------|
-| params        | `array`                           | `[]`    | User params to use when generating `href` to the page.|
-| route         | `string`                          | `NULL`  | Route name to use when generating `href` to the page.|
-| routeMatch    | `LMezzio\Router\RouteResult`      | `NULL`  | `RouteInterface` matches used for routing parameters and testing validity.|
-| useRouteMatch | `boolean`                         | `FALSE` | If true, then the `getHref()` method will use the `routeMatch` parameters to assemble the URI.|
-| router        | `Mezzio\Router\RouterInterface`   | `NULL`  | Router for assembling URLs.|
-| query         | `array`                           | `[]`    | Query string arguments to use when generating `href` to page.|
+| Key           | Type                            | Default | Description                                                                                    |
+|---------------|---------------------------------|---------|------------------------------------------------------------------------------------------------|
+| params        | `array`                         | `[]`    | User params to use when generating `href` to the page.                                         |
+| route         | `string`                        | `NULL`  | Route name to use when generating `href` to the page.                                          |
+| routeMatch    | `Mezzio\Router\RouteResult`     | `NULL`  | `RouteInterface` matches used for routing parameters and testing validity.                     |
+| useRouteMatch | `boolean`                       | `FALSE` | If true, then the `getHref()` method will use the `routeMatch` parameters to assemble the URI. |
+| router        | `Mezzio\Router\RouterInterface` | `NULL`  | Router for assembling URLs.                                                                    |
+| query         | `array`                         | `[]`    | Query string arguments to use when generating `href` to page.                                  |
 
 #### isActive() determines if page is active
 
@@ -726,9 +721,10 @@ common page options, a URI page takes only one additional option, a `uri`. The
 
 #### URI page options
 
-| Key  | Type     | Default | Description|
-|------| -------- | ------- | -----------|
-| uri  | `string` | `NULL`  | URI to page. This can be any string or `NULL`.|
+| Key      | Type           | Default | Description                                                                                   |
+|----------|----------------|---------|-----------------------------------------------------------------------------------------------|
+| uri      | `string`       | `NULL`  | URI to page. This can be any string or `NULL`.                                                |
+| resource | `string\|null` | `NULL`  | resource to associate with the page. Read more in the section on integration in view helpers. |
 
 ### Creating custom page types
 

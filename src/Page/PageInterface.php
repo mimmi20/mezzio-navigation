@@ -257,20 +257,9 @@ interface PageInterface extends ContainerInterface
     public function getOrder(): int | null;
 
     /**
-     * Sets ACL resource associated with this page
+     * Returns resource associated with this page
      *
-     * @param string $resource [optional] resource to associate
-     *                         with page. Default is null, which
-     *                         sets no resource.
-     *
-     * @throws Exception\InvalidArgumentException if $resource is invalid
-     */
-    public function setResource(string $resource): void;
-
-    /**
-     * Returns ACL resource associated with this page
-     *
-     * @return string|null ACL resource or null
+     * @return string|null resource or null
      *
      * @throws void
      */
@@ -279,7 +268,7 @@ interface PageInterface extends ContainerInterface
     /**
      * Sets privilege associated with this page
      *
-     * @param string $privilege [optional] ACL privilege to associate
+     * @param string $privilege [optional] privilege to associate
      *                          with this page. Default is null, which
      *                          sets no privilege.
      *
@@ -288,33 +277,13 @@ interface PageInterface extends ContainerInterface
     public function setPrivilege(string $privilege): void;
 
     /**
-     * Returns ACL privilege associated with this page
+     * Returns privilege associated with this page
      *
-     * @return string|null ACL privilege or null
+     * @return string|null privilege or null
      *
      * @throws void
      */
     public function getPrivilege(): string | null;
-
-    /**
-     * Sets permission associated with this page
-     *
-     * @param string $permission [optional] permission to associate
-     *                           with this page. Default is null, which
-     *                           sets no permission.
-     *
-     * @throws void
-     */
-    public function setPermission(string $permission): void;
-
-    /**
-     * Returns permission associated with this page
-     *
-     * @return string|null permission or null
-     *
-     * @throws void
-     */
-    public function getPermission(): string | null;
 
     /**
      * Sets text domain for translation
