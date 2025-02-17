@@ -105,7 +105,7 @@ final class PageFactoryTest extends TestCase
             ),
         ];
 
-        self::assertContainsOnly(Route::class, $pages);
+        self::assertContainsOnlyInstancesOf(Route::class, $pages);
     }
 
     /**
