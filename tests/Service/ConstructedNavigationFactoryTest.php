@@ -173,7 +173,7 @@ final class ConstructedNavigationFactoryTest extends TestCase
         $pages = $navigation->getPages();
 
         self::assertCount(2, $pages);
-        self::assertContainsOnly(PageInterface::class, $pages);
+        self::assertContainsOnlyInstancesOf(PageInterface::class, $pages);
     }
 
     /**
@@ -290,7 +290,7 @@ final class ConstructedNavigationFactoryTest extends TestCase
         $pages = $navigation->getPages();
 
         self::assertCount(2, $pages);
-        self::assertContainsOnly(PageInterface::class, $pages);
+        self::assertContainsOnlyInstancesOf(PageInterface::class, $pages);
     }
 
     /**
@@ -406,6 +406,6 @@ final class ConstructedNavigationFactoryTest extends TestCase
         $pages = $navigation->getPages();
 
         self::assertCount(1, $pages);
-        self::assertContainsOnly(PageInterface::class, $pages);
+        self::assertContainsOnlyInstancesOf(PageInterface::class, $pages);
     }
 }
