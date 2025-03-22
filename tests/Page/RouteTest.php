@@ -23,7 +23,7 @@ use Mimmi20\Mezzio\Navigation\Exception\InvalidArgumentException;
 use Mimmi20\Mezzio\Navigation\Exception\OutOfBoundsException;
 use Mimmi20\Mezzio\Navigation\Page\PageInterface;
 use Mimmi20\Mezzio\Navigation\Page\Route;
-use Override;
+use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 
@@ -32,19 +32,15 @@ use function spl_object_hash;
 
 final class RouteTest extends TestCase
 {
-    private Route $page;
-
-    /** @throws InvalidArgumentException */
-    #[Override]
-    protected function setUp(): void
-    {
-        $this->page = new Route();
-    }
-
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     public function testConstructorWithoutParameters(): void
     {
-        self::assertSame([], $this->page->getPages());
+        $page = new Route();
+
+        self::assertSame([], $page->getPages());
     }
 
     /**
@@ -55,9 +51,9 @@ final class RouteTest extends TestCase
     {
         $route = 'test';
 
-        $this->page = new Route(['route' => $route]);
+        $page = new Route(['route' => $route]);
 
-        self::assertSame($route, $this->page->getRoute());
+        self::assertSame($route, $page->getRoute());
     }
 
     /**
@@ -66,11 +62,12 @@ final class RouteTest extends TestCase
      */
     public function testSetOptionsWithRoute(): void
     {
+        $page  = new Route();
         $route = 'test';
 
-        $this->page->setOptions(['route' => $route]);
+        $page->setOptions(['route' => $route]);
 
-        self::assertSame($route, $this->page->getRoute());
+        self::assertSame($route, $page->getRoute());
     }
 
     /**
@@ -79,11 +76,12 @@ final class RouteTest extends TestCase
      */
     public function testSetRoute(): void
     {
+        $page  = new Route();
         $route = 'test';
 
-        $this->page->setRoute($route);
+        $page->setRoute($route);
 
-        self::assertSame($route, $this->page->getRoute());
+        self::assertSame($route, $page->getRoute());
     }
 
     /**
@@ -92,11 +90,12 @@ final class RouteTest extends TestCase
      */
     public function testConstructorWithLabel(): void
     {
+        $page  = new Route();
         $label = 'test';
 
-        $this->page = new Route(['label' => $label]);
+        $page = new Route(['label' => $label]);
 
-        self::assertSame($label, $this->page->getLabel());
+        self::assertSame($label, $page->getLabel());
     }
 
     /**
@@ -105,21 +104,26 @@ final class RouteTest extends TestCase
      */
     public function testSetOptionsWithLabel(): void
     {
+        $page  = new Route();
         $label = 'test';
 
-        $this->page->setOptions(['label' => $label]);
+        $page->setOptions(['label' => $label]);
 
-        self::assertSame($label, $this->page->getLabel());
+        self::assertSame($label, $page->getLabel());
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     public function testSetLabel(): void
     {
+        $page  = new Route();
         $label = 'test';
 
-        $this->page->setLabel($label);
+        $page->setLabel($label);
 
-        self::assertSame($label, $this->page->getLabel());
+        self::assertSame($label, $page->getLabel());
     }
 
     /**
@@ -128,11 +132,12 @@ final class RouteTest extends TestCase
      */
     public function testConstructorWithFragment(): void
     {
+        $page     = new Route();
         $fragment = 'test';
 
-        $this->page = new Route(['fragment' => $fragment]);
+        $page = new Route(['fragment' => $fragment]);
 
-        self::assertSame($fragment, $this->page->getFragment());
+        self::assertSame($fragment, $page->getFragment());
     }
 
     /**
@@ -141,21 +146,26 @@ final class RouteTest extends TestCase
      */
     public function testSetOptionsWithFragment(): void
     {
+        $page     = new Route();
         $fragment = 'test';
 
-        $this->page->setOptions(['fragment' => $fragment]);
+        $page->setOptions(['fragment' => $fragment]);
 
-        self::assertSame($fragment, $this->page->getFragment());
+        self::assertSame($fragment, $page->getFragment());
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     public function testSetFragment(): void
     {
+        $page     = new Route();
         $fragment = 'test';
 
-        $this->page->setFragment($fragment);
+        $page->setFragment($fragment);
 
-        self::assertSame($fragment, $this->page->getFragment());
+        self::assertSame($fragment, $page->getFragment());
     }
 
     /**
@@ -164,11 +174,12 @@ final class RouteTest extends TestCase
      */
     public function testConstructorWithId(): void
     {
-        $id = 'test';
+        $page = new Route();
+        $id   = 'test';
 
-        $this->page = new Route(['id' => $id]);
+        $page = new Route(['id' => $id]);
 
-        self::assertSame($id, $this->page->getId());
+        self::assertSame($id, $page->getId());
     }
 
     /**
@@ -177,21 +188,26 @@ final class RouteTest extends TestCase
      */
     public function testSetOptionsWithId(): void
     {
-        $id = 'test';
+        $page = new Route();
+        $id   = 'test';
 
-        $this->page->setOptions(['id' => $id]);
+        $page->setOptions(['id' => $id]);
 
-        self::assertSame($id, $this->page->getId());
+        self::assertSame($id, $page->getId());
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     public function testSetId(): void
     {
-        $id = 'test';
+        $page = new Route();
+        $id   = 'test';
 
-        $this->page->setId($id);
+        $page->setId($id);
 
-        self::assertSame($id, $this->page->getId());
+        self::assertSame($id, $page->getId());
     }
 
     /**
@@ -200,11 +216,12 @@ final class RouteTest extends TestCase
      */
     public function testConstructorClass(): void
     {
+        $page  = new Route();
         $class = 'test';
 
-        $this->page = new Route(['class' => $class]);
+        $page = new Route(['class' => $class]);
 
-        self::assertSame($class, $this->page->getClass());
+        self::assertSame($class, $page->getClass());
     }
 
     /**
@@ -213,21 +230,26 @@ final class RouteTest extends TestCase
      */
     public function testSetOptionsWithClass(): void
     {
+        $page  = new Route();
         $class = 'test';
 
-        $this->page->setOptions(['class' => $class]);
+        $page->setOptions(['class' => $class]);
 
-        self::assertSame($class, $this->page->getClass());
+        self::assertSame($class, $page->getClass());
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     public function testSetClass(): void
     {
+        $page  = new Route();
         $class = 'test';
 
-        $this->page->setClass($class);
+        $page->setClass($class);
 
-        self::assertSame($class, $this->page->getClass());
+        self::assertSame($class, $page->getClass());
     }
 
     /**
@@ -236,11 +258,12 @@ final class RouteTest extends TestCase
      */
     public function testConstructorLiClass(): void
     {
+        $page  = new Route();
         $class = 'test';
 
-        $this->page = new Route(['liClass' => $class]);
+        $page = new Route(['liClass' => $class]);
 
-        self::assertSame($class, $this->page->getLiClass());
+        self::assertSame($class, $page->getLiClass());
     }
 
     /**
@@ -249,21 +272,26 @@ final class RouteTest extends TestCase
      */
     public function testSetOptionsWithLiClass(): void
     {
+        $page  = new Route();
         $class = 'test';
 
-        $this->page->setOptions(['liClass' => $class]);
+        $page->setOptions(['liClass' => $class]);
 
-        self::assertSame($class, $this->page->getLiClass());
+        self::assertSame($class, $page->getLiClass());
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     public function testSetLiClass(): void
     {
+        $page  = new Route();
         $class = 'test';
 
-        $this->page->setLiClass($class);
+        $page->setLiClass($class);
 
-        self::assertSame($class, $this->page->getLiClass());
+        self::assertSame($class, $page->getLiClass());
     }
 
     /**
@@ -272,11 +300,12 @@ final class RouteTest extends TestCase
      */
     public function testConstructorTitle(): void
     {
+        $page  = new Route();
         $title = 'test';
 
-        $this->page = new Route(['title' => $title]);
+        $page = new Route(['title' => $title]);
 
-        self::assertSame($title, $this->page->getTitle());
+        self::assertSame($title, $page->getTitle());
     }
 
     /**
@@ -285,21 +314,26 @@ final class RouteTest extends TestCase
      */
     public function testSetOptionsWithTitle(): void
     {
+        $page  = new Route();
         $title = 'test';
 
-        $this->page->setOptions(['title' => $title]);
+        $page->setOptions(['title' => $title]);
 
-        self::assertSame($title, $this->page->getTitle());
+        self::assertSame($title, $page->getTitle());
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     public function testSetTitle(): void
     {
+        $page  = new Route();
         $title = 'test';
 
-        $this->page->setTitle($title);
+        $page->setTitle($title);
 
-        self::assertSame($title, $this->page->getTitle());
+        self::assertSame($title, $page->getTitle());
     }
 
     /**
@@ -308,11 +342,12 @@ final class RouteTest extends TestCase
      */
     public function testConstructorTarget(): void
     {
+        $page   = new Route();
         $target = 'test';
 
-        $this->page = new Route(['target' => $target]);
+        $page = new Route(['target' => $target]);
 
-        self::assertSame($target, $this->page->getTarget());
+        self::assertSame($target, $page->getTarget());
     }
 
     /**
@@ -321,85 +356,98 @@ final class RouteTest extends TestCase
      */
     public function testSetOptionsWithTarget(): void
     {
+        $page   = new Route();
         $target = 'test';
 
-        $this->page->setOptions(['target' => $target]);
+        $page->setOptions(['target' => $target]);
 
-        self::assertSame($target, $this->page->getTarget());
+        self::assertSame($target, $page->getTarget());
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     public function testSetTarget(): void
     {
+        $page   = new Route();
         $target = 'test';
 
-        $this->page->setTarget($target);
+        $page->setTarget($target);
 
-        self::assertSame($target, $this->page->getTarget());
+        self::assertSame($target, $page->getTarget());
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     public function testSetRel(): void
     {
+        $page     = new Route();
         $relValue = 'test1';
         $relKey   = 'test';
 
-        $this->page->setRel();
+        $page->setRel();
 
-        self::assertSame([], $this->page->getRel());
+        self::assertSame([], $page->getRel());
 
-        $this->page->setRel([$relKey => $relValue, 42 => 'tests']);
+        $page->setRel([$relKey => $relValue, 42 => 'tests']);
 
-        self::assertSame([$relKey => $relValue], $this->page->getRel());
-        self::assertSame($relValue, $this->page->getRel($relKey));
+        self::assertSame([$relKey => $relValue], $page->getRel());
+        self::assertSame($relValue, $page->getRel($relKey));
 
-        self::assertCount(1, $this->page->getRel());
+        self::assertCount(1, $page->getRel());
 
-        $this->page->addRel('test2', 'test2');
+        $page->addRel('test2', 'test2');
 
-        self::assertCount(2, (array) $this->page->getRel());
+        self::assertCount(2, (array) $page->getRel());
 
-        $this->page->removeRel('test');
+        $page->removeRel('test');
 
-        self::assertCount(1, (array) $this->page->getRel());
+        self::assertCount(1, (array) $page->getRel());
 
-        $this->page->removeRel('test4');
+        $page->removeRel('test4');
 
-        self::assertCount(1, (array) $this->page->getRel());
+        self::assertCount(1, (array) $page->getRel());
 
-        self::assertSame(['test2'], $this->page->getDefinedRel());
+        self::assertSame(['test2'], $page->getDefinedRel());
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     public function testSetRev(): void
     {
+        $page     = new Route();
         $revValue = 'test1';
         $revKey   = 'test';
 
-        $this->page->setRev();
+        $page->setRev();
 
-        self::assertSame([], $this->page->getRev());
+        self::assertSame([], $page->getRev());
 
-        $this->page->setRev([$revKey => $revValue, 42 => 'tests']);
+        $page->setRev([$revKey => $revValue, 42 => 'tests']);
 
-        self::assertSame([$revKey => $revValue], $this->page->getRev());
-        self::assertSame($revValue, $this->page->getRev($revKey));
+        self::assertSame([$revKey => $revValue], $page->getRev());
+        self::assertSame($revValue, $page->getRev($revKey));
 
-        self::assertCount(1, $this->page->getRev());
+        self::assertCount(1, $page->getRev());
 
-        $this->page->addRev('test2', 'test2');
+        $page->addRev('test2', 'test2');
 
-        self::assertCount(2, (array) $this->page->getRev());
+        self::assertCount(2, (array) $page->getRev());
 
-        $this->page->removeRev('test');
+        $page->removeRev('test');
 
-        self::assertCount(1, (array) $this->page->getRev());
+        self::assertCount(1, (array) $page->getRev());
 
-        $this->page->removeRev('test4');
+        $page->removeRev('test4');
 
-        self::assertCount(1, (array) $this->page->getRev());
+        self::assertCount(1, (array) $page->getRev());
 
-        self::assertSame(['test2'], $this->page->getDefinedRev());
+        self::assertSame(['test2'], $page->getDefinedRev());
     }
 
     /**
@@ -408,13 +456,15 @@ final class RouteTest extends TestCase
      */
     public function testSetParentException(): void
     {
-        self::assertNull($this->page->getParent());
+        $page = new Route();
+
+        self::assertNull($page->getParent());
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('A page cannot have itself as a parent');
         $this->expectExceptionCode(0);
 
-        $this->page->setParent($this->page);
+        $page->setParent($page);
     }
 
     /**
@@ -423,6 +473,8 @@ final class RouteTest extends TestCase
      */
     public function testDuplicateSetParent(): void
     {
+        $page = new Route();
+
         $parent = $this->getMockBuilder(ContainerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -430,15 +482,15 @@ final class RouteTest extends TestCase
             ->method('removePage');
         $parent->expects(self::once())
             ->method('hasPage')
-            ->with($this->page, false)
+            ->with($page, false)
             ->willReturn(false);
         $parent->expects(self::once())
             ->method('addPage')
-            ->with($this->page);
+            ->with($page);
 
         assert($parent instanceof ContainerInterface);
-        $this->page->setParent($parent);
-        $this->page->setParent($parent);
+        $page->setParent($parent);
+        $page->setParent($parent);
     }
 
     /**
@@ -447,19 +499,21 @@ final class RouteTest extends TestCase
      */
     public function testSetTwoParents(): void
     {
+        $page = new Route();
+
         $parent1 = $this->getMockBuilder(ContainerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
         $parent1->expects(self::once())
             ->method('removePage')
-            ->with($this->page);
+            ->with($page);
         $parent1->expects(self::once())
             ->method('hasPage')
-            ->with($this->page, false)
+            ->with($page, false)
             ->willReturn(false);
         $parent1->expects(self::once())
             ->method('addPage')
-            ->with($this->page);
+            ->with($page);
 
         $parent2 = $this->getMockBuilder(ContainerInterface::class)
             ->disableOriginalConstructor()
@@ -468,38 +522,42 @@ final class RouteTest extends TestCase
             ->method('removePage');
         $parent2->expects(self::once())
             ->method('hasPage')
-            ->with($this->page, false)
+            ->with($page, false)
             ->willReturn(true);
         $parent2->expects(self::never())
             ->method('addPage');
 
         assert($parent1 instanceof ContainerInterface);
         assert($parent2 instanceof ContainerInterface);
-        $this->page->setParent($parent1);
-        self::assertSame($parent1, $this->page->getParent());
+        $page->setParent($parent1);
+        self::assertSame($parent1, $page->getParent());
 
-        $this->page->setParent($parent2);
-        self::assertSame($parent2, $this->page->getParent());
+        $page->setParent($parent2);
+        self::assertSame($parent2, $page->getParent());
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     public function testSetOrder(): void
     {
+        $page  = new Route();
         $order = 42;
 
-        self::assertNull($this->page->getOrder());
+        self::assertNull($page->getOrder());
 
-        $this->page->setOrder($order);
+        $page->setOrder($order);
 
-        self::assertSame($order, $this->page->getOrder());
+        self::assertSame($order, $page->getOrder());
 
-        $this->page->setOrder('42');
+        $page->setOrder('42');
 
-        self::assertSame($order, $this->page->getOrder());
+        self::assertSame($order, $page->getOrder());
 
-        $this->page->setOrder(42.0);
+        $page->setOrder(42.0);
 
-        self::assertSame($order, $this->page->getOrder());
+        self::assertSame($order, $page->getOrder());
     }
 
     /**
@@ -508,6 +566,7 @@ final class RouteTest extends TestCase
      */
     public function testSetOrderWithParent(): void
     {
+        $page  = new Route();
         $order = 42;
 
         $parent = $this->getMockBuilder(ContainerInterface::class)
@@ -516,10 +575,10 @@ final class RouteTest extends TestCase
         $parent->expects(self::once())
             ->method('notifyOrderUpdated');
 
-        $this->page->setParent($parent);
-        $this->page->setOrder($order);
+        $page->setParent($parent);
+        $page->setOrder($order);
 
-        self::assertSame($order, $this->page->getOrder());
+        self::assertSame($order, $page->getOrder());
     }
 
     /**
@@ -528,61 +587,74 @@ final class RouteTest extends TestCase
      */
     public function testSetResource(): void
     {
+        $page     = new Route();
         $resource = 'test';
 
-        self::assertNull($this->page->getResource());
+        self::assertNull($page->getResource());
 
-        $this->page->setRoute($resource);
+        $page->setRoute($resource);
 
-        self::assertSame($resource, $this->page->getResource());
+        self::assertSame($resource, $page->getResource());
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     public function testSetPrivilege(): void
     {
+        $page      = new Route();
         $privilege = 'test';
 
-        self::assertNull($this->page->getPrivilege());
+        self::assertNull($page->getPrivilege());
 
-        $this->page->setPrivilege($privilege);
+        $page->setPrivilege($privilege);
 
-        self::assertSame($privilege, $this->page->getPrivilege());
+        self::assertSame($privilege, $page->getPrivilege());
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     public function testSetTextDomain(): void
     {
+        $page       = new Route();
         $textDomain = 'test';
 
-        self::assertNull($this->page->getTextDomain());
+        self::assertNull($page->getTextDomain());
 
-        $this->page->setTextDomain($textDomain);
+        $page->setTextDomain($textDomain);
 
-        self::assertSame($textDomain, $this->page->getTextDomain());
+        self::assertSame($textDomain, $page->getTextDomain());
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     public function testSetVisible(): void
     {
+        $page    = new Route();
         $visible = false;
 
-        self::assertTrue($this->page->isVisible());
-        self::assertTrue($this->page->getVisible());
+        self::assertTrue($page->isVisible());
+        self::assertTrue($page->getVisible());
 
-        $this->page->setVisible($visible);
+        $page->setVisible($visible);
 
-        self::assertFalse($this->page->isVisible());
-        self::assertFalse($this->page->getVisible());
+        self::assertFalse($page->isVisible());
+        self::assertFalse($page->getVisible());
 
-        $this->page->setVisible('1');
+        $page->setVisible('1');
 
-        self::assertTrue($this->page->isVisible());
-        self::assertTrue($this->page->getVisible());
+        self::assertTrue($page->isVisible());
+        self::assertTrue($page->getVisible());
 
-        $this->page->setVisible('false');
+        $page->setVisible('false');
 
-        self::assertFalse($this->page->isVisible());
-        self::assertFalse($this->page->getVisible());
+        self::assertFalse($page->isVisible());
+        self::assertFalse($page->getVisible());
     }
 
     /**
@@ -591,6 +663,7 @@ final class RouteTest extends TestCase
      */
     public function testSetVisibleWithParent(): void
     {
+        $page    = new Route();
         $parent1 = $this->getMockBuilder(PageInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -599,10 +672,10 @@ final class RouteTest extends TestCase
             ->willReturn(true);
 
         assert($parent1 instanceof PageInterface);
-        $this->page->setParent($parent1);
+        $page->setParent($parent1);
 
-        self::assertTrue($this->page->isVisible(true));
-        self::assertTrue($this->page->getVisible(true));
+        self::assertTrue($page->isVisible(true));
+        self::assertTrue($page->getVisible(true));
 
         $parent2 = $this->getMockBuilder(PageInterface::class)
             ->disableOriginalConstructor()
@@ -612,44 +685,48 @@ final class RouteTest extends TestCase
             ->willReturn(false);
 
         assert($parent2 instanceof PageInterface);
-        $this->page->setParent($parent2);
+        $page->setParent($parent2);
 
-        self::assertFalse($this->page->isVisible(true));
-        self::assertFalse($this->page->getVisible(true));
+        self::assertFalse($page->isVisible(true));
+        self::assertFalse($page->getVisible(true));
 
-        $this->page->setVisible(false);
+        $page->setVisible(false);
 
-        self::assertFalse($this->page->isVisible());
-        self::assertFalse($this->page->getVisible());
+        self::assertFalse($page->isVisible());
+        self::assertFalse($page->getVisible());
 
-        $this->page->setVisible(true);
+        $page->setVisible(true);
 
-        self::assertTrue($this->page->isVisible());
-        self::assertTrue($this->page->getVisible());
+        self::assertTrue($page->isVisible());
+        self::assertTrue($page->getVisible());
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     public function testSetActive(): void
     {
+        $page   = new Route();
         $active = true;
 
-        self::assertFalse($this->page->isActive());
-        self::assertFalse($this->page->getActive());
+        self::assertFalse($page->isActive());
+        self::assertFalse($page->getActive());
 
-        $this->page->setActive($active);
+        $page->setActive($active);
 
-        self::assertTrue($this->page->isActive());
-        self::assertTrue($this->page->getActive());
+        self::assertTrue($page->isActive());
+        self::assertTrue($page->getActive());
 
-        $this->page->setActive('1');
+        $page->setActive('1');
 
-        self::assertTrue($this->page->isActive());
-        self::assertTrue($this->page->getActive());
+        self::assertTrue($page->isActive());
+        self::assertTrue($page->getActive());
 
-        $this->page->setActive('false');
+        $page->setActive('false');
 
-        self::assertFalse($this->page->isActive());
-        self::assertFalse($this->page->getActive());
+        self::assertFalse($page->isActive());
+        self::assertFalse($page->getActive());
     }
 
     /**
@@ -658,6 +735,7 @@ final class RouteTest extends TestCase
      */
     public function testSetActiveWithPages(): void
     {
+        $page       = new Route();
         $childPage1 = $this->getMockBuilder(PageInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -666,18 +744,22 @@ final class RouteTest extends TestCase
             ->with(true)
             ->willReturn(true);
 
-        self::assertFalse($this->page->isActive(true));
-        self::assertFalse($this->page->getActive(true));
+        self::assertFalse($page->isActive(true));
+        self::assertFalse($page->getActive(true));
 
-        $this->page->addPage($childPage1);
+        $page->addPage($childPage1);
 
-        self::assertTrue($this->page->isActive(true));
-        self::assertTrue($this->page->getActive(true));
+        self::assertTrue($page->isActive(true));
+        self::assertTrue($page->getActive(true));
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     public function testSetActiveWithRouteMatchWithoutRoute(): void
     {
+        $page        = new Route();
         $routeResult = $this->getMockBuilder(RouteResult::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -689,15 +771,15 @@ final class RouteTest extends TestCase
 
         $params = ['test'];
 
-        self::assertFalse($this->page->isActive());
-        self::assertFalse($this->page->getActive());
+        self::assertFalse($page->isActive());
+        self::assertFalse($page->getActive());
 
         assert($routeResult instanceof RouteResult);
-        $this->page->setRouteMatch($routeResult);
-        $this->page->setParams($params);
+        $page->setRouteMatch($routeResult);
+        $page->setParams($params);
 
-        self::assertTrue($this->page->isActive());
-        self::assertTrue($this->page->getActive());
+        self::assertTrue($page->isActive());
+        self::assertTrue($page->getActive());
     }
 
     /**
@@ -706,6 +788,7 @@ final class RouteTest extends TestCase
      */
     public function testSetActiveWithRouteMatchWithRouteNotMatch(): void
     {
+        $page        = new Route();
         $routeResult = $this->getMockBuilder(RouteResult::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -720,11 +803,11 @@ final class RouteTest extends TestCase
         $route  = 'testRoute';
 
         assert($routeResult instanceof RouteResult);
-        $this->page->setRouteMatch($routeResult);
-        $this->page->setParams($params);
-        $this->page->setRoute($route);
+        $page->setRouteMatch($routeResult);
+        $page->setParams($params);
+        $page->setRoute($route);
 
-        self::assertFalse($this->page->isActive());
+        self::assertFalse($page->isActive());
     }
 
     /**
@@ -733,6 +816,7 @@ final class RouteTest extends TestCase
      */
     public function testSetActiveWithRouteMatchWithRouteMatch(): void
     {
+        $page  = new Route();
         $route = 'testRoute';
 
         $routeResult = $this->getMockBuilder(RouteResult::class)
@@ -748,31 +832,33 @@ final class RouteTest extends TestCase
         $params = ['test'];
 
         assert($routeResult instanceof RouteResult);
-        $this->page->setRouteMatch($routeResult);
-        $this->page->setParams($params);
-        $this->page->setRoute($route);
+        $page->setRouteMatch($routeResult);
+        $page->setParams($params);
+        $page->setRoute($route);
 
-        self::assertTrue($this->page->isActive());
+        self::assertTrue($page->isActive());
     }
 
     /** @throws InvalidArgumentException */
     public function testSetWithException(): void
     {
+        $page = new Route();
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid argument: $property must be a non-empty string');
         $this->expectExceptionCode(0);
 
-        $this->page->set('', null);
+        $page->set('', null);
     }
 
     /** @throws InvalidArgumentException */
     public function testGetWithException(): void
     {
+        $page = new Route();
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid argument: $property must be a non-empty string');
         $this->expectExceptionCode(0);
 
-        $this->page->get('');
+        $page->get('');
     }
 
     /**
@@ -781,166 +867,214 @@ final class RouteTest extends TestCase
      */
     public function testGetSet(): void
     {
+        $page   = new Route();
         $target = 'test2';
         $test   = 'test 42';
         $abc    = '4711';
 
-        self::assertNull($this->page->get('test'));
+        self::assertNull($page->get('test'));
 
-        $this->page->set('target', $target);
-        $this->page->set('test', $test);
-        $this->page->abc = $abc;
+        $page->set('target', $target);
+        $page->set('test', $test);
+        $page->abc = $abc;
 
-        self::assertSame($target, $this->page->get('target'));
-        self::assertSame($test, $this->page->get('test'));
-        self::assertSame($abc, $this->page->abc);
+        self::assertSame($target, $page->get('target'));
+        self::assertSame($test, $page->get('test'));
+        self::assertSame($abc, $page->abc);
 
-        self::assertTrue(isset($this->page->target));
-        self::assertTrue(isset($this->page->test));
+        self::assertTrue(isset($page->target));
+        self::assertTrue(isset($page->test));
 
-        self::assertSame(['test' => 'test 42', 'abc' => '4711'], $this->page->getCustomProperties());
+        self::assertSame(['test' => 'test 42', 'abc' => '4711'], $page->getCustomProperties());
 
-        unset($this->page->test, $this->page->test);
+        unset($page->test, $page->test);
 
-        self::assertObjectNotHasProperty('test', $this->page);
-        self::assertSame(['abc' => '4711'], $this->page->getCustomProperties());
+        self::assertObjectNotHasProperty('test', $page);
+        self::assertSame(['abc' => '4711'], $page->getCustomProperties());
     }
 
-    /** @throws void */
+    /** @throws InvalidArgumentException */
     public function testUnset(): void
     {
+        $page = new Route();
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Unsetting native property "target" is not allowed');
         $this->expectExceptionCode(0);
 
-        unset($this->page->target);
+        unset($page->target);
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     public function testToString(): void
     {
-        self::assertSame('', (string) $this->page);
+        $page = new Route();
+
+        self::assertSame('', (string) $page);
 
         $label = 'test';
 
-        $this->page->setLabel($label);
+        $page->setLabel($label);
 
-        self::assertSame($label, (string) $this->page);
+        self::assertSame($label, (string) $page);
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     public function testHashCode(): void
     {
+        $page  = new Route();
         $label = 'test';
 
-        $this->page->setLabel($label);
+        $page->setLabel($label);
 
-        $expected = spl_object_hash($this->page);
+        $expected = spl_object_hash($page);
 
-        self::assertSame($expected, $this->page->hashCode());
+        self::assertSame($expected, $page->hashCode());
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     public function testSetQuery(): void
     {
+        $page  = new Route();
         $query = 'test';
 
-        self::assertNull($this->page->getQuery());
+        self::assertNull($page->getQuery());
 
-        $this->page->setQuery($query);
+        $page->setQuery($query);
 
-        self::assertSame($query, $this->page->getQuery());
+        self::assertSame($query, $page->getQuery());
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     public function testSetParams(): void
     {
+        $page   = new Route();
         $params = ['test'];
 
-        self::assertSame([], $this->page->getParams());
+        self::assertSame([], $page->getParams());
 
-        $this->page->setParams($params);
+        $page->setParams($params);
 
-        self::assertSame($params, $this->page->getParams());
+        self::assertSame($params, $page->getParams());
     }
 
     /** @throws InvalidArgumentException */
     public function testSetRouteException(): void
     {
+        $page = new Route();
+
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid argument: $route must be a non-empty string');
         $this->expectExceptionCode(0);
 
-        $this->page->setRoute('');
+        $page->setRoute('');
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     * @throws NoPreviousThrowableException
+     * @throws \PHPUnit\Framework\MockObject\Exception
+     */
     public function testSetRouteMatch(): void
     {
+        $page = new Route();
+
         $routeResult = $this->createMock(RouteResult::class);
 
-        self::assertNull($this->page->getRouteMatch());
+        self::assertNull($page->getRouteMatch());
 
         assert($routeResult instanceof RouteResult);
-        $this->page->setRouteMatch($routeResult);
+        $page->setRouteMatch($routeResult);
 
-        self::assertSame($routeResult, $this->page->getRouteMatch());
+        self::assertSame($routeResult, $page->getRouteMatch());
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     public function testSetUseRouteMatch(): void
     {
-        self::assertFalse($this->page->useRouteMatch());
+        $page = new Route();
 
-        $this->page->setUseRouteMatch(true);
+        self::assertFalse($page->useRouteMatch());
 
-        self::assertTrue($this->page->useRouteMatch());
+        $page->setUseRouteMatch(true);
+
+        self::assertTrue($page->useRouteMatch());
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     * @throws NoPreviousThrowableException
+     * @throws \PHPUnit\Framework\MockObject\Exception
+     */
     public function testSetRouter(): void
     {
+        $page   = new Route();
         $router = $this->createMock(RouterInterface::class);
 
-        self::assertNull($this->page->getRouter());
+        self::assertNull($page->getRouter());
 
         assert($router instanceof RouterInterface);
-        $this->page->setRouter($router);
+        $page->setRouter($router);
 
-        self::assertSame($router, $this->page->getRouter());
+        self::assertSame($router, $page->getRouter());
     }
 
     /**
      * @throws DomainException
      * @throws RuntimeException
+     * @throws InvalidArgumentException
      */
     public function testGetHrefMissingRouter(): void
     {
+        $page = new Route();
+
         $this->expectException(DomainException::class);
         $this->expectExceptionMessage(
             'Mezzio\Navigation\Page\Route::getHref cannot execute as no Mezzio\Router\RouterInterface instance is composed',
         );
         $this->expectExceptionCode(0);
 
-        $this->page->getHref();
+        $page->getHref();
     }
 
     /**
      * @throws DomainException
      * @throws RuntimeException
+     * @throws InvalidArgumentException
+     * @throws NoPreviousThrowableException
+     * @throws \PHPUnit\Framework\MockObject\Exception
+     * @throws \PHPUnit\Framework\InvalidArgumentException
      */
     public function testGetHrefMissingRoute(): void
     {
+        $page = new Route();
+
         $router = $this->createMock(RouterInterface::class);
 
         assert($router instanceof RouterInterface);
-        $this->page->setRouter($router);
+        $page->setRouter($router);
 
         $this->expectException(DomainException::class);
         $this->expectExceptionMessage('No route name could be found');
         $this->expectExceptionCode(0);
 
-        $this->page->getHref();
+        $page->getHref();
     }
 
     /**
@@ -948,9 +1082,11 @@ final class RouteTest extends TestCase
      * @throws InvalidArgumentException
      * @throws DomainException
      * @throws RuntimeException
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testGetHrefWithRoute(): void
     {
+        $page        = new Route();
         $route       = 'testRoute';
         $expectedUri = '/test';
         $router      = $this->getMockBuilder(RouterInterface::class)
@@ -962,21 +1098,24 @@ final class RouteTest extends TestCase
             ->willReturn($expectedUri);
 
         assert($router instanceof RouterInterface);
-        $this->page->setRouter($router);
-        $this->page->setRoute($route);
+        $page->setRouter($router);
+        $page->setRoute($route);
 
-        $uri = $this->page->getHref();
+        $uri = $page->getHref();
 
         self::assertSame($expectedUri, $uri);
     }
 
     /**
      * @throws Exception
+     * @throws InvalidArgumentException
      * @throws DomainException
      * @throws RuntimeException
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testGetHrefWithRouteMatch(): void
     {
+        $page        = new Route();
         $route       = 'testRoute';
         $expectedUri = '/test';
         $params      = ['test', 'abc'];
@@ -1003,25 +1142,28 @@ final class RouteTest extends TestCase
             ->willReturn(false);
 
         assert($router instanceof RouterInterface);
-        $this->page->setRouter($router);
+        $page->setRouter($router);
 
         assert($routeResult instanceof RouteResult);
-        $this->page->setRouteMatch($routeResult);
+        $page->setRouteMatch($routeResult);
 
-        $this->page->setUseRouteMatch(true);
+        $page->setUseRouteMatch(true);
 
-        $uri = $this->page->getHref();
+        $uri = $page->getHref();
 
         self::assertSame($expectedUri, $uri);
     }
 
     /**
      * @throws Exception
+     * @throws InvalidArgumentException
      * @throws DomainException
      * @throws RuntimeException
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testGetHrefWithFragmentIdentifier(): void
     {
+        $page        = new Route();
         $route       = 'testRoute';
         $expectedUri = '/test';
         $params      = ['test', 'abc'];
@@ -1049,26 +1191,29 @@ final class RouteTest extends TestCase
             ->willReturn(false);
 
         assert($router instanceof RouterInterface);
-        $this->page->setRouter($router);
+        $page->setRouter($router);
 
         assert($routeResult instanceof RouteResult);
-        $this->page->setRouteMatch($routeResult);
+        $page->setRouteMatch($routeResult);
 
-        $this->page->setUseRouteMatch(true);
-        $this->page->setFragment($fragment);
+        $page->setUseRouteMatch(true);
+        $page->setFragment($fragment);
 
-        $uri = $this->page->getHref();
+        $uri = $page->getHref();
 
         self::assertSame($expectedUri, $uri);
     }
 
     /**
      * @throws Exception
+     * @throws InvalidArgumentException
      * @throws DomainException
      * @throws RuntimeException
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testGetHrefWithQuery(): void
     {
+        $page        = new Route();
         $route       = 'testRoute';
         $expectedUri = '/test';
         $params      = ['test', 'abc'];
@@ -1096,17 +1241,17 @@ final class RouteTest extends TestCase
             ->willReturn(false);
 
         assert($router instanceof RouterInterface);
-        $this->page->setRouter($router);
+        $page->setRouter($router);
 
         assert($routeResult instanceof RouteResult);
-        $this->page->setRouteMatch($routeResult);
+        $page->setRouteMatch($routeResult);
 
-        $this->page->setUseRouteMatch(true);
-        $this->page->setQuery($query);
+        $page->setUseRouteMatch(true);
+        $page->setQuery($query);
 
-        $this->page->getHref();
+        $page->getHref();
 
-        $uri = $this->page->getHref();
+        $uri = $page->getHref();
 
         self::assertSame($expectedUri, $uri);
     }
@@ -1114,22 +1259,25 @@ final class RouteTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
+     * @throws NoPreviousThrowableException
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testToArray(): void
     {
+        $page        = new Route();
         $params      = ['testParams'];
         $route       = 'testRoute';
         $router      = $this->createMock(RouterInterface::class);
         $routeResult = $this->createMock(RouteResult::class);
 
-        $this->page->setParams($params);
-        $this->page->setRoute($route);
+        $page->setParams($params);
+        $page->setRoute($route);
 
         assert($router instanceof RouterInterface);
-        $this->page->setRouter($router);
+        $page->setRouter($router);
 
         assert($routeResult instanceof RouteResult);
-        $this->page->setRouteMatch($routeResult);
+        $page->setRouteMatch($routeResult);
 
         $expected = [
             'label' => null,
@@ -1153,7 +1301,7 @@ final class RouteTest extends TestCase
             'route_match' => $routeResult,
         ];
 
-        $result = $this->page->toArray();
+        $result = $page->toArray();
 
         self::assertIsArray($result);
         self::assertSame($expected, $result);
@@ -1162,19 +1310,23 @@ final class RouteTest extends TestCase
     /** @throws InvalidArgumentException */
     public function testAddSelfAsChild(): void
     {
+        $page = new Route();
+
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('A page cannot have itself as a parent');
         $this->expectExceptionCode(0);
 
-        $this->page->addPage($this->page);
+        $page->addPage($page);
     }
 
     /**
      * @throws Exception
      * @throws InvalidArgumentException
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testAddChildPageTwice(): void
     {
+        $page     = new Route();
         $hashCode = 'abc';
 
         $childPage = $this->getMockBuilder(PageInterface::class)
@@ -1188,39 +1340,45 @@ final class RouteTest extends TestCase
             ->willReturn(1);
         $childPage->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
 
         assert($childPage instanceof PageInterface);
-        $this->page->addPage($childPage);
-        $this->page->addPage($childPage);
+        $page->addPage($childPage);
+        $page->addPage($childPage);
     }
 
     /** @throws InvalidArgumentException */
     public function testAddChildPageSelf(): void
     {
+        $page = new Route();
+
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('A page cannot have itself as a parent');
         $this->expectExceptionCode(0);
 
-        $this->page->addPage($this->page);
+        $page->addPage($page);
     }
 
     /** @throws InvalidArgumentException */
     public function testAddPages(): void
     {
+        $page = new Route();
+
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid argument: $page must be an Instance of PageInterface');
         $this->expectExceptionCode(0);
 
-        $this->page->addPages(['test']);
+        $page->addPages(['test']);
     }
 
     /**
      * @throws Exception
      * @throws InvalidArgumentException
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testRemovePageByIndex(): void
     {
+        $page  = new Route();
         $code1 = 'code 1';
         $code2 = 'code 2';
 
@@ -1235,7 +1393,7 @@ final class RouteTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
 
         $childPage2 = $this->getMockBuilder(PageInterface::class)
             ->disableOriginalConstructor()
@@ -1248,23 +1406,25 @@ final class RouteTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
-        $this->page->addPage($childPage1);
-        $this->page->addPage($childPage2);
+        $page->addPage($childPage1);
+        $page->addPage($childPage2);
 
-        self::assertTrue($this->page->removePage(1));
-        self::assertSame([$code2 => $childPage2], $this->page->getPages());
+        self::assertTrue($page->removePage(1));
+        self::assertSame([$code2 => $childPage2], $page->getPages());
     }
 
     /**
      * @throws Exception
      * @throws InvalidArgumentException
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testRemovePageByObject(): void
     {
+        $page  = new Route();
         $code1 = 'code 1';
         $code2 = 'code 2';
 
@@ -1279,7 +1439,7 @@ final class RouteTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
 
         $childPage2 = $this->getMockBuilder(PageInterface::class)
             ->disableOriginalConstructor()
@@ -1292,23 +1452,25 @@ final class RouteTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
-        $this->page->addPage($childPage1);
-        $this->page->addPage($childPage2);
+        $page->addPage($childPage1);
+        $page->addPage($childPage2);
 
-        self::assertTrue($this->page->removePage($childPage2));
-        self::assertSame([$code1 => $childPage1], $this->page->getPages());
+        self::assertTrue($page->removePage($childPage2));
+        self::assertSame([$code1 => $childPage1], $page->getPages());
     }
 
     /**
      * @throws Exception
      * @throws InvalidArgumentException
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testRemovePageNotExistingPage(): void
     {
+        $page  = new Route();
         $code1 = 'code 1';
         $code2 = 'code 2';
 
@@ -1323,7 +1485,7 @@ final class RouteTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
 
         $childPage2 = $this->getMockBuilder(PageInterface::class)
             ->disableOriginalConstructor()
@@ -1336,23 +1498,25 @@ final class RouteTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
-        $this->page->addPage($childPage1);
-        $this->page->addPage($childPage2);
+        $page->addPage($childPage1);
+        $page->addPage($childPage2);
 
-        self::assertFalse($this->page->removePage(3));
-        self::assertSame([$code1 => $childPage1, $code2 => $childPage2], $this->page->getPages());
+        self::assertFalse($page->removePage(3));
+        self::assertSame([$code1 => $childPage1, $code2 => $childPage2], $page->getPages());
     }
 
     /**
      * @throws Exception
      * @throws InvalidArgumentException
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testRemovePageRecursive(): void
     {
+        $page  = new Route();
         $code1 = 'code 1';
         $code2 = 'code 2';
 
@@ -1367,7 +1531,7 @@ final class RouteTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
 
         $childPage2 = $this->getMockBuilder(PageInterface::class)
             ->disableOriginalConstructor()
@@ -1380,7 +1544,7 @@ final class RouteTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::never())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
 
         $childPage1->expects(self::once())
             ->method('hasPage')
@@ -1392,19 +1556,21 @@ final class RouteTest extends TestCase
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
-        $this->page->addPage($childPage1);
+        $page->addPage($childPage1);
         $childPage1->addPage($childPage2);
 
-        self::assertTrue($this->page->removePage($childPage2, true));
-        self::assertSame([$code1 => $childPage1], $this->page->getPages());
+        self::assertTrue($page->removePage($childPage2, true));
+        self::assertSame([$code1 => $childPage1], $page->getPages());
     }
 
     /**
      * @throws Exception
      * @throws InvalidArgumentException
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testRemovePageRecursiveNotFound(): void
     {
+        $page  = new Route();
         $code1 = 'code 1';
         $code2 = 'code 2';
 
@@ -1419,7 +1585,7 @@ final class RouteTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
 
         $childPage2 = $this->getMockBuilder(PageInterface::class)
             ->disableOriginalConstructor()
@@ -1432,7 +1598,7 @@ final class RouteTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::never())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
 
         $childPage1->expects(self::once())
             ->method('hasPage')
@@ -1443,19 +1609,21 @@ final class RouteTest extends TestCase
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
-        $this->page->addPage($childPage1);
+        $page->addPage($childPage1);
         $childPage1->addPage($childPage2);
 
-        self::assertFalse($this->page->removePage($childPage2, true));
-        self::assertSame([$code1 => $childPage1], $this->page->getPages());
+        self::assertFalse($page->removePage($childPage2, true));
+        self::assertSame([$code1 => $childPage1], $page->getPages());
     }
 
     /**
      * @throws Exception
      * @throws InvalidArgumentException
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testHasPageByIndex(): void
     {
+        $page  = new Route();
         $code1 = 'code 1';
         $code2 = 'code 2';
 
@@ -1470,7 +1638,7 @@ final class RouteTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
 
         $childPage2 = $this->getMockBuilder(PageInterface::class)
             ->disableOriginalConstructor()
@@ -1483,22 +1651,24 @@ final class RouteTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
-        $this->page->addPage($childPage1);
-        $this->page->addPage($childPage2);
+        $page->addPage($childPage1);
+        $page->addPage($childPage2);
 
-        self::assertTrue($this->page->hasPage(1));
+        self::assertTrue($page->hasPage(1));
     }
 
     /**
      * @throws Exception
      * @throws InvalidArgumentException
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testHasPageByObject(): void
     {
+        $page  = new Route();
         $code1 = 'code 1';
         $code2 = 'code 2';
 
@@ -1513,7 +1683,7 @@ final class RouteTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
 
         $childPage2 = $this->getMockBuilder(PageInterface::class)
             ->disableOriginalConstructor()
@@ -1526,22 +1696,24 @@ final class RouteTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
-        $this->page->addPage($childPage1);
-        $this->page->addPage($childPage2);
+        $page->addPage($childPage1);
+        $page->addPage($childPage2);
 
-        self::assertTrue($this->page->hasPage($childPage2));
+        self::assertTrue($page->hasPage($childPage2));
     }
 
     /**
      * @throws Exception
      * @throws InvalidArgumentException
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testHasNotExistingPage(): void
     {
+        $page  = new Route();
         $code1 = 'code 1';
         $code2 = 'code 2';
 
@@ -1556,7 +1728,7 @@ final class RouteTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
 
         $childPage2 = $this->getMockBuilder(PageInterface::class)
             ->disableOriginalConstructor()
@@ -1569,22 +1741,24 @@ final class RouteTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
-        $this->page->addPage($childPage1);
-        $this->page->addPage($childPage2);
+        $page->addPage($childPage1);
+        $page->addPage($childPage2);
 
-        self::assertFalse($this->page->hasPage(3));
+        self::assertFalse($page->hasPage(3));
     }
 
     /**
      * @throws Exception
      * @throws InvalidArgumentException
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testHasPageRecursive(): void
     {
+        $page  = new Route();
         $code1 = 'code 1';
         $code2 = 'code 2';
 
@@ -1599,7 +1773,7 @@ final class RouteTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
 
         $childPage2 = $this->getMockBuilder(PageInterface::class)
             ->disableOriginalConstructor()
@@ -1612,7 +1786,7 @@ final class RouteTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::never())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
 
         $childPage1->expects(self::once())
             ->method('hasPage')
@@ -1623,18 +1797,20 @@ final class RouteTest extends TestCase
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
-        $this->page->addPage($childPage1);
+        $page->addPage($childPage1);
         $childPage1->addPage($childPage2);
 
-        self::assertTrue($this->page->hasPage($childPage2, true));
+        self::assertTrue($page->hasPage($childPage2, true));
     }
 
     /**
      * @throws Exception
      * @throws InvalidArgumentException
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testHasPageRecursiveNotFound(): void
     {
+        $page  = new Route();
         $code1 = 'code 1';
         $code2 = 'code 2';
 
@@ -1649,7 +1825,7 @@ final class RouteTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
 
         $childPage2 = $this->getMockBuilder(PageInterface::class)
             ->disableOriginalConstructor()
@@ -1662,7 +1838,7 @@ final class RouteTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::never())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
 
         $childPage1->expects(self::once())
             ->method('hasPage')
@@ -1673,19 +1849,22 @@ final class RouteTest extends TestCase
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
-        $this->page->addPage($childPage1);
+        $page->addPage($childPage1);
         $childPage1->addPage($childPage2);
 
-        self::assertFalse($this->page->hasPage($childPage2, true));
+        self::assertFalse($page->hasPage($childPage2, true));
     }
 
     /**
      * @throws Exception
      * @throws InvalidArgumentException
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testHasNoVisiblePages(): void
     {
-        self::assertFalse($this->page->hasPages());
+        $page = new Route();
+
+        self::assertFalse($page->hasPages());
 
         $code1 = 'code 1';
         $code2 = 'code 2';
@@ -1701,7 +1880,7 @@ final class RouteTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage1->expects(self::once())
             ->method('isVisible')
             ->willReturn(false);
@@ -1717,27 +1896,30 @@ final class RouteTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage2->expects(self::once())
             ->method('isVisible')
             ->willReturn(false);
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
-        $this->page->addPage($childPage1);
-        $this->page->addPage($childPage2);
+        $page->addPage($childPage1);
+        $page->addPage($childPage2);
 
-        self::assertTrue($this->page->hasPages());
-        self::assertFalse($this->page->hasPages(true));
+        self::assertTrue($page->hasPages());
+        self::assertFalse($page->hasPages(true));
     }
 
     /**
      * @throws Exception
      * @throws InvalidArgumentException
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testHasVisiblePages(): void
     {
-        self::assertFalse($this->page->hasPages());
+        $page = new Route();
+
+        self::assertFalse($page->hasPages());
 
         $code1 = 'code 1';
         $code2 = 'code 2';
@@ -1753,7 +1935,7 @@ final class RouteTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage1->expects(self::once())
             ->method('isVisible')
             ->willReturn(false);
@@ -1769,30 +1951,33 @@ final class RouteTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage2->expects(self::once())
             ->method('isVisible')
             ->willReturn(true);
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
-        $this->page->addPage($childPage1);
-        $this->page->addPage($childPage2);
+        $page->addPage($childPage1);
+        $page->addPage($childPage2);
 
-        self::assertTrue($this->page->hasPages());
-        self::assertTrue($this->page->hasPages(true));
+        self::assertTrue($page->hasPages());
+        self::assertTrue($page->hasPages(true));
     }
 
     /**
      * @throws Exception
      * @throws InvalidArgumentException
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testFindOneBy(): void
     {
+        $page = new Route();
+
         $property = 'route';
         $value    = 'test';
 
-        self::assertNull($this->page->findOneBy($property, $value));
+        self::assertNull($page->findOneBy($property, $value));
 
         $code1 = 'code 1';
         $code2 = 'code 2';
@@ -1808,7 +1993,7 @@ final class RouteTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage1->expects(self::never())
             ->method('isVisible');
         $childPage1->expects(self::never())
@@ -1825,7 +2010,7 @@ final class RouteTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage2->expects(self::never())
             ->method('isVisible');
         $childPage2->expects(self::once())
@@ -1835,22 +2020,24 @@ final class RouteTest extends TestCase
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
-        $this->page->addPage($childPage1);
-        $this->page->addPage($childPage2);
+        $page->addPage($childPage1);
+        $page->addPage($childPage2);
 
-        self::assertSame($childPage2, $this->page->findOneBy($property, $value));
+        self::assertSame($childPage2, $page->findOneBy($property, $value));
     }
 
     /**
      * @throws Exception
      * @throws InvalidArgumentException
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testFindAllBy(): void
     {
+        $page     = new Route();
         $property = 'route';
         $value    = 'test';
 
-        self::assertSame([], $this->page->findAllBy($property, $value));
+        self::assertSame([], $page->findAllBy($property, $value));
 
         $code1 = 'code 1';
         $code2 = 'code 2';
@@ -1867,7 +2054,7 @@ final class RouteTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage1->expects(self::never())
             ->method('isVisible');
         $childPage1->expects(self::once())
@@ -1886,7 +2073,7 @@ final class RouteTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage2->expects(self::never())
             ->method('isVisible');
         $childPage2->expects(self::once())
@@ -1905,7 +2092,7 @@ final class RouteTest extends TestCase
             ->willReturn(null);
         $childPage3->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage3->expects(self::never())
             ->method('isVisible');
         $childPage3->expects(self::once())
@@ -1916,16 +2103,17 @@ final class RouteTest extends TestCase
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
         assert($childPage3 instanceof PageInterface);
-        $this->page->addPage($childPage1);
-        $this->page->addPage($childPage2);
-        $this->page->addPage($childPage3);
+        $page->addPage($childPage1);
+        $page->addPage($childPage2);
+        $page->addPage($childPage3);
 
-        self::assertSame([$childPage2, $childPage1], $this->page->findAllBy($property, $value));
+        self::assertSame([$childPage2, $childPage1], $page->findAllBy($property, $value));
     }
 
-    /** @throws void */
+    /** @throws InvalidArgumentException */
     public function testCallFindAllByException(): void
     {
+        $page  = new Route();
         $value = 'test';
 
         $this->expectException(BadMethodCallException::class);
@@ -1934,19 +2122,21 @@ final class RouteTest extends TestCase
         );
         $this->expectExceptionCode(0);
 
-        $this->page->findAlllByTest($value);
+        $page->findAlllByTest($value);
     }
 
     /**
      * @throws Exception
      * @throws InvalidArgumentException
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testCallFindAllBy(): void
     {
+        $page     = new Route();
         $property = 'Route';
         $value    = 'test';
 
-        self::assertSame([], $this->page->findAllByRoute($value));
+        self::assertSame([], $page->findAllByRoute($value));
 
         $code1 = 'code 1';
         $code2 = 'code 2';
@@ -1962,7 +2152,7 @@ final class RouteTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage1->expects(self::never())
             ->method('isVisible');
         $childPage1->expects(self::once())
@@ -1981,7 +2171,7 @@ final class RouteTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage2->expects(self::never())
             ->method('isVisible');
         $childPage2->expects(self::once())
@@ -1991,31 +2181,38 @@ final class RouteTest extends TestCase
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
-        $this->page->addPage($childPage1);
-        $this->page->addPage($childPage2);
+        $page->addPage($childPage1);
+        $page->addPage($childPage2);
 
-        self::assertSame([$childPage2, $childPage1], $this->page->findAllByRoute($value));
+        self::assertSame([$childPage2, $childPage1], $page->findAllByRoute($value));
     }
 
-    /** @throws OutOfBoundsException */
+    /**
+     * @throws OutOfBoundsException
+     * @throws InvalidArgumentException
+     */
     public function testCurrentException(): void
     {
+        $page = new Route();
+
         $this->expectException(OutOfBoundsException::class);
         $this->expectExceptionMessage(
             'container is currently empty, could not find any key in internal iterator',
         );
         $this->expectExceptionCode(0);
 
-        $this->page->current();
+        $page->current();
     }
 
     /**
      * @throws Exception
      * @throws InvalidArgumentException
      * @throws OutOfBoundsException
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testCurrent(): void
     {
+        $page  = new Route();
         $code1 = 'code 1';
         $code2 = 'code 2';
 
@@ -2030,7 +2227,7 @@ final class RouteTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage1->expects(self::never())
             ->method('isVisible');
         $childPage1->expects(self::never())
@@ -2047,7 +2244,7 @@ final class RouteTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage2->expects(self::never())
             ->method('isVisible');
         $childPage2->expects(self::never())
@@ -2055,23 +2252,23 @@ final class RouteTest extends TestCase
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
-        $this->page->addPage($childPage1);
-        $this->page->addPage($childPage2);
+        $page->addPage($childPage1);
+        $page->addPage($childPage2);
 
-        self::assertSame($childPage2, $this->page->current());
-        self::assertSame($code2, $this->page->key());
-        self::assertTrue($this->page->valid());
+        self::assertSame($childPage2, $page->current());
+        self::assertSame($code2, $page->key());
+        self::assertTrue($page->valid());
 
-        $this->page->next();
+        $page->next();
 
-        self::assertSame($childPage1, $this->page->current());
-        self::assertSame($code1, $this->page->key());
-        self::assertTrue($this->page->valid());
+        self::assertSame($childPage1, $page->current());
+        self::assertSame($code1, $page->key());
+        self::assertTrue($page->valid());
 
-        $this->page->next();
+        $page->next();
 
-        self::assertSame('', $this->page->key());
-        self::assertFalse($this->page->valid());
+        self::assertSame('', $page->key());
+        self::assertFalse($page->valid());
 
         $this->expectException(OutOfBoundsException::class);
         $this->expectExceptionMessage(
@@ -2079,16 +2276,18 @@ final class RouteTest extends TestCase
         );
         $this->expectExceptionCode(0);
 
-        $this->page->current();
+        $page->current();
     }
 
     /**
      * @throws Exception
      * @throws InvalidArgumentException
      * @throws OutOfBoundsException
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testRewind(): void
     {
+        $page  = new Route();
         $code1 = 'code 1';
         $code2 = 'code 2';
 
@@ -2103,7 +2302,7 @@ final class RouteTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage1->expects(self::never())
             ->method('isVisible');
         $childPage1->expects(self::never())
@@ -2120,7 +2319,7 @@ final class RouteTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage2->expects(self::never())
             ->method('isVisible');
         $childPage2->expects(self::never())
@@ -2128,23 +2327,23 @@ final class RouteTest extends TestCase
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
-        $this->page->addPage($childPage1);
-        $this->page->addPage($childPage2);
+        $page->addPage($childPage1);
+        $page->addPage($childPage2);
 
-        self::assertSame($childPage2, $this->page->current());
-        self::assertSame($code2, $this->page->key());
-        self::assertTrue($this->page->valid());
+        self::assertSame($childPage2, $page->current());
+        self::assertSame($code2, $page->key());
+        self::assertTrue($page->valid());
 
-        $this->page->next();
+        $page->next();
 
-        self::assertSame($childPage1, $this->page->current());
-        self::assertSame($code1, $this->page->key());
-        self::assertTrue($this->page->valid());
+        self::assertSame($childPage1, $page->current());
+        self::assertSame($code1, $page->key());
+        self::assertTrue($page->valid());
 
-        $this->page->rewind();
+        $page->rewind();
 
-        self::assertSame($childPage2, $this->page->current());
-        self::assertSame($code2, $this->page->key());
-        self::assertTrue($this->page->valid());
+        self::assertSame($childPage2, $page->current());
+        self::assertSame($code2, $page->key());
+        self::assertTrue($page->valid());
     }
 }

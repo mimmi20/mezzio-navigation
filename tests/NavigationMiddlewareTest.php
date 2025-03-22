@@ -19,6 +19,7 @@ use Mezzio\Router\RouterInterface;
 use Mimmi20\Mezzio\GenericAuthorization\AuthorizationInterface;
 use Mimmi20\Mezzio\Navigation\Config\NavigationConfigInterface;
 use Mimmi20\Mezzio\Navigation\NavigationMiddleware;
+use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
@@ -29,7 +30,11 @@ use function assert;
 
 final class NavigationMiddlewareTest extends TestCase
 {
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws NoPreviousThrowableException
+     * @throws \PHPUnit\Framework\MockObject\Exception
+     */
     public function testConstructor(): void
     {
         $navigationConfig = $this->createMock(NavigationConfigInterface::class);
@@ -45,7 +50,11 @@ final class NavigationMiddlewareTest extends TestCase
         self::assertInstanceOf(NavigationMiddleware::class, $middleware);
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws NoPreviousThrowableException
+     * @throws \PHPUnit\Framework\MockObject\Exception
+     */
     public function testConstructorWithoutOptionalParameters(): void
     {
         $navigationConfig = $this->createMock(NavigationConfigInterface::class);
@@ -57,7 +66,11 @@ final class NavigationMiddlewareTest extends TestCase
         self::assertInstanceOf(NavigationMiddleware::class, $middleware);
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws NoPreviousThrowableException
+     * @throws \PHPUnit\Framework\MockObject\Exception
+     */
     public function testProcessWithoutRouteResult(): void
     {
         $urlHelper     = $this->createMock(UrlHelper::class);
@@ -114,7 +127,11 @@ final class NavigationMiddlewareTest extends TestCase
         self::assertSame($expectedResponse, $response);
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws NoPreviousThrowableException
+     * @throws \PHPUnit\Framework\MockObject\Exception
+     */
     public function testProcess(): void
     {
         $urlHelper     = $this->createMock(UrlHelper::class);

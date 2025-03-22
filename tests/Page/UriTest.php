@@ -19,7 +19,7 @@ use Mimmi20\Mezzio\Navigation\Exception\InvalidArgumentException;
 use Mimmi20\Mezzio\Navigation\Exception\OutOfBoundsException;
 use Mimmi20\Mezzio\Navigation\Page\PageInterface;
 use Mimmi20\Mezzio\Navigation\Page\Uri;
-use Override;
+use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
@@ -35,19 +35,15 @@ use function spl_object_hash;
 #[Group('Laminas_Navigation')]
 final class UriTest extends TestCase
 {
-    private Uri $page;
-
-    /** @throws InvalidArgumentException */
-    #[Override]
-    protected function setUp(): void
-    {
-        $this->page = new Uri();
-    }
-
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     public function testConstructorWithoutParameters(): void
     {
-        self::assertSame([], $this->page->getPages());
+        $page = new Uri();
+
+        self::assertSame([], $page->getPages());
     }
 
     /**
@@ -69,21 +65,26 @@ final class UriTest extends TestCase
      */
     public function testSetOptionsWithLabel(): void
     {
+        $page  = new Uri();
         $label = 'test';
 
-        $this->page->setOptions(['label' => $label]);
+        $page->setOptions(['label' => $label]);
 
-        self::assertSame($label, $this->page->getLabel());
+        self::assertSame($label, $page->getLabel());
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     public function testSetLabel(): void
     {
+        $page  = new Uri();
         $label = 'test';
 
-        $this->page->setLabel($label);
+        $page->setLabel($label);
 
-        self::assertSame($label, $this->page->getLabel());
+        self::assertSame($label, $page->getLabel());
     }
 
     /**
@@ -105,21 +106,26 @@ final class UriTest extends TestCase
      */
     public function testSetOptionsWithFragment(): void
     {
+        $page     = new Uri();
         $fragment = 'test';
 
-        $this->page->setOptions(['fragment' => $fragment]);
+        $page->setOptions(['fragment' => $fragment]);
 
-        self::assertSame($fragment, $this->page->getFragment());
+        self::assertSame($fragment, $page->getFragment());
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     public function testSetFragment(): void
     {
+        $page     = new Uri();
         $fragment = 'test';
 
-        $this->page->setFragment($fragment);
+        $page->setFragment($fragment);
 
-        self::assertSame($fragment, $this->page->getFragment());
+        self::assertSame($fragment, $page->getFragment());
     }
 
     /**
@@ -141,21 +147,26 @@ final class UriTest extends TestCase
      */
     public function testSetOptionsWithId(): void
     {
-        $id = 'test';
+        $page = new Uri();
+        $id   = 'test';
 
-        $this->page->setOptions(['id' => $id]);
+        $page->setOptions(['id' => $id]);
 
-        self::assertSame($id, $this->page->getId());
+        self::assertSame($id, $page->getId());
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     public function testSetId(): void
     {
-        $id = 'test';
+        $page = new Uri();
+        $id   = 'test';
 
-        $this->page->setId($id);
+        $page->setId($id);
 
-        self::assertSame($id, $this->page->getId());
+        self::assertSame($id, $page->getId());
     }
 
     /**
@@ -164,6 +175,7 @@ final class UriTest extends TestCase
      */
     public function testConstructorClass(): void
     {
+        $page  = new Uri();
         $class = 'test';
 
         $page = new Uri(['class' => $class]);
@@ -177,21 +189,26 @@ final class UriTest extends TestCase
      */
     public function testSetOptionsWithClass(): void
     {
+        $page  = new Uri();
         $class = 'test';
 
-        $this->page->setOptions(['class' => $class]);
+        $page->setOptions(['class' => $class]);
 
-        self::assertSame($class, $this->page->getClass());
+        self::assertSame($class, $page->getClass());
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     public function testSetClass(): void
     {
+        $page  = new Uri();
         $class = 'test';
 
-        $this->page->setClass($class);
+        $page->setClass($class);
 
-        self::assertSame($class, $this->page->getClass());
+        self::assertSame($class, $page->getClass());
     }
 
     /**
@@ -200,11 +217,12 @@ final class UriTest extends TestCase
      */
     public function testConstructorLiClass(): void
     {
+        $page  = new Uri();
         $class = 'test';
 
-        $this->page = new Uri(['liClass' => $class]);
+        $page = new Uri(['liClass' => $class]);
 
-        self::assertSame($class, $this->page->getLiClass());
+        self::assertSame($class, $page->getLiClass());
     }
 
     /**
@@ -213,21 +231,26 @@ final class UriTest extends TestCase
      */
     public function testSetOptionsWithLiClass(): void
     {
+        $page  = new Uri();
         $class = 'test';
 
-        $this->page->setOptions(['liClass' => $class]);
+        $page->setOptions(['liClass' => $class]);
 
-        self::assertSame($class, $this->page->getLiClass());
+        self::assertSame($class, $page->getLiClass());
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     public function testSetLiClass(): void
     {
+        $page  = new Uri();
         $class = 'test';
 
-        $this->page->setLiClass($class);
+        $page->setLiClass($class);
 
-        self::assertSame($class, $this->page->getLiClass());
+        self::assertSame($class, $page->getLiClass());
     }
 
     /**
@@ -236,6 +259,7 @@ final class UriTest extends TestCase
      */
     public function testConstructorTitle(): void
     {
+        $page  = new Uri();
         $title = 'test';
 
         $page = new Uri(['title' => $title]);
@@ -249,21 +273,26 @@ final class UriTest extends TestCase
      */
     public function testSetOptionsWithTitle(): void
     {
+        $page  = new Uri();
         $title = 'test';
 
-        $this->page->setOptions(['title' => $title]);
+        $page->setOptions(['title' => $title]);
 
-        self::assertSame($title, $this->page->getTitle());
+        self::assertSame($title, $page->getTitle());
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     public function testSetTitle(): void
     {
+        $page  = new Uri();
         $title = 'test';
 
-        $this->page->setTitle($title);
+        $page->setTitle($title);
 
-        self::assertSame($title, $this->page->getTitle());
+        self::assertSame($title, $page->getTitle());
     }
 
     /**
@@ -272,6 +301,7 @@ final class UriTest extends TestCase
      */
     public function testConstructorTarget(): void
     {
+        $page   = new Uri();
         $target = 'test';
 
         $page = new Uri(['target' => $target]);
@@ -285,85 +315,98 @@ final class UriTest extends TestCase
      */
     public function testSetOptionsWithTarget(): void
     {
+        $page   = new Uri();
         $target = 'test';
 
-        $this->page->setOptions(['target' => $target]);
+        $page->setOptions(['target' => $target]);
 
-        self::assertSame($target, $this->page->getTarget());
+        self::assertSame($target, $page->getTarget());
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     public function testSetTarget(): void
     {
+        $page   = new Uri();
         $target = 'test';
 
-        $this->page->setTarget($target);
+        $page->setTarget($target);
 
-        self::assertSame($target, $this->page->getTarget());
+        self::assertSame($target, $page->getTarget());
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     public function testSetRel(): void
     {
+        $page     = new Uri();
         $relValue = 'test1';
         $relKey   = 'test';
 
-        $this->page->setRel();
+        $page->setRel();
 
-        self::assertSame([], $this->page->getRel());
+        self::assertSame([], $page->getRel());
 
-        $this->page->setRel([$relKey => $relValue, 42 => 'tests']);
+        $page->setRel([$relKey => $relValue, 42 => 'tests']);
 
-        self::assertSame([$relKey => $relValue], $this->page->getRel());
-        self::assertSame($relValue, $this->page->getRel($relKey));
+        self::assertSame([$relKey => $relValue], $page->getRel());
+        self::assertSame($relValue, $page->getRel($relKey));
 
-        self::assertCount(1, $this->page->getRel());
+        self::assertCount(1, $page->getRel());
 
-        $this->page->addRel('test2', 'test2');
+        $page->addRel('test2', 'test2');
 
-        self::assertCount(2, (array) $this->page->getRel());
+        self::assertCount(2, (array) $page->getRel());
 
-        $this->page->removeRel('test');
+        $page->removeRel('test');
 
-        self::assertCount(1, (array) $this->page->getRel());
+        self::assertCount(1, (array) $page->getRel());
 
-        $this->page->removeRel('test4');
+        $page->removeRel('test4');
 
-        self::assertCount(1, (array) $this->page->getRel());
+        self::assertCount(1, (array) $page->getRel());
 
-        self::assertSame(['test2'], $this->page->getDefinedRel());
+        self::assertSame(['test2'], $page->getDefinedRel());
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     public function testSetRev(): void
     {
+        $page     = new Uri();
         $revValue = 'test1';
         $revKey   = 'test';
 
-        $this->page->setRev();
+        $page->setRev();
 
-        self::assertSame([], $this->page->getRev());
+        self::assertSame([], $page->getRev());
 
-        $this->page->setRev([$revKey => $revValue, 42 => 'tests']);
+        $page->setRev([$revKey => $revValue, 42 => 'tests']);
 
-        self::assertSame([$revKey => $revValue], $this->page->getRev());
-        self::assertSame($revValue, $this->page->getRev($revKey));
+        self::assertSame([$revKey => $revValue], $page->getRev());
+        self::assertSame($revValue, $page->getRev($revKey));
 
-        self::assertCount(1, $this->page->getRev());
+        self::assertCount(1, $page->getRev());
 
-        $this->page->addRev('test2', 'test2');
+        $page->addRev('test2', 'test2');
 
-        self::assertCount(2, (array) $this->page->getRev());
+        self::assertCount(2, (array) $page->getRev());
 
-        $this->page->removeRev('test');
+        $page->removeRev('test');
 
-        self::assertCount(1, (array) $this->page->getRev());
+        self::assertCount(1, (array) $page->getRev());
 
-        $this->page->removeRev('test4');
+        $page->removeRev('test4');
 
-        self::assertCount(1, (array) $this->page->getRev());
+        self::assertCount(1, (array) $page->getRev());
 
-        self::assertSame(['test2'], $this->page->getDefinedRev());
+        self::assertSame(['test2'], $page->getDefinedRev());
     }
 
     /**
@@ -372,13 +415,15 @@ final class UriTest extends TestCase
      */
     public function testSetParentException(): void
     {
-        self::assertNull($this->page->getParent());
+        $page = new Uri();
+
+        self::assertNull($page->getParent());
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('A page cannot have itself as a parent');
         $this->expectExceptionCode(0);
 
-        $this->page->setParent($this->page);
+        $page->setParent($page);
     }
 
     /**
@@ -387,6 +432,8 @@ final class UriTest extends TestCase
      */
     public function testDuplicateSetParent(): void
     {
+        $page = new Uri();
+
         $parent = $this->getMockBuilder(ContainerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -394,15 +441,15 @@ final class UriTest extends TestCase
             ->method('removePage');
         $parent->expects(self::once())
             ->method('hasPage')
-            ->with($this->page, false)
+            ->with($page, false)
             ->willReturn(false);
         $parent->expects(self::once())
             ->method('addPage')
-            ->with($this->page);
+            ->with($page);
 
         assert($parent instanceof ContainerInterface);
-        $this->page->setParent($parent);
-        $this->page->setParent($parent);
+        $page->setParent($parent);
+        $page->setParent($parent);
     }
 
     /**
@@ -411,19 +458,21 @@ final class UriTest extends TestCase
      */
     public function testSetTwoParents(): void
     {
+        $page = new Uri();
+
         $parent1 = $this->getMockBuilder(ContainerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
         $parent1->expects(self::once())
             ->method('removePage')
-            ->with($this->page);
+            ->with($page);
         $parent1->expects(self::once())
             ->method('hasPage')
-            ->with($this->page, false)
+            ->with($page, false)
             ->willReturn(false);
         $parent1->expects(self::once())
             ->method('addPage')
-            ->with($this->page);
+            ->with($page);
 
         $parent2 = $this->getMockBuilder(ContainerInterface::class)
             ->disableOriginalConstructor()
@@ -432,38 +481,42 @@ final class UriTest extends TestCase
             ->method('removePage');
         $parent2->expects(self::once())
             ->method('hasPage')
-            ->with($this->page, false)
+            ->with($page, false)
             ->willReturn(true);
         $parent2->expects(self::never())
             ->method('addPage');
 
         assert($parent1 instanceof ContainerInterface);
         assert($parent2 instanceof ContainerInterface);
-        $this->page->setParent($parent1);
-        self::assertSame($parent1, $this->page->getParent());
+        $page->setParent($parent1);
+        self::assertSame($parent1, $page->getParent());
 
-        $this->page->setParent($parent2);
-        self::assertSame($parent2, $this->page->getParent());
+        $page->setParent($parent2);
+        self::assertSame($parent2, $page->getParent());
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     public function testSetOrder(): void
     {
+        $page  = new Uri();
         $order = 42;
 
-        self::assertNull($this->page->getOrder());
+        self::assertNull($page->getOrder());
 
-        $this->page->setOrder($order);
+        $page->setOrder($order);
 
-        self::assertSame($order, $this->page->getOrder());
+        self::assertSame($order, $page->getOrder());
 
-        $this->page->setOrder('42');
+        $page->setOrder('42');
 
-        self::assertSame($order, $this->page->getOrder());
+        self::assertSame($order, $page->getOrder());
 
-        $this->page->setOrder(42.0);
+        $page->setOrder(42.0);
 
-        self::assertSame($order, $this->page->getOrder());
+        self::assertSame($order, $page->getOrder());
     }
 
     /**
@@ -472,6 +525,7 @@ final class UriTest extends TestCase
      */
     public function testSetOrderWithParent(): void
     {
+        $page  = new Uri();
         $order = 42;
 
         $parent = $this->getMockBuilder(ContainerInterface::class)
@@ -480,60 +534,76 @@ final class UriTest extends TestCase
         $parent->expects(self::once())
             ->method('notifyOrderUpdated');
 
-        $this->page->setParent($parent);
-        $this->page->setOrder($order);
+        $page->setParent($parent);
+        $page->setOrder($order);
 
-        self::assertSame($order, $this->page->getOrder());
+        self::assertSame($order, $page->getOrder());
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     public function testSetResource(): void
     {
+        $page     = new Uri();
         $resource = 'test';
 
-        self::assertNull($this->page->getResource());
+        self::assertNull($page->getResource());
 
-        $this->page->setResource($resource);
+        $page->setResource($resource);
 
-        self::assertSame($resource, $this->page->getResource());
+        self::assertSame($resource, $page->getResource());
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     public function testSetPrivilege(): void
     {
+        $page      = new Uri();
         $privilege = 'test';
 
-        self::assertNull($this->page->getPrivilege());
+        self::assertNull($page->getPrivilege());
 
-        $this->page->setPrivilege($privilege);
+        $page->setPrivilege($privilege);
 
-        self::assertSame($privilege, $this->page->getPrivilege());
+        self::assertSame($privilege, $page->getPrivilege());
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     public function testSetTextDomain(): void
     {
+        $page       = new Uri();
         $textDomain = 'test';
 
-        self::assertNull($this->page->getTextDomain());
+        self::assertNull($page->getTextDomain());
 
-        $this->page->setTextDomain($textDomain);
+        $page->setTextDomain($textDomain);
 
-        self::assertSame($textDomain, $this->page->getTextDomain());
+        self::assertSame($textDomain, $page->getTextDomain());
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     public function testSetVisible(): void
     {
+        $page    = new Uri();
         $visible = false;
 
-        self::assertTrue($this->page->isVisible());
-        self::assertTrue($this->page->getVisible());
+        self::assertTrue($page->isVisible());
+        self::assertTrue($page->getVisible());
 
-        $this->page->setVisible($visible);
+        $page->setVisible($visible);
 
-        self::assertFalse($this->page->isVisible());
-        self::assertFalse($this->page->getVisible());
+        self::assertFalse($page->isVisible());
+        self::assertFalse($page->getVisible());
     }
 
     /**
@@ -542,6 +612,7 @@ final class UriTest extends TestCase
      */
     public function testSetVisibleWithParent(): void
     {
+        $page    = new Uri();
         $parent1 = $this->getMockBuilder(PageInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -550,10 +621,10 @@ final class UriTest extends TestCase
             ->willReturn(true);
 
         assert($parent1 instanceof PageInterface);
-        $this->page->setParent($parent1);
+        $page->setParent($parent1);
 
-        self::assertTrue($this->page->isVisible(true));
-        self::assertTrue($this->page->getVisible(true));
+        self::assertTrue($page->isVisible(true));
+        self::assertTrue($page->getVisible(true));
 
         $parent2 = $this->getMockBuilder(PageInterface::class)
             ->disableOriginalConstructor()
@@ -563,54 +634,58 @@ final class UriTest extends TestCase
             ->willReturn(false);
 
         assert($parent2 instanceof PageInterface);
-        $this->page->setParent($parent2);
+        $page->setParent($parent2);
 
-        self::assertFalse($this->page->isVisible(true));
-        self::assertFalse($this->page->getVisible(true));
+        self::assertFalse($page->isVisible(true));
+        self::assertFalse($page->getVisible(true));
 
-        $this->page->setVisible(false);
+        $page->setVisible(false);
 
-        self::assertFalse($this->page->isVisible());
-        self::assertFalse($this->page->getVisible());
+        self::assertFalse($page->isVisible());
+        self::assertFalse($page->getVisible());
 
-        $this->page->setVisible(true);
+        $page->setVisible(true);
 
-        self::assertTrue($this->page->isVisible());
-        self::assertTrue($this->page->getVisible());
+        self::assertTrue($page->isVisible());
+        self::assertTrue($page->getVisible());
 
-        $this->page->setVisible('1');
+        $page->setVisible('1');
 
-        self::assertTrue($this->page->isVisible());
-        self::assertTrue($this->page->getVisible());
+        self::assertTrue($page->isVisible());
+        self::assertTrue($page->getVisible());
 
-        $this->page->setVisible('false');
+        $page->setVisible('false');
 
-        self::assertFalse($this->page->isVisible());
-        self::assertFalse($this->page->getVisible());
+        self::assertFalse($page->isVisible());
+        self::assertFalse($page->getVisible());
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     public function testSetActive(): void
     {
+        $page   = new Uri();
         $active = true;
 
-        self::assertFalse($this->page->isActive());
-        self::assertFalse($this->page->getActive());
+        self::assertFalse($page->isActive());
+        self::assertFalse($page->getActive());
 
-        $this->page->setActive($active);
+        $page->setActive($active);
 
-        self::assertTrue($this->page->isActive());
-        self::assertTrue($this->page->getActive());
+        self::assertTrue($page->isActive());
+        self::assertTrue($page->getActive());
 
-        $this->page->setActive('1');
+        $page->setActive('1');
 
-        self::assertTrue($this->page->isActive());
-        self::assertTrue($this->page->getActive());
+        self::assertTrue($page->isActive());
+        self::assertTrue($page->getActive());
 
-        $this->page->setActive('false');
+        $page->setActive('false');
 
-        self::assertFalse($this->page->isActive());
-        self::assertFalse($this->page->getActive());
+        self::assertFalse($page->isActive());
+        self::assertFalse($page->getActive());
     }
 
     /**
@@ -619,6 +694,8 @@ final class UriTest extends TestCase
      */
     public function testSetActiveWithPages(): void
     {
+        $page = new Uri();
+
         $childPage1 = $this->getMockBuilder(PageInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
@@ -627,33 +704,37 @@ final class UriTest extends TestCase
             ->with(true)
             ->willReturn(true);
 
-        self::assertFalse($this->page->isActive(true));
-        self::assertFalse($this->page->getActive(true));
+        self::assertFalse($page->isActive(true));
+        self::assertFalse($page->getActive(true));
 
-        $this->page->addPage($childPage1);
+        $page->addPage($childPage1);
 
-        self::assertTrue($this->page->isActive(true));
-        self::assertTrue($this->page->getActive(true));
+        self::assertTrue($page->isActive(true));
+        self::assertTrue($page->getActive(true));
     }
 
     /** @throws InvalidArgumentException */
     public function testSetWithException(): void
     {
+        $page = new Uri();
+
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid argument: $property must be a non-empty string');
         $this->expectExceptionCode(0);
 
-        $this->page->set('', null);
+        $page->set('', null);
     }
 
     /** @throws InvalidArgumentException */
     public function testGetWithException(): void
     {
+        $page = new Uri();
+
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid argument: $property must be a non-empty string');
         $this->expectExceptionCode(0);
 
-        $this->page->get('');
+        $page->get('');
     }
 
     /**
@@ -662,63 +743,75 @@ final class UriTest extends TestCase
      */
     public function testGetSet(): void
     {
+        $page   = new Uri();
         $target = 'test2';
         $test   = 'test 42';
         $abc    = '4711';
 
-        self::assertNull($this->page->get('test'));
+        self::assertNull($page->get('test'));
 
-        $this->page->set('target', $target);
-        $this->page->set('test', $test);
-        $this->page->abc = $abc;
+        $page->set('target', $target);
+        $page->set('test', $test);
+        $page->abc = $abc;
 
-        self::assertSame($target, $this->page->get('target'));
-        self::assertSame($test, $this->page->get('test'));
-        self::assertSame($abc, $this->page->abc);
+        self::assertSame($target, $page->get('target'));
+        self::assertSame($test, $page->get('test'));
+        self::assertSame($abc, $page->abc);
 
-        self::assertTrue(isset($this->page->target));
-        self::assertTrue(isset($this->page->test));
+        self::assertTrue(isset($page->target));
+        self::assertTrue(isset($page->test));
 
-        self::assertSame(['test' => 'test 42', 'abc' => '4711'], $this->page->getCustomProperties());
+        self::assertSame(['test' => 'test 42', 'abc' => '4711'], $page->getCustomProperties());
 
-        unset($this->page->test, $this->page->test);
+        unset($page->test, $page->test);
 
-        self::assertObjectNotHasProperty('test', $this->page);
-        self::assertSame(['abc' => '4711'], $this->page->getCustomProperties());
+        self::assertObjectNotHasProperty('test', $page);
+        self::assertSame(['abc' => '4711'], $page->getCustomProperties());
     }
 
-    /** @throws void */
+    /** @throws InvalidArgumentException */
     public function testUnset(): void
     {
+        $page = new Uri();
+
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Unsetting native property "target" is not allowed');
         $this->expectExceptionCode(0);
 
-        unset($this->page->target);
+        unset($page->target);
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     public function testToString(): void
     {
-        self::assertSame('', (string) $this->page);
+        $page = new Uri();
+
+        self::assertSame('', (string) $page);
 
         $label = 'test';
 
-        $this->page->setLabel($label);
+        $page->setLabel($label);
 
-        self::assertSame($label, (string) $this->page);
+        self::assertSame($label, (string) $page);
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     public function testHashCode(): void
     {
+        $page  = new Uri();
         $label = 'test';
 
-        $this->page->setLabel($label);
+        $page->setLabel($label);
 
-        $expected = spl_object_hash($this->page);
+        $expected = spl_object_hash($page);
 
-        self::assertSame($expected, $this->page->hashCode());
+        self::assertSame($expected, $page->hashCode());
     }
 
     /**
@@ -727,14 +820,14 @@ final class UriTest extends TestCase
      */
     public function testUriOptionAsString(): void
     {
-        $this->page = new Uri(
+        $page = new Uri(
             [
                 'label' => 'foo',
                 'uri' => '#',
             ],
         );
 
-        self::assertSame('#', $this->page->getUri());
+        self::assertSame('#', $page->getUri());
     }
 
     /**
@@ -743,14 +836,14 @@ final class UriTest extends TestCase
      */
     public function testUriOptionAsNull(): void
     {
-        $this->page = new Uri(
+        $page = new Uri(
             [
                 'label' => 'foo',
                 'uri' => null,
             ],
         );
 
-        self::assertNull($this->page->getUri(), 'getUri() should return null');
+        self::assertNull($page->getUri(), 'getUri() should return null');
     }
 
     /**
@@ -759,37 +852,43 @@ final class UriTest extends TestCase
      */
     public function testSetAndGetUri(): void
     {
-        $this->page = new Uri(
+        $page = new Uri(
             [
                 'label' => 'foo',
                 'uri' => '#',
             ],
         );
 
-        $this->page->setUri('http://www.example.com/');
-        $this->page->setUri('about:blank');
+        $page->setUri('http://www.example.com/');
+        $page->setUri('about:blank');
 
-        self::assertSame('about:blank', $this->page->getUri());
-    }
-
-    /** @throws Exception */
-    public function testGetHref(): void
-    {
-        $uri = 'spotify:album:4YzcWwBUSzibRsqD9Sgu4A';
-
-        $this->page->setUri($uri);
-
-        self::assertSame($uri, $this->page->getHref());
+        self::assertSame('about:blank', $page->getUri());
     }
 
     /**
      * @throws Exception
      * @throws InvalidArgumentException
      */
+    public function testGetHref(): void
+    {
+        $page = new Uri();
+        $uri  = 'spotify:album:4YzcWwBUSzibRsqD9Sgu4A';
+
+        $page->setUri($uri);
+
+        self::assertSame($uri, $page->getHref());
+    }
+
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     * @throws NoPreviousThrowableException
+     * @throws \PHPUnit\Framework\MockObject\Exception
+     */
     public function testIsActiveReturnsTrueWhenHasMatchingRequestUri(): void
     {
-        $url        = '/bar';
-        $this->page = new Uri(
+        $url  = '/bar';
+        $page = new Uri(
             [
                 'label' => 'foo',
                 'uri' => $url,
@@ -807,21 +906,23 @@ final class UriTest extends TestCase
             ->willReturn($uri);
 
         assert($request instanceof ServerRequestInterface);
-        $this->page->setRequest($request);
+        $page->setRequest($request);
 
-        self::assertSame($request, $this->page->getRequest());
-        self::assertTrue($this->page->isActive());
+        self::assertSame($request, $page->getRequest());
+        self::assertTrue($page->isActive());
     }
 
     /**
      * @throws Exception
      * @throws InvalidArgumentException
+     * @throws NoPreviousThrowableException
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testIsActiveReturnsFalseOnNonMatchingRequestUri(): void
     {
-        $url1       = '/bar';
-        $url2       = '/baz';
-        $this->page = new Uri(
+        $url1 = '/bar';
+        $url2 = '/baz';
+        $page = new Uri(
             [
                 'label' => 'foo',
                 'uri' => $url1,
@@ -839,35 +940,41 @@ final class UriTest extends TestCase
             ->willReturn($uri);
 
         assert($request instanceof ServerRequestInterface);
-        $this->page->setRequest($request);
+        $page->setRequest($request);
 
-        self::assertSame($request, $this->page->getRequest());
-        self::assertFalse($this->page->isActive());
+        self::assertSame($request, $page->getRequest());
+        self::assertFalse($page->isActive());
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws InvalidArgumentException
+     */
     public function testGetHrefWithFragmentIdentifier(): void
     {
-        $uri = 'http://www.example.com/foo.html';
+        $page = new Uri();
+        $uri  = 'http://www.example.com/foo.html';
 
-        $this->page->setUri($uri);
-        $this->page->setFragment('bar');
+        $page->setUri($uri);
+        $page->setFragment('bar');
 
-        self::assertSame($uri . '#bar', $this->page->getHref());
+        self::assertSame($uri . '#bar', $page->getHref());
 
-        $this->page->setUri('#');
+        $page->setUri('#');
 
-        self::assertSame('#bar', $this->page->getHref());
+        self::assertSame('#bar', $page->getHref());
     }
 
     /** @throws InvalidArgumentException */
     public function testAddSelfAsChild(): void
     {
+        $page = new Uri();
+
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('A page cannot have itself as a parent');
         $this->expectExceptionCode(0);
 
-        $this->page->addPage($this->page);
+        $page->addPage($page);
     }
 
     /**
@@ -876,6 +983,7 @@ final class UriTest extends TestCase
      */
     public function testAddChildPageTwice(): void
     {
+        $page     = new Uri();
         $hashCode = 'abc';
 
         $childPage = $this->getMockBuilder(PageInterface::class)
@@ -889,31 +997,35 @@ final class UriTest extends TestCase
             ->willReturn(1);
         $childPage->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
 
         assert($childPage instanceof PageInterface);
-        $this->page->addPage($childPage);
-        $this->page->addPage($childPage);
+        $page->addPage($childPage);
+        $page->addPage($childPage);
     }
 
     /** @throws InvalidArgumentException */
     public function testAddChildPageSelf(): void
     {
+        $page = new Uri();
+
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('A page cannot have itself as a parent');
         $this->expectExceptionCode(0);
 
-        $this->page->addPage($this->page);
+        $page->addPage($page);
     }
 
     /** @throws InvalidArgumentException */
     public function testAddPages(): void
     {
+        $page = new Uri();
+
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid argument: $page must be an Instance of PageInterface');
         $this->expectExceptionCode(0);
 
-        $this->page->addPages(['test']);
+        $page->addPages(['test']);
     }
 
     /**
@@ -922,6 +1034,7 @@ final class UriTest extends TestCase
      */
     public function testRemovePageByIndex(): void
     {
+        $page  = new Uri();
         $code1 = 'code 1';
         $code2 = 'code 2';
 
@@ -936,7 +1049,7 @@ final class UriTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage1->expects(self::never())
             ->method('isVisible');
         $childPage1->expects(self::never())
@@ -957,7 +1070,7 @@ final class UriTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage2->expects(self::never())
             ->method('isVisible');
         $childPage2->expects(self::never())
@@ -969,11 +1082,11 @@ final class UriTest extends TestCase
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
-        $this->page->addPage($childPage1);
-        $this->page->addPage($childPage2);
+        $page->addPage($childPage1);
+        $page->addPage($childPage2);
 
-        self::assertTrue($this->page->removePage(1));
-        self::assertSame([$code2 => $childPage2], $this->page->getPages());
+        self::assertTrue($page->removePage(1));
+        self::assertSame([$code2 => $childPage2], $page->getPages());
     }
 
     /**
@@ -982,6 +1095,7 @@ final class UriTest extends TestCase
      */
     public function testRemovePageByObject(): void
     {
+        $page  = new Uri();
         $code1 = 'code 1';
         $code2 = 'code 2';
 
@@ -996,7 +1110,7 @@ final class UriTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage1->expects(self::never())
             ->method('isVisible');
         $childPage1->expects(self::never())
@@ -1017,7 +1131,7 @@ final class UriTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage2->expects(self::never())
             ->method('isVisible');
         $childPage2->expects(self::never())
@@ -1029,11 +1143,11 @@ final class UriTest extends TestCase
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
-        $this->page->addPage($childPage1);
-        $this->page->addPage($childPage2);
+        $page->addPage($childPage1);
+        $page->addPage($childPage2);
 
-        self::assertTrue($this->page->removePage($childPage2));
-        self::assertSame([$code1 => $childPage1], $this->page->getPages());
+        self::assertTrue($page->removePage($childPage2));
+        self::assertSame([$code1 => $childPage1], $page->getPages());
     }
 
     /**
@@ -1042,6 +1156,7 @@ final class UriTest extends TestCase
      */
     public function testRemovePageNotExistingPage(): void
     {
+        $page  = new Uri();
         $code1 = 'code 1';
         $code2 = 'code 2';
 
@@ -1056,7 +1171,7 @@ final class UriTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage1->expects(self::never())
             ->method('isVisible');
         $childPage1->expects(self::never())
@@ -1077,7 +1192,7 @@ final class UriTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage2->expects(self::never())
             ->method('isVisible');
         $childPage2->expects(self::never())
@@ -1089,11 +1204,11 @@ final class UriTest extends TestCase
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
-        $this->page->addPage($childPage1);
-        $this->page->addPage($childPage2);
+        $page->addPage($childPage1);
+        $page->addPage($childPage2);
 
-        self::assertFalse($this->page->removePage(3));
-        self::assertSame([$code1 => $childPage1, $code2 => $childPage2], $this->page->getPages());
+        self::assertFalse($page->removePage(3));
+        self::assertSame([$code1 => $childPage1, $code2 => $childPage2], $page->getPages());
     }
 
     /**
@@ -1102,6 +1217,7 @@ final class UriTest extends TestCase
      */
     public function testRemovePageRecursive(): void
     {
+        $page  = new Uri();
         $code1 = 'code 1';
         $code2 = 'code 2';
 
@@ -1116,7 +1232,7 @@ final class UriTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage1->expects(self::never())
             ->method('isVisible');
         $childPage1->expects(self::never())
@@ -1133,7 +1249,7 @@ final class UriTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::never())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage2->expects(self::never())
             ->method('isVisible');
         $childPage2->expects(self::never())
@@ -1153,11 +1269,11 @@ final class UriTest extends TestCase
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
-        $this->page->addPage($childPage1);
+        $page->addPage($childPage1);
         $childPage1->addPage($childPage2);
 
-        self::assertTrue($this->page->removePage($childPage2, true));
-        self::assertSame([$code1 => $childPage1], $this->page->getPages());
+        self::assertTrue($page->removePage($childPage2, true));
+        self::assertSame([$code1 => $childPage1], $page->getPages());
     }
 
     /**
@@ -1166,6 +1282,7 @@ final class UriTest extends TestCase
      */
     public function testRemovePageRecursiveNotFound(): void
     {
+        $page  = new Uri();
         $code1 = 'code 1';
         $code2 = 'code 2';
 
@@ -1180,7 +1297,7 @@ final class UriTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage1->expects(self::never())
             ->method('isVisible');
         $childPage1->expects(self::never())
@@ -1197,7 +1314,7 @@ final class UriTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::never())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage2->expects(self::never())
             ->method('isVisible');
         $childPage2->expects(self::never())
@@ -1216,11 +1333,11 @@ final class UriTest extends TestCase
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
-        $this->page->addPage($childPage1);
+        $page->addPage($childPage1);
         $childPage1->addPage($childPage2);
 
-        self::assertFalse($this->page->removePage($childPage2, true));
-        self::assertSame([$code1 => $childPage1], $this->page->getPages());
+        self::assertFalse($page->removePage($childPage2, true));
+        self::assertSame([$code1 => $childPage1], $page->getPages());
     }
 
     /**
@@ -1229,6 +1346,7 @@ final class UriTest extends TestCase
      */
     public function testHasPageByIndex(): void
     {
+        $page  = new Uri();
         $code1 = 'code 1';
         $code2 = 'code 2';
 
@@ -1243,7 +1361,7 @@ final class UriTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage1->expects(self::never())
             ->method('isVisible');
         $childPage1->expects(self::never())
@@ -1264,7 +1382,7 @@ final class UriTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage2->expects(self::never())
             ->method('isVisible');
         $childPage2->expects(self::never())
@@ -1276,10 +1394,10 @@ final class UriTest extends TestCase
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
-        $this->page->addPage($childPage1);
-        $this->page->addPage($childPage2);
+        $page->addPage($childPage1);
+        $page->addPage($childPage2);
 
-        self::assertTrue($this->page->hasPage(1));
+        self::assertTrue($page->hasPage(1));
     }
 
     /**
@@ -1288,6 +1406,7 @@ final class UriTest extends TestCase
      */
     public function testHasPageByObject(): void
     {
+        $page  = new Uri();
         $code1 = 'code 1';
         $code2 = 'code 2';
 
@@ -1302,7 +1421,7 @@ final class UriTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage1->expects(self::never())
             ->method('isVisible');
         $childPage1->expects(self::never())
@@ -1323,7 +1442,7 @@ final class UriTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage2->expects(self::never())
             ->method('isVisible');
         $childPage2->expects(self::never())
@@ -1335,10 +1454,10 @@ final class UriTest extends TestCase
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
-        $this->page->addPage($childPage1);
-        $this->page->addPage($childPage2);
+        $page->addPage($childPage1);
+        $page->addPage($childPage2);
 
-        self::assertTrue($this->page->hasPage($childPage2));
+        self::assertTrue($page->hasPage($childPage2));
     }
 
     /**
@@ -1347,6 +1466,7 @@ final class UriTest extends TestCase
      */
     public function testHasNotExistingPage(): void
     {
+        $page  = new Uri();
         $code1 = 'code 1';
         $code2 = 'code 2';
 
@@ -1361,7 +1481,7 @@ final class UriTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage1->expects(self::never())
             ->method('isVisible');
         $childPage1->expects(self::never())
@@ -1382,7 +1502,7 @@ final class UriTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage2->expects(self::never())
             ->method('isVisible');
         $childPage2->expects(self::never())
@@ -1394,10 +1514,10 @@ final class UriTest extends TestCase
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
-        $this->page->addPage($childPage1);
-        $this->page->addPage($childPage2);
+        $page->addPage($childPage1);
+        $page->addPage($childPage2);
 
-        self::assertFalse($this->page->hasPage(3));
+        self::assertFalse($page->hasPage(3));
     }
 
     /**
@@ -1406,6 +1526,7 @@ final class UriTest extends TestCase
      */
     public function testHasPageRecursive(): void
     {
+        $page  = new Uri();
         $code1 = 'code 1';
         $code2 = 'code 2';
 
@@ -1420,7 +1541,7 @@ final class UriTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage1->expects(self::never())
             ->method('isVisible');
         $childPage1->expects(self::never())
@@ -1437,7 +1558,7 @@ final class UriTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::never())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage2->expects(self::never())
             ->method('isVisible');
         $childPage2->expects(self::never())
@@ -1456,10 +1577,10 @@ final class UriTest extends TestCase
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
-        $this->page->addPage($childPage1);
+        $page->addPage($childPage1);
         $childPage1->addPage($childPage2);
 
-        self::assertTrue($this->page->hasPage($childPage2, true));
+        self::assertTrue($page->hasPage($childPage2, true));
     }
 
     /**
@@ -1468,6 +1589,7 @@ final class UriTest extends TestCase
      */
     public function testHasPageRecursiveNotFound(): void
     {
+        $page  = new Uri();
         $code1 = 'code 1';
         $code2 = 'code 2';
 
@@ -1482,7 +1604,7 @@ final class UriTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage1->expects(self::never())
             ->method('isVisible');
         $childPage1->expects(self::never())
@@ -1499,7 +1621,7 @@ final class UriTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::never())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage2->expects(self::never())
             ->method('isVisible');
         $childPage2->expects(self::never())
@@ -1518,10 +1640,10 @@ final class UriTest extends TestCase
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
-        $this->page->addPage($childPage1);
+        $page->addPage($childPage1);
         $childPage1->addPage($childPage2);
 
-        self::assertFalse($this->page->hasPage($childPage2, true));
+        self::assertFalse($page->hasPage($childPage2, true));
     }
 
     /**
@@ -1530,7 +1652,9 @@ final class UriTest extends TestCase
      */
     public function testHasNoVisiblePages(): void
     {
-        self::assertFalse($this->page->hasPages());
+        $page = new Uri();
+
+        self::assertFalse($page->hasPages());
 
         $code1 = 'code 1';
         $code2 = 'code 2';
@@ -1546,7 +1670,7 @@ final class UriTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage1->expects(self::once())
             ->method('isVisible')
             ->willReturn(false);
@@ -1568,7 +1692,7 @@ final class UriTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage2->expects(self::once())
             ->method('isVisible')
             ->willReturn(false);
@@ -1581,11 +1705,11 @@ final class UriTest extends TestCase
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
-        $this->page->addPage($childPage1);
-        $this->page->addPage($childPage2);
+        $page->addPage($childPage1);
+        $page->addPage($childPage2);
 
-        self::assertTrue($this->page->hasPages());
-        self::assertFalse($this->page->hasPages(true));
+        self::assertTrue($page->hasPages());
+        self::assertFalse($page->hasPages(true));
     }
 
     /**
@@ -1594,7 +1718,9 @@ final class UriTest extends TestCase
      */
     public function testHasVisiblePages(): void
     {
-        self::assertFalse($this->page->hasPages());
+        $page = new Uri();
+
+        self::assertFalse($page->hasPages());
 
         $code1 = 'code 1';
         $code2 = 'code 2';
@@ -1610,7 +1736,7 @@ final class UriTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage1->expects(self::once())
             ->method('isVisible')
             ->willReturn(false);
@@ -1632,7 +1758,7 @@ final class UriTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage2->expects(self::once())
             ->method('isVisible')
             ->willReturn(true);
@@ -1645,11 +1771,11 @@ final class UriTest extends TestCase
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
-        $this->page->addPage($childPage1);
-        $this->page->addPage($childPage2);
+        $page->addPage($childPage1);
+        $page->addPage($childPage2);
 
-        self::assertTrue($this->page->hasPages());
-        self::assertTrue($this->page->hasPages(true));
+        self::assertTrue($page->hasPages());
+        self::assertTrue($page->hasPages(true));
     }
 
     /**
@@ -1658,10 +1784,11 @@ final class UriTest extends TestCase
      */
     public function testFindOneBy(): void
     {
+        $page     = new Uri();
         $property = 'route';
         $value    = 'test';
 
-        self::assertNull($this->page->findOneBy($property, $value));
+        self::assertNull($page->findOneBy($property, $value));
 
         $code1 = 'code 1';
         $code2 = 'code 2';
@@ -1677,7 +1804,7 @@ final class UriTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage1->expects(self::never())
             ->method('isVisible');
         $childPage1->expects(self::never())
@@ -1698,7 +1825,7 @@ final class UriTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage2->expects(self::never())
             ->method('isVisible');
         $childPage2->expects(self::once())
@@ -1712,10 +1839,10 @@ final class UriTest extends TestCase
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
-        $this->page->addPage($childPage1);
-        $this->page->addPage($childPage2);
+        $page->addPage($childPage1);
+        $page->addPage($childPage2);
 
-        self::assertSame($childPage2, $this->page->findOneBy($property, $value));
+        self::assertSame($childPage2, $page->findOneBy($property, $value));
     }
 
     /**
@@ -1724,10 +1851,11 @@ final class UriTest extends TestCase
      */
     public function testFindAllBy(): void
     {
+        $page     = new Uri();
         $property = 'route';
         $value    = 'test';
 
-        self::assertSame([], $this->page->findAllBy($property, $value));
+        self::assertSame([], $page->findAllBy($property, $value));
 
         $code1 = 'code 1';
         $code2 = 'code 2';
@@ -1744,7 +1872,7 @@ final class UriTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage1->expects(self::never())
             ->method('isVisible');
         $childPage1->expects(self::once())
@@ -1767,7 +1895,7 @@ final class UriTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage2->expects(self::never())
             ->method('isVisible');
         $childPage2->expects(self::once())
@@ -1790,7 +1918,7 @@ final class UriTest extends TestCase
             ->willReturn(null);
         $childPage3->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage3->expects(self::never())
             ->method('isVisible');
         $childPage3->expects(self::once())
@@ -1805,16 +1933,17 @@ final class UriTest extends TestCase
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
         assert($childPage3 instanceof PageInterface);
-        $this->page->addPage($childPage1);
-        $this->page->addPage($childPage2);
-        $this->page->addPage($childPage3);
+        $page->addPage($childPage1);
+        $page->addPage($childPage2);
+        $page->addPage($childPage3);
 
-        self::assertSame([$childPage2, $childPage1], $this->page->findAllBy($property, $value));
+        self::assertSame([$childPage2, $childPage1], $page->findAllBy($property, $value));
     }
 
-    /** @throws void */
+    /** @throws InvalidArgumentException */
     public function testCallFindAllByException(): void
     {
+        $page  = new Uri();
         $value = 'test';
 
         $this->expectException(BadMethodCallException::class);
@@ -1823,7 +1952,7 @@ final class UriTest extends TestCase
         );
         $this->expectExceptionCode(0);
 
-        $this->page->findAlllByTest($value);
+        $page->findAlllByTest($value);
     }
 
     /**
@@ -1832,10 +1961,11 @@ final class UriTest extends TestCase
      */
     public function testCallFindAllBy(): void
     {
+        $page     = new Uri();
         $property = 'Route';
         $value    = 'test';
 
-        self::assertSame([], $this->page->findAllByRoute($value));
+        self::assertSame([], $page->findAllByRoute($value));
 
         $code1 = 'code 1';
         $code2 = 'code 2';
@@ -1851,7 +1981,7 @@ final class UriTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage1->expects(self::never())
             ->method('isVisible');
         $childPage1->expects(self::once())
@@ -1874,7 +2004,7 @@ final class UriTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage2->expects(self::never())
             ->method('isVisible');
         $childPage2->expects(self::once())
@@ -1888,22 +2018,27 @@ final class UriTest extends TestCase
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
-        $this->page->addPage($childPage1);
-        $this->page->addPage($childPage2);
+        $page->addPage($childPage1);
+        $page->addPage($childPage2);
 
-        self::assertSame([$childPage2, $childPage1], $this->page->findAllByRoute($value));
+        self::assertSame([$childPage2, $childPage1], $page->findAllByRoute($value));
     }
 
-    /** @throws OutOfBoundsException */
+    /**
+     * @throws OutOfBoundsException
+     * @throws InvalidArgumentException
+     */
     public function testCurrentException(): void
     {
+        $page = new Uri();
+
         $this->expectException(OutOfBoundsException::class);
         $this->expectExceptionMessage(
             'container is currently empty, could not find any key in internal iterator',
         );
         $this->expectExceptionCode(0);
 
-        $this->page->current();
+        $page->current();
     }
 
     /**
@@ -1913,6 +2048,7 @@ final class UriTest extends TestCase
      */
     public function testCurrent(): void
     {
+        $page  = new Uri();
         $code1 = 'code 1';
         $code2 = 'code 2';
 
@@ -1927,7 +2063,7 @@ final class UriTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage1->expects(self::never())
             ->method('isVisible');
         $childPage1->expects(self::never())
@@ -1948,7 +2084,7 @@ final class UriTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage2->expects(self::never())
             ->method('isVisible');
         $childPage2->expects(self::never())
@@ -1960,23 +2096,23 @@ final class UriTest extends TestCase
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
-        $this->page->addPage($childPage1);
-        $this->page->addPage($childPage2);
+        $page->addPage($childPage1);
+        $page->addPage($childPage2);
 
-        self::assertSame($childPage2, $this->page->current());
-        self::assertSame($code2, $this->page->key());
-        self::assertTrue($this->page->valid());
+        self::assertSame($childPage2, $page->current());
+        self::assertSame($code2, $page->key());
+        self::assertTrue($page->valid());
 
-        $this->page->next();
+        $page->next();
 
-        self::assertSame($childPage1, $this->page->current());
-        self::assertSame($code1, $this->page->key());
-        self::assertTrue($this->page->valid());
+        self::assertSame($childPage1, $page->current());
+        self::assertSame($code1, $page->key());
+        self::assertTrue($page->valid());
 
-        $this->page->next();
+        $page->next();
 
-        self::assertSame('', $this->page->key());
-        self::assertFalse($this->page->valid());
+        self::assertSame('', $page->key());
+        self::assertFalse($page->valid());
 
         $this->expectException(OutOfBoundsException::class);
         $this->expectExceptionMessage(
@@ -1984,7 +2120,7 @@ final class UriTest extends TestCase
         );
         $this->expectExceptionCode(0);
 
-        self::assertSame($childPage1, $this->page->current());
+        self::assertSame($childPage1, $page->current());
     }
 
     /**
@@ -1994,6 +2130,7 @@ final class UriTest extends TestCase
      */
     public function testRewind(): void
     {
+        $page  = new Uri();
         $code1 = 'code 1';
         $code2 = 'code 2';
 
@@ -2008,7 +2145,7 @@ final class UriTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage1->expects(self::never())
             ->method('isVisible');
         $childPage1->expects(self::never())
@@ -2029,7 +2166,7 @@ final class UriTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
-            ->with($this->page);
+            ->with($page);
         $childPage2->expects(self::never())
             ->method('isVisible');
         $childPage2->expects(self::never())
@@ -2041,23 +2178,23 @@ final class UriTest extends TestCase
 
         assert($childPage1 instanceof PageInterface);
         assert($childPage2 instanceof PageInterface);
-        $this->page->addPage($childPage1);
-        $this->page->addPage($childPage2);
+        $page->addPage($childPage1);
+        $page->addPage($childPage2);
 
-        self::assertSame($childPage2, $this->page->current());
-        self::assertSame($code2, $this->page->key());
-        self::assertTrue($this->page->valid());
+        self::assertSame($childPage2, $page->current());
+        self::assertSame($code2, $page->key());
+        self::assertTrue($page->valid());
 
-        $this->page->next();
+        $page->next();
 
-        self::assertSame($childPage1, $this->page->current());
-        self::assertSame($code1, $this->page->key());
-        self::assertTrue($this->page->valid());
+        self::assertSame($childPage1, $page->current());
+        self::assertSame($code1, $page->key());
+        self::assertTrue($page->valid());
 
-        $this->page->rewind();
+        $page->rewind();
 
-        self::assertSame($childPage2, $this->page->current());
-        self::assertSame($code2, $this->page->key());
-        self::assertTrue($this->page->valid());
+        self::assertSame($childPage2, $page->current());
+        self::assertSame($code2, $page->key());
+        self::assertTrue($page->valid());
     }
 }
