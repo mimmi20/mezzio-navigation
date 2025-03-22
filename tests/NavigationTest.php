@@ -18,7 +18,6 @@ use Mimmi20\Mezzio\Navigation\Exception\InvalidArgumentException;
 use Mimmi20\Mezzio\Navigation\Exception\OutOfBoundsException;
 use Mimmi20\Mezzio\Navigation\Navigation;
 use Mimmi20\Mezzio\Navigation\Page;
-use Override;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 
@@ -28,15 +27,6 @@ use function var_export;
 
 final class NavigationTest extends TestCase
 {
-    private Navigation $navigation;
-
-    /** @throws void */
-    #[Override]
-    protected function setUp(): void
-    {
-        $this->navigation = new Navigation();
-    }
-
     /**
      * Testing that navigation order is done correctly
      *
@@ -45,14 +35,16 @@ final class NavigationTest extends TestCase
      */
     public function testSetPagesTwice(): void
     {
+        $navigation = new Navigation();
+
         $page1 = new Page\Uri(['uri' => 'page1']);
         $page2 = new Page\Uri(['uri' => 'page2']);
         $page3 = new Page\Uri(['uri' => 'page3']);
 
-        $this->navigation->setPages([$page3, $page2, $page1]);
-        $this->navigation->setPages([$page1, $page2, $page3]);
+        $navigation->setPages([$page3, $page2, $page1]);
+        $navigation->setPages([$page1, $page2, $page3]);
 
-        self::assertSame([$page1, $page2, $page3], array_values($this->navigation->getPages()));
+        self::assertSame([$page1, $page2, $page3], array_values($navigation->getPages()));
     }
 
     /**
@@ -63,20 +55,22 @@ final class NavigationTest extends TestCase
      */
     public function testNavigationArraySortsCorrectly(): void
     {
+        $navigation = new Navigation();
+
         $page1 = new Page\Uri(['uri' => 'page1']);
         $page2 = new Page\Uri(['uri' => 'page2']);
         $page3 = new Page\Uri(['uri' => 'page3']);
 
-        $this->navigation->setPages([$page1, $page2, $page3]);
+        $navigation->setPages([$page1, $page2, $page3]);
 
         $page1->setOrder(1);
         $page3->setOrder(0);
         $page2->setOrder(2);
 
-        $pages = $this->navigation->toArray();
+        $pages = $navigation->toArray();
 
         self::assertCount(3, $pages);
-        self::assertCount(3, $this->navigation);
+        self::assertCount(3, $navigation);
         self::assertIsArray($pages[$page3->hashCode()]);
         self::assertSame('page3', $pages[$page3->hashCode()]['uri'], var_export($pages, true));
         self::assertIsArray($pages[$page1->hashCode()]);
@@ -91,7 +85,8 @@ final class NavigationTest extends TestCase
      */
     public function testAddChildPageTwice(): void
     {
-        $hashCode = 'abc';
+        $navigation = new Navigation();
+        $hashCode   = 'abc';
 
         $childPage = $this->getMockBuilder(Page\PageInterface::class)
             ->disableOriginalConstructor()
@@ -104,21 +99,23 @@ final class NavigationTest extends TestCase
             ->willReturn(1);
         $childPage->expects(self::once())
             ->method('setParent')
-            ->with($this->navigation);
+            ->with($navigation);
 
         assert($childPage instanceof Page\PageInterface);
-        $this->navigation->addPage($childPage);
-        $this->navigation->addPage($childPage);
+        $navigation->addPage($childPage);
+        $navigation->addPage($childPage);
     }
 
     /** @throws InvalidArgumentException */
     public function testAddPages(): void
     {
+        $navigation = new Navigation();
+
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid argument: $page must be an Instance of PageInterface');
         $this->expectExceptionCode(0);
 
-        $this->navigation->addPages(['test']);
+        $navigation->addPages(['test']);
     }
 
     /**
@@ -127,8 +124,9 @@ final class NavigationTest extends TestCase
      */
     public function testRemovePageByIndex(): void
     {
-        $code1 = 'code 1';
-        $code2 = 'code 2';
+        $navigation = new Navigation();
+        $code1      = 'code 1';
+        $code2      = 'code 2';
 
         $childPage1 = $this->getMockBuilder(Page\PageInterface::class)
             ->disableOriginalConstructor()
@@ -141,7 +139,7 @@ final class NavigationTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->navigation);
+            ->with($navigation);
         $childPage1->expects(self::never())
             ->method('hasPage');
         $childPage1->expects(self::never())
@@ -158,7 +156,7 @@ final class NavigationTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
-            ->with($this->navigation);
+            ->with($navigation);
         $childPage2->expects(self::never())
             ->method('hasPage');
         $childPage2->expects(self::never())
@@ -166,11 +164,11 @@ final class NavigationTest extends TestCase
 
         assert($childPage1 instanceof Page\PageInterface);
         assert($childPage2 instanceof Page\PageInterface);
-        $this->navigation->addPage($childPage1);
-        $this->navigation->addPage($childPage2);
+        $navigation->addPage($childPage1);
+        $navigation->addPage($childPage2);
 
-        self::assertTrue($this->navigation->removePage(1));
-        self::assertSame([$code2 => $childPage2], $this->navigation->getPages());
+        self::assertTrue($navigation->removePage(1));
+        self::assertSame([$code2 => $childPage2], $navigation->getPages());
     }
 
     /**
@@ -179,8 +177,9 @@ final class NavigationTest extends TestCase
      */
     public function testRemovePageByObject(): void
     {
-        $code1 = 'code 1';
-        $code2 = 'code 2';
+        $navigation = new Navigation();
+        $code1      = 'code 1';
+        $code2      = 'code 2';
 
         $childPage1 = $this->getMockBuilder(Page\PageInterface::class)
             ->disableOriginalConstructor()
@@ -193,7 +192,7 @@ final class NavigationTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->navigation);
+            ->with($navigation);
         $childPage1->expects(self::never())
             ->method('hasPage');
         $childPage1->expects(self::never())
@@ -210,7 +209,7 @@ final class NavigationTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
-            ->with($this->navigation);
+            ->with($navigation);
         $childPage2->expects(self::never())
             ->method('hasPage');
         $childPage2->expects(self::never())
@@ -218,11 +217,11 @@ final class NavigationTest extends TestCase
 
         assert($childPage1 instanceof Page\PageInterface);
         assert($childPage2 instanceof Page\PageInterface);
-        $this->navigation->addPage($childPage1);
-        $this->navigation->addPage($childPage2);
+        $navigation->addPage($childPage1);
+        $navigation->addPage($childPage2);
 
-        self::assertTrue($this->navigation->removePage($childPage2));
-        self::assertSame([$code1 => $childPage1], $this->navigation->getPages());
+        self::assertTrue($navigation->removePage($childPage2));
+        self::assertSame([$code1 => $childPage1], $navigation->getPages());
     }
 
     /**
@@ -231,8 +230,9 @@ final class NavigationTest extends TestCase
      */
     public function testRemovePageNotExistingPage(): void
     {
-        $code1 = 'code 1';
-        $code2 = 'code 2';
+        $navigation = new Navigation();
+        $code1      = 'code 1';
+        $code2      = 'code 2';
 
         $childPage1 = $this->getMockBuilder(Page\PageInterface::class)
             ->disableOriginalConstructor()
@@ -245,7 +245,7 @@ final class NavigationTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->navigation);
+            ->with($navigation);
         $childPage1->expects(self::never())
             ->method('hasPage');
         $childPage1->expects(self::never())
@@ -262,7 +262,7 @@ final class NavigationTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
-            ->with($this->navigation);
+            ->with($navigation);
         $childPage2->expects(self::never())
             ->method('hasPage');
         $childPage2->expects(self::never())
@@ -270,11 +270,11 @@ final class NavigationTest extends TestCase
 
         assert($childPage1 instanceof Page\PageInterface);
         assert($childPage2 instanceof Page\PageInterface);
-        $this->navigation->addPage($childPage1);
-        $this->navigation->addPage($childPage2);
+        $navigation->addPage($childPage1);
+        $navigation->addPage($childPage2);
 
-        self::assertFalse($this->navigation->removePage(3));
-        self::assertSame([$code1 => $childPage1, $code2 => $childPage2], $this->navigation->getPages());
+        self::assertFalse($navigation->removePage(3));
+        self::assertSame([$code1 => $childPage1, $code2 => $childPage2], $navigation->getPages());
     }
 
     /**
@@ -283,8 +283,9 @@ final class NavigationTest extends TestCase
      */
     public function testRemovePageRecursive(): void
     {
-        $code1 = 'code 1';
-        $code2 = 'code 2';
+        $navigation = new Navigation();
+        $code1      = 'code 1';
+        $code2      = 'code 2';
 
         $childPage1 = $this->getMockBuilder(Page\PageInterface::class)
             ->disableOriginalConstructor()
@@ -297,7 +298,7 @@ final class NavigationTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->navigation);
+            ->with($navigation);
 
         $childPage2 = $this->getMockBuilder(Page\PageInterface::class)
             ->disableOriginalConstructor()
@@ -310,7 +311,7 @@ final class NavigationTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::never())
             ->method('setParent')
-            ->with($this->navigation);
+            ->with($navigation);
         $childPage2->expects(self::never())
             ->method('hasPage');
         $childPage2->expects(self::never())
@@ -326,11 +327,11 @@ final class NavigationTest extends TestCase
 
         assert($childPage1 instanceof Page\PageInterface);
         assert($childPage2 instanceof Page\PageInterface);
-        $this->navigation->addPage($childPage1);
+        $navigation->addPage($childPage1);
         $childPage1->addPage($childPage2);
 
-        self::assertTrue($this->navigation->removePage($childPage2, true));
-        self::assertSame([$code1 => $childPage1], $this->navigation->getPages());
+        self::assertTrue($navigation->removePage($childPage2, true));
+        self::assertSame([$code1 => $childPage1], $navigation->getPages());
     }
 
     /**
@@ -339,8 +340,9 @@ final class NavigationTest extends TestCase
      */
     public function testRemovePageRecursiveNotFound(): void
     {
-        $code1 = 'code 1';
-        $code2 = 'code 2';
+        $navigation = new Navigation();
+        $code1      = 'code 1';
+        $code2      = 'code 2';
 
         $childPage1 = $this->getMockBuilder(Page\PageInterface::class)
             ->disableOriginalConstructor()
@@ -353,7 +355,7 @@ final class NavigationTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->navigation);
+            ->with($navigation);
 
         $childPage2 = $this->getMockBuilder(Page\PageInterface::class)
             ->disableOriginalConstructor()
@@ -366,7 +368,7 @@ final class NavigationTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::never())
             ->method('setParent')
-            ->with($this->navigation);
+            ->with($navigation);
         $childPage2->expects(self::never())
             ->method('hasPage');
         $childPage2->expects(self::never())
@@ -381,11 +383,11 @@ final class NavigationTest extends TestCase
 
         assert($childPage1 instanceof Page\PageInterface);
         assert($childPage2 instanceof Page\PageInterface);
-        $this->navigation->addPage($childPage1);
+        $navigation->addPage($childPage1);
         $childPage1->addPage($childPage2);
 
-        self::assertFalse($this->navigation->removePage($childPage2, true));
-        self::assertSame([$code1 => $childPage1], $this->navigation->getPages());
+        self::assertFalse($navigation->removePage($childPage2, true));
+        self::assertSame([$code1 => $childPage1], $navigation->getPages());
     }
 
     /**
@@ -394,8 +396,9 @@ final class NavigationTest extends TestCase
      */
     public function testHasPageByIndex(): void
     {
-        $code1 = 'code 1';
-        $code2 = 'code 2';
+        $navigation = new Navigation();
+        $code1      = 'code 1';
+        $code2      = 'code 2';
 
         $childPage1 = $this->getMockBuilder(Page\PageInterface::class)
             ->disableOriginalConstructor()
@@ -408,7 +411,7 @@ final class NavigationTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->navigation);
+            ->with($navigation);
 
         $childPage2 = $this->getMockBuilder(Page\PageInterface::class)
             ->disableOriginalConstructor()
@@ -421,14 +424,14 @@ final class NavigationTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
-            ->with($this->navigation);
+            ->with($navigation);
 
         assert($childPage1 instanceof Page\PageInterface);
         assert($childPage2 instanceof Page\PageInterface);
-        $this->navigation->addPage($childPage1);
-        $this->navigation->addPage($childPage2);
+        $navigation->addPage($childPage1);
+        $navigation->addPage($childPage2);
 
-        self::assertTrue($this->navigation->hasPage(1));
+        self::assertTrue($navigation->hasPage(1));
     }
 
     /**
@@ -437,8 +440,9 @@ final class NavigationTest extends TestCase
      */
     public function testHasPageByObject(): void
     {
-        $code1 = 'code 1';
-        $code2 = 'code 2';
+        $navigation = new Navigation();
+        $code1      = 'code 1';
+        $code2      = 'code 2';
 
         $childPage1 = $this->getMockBuilder(Page\PageInterface::class)
             ->disableOriginalConstructor()
@@ -451,7 +455,7 @@ final class NavigationTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->navigation);
+            ->with($navigation);
 
         $childPage2 = $this->getMockBuilder(Page\PageInterface::class)
             ->disableOriginalConstructor()
@@ -464,14 +468,14 @@ final class NavigationTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
-            ->with($this->navigation);
+            ->with($navigation);
 
         assert($childPage1 instanceof Page\PageInterface);
         assert($childPage2 instanceof Page\PageInterface);
-        $this->navigation->addPage($childPage1);
-        $this->navigation->addPage($childPage2);
+        $navigation->addPage($childPage1);
+        $navigation->addPage($childPage2);
 
-        self::assertTrue($this->navigation->hasPage($childPage2));
+        self::assertTrue($navigation->hasPage($childPage2));
     }
 
     /**
@@ -480,8 +484,9 @@ final class NavigationTest extends TestCase
      */
     public function testHasNotExistingPage(): void
     {
-        $code1 = 'code 1';
-        $code2 = 'code 2';
+        $navigation = new Navigation();
+        $code1      = 'code 1';
+        $code2      = 'code 2';
 
         $childPage1 = $this->getMockBuilder(Page\PageInterface::class)
             ->disableOriginalConstructor()
@@ -494,7 +499,7 @@ final class NavigationTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->navigation);
+            ->with($navigation);
 
         $childPage2 = $this->getMockBuilder(Page\PageInterface::class)
             ->disableOriginalConstructor()
@@ -507,14 +512,14 @@ final class NavigationTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
-            ->with($this->navigation);
+            ->with($navigation);
 
         assert($childPage1 instanceof Page\PageInterface);
         assert($childPage2 instanceof Page\PageInterface);
-        $this->navigation->addPage($childPage1);
-        $this->navigation->addPage($childPage2);
+        $navigation->addPage($childPage1);
+        $navigation->addPage($childPage2);
 
-        self::assertFalse($this->navigation->hasPage(3));
+        self::assertFalse($navigation->hasPage(3));
     }
 
     /**
@@ -523,8 +528,9 @@ final class NavigationTest extends TestCase
      */
     public function testHasPageRecursive(): void
     {
-        $code1 = 'code 1';
-        $code2 = 'code 2';
+        $navigation = new Navigation();
+        $code1      = 'code 1';
+        $code2      = 'code 2';
 
         $childPage1 = $this->getMockBuilder(Page\PageInterface::class)
             ->disableOriginalConstructor()
@@ -537,7 +543,7 @@ final class NavigationTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->navigation);
+            ->with($navigation);
 
         $childPage2 = $this->getMockBuilder(Page\PageInterface::class)
             ->disableOriginalConstructor()
@@ -550,7 +556,7 @@ final class NavigationTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::never())
             ->method('setParent')
-            ->with($this->navigation);
+            ->with($navigation);
 
         $childPage1->expects(self::once())
             ->method('hasPage')
@@ -561,10 +567,10 @@ final class NavigationTest extends TestCase
 
         assert($childPage1 instanceof Page\PageInterface);
         assert($childPage2 instanceof Page\PageInterface);
-        $this->navigation->addPage($childPage1);
+        $navigation->addPage($childPage1);
         $childPage1->addPage($childPage2);
 
-        self::assertTrue($this->navigation->hasPage($childPage2, true));
+        self::assertTrue($navigation->hasPage($childPage2, true));
     }
 
     /**
@@ -573,8 +579,9 @@ final class NavigationTest extends TestCase
      */
     public function testHasPageRecursiveNotFound(): void
     {
-        $code1 = 'code 1';
-        $code2 = 'code 2';
+        $navigation = new Navigation();
+        $code1      = 'code 1';
+        $code2      = 'code 2';
 
         $childPage1 = $this->getMockBuilder(Page\PageInterface::class)
             ->disableOriginalConstructor()
@@ -587,7 +594,7 @@ final class NavigationTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->navigation);
+            ->with($navigation);
 
         $childPage2 = $this->getMockBuilder(Page\PageInterface::class)
             ->disableOriginalConstructor()
@@ -600,7 +607,7 @@ final class NavigationTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::never())
             ->method('setParent')
-            ->with($this->navigation);
+            ->with($navigation);
 
         $childPage1->expects(self::once())
             ->method('hasPage')
@@ -611,10 +618,10 @@ final class NavigationTest extends TestCase
 
         assert($childPage1 instanceof Page\PageInterface);
         assert($childPage2 instanceof Page\PageInterface);
-        $this->navigation->addPage($childPage1);
+        $navigation->addPage($childPage1);
         $childPage1->addPage($childPage2);
 
-        self::assertFalse($this->navigation->hasPage($childPage2, true));
+        self::assertFalse($navigation->hasPage($childPage2, true));
     }
 
     /**
@@ -623,7 +630,9 @@ final class NavigationTest extends TestCase
      */
     public function testHasNoVisiblePages(): void
     {
-        self::assertFalse($this->navigation->hasPages());
+        $navigation = new Navigation();
+
+        self::assertFalse($navigation->hasPages());
 
         $code1 = 'code 1';
         $code2 = 'code 2';
@@ -639,7 +648,7 @@ final class NavigationTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->navigation);
+            ->with($navigation);
         $childPage1->expects(self::once())
             ->method('isVisible')
             ->willReturn(false);
@@ -655,18 +664,18 @@ final class NavigationTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
-            ->with($this->navigation);
+            ->with($navigation);
         $childPage2->expects(self::once())
             ->method('isVisible')
             ->willReturn(false);
 
         assert($childPage1 instanceof Page\PageInterface);
         assert($childPage2 instanceof Page\PageInterface);
-        $this->navigation->addPage($childPage1);
-        $this->navigation->addPage($childPage2);
+        $navigation->addPage($childPage1);
+        $navigation->addPage($childPage2);
 
-        self::assertTrue($this->navigation->hasPages());
-        self::assertFalse($this->navigation->hasPages(true));
+        self::assertTrue($navigation->hasPages());
+        self::assertFalse($navigation->hasPages(true));
     }
 
     /**
@@ -675,7 +684,9 @@ final class NavigationTest extends TestCase
      */
     public function testHasVisiblePages(): void
     {
-        self::assertFalse($this->navigation->hasPages());
+        $navigation = new Navigation();
+
+        self::assertFalse($navigation->hasPages());
 
         $code1 = 'code 1';
         $code2 = 'code 2';
@@ -691,7 +702,7 @@ final class NavigationTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->navigation);
+            ->with($navigation);
         $childPage1->expects(self::once())
             ->method('isVisible')
             ->willReturn(false);
@@ -707,18 +718,18 @@ final class NavigationTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
-            ->with($this->navigation);
+            ->with($navigation);
         $childPage2->expects(self::once())
             ->method('isVisible')
             ->willReturn(true);
 
         assert($childPage1 instanceof Page\PageInterface);
         assert($childPage2 instanceof Page\PageInterface);
-        $this->navigation->addPage($childPage1);
-        $this->navigation->addPage($childPage2);
+        $navigation->addPage($childPage1);
+        $navigation->addPage($childPage2);
 
-        self::assertTrue($this->navigation->hasPages());
-        self::assertTrue($this->navigation->hasPages(true));
+        self::assertTrue($navigation->hasPages());
+        self::assertTrue($navigation->hasPages(true));
     }
 
     /**
@@ -727,10 +738,11 @@ final class NavigationTest extends TestCase
      */
     public function testFindOneBy(): void
     {
-        $property = 'route';
-        $value    = 'test';
+        $navigation = new Navigation();
+        $property   = 'route';
+        $value      = 'test';
 
-        self::assertNull($this->navigation->findOneBy($property, $value));
+        self::assertNull($navigation->findOneBy($property, $value));
 
         $code1 = 'code 1';
         $code2 = 'code 2';
@@ -746,7 +758,7 @@ final class NavigationTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->navigation);
+            ->with($navigation);
         $childPage1->expects(self::never())
             ->method('isVisible');
         $childPage1->expects(self::never())
@@ -763,7 +775,7 @@ final class NavigationTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
-            ->with($this->navigation);
+            ->with($navigation);
         $childPage2->expects(self::never())
             ->method('isVisible');
         $childPage2->expects(self::once())
@@ -773,10 +785,10 @@ final class NavigationTest extends TestCase
 
         assert($childPage1 instanceof Page\PageInterface);
         assert($childPage2 instanceof Page\PageInterface);
-        $this->navigation->addPage($childPage1);
-        $this->navigation->addPage($childPage2);
+        $navigation->addPage($childPage1);
+        $navigation->addPage($childPage2);
 
-        self::assertSame($childPage2, $this->navigation->findOneBy($property, $value));
+        self::assertSame($childPage2, $navigation->findOneBy($property, $value));
     }
 
     /**
@@ -785,10 +797,11 @@ final class NavigationTest extends TestCase
      */
     public function testFindAllBy(): void
     {
-        $property = 'route';
-        $value    = 'test';
+        $navigation = new Navigation();
+        $property   = 'route';
+        $value      = 'test';
 
-        self::assertSame([], $this->navigation->findAllBy($property, $value));
+        self::assertSame([], $navigation->findAllBy($property, $value));
 
         $code1 = 'code 1';
         $code2 = 'code 2';
@@ -805,7 +818,7 @@ final class NavigationTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->navigation);
+            ->with($navigation);
         $childPage1->expects(self::never())
             ->method('isVisible');
         $childPage1->expects(self::once())
@@ -824,7 +837,7 @@ final class NavigationTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
-            ->with($this->navigation);
+            ->with($navigation);
         $childPage2->expects(self::never())
             ->method('isVisible');
         $childPage2->expects(self::once())
@@ -843,7 +856,7 @@ final class NavigationTest extends TestCase
             ->willReturn(null);
         $childPage3->expects(self::once())
             ->method('setParent')
-            ->with($this->navigation);
+            ->with($navigation);
         $childPage3->expects(self::never())
             ->method('isVisible');
         $childPage3->expects(self::once())
@@ -854,17 +867,18 @@ final class NavigationTest extends TestCase
         assert($childPage1 instanceof Page\PageInterface);
         assert($childPage2 instanceof Page\PageInterface);
         assert($childPage3 instanceof Page\PageInterface);
-        $this->navigation->addPage($childPage1);
-        $this->navigation->addPage($childPage2);
-        $this->navigation->addPage($childPage3);
+        $navigation->addPage($childPage1);
+        $navigation->addPage($childPage2);
+        $navigation->addPage($childPage3);
 
-        self::assertSame([$childPage2, $childPage1], $this->navigation->findAllBy($property, $value));
+        self::assertSame([$childPage2, $childPage1], $navigation->findAllBy($property, $value));
     }
 
     /** @throws void */
     public function testCallFindAllByException(): void
     {
-        $value = 'test';
+        $navigation = new Navigation();
+        $value      = 'test';
 
         $this->expectException(BadMethodCallException::class);
         $this->expectExceptionMessage(
@@ -872,7 +886,7 @@ final class NavigationTest extends TestCase
         );
         $this->expectExceptionCode(0);
 
-        $this->navigation->findAlllByTest($value);
+        $navigation->findAlllByTest($value);
     }
 
     /**
@@ -881,10 +895,11 @@ final class NavigationTest extends TestCase
      */
     public function testCallFindAllBy(): void
     {
-        $property = 'Route';
-        $value    = 'test';
+        $navigation = new Navigation();
+        $property   = 'Route';
+        $value      = 'test';
 
-        self::assertSame([], $this->navigation->findAllByRoute($value));
+        self::assertSame([], $navigation->findAllByRoute($value));
 
         $code1 = 'code 1';
         $code2 = 'code 2';
@@ -900,7 +915,7 @@ final class NavigationTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->navigation);
+            ->with($navigation);
         $childPage1->expects(self::never())
             ->method('isVisible');
         $childPage1->expects(self::once())
@@ -919,7 +934,7 @@ final class NavigationTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
-            ->with($this->navigation);
+            ->with($navigation);
         $childPage2->expects(self::never())
             ->method('isVisible');
         $childPage2->expects(self::once())
@@ -929,22 +944,24 @@ final class NavigationTest extends TestCase
 
         assert($childPage1 instanceof Page\PageInterface);
         assert($childPage2 instanceof Page\PageInterface);
-        $this->navigation->addPage($childPage1);
-        $this->navigation->addPage($childPage2);
+        $navigation->addPage($childPage1);
+        $navigation->addPage($childPage2);
 
-        self::assertSame([$childPage2, $childPage1], $this->navigation->findAllByRoute($value));
+        self::assertSame([$childPage2, $childPage1], $navigation->findAllByRoute($value));
     }
 
     /** @throws OutOfBoundsException */
     public function testCurrentException(): void
     {
+        $navigation = new Navigation();
+
         $this->expectException(OutOfBoundsException::class);
         $this->expectExceptionMessage(
             'container is currently empty, could not find any key in internal iterator',
         );
         $this->expectExceptionCode(0);
 
-        $this->navigation->current();
+        $navigation->current();
     }
 
     /**
@@ -954,8 +971,9 @@ final class NavigationTest extends TestCase
      */
     public function testCurrent(): void
     {
-        $code1 = 'code 1';
-        $code2 = 'code 2';
+        $navigation = new Navigation();
+        $code1      = 'code 1';
+        $code2      = 'code 2';
 
         $childPage1 = $this->getMockBuilder(Page\PageInterface::class)
             ->disableOriginalConstructor()
@@ -968,7 +986,7 @@ final class NavigationTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->navigation);
+            ->with($navigation);
         $childPage1->expects(self::never())
             ->method('isVisible');
         $childPage1->expects(self::never())
@@ -985,7 +1003,7 @@ final class NavigationTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
-            ->with($this->navigation);
+            ->with($navigation);
         $childPage2->expects(self::never())
             ->method('isVisible');
         $childPage2->expects(self::never())
@@ -993,23 +1011,23 @@ final class NavigationTest extends TestCase
 
         assert($childPage1 instanceof Page\PageInterface);
         assert($childPage2 instanceof Page\PageInterface);
-        $this->navigation->addPage($childPage1);
-        $this->navigation->addPage($childPage2);
+        $navigation->addPage($childPage1);
+        $navigation->addPage($childPage2);
 
-        self::assertSame($childPage2, $this->navigation->current());
-        self::assertSame($code2, $this->navigation->key());
-        self::assertTrue($this->navigation->valid());
+        self::assertSame($childPage2, $navigation->current());
+        self::assertSame($code2, $navigation->key());
+        self::assertTrue($navigation->valid());
 
-        $this->navigation->next();
+        $navigation->next();
 
-        self::assertSame($childPage1, $this->navigation->current());
-        self::assertSame($code1, $this->navigation->key());
-        self::assertTrue($this->navigation->valid());
+        self::assertSame($childPage1, $navigation->current());
+        self::assertSame($code1, $navigation->key());
+        self::assertTrue($navigation->valid());
 
-        $this->navigation->next();
+        $navigation->next();
 
-        self::assertSame('', $this->navigation->key());
-        self::assertFalse($this->navigation->valid());
+        self::assertSame('', $navigation->key());
+        self::assertFalse($navigation->valid());
 
         $this->expectException(OutOfBoundsException::class);
         $this->expectExceptionMessage(
@@ -1017,7 +1035,7 @@ final class NavigationTest extends TestCase
         );
         $this->expectExceptionCode(0);
 
-        self::assertSame($childPage1, $this->navigation->current());
+        self::assertSame($childPage1, $navigation->current());
     }
 
     /**
@@ -1027,8 +1045,9 @@ final class NavigationTest extends TestCase
      */
     public function testRewind(): void
     {
-        $code1 = 'code 1';
-        $code2 = 'code 2';
+        $navigation = new Navigation();
+        $code1      = 'code 1';
+        $code2      = 'code 2';
 
         $childPage1 = $this->getMockBuilder(Page\PageInterface::class)
             ->disableOriginalConstructor()
@@ -1041,7 +1060,7 @@ final class NavigationTest extends TestCase
             ->willReturn(1);
         $childPage1->expects(self::once())
             ->method('setParent')
-            ->with($this->navigation);
+            ->with($navigation);
         $childPage1->expects(self::never())
             ->method('isVisible');
         $childPage1->expects(self::never())
@@ -1058,7 +1077,7 @@ final class NavigationTest extends TestCase
             ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
-            ->with($this->navigation);
+            ->with($navigation);
         $childPage2->expects(self::never())
             ->method('isVisible');
         $childPage2->expects(self::never())
@@ -1066,23 +1085,23 @@ final class NavigationTest extends TestCase
 
         assert($childPage1 instanceof Page\PageInterface);
         assert($childPage2 instanceof Page\PageInterface);
-        $this->navigation->addPage($childPage1);
-        $this->navigation->addPage($childPage2);
+        $navigation->addPage($childPage1);
+        $navigation->addPage($childPage2);
 
-        self::assertSame($childPage2, $this->navigation->current());
-        self::assertSame($code2, $this->navigation->key());
-        self::assertTrue($this->navigation->valid());
+        self::assertSame($childPage2, $navigation->current());
+        self::assertSame($code2, $navigation->key());
+        self::assertTrue($navigation->valid());
 
-        $this->navigation->next();
+        $navigation->next();
 
-        self::assertSame($childPage1, $this->navigation->current());
-        self::assertSame($code1, $this->navigation->key());
-        self::assertTrue($this->navigation->valid());
+        self::assertSame($childPage1, $navigation->current());
+        self::assertSame($code1, $navigation->key());
+        self::assertTrue($navigation->valid());
 
-        $this->navigation->rewind();
+        $navigation->rewind();
 
-        self::assertSame($childPage2, $this->navigation->current());
-        self::assertSame($code2, $this->navigation->key());
-        self::assertTrue($this->navigation->valid());
+        self::assertSame($childPage2, $navigation->current());
+        self::assertSame($code2, $navigation->key());
+        self::assertTrue($navigation->valid());
     }
 }

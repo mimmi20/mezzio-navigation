@@ -22,6 +22,7 @@ use Mimmi20\Mezzio\Navigation\Exception\InvalidArgumentException;
 use Mimmi20\Mezzio\Navigation\Exception\MissingHelperException;
 use Mimmi20\Mezzio\Navigation\NavigationMiddleware;
 use Mimmi20\Mezzio\Navigation\NavigationMiddlewareFactory;
+use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
@@ -35,6 +36,7 @@ final class NavigationMiddlewareFactoryTest extends TestCase
      * @throws Exception
      * @throws MissingHelperException
      * @throws InvalidArgumentException
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testFactoryWithoutNavigationConfig(): void
     {
@@ -68,6 +70,7 @@ final class NavigationMiddlewareFactoryTest extends TestCase
      * @throws Exception
      * @throws MissingHelperException
      * @throws InvalidArgumentException
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testFactoryWithoutUrlHelper(): void
     {
@@ -113,6 +116,8 @@ final class NavigationMiddlewareFactoryTest extends TestCase
      * @throws Exception
      * @throws MissingHelperException
      * @throws InvalidArgumentException
+     * @throws NoPreviousThrowableException
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testFactory(): void
     {
@@ -171,6 +176,7 @@ final class NavigationMiddlewareFactoryTest extends TestCase
      * @throws Exception
      * @throws MissingHelperException
      * @throws InvalidArgumentException
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testFactoryContainerExceptionAuthorizationInterface(): void
     {
@@ -217,6 +223,8 @@ final class NavigationMiddlewareFactoryTest extends TestCase
      * @throws Exception
      * @throws MissingHelperException
      * @throws InvalidArgumentException
+     * @throws NoPreviousThrowableException
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testFactoryContainerExceptionRouterInterface(): void
     {
@@ -277,6 +285,8 @@ final class NavigationMiddlewareFactoryTest extends TestCase
      * @throws Exception
      * @throws MissingHelperException
      * @throws InvalidArgumentException
+     * @throws NoPreviousThrowableException
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testFactoryContainerExceptionNavigationConfig(): void
     {
@@ -340,6 +350,8 @@ final class NavigationMiddlewareFactoryTest extends TestCase
      * @throws Exception
      * @throws MissingHelperException
      * @throws InvalidArgumentException
+     * @throws NoPreviousThrowableException
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testFactoryContainerExceptionUrlHelper(): void
     {
@@ -406,6 +418,8 @@ final class NavigationMiddlewareFactoryTest extends TestCase
      * @throws Exception
      * @throws MissingHelperException
      * @throws InvalidArgumentException
+     * @throws NoPreviousThrowableException
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testFactoryAllowsSerialization(): void
     {

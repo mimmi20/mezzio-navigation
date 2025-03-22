@@ -18,7 +18,7 @@ use Mezzio\Router\RouteResult;
 use Mezzio\Router\RouterInterface;
 use Mimmi20\Mezzio\GenericAuthorization\AuthorizationInterface;
 use Mimmi20\Mezzio\Navigation\Config\NavigationConfig;
-use Override;
+use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
@@ -27,89 +27,112 @@ use function assert;
 
 final class NavigationConfigTest extends TestCase
 {
-    private NavigationConfig $config;
-
-    /** @throws void */
-    #[Override]
-    protected function setUp(): void
-    {
-        $this->config = new NavigationConfig();
-    }
-
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws NoPreviousThrowableException
+     * @throws \PHPUnit\Framework\MockObject\Exception
+     */
     public function testSetUrlHelper(): void
     {
-        self::assertNull($this->config->getUrlHelper());
+        $config = new NavigationConfig();
+
+        self::assertNull($config->getUrlHelper());
 
         $helper = $this->createMock(UrlHelper::class);
 
         assert($helper instanceof UrlHelper);
-        $this->config->setUrlHelper($helper);
+        $config->setUrlHelper($helper);
 
-        self::assertSame($helper, $this->config->getUrlHelper());
+        self::assertSame($helper, $config->getUrlHelper());
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws NoPreviousThrowableException
+     * @throws \PHPUnit\Framework\MockObject\Exception
+     */
     public function testSetRouteResult(): void
     {
-        self::assertNull($this->config->getRouteResult());
+        $config = new NavigationConfig();
+
+        self::assertNull($config->getRouteResult());
 
         $routeResult = $this->createMock(RouteResult::class);
 
         assert($routeResult instanceof RouteResult);
-        $this->config->setRouteResult($routeResult);
+        $config->setRouteResult($routeResult);
 
-        self::assertSame($routeResult, $this->config->getRouteResult());
+        self::assertSame($routeResult, $config->getRouteResult());
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws NoPreviousThrowableException
+     * @throws \PHPUnit\Framework\MockObject\Exception
+     */
     public function testSetRouter(): void
     {
-        self::assertNull($this->config->getRouter());
+        $config = new NavigationConfig();
+
+        self::assertNull($config->getRouter());
 
         $router = $this->createMock(RouterInterface::class);
 
         assert($router instanceof RouterInterface);
-        $this->config->setRouter($router);
+        $config->setRouter($router);
 
-        self::assertSame($router, $this->config->getRouter());
+        self::assertSame($router, $config->getRouter());
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws NoPreviousThrowableException
+     * @throws \PHPUnit\Framework\MockObject\Exception
+     */
     public function testSetRequest(): void
     {
-        self::assertNull($this->config->getRequest());
+        $config = new NavigationConfig();
+
+        self::assertNull($config->getRequest());
 
         $request = $this->createMock(ServerRequestInterface::class);
 
         assert($request instanceof ServerRequestInterface);
-        $this->config->setRequest($request);
+        $config->setRequest($request);
 
-        self::assertSame($request, $this->config->getRequest());
+        self::assertSame($request, $config->getRequest());
     }
 
-    /** @throws Exception */
+    /**
+     * @throws Exception
+     * @throws NoPreviousThrowableException
+     * @throws \PHPUnit\Framework\MockObject\Exception
+     */
     public function testSetAuthorization(): void
     {
-        self::assertNull($this->config->getAuthorization());
+        $config = new NavigationConfig();
+
+        self::assertNull($config->getAuthorization());
 
         $authorization = $this->createMock(AuthorizationInterface::class);
 
         assert($authorization instanceof AuthorizationInterface);
-        $this->config->setAuthorization($authorization);
+        $config->setAuthorization($authorization);
 
-        self::assertSame($authorization, $this->config->getAuthorization());
+        self::assertSame($authorization, $config->getAuthorization());
     }
 
     /** @throws Exception */
     public function testSetPages(): void
     {
-        self::assertNull($this->config->getPages());
+        $config = new NavigationConfig();
+
+        self::assertNull($config->getPages());
 
         $pages = [['test' => 'test']];
 
-        $this->config->setPages($pages);
+        $config->setPages($pages);
 
-        self::assertSame($pages, $this->config->getPages());
+        self::assertSame($pages, $config->getPages());
     }
 }

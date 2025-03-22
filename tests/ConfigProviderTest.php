@@ -19,25 +19,15 @@ use Mimmi20\Mezzio\Navigation\ConfigProvider;
 use Mimmi20\Mezzio\Navigation\Navigation;
 use Mimmi20\Mezzio\Navigation\NavigationMiddleware;
 use Mimmi20\Mezzio\Navigation\Service\NavigationAbstractServiceFactory;
-use Override;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 
 final class ConfigProviderTest extends TestCase
 {
-    private ConfigProvider $provider;
-
-    /** @throws void */
-    #[Override]
-    protected function setUp(): void
-    {
-        $this->provider = new ConfigProvider();
-    }
-
     /** @throws Exception */
     public function testProviderDefinesExpectedFactoryServices(): void
     {
-        $dependencies = $this->provider->getDependencyConfig();
+        $dependencies = (new ConfigProvider())->getDependencyConfig();
         self::assertIsArray($dependencies);
 
         self::assertArrayHasKey('factories', $dependencies);
@@ -61,7 +51,7 @@ final class ConfigProviderTest extends TestCase
     /** @throws Exception */
     public function testInvocationReturnsArrayWithDependencies(): void
     {
-        $config = ($this->provider)();
+        $config = (new ConfigProvider())();
 
         self::assertIsArray($config);
         self::assertArrayHasKey('dependencies', $config);

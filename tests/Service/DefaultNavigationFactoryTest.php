@@ -25,7 +25,7 @@ use Mimmi20\Mezzio\Navigation\Page\RouteInterface;
 use Mimmi20\Mezzio\Navigation\Page\Uri;
 use Mimmi20\Mezzio\Navigation\Page\UriInterface;
 use Mimmi20\Mezzio\Navigation\Service\DefaultNavigationFactory;
-use Override;
+use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerExceptionInterface;
@@ -36,15 +36,6 @@ use function assert;
 
 final class DefaultNavigationFactoryTest extends TestCase
 {
-    private DefaultNavigationFactory $factory;
-
-    /** @throws void */
-    #[Override]
-    protected function setUp(): void
-    {
-        $this->factory = new DefaultNavigationFactory();
-    }
-
     /**
      * @throws Exception
      * @throws InvalidArgumentException
@@ -77,7 +68,7 @@ final class DefaultNavigationFactoryTest extends TestCase
         $this->expectExceptionCode(0);
 
         assert($container instanceof ContainerInterface);
-        ($this->factory)($container);
+        (new DefaultNavigationFactory())($container);
     }
 
     /**
@@ -172,7 +163,7 @@ final class DefaultNavigationFactoryTest extends TestCase
             );
 
         assert($container instanceof ContainerInterface);
-        $navigation = ($this->factory)($container);
+        $navigation = (new DefaultNavigationFactory())($container);
 
         self::assertInstanceOf(Navigation::class, $navigation);
 
@@ -187,6 +178,8 @@ final class DefaultNavigationFactoryTest extends TestCase
      * @throws InvalidArgumentException
      * @throws ContainerExceptionInterface
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws NoPreviousThrowableException
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testInvokeWithRouteResult(): void
     {
@@ -287,7 +280,7 @@ final class DefaultNavigationFactoryTest extends TestCase
             );
 
         assert($container instanceof ContainerInterface);
-        $navigation = ($this->factory)($container);
+        $navigation = (new DefaultNavigationFactory())($container);
 
         self::assertInstanceOf(Navigation::class, $navigation);
 
@@ -302,6 +295,8 @@ final class DefaultNavigationFactoryTest extends TestCase
      * @throws InvalidArgumentException
      * @throws ContainerExceptionInterface
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws NoPreviousThrowableException
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testInvokeWithSubPages(): void
     {
@@ -401,7 +396,7 @@ final class DefaultNavigationFactoryTest extends TestCase
             );
 
         assert($container instanceof ContainerInterface);
-        $navigation = ($this->factory)($container);
+        $navigation = (new DefaultNavigationFactory())($container);
 
         self::assertInstanceOf(Navigation::class, $navigation);
 
