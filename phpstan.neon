@@ -115,6 +115,9 @@ parameters:
     - '~Access to an undefined property Mimmi20\\Mezzio\\Navigation\\Page\\(Route|Uri)::~'
     - '~::preparePages\(\) expects array<string, array<string, array<string, string>\|string>>, array<string, string> given~'
     - '~array<mixed, mixed> given~'
+    -
+      identifier: method.notFound
+      path: src/AbstractContainer.php
 
 rules:
   # code complexity
