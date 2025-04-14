@@ -40,7 +40,7 @@
     "infection/infection": "^0.29.14",
     "mezzio/mezzio-helpers": "^5.17.0",
     "mezzio/mezzio-router": "^3.18.0",
-    "mimmi20/coding-standard": "^6.0.25",
+    "mimmi20/coding-standard": "^6.0.27",
     "nikic/php-parser": "^5.4.0",
     "phpstan/extension-installer": "^1.4.3",
     "phpstan/phpstan": "^2.1.11",
