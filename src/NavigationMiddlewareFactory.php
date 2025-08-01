@@ -87,13 +87,15 @@ final readonly class NavigationMiddlewareFactory
             try {
                 $authorization = $container->get(AuthorizationInterface::class);
                 assert($authorization instanceof AuthorizationInterface);
-            } catch (ContainerExceptionInterface) {
+            } catch (ContainerExceptionInterface $e) {
                 throw new InvalidArgumentException(
                     sprintf(
                         'Cannot create %s service; could not initialize dependency %s',
                         NavigationMiddleware::class,
                         AuthorizationInterface::class,
                     ),
+                    0,
+                    $e,
                 );
             }
         }
@@ -102,38 +104,44 @@ final readonly class NavigationMiddlewareFactory
             try {
                 $router = $container->get(RouterInterface::class);
                 assert($router instanceof RouterInterface);
-            } catch (ContainerExceptionInterface) {
+            } catch (ContainerExceptionInterface $e) {
                 throw new InvalidArgumentException(
                     sprintf(
                         'Cannot create %s service; could not initialize dependency %s',
                         NavigationMiddleware::class,
                         RouterInterface::class,
                     ),
+                    0,
+                    $e,
                 );
             }
         }
 
         try {
             $navigationConfig = $container->get($this->navigationConfigName);
-        } catch (ContainerExceptionInterface) {
+        } catch (ContainerExceptionInterface $e) {
             throw new InvalidArgumentException(
                 sprintf(
                     'Cannot create %s service; could not initialize dependency %s',
                     NavigationMiddleware::class,
                     $this->navigationConfigName,
                 ),
+                0,
+                $e,
             );
         }
 
         try {
             $urlHelper = $container->get($this->urlHelperServiceName);
-        } catch (ContainerExceptionInterface) {
+        } catch (ContainerExceptionInterface $e) {
             throw new InvalidArgumentException(
                 sprintf(
                     'Cannot create %s service; could not initialize dependency %s',
                     NavigationMiddleware::class,
                     $this->urlHelperServiceName,
                 ),
+                0,
+                $e,
             );
         }
 
