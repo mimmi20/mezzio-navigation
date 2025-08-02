@@ -13,8 +13,7 @@
 
 ## Introduction
 
-This component provides a component for managing trees of pointers to web pages.
-Simply put: It can be used for creating menus, breadcrumbs, links, and sitemaps,
+This component provides a component for creating menus, breadcrumbs, links, and sitemaps,
 or serve as a model for other navigation related purposes.
 
 Unlike in [laminas-navigation](https://github.com/laminas/laminas-navigation) 
@@ -55,6 +54,26 @@ Read more about containers in the [containers](#containers) section.
 >
 > `Mezzio\Navigation\PageInterface` extends `Mezzio\Navigation\ContainerInterface`,
 > which means that a page can have sub pages.
+
+## Add the Middleware to the pipeline
+
+Add the middleware after the routing.
+
+```php
+    $app->pipe(RouteMiddleware::class);
+    $app->pipe(\Mimmi20\Mezzio\Navigation\NavigationMiddleware::class); // <-- Add this line
+```
+
+If you are using path specific middleware pipelines, you have to make sure to use the right url helper.
+
+```php
+    $pipeline = new MiddlewarePipe();
+    $pipeline->pipe((new RouteMiddlewareFactory('admin-router'))($container));
+    $pipeline->pipe((new \Mimmi20\Mezzio\Navigation\NavigationMiddlewareFactory(urlHelperServiceName: 'admin-url-helper'))($container));
+    // ...
+    // Seed the UrlHelper with the routing results:
+    $pipeline->pipe((new UrlHelperMiddlewareFactory('admin-url-helper'))($container));
+```
 
 ## View Helpers
 
