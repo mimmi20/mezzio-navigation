@@ -60,8 +60,6 @@ Read more about containers in the [containers](#containers) section.
 Add the middleware after the routing.
 
 ```php
-    // Register the routing middleware in the middleware pipeline.
-    // This middleware registers the Mezzio\Router\RouteResult request attribute.
     $app->pipe(RouteMiddleware::class);
     $app->pipe(\Mimmi20\Mezzio\Navigation\NavigationMiddleware::class); // <-- Add this line
 ```
@@ -69,8 +67,6 @@ Add the middleware after the routing.
 If you are using path specific middleware pipelines, you have to make sure to use the right url helper.
 
 ```php
-    // Register the routing middleware in the middleware pipeline.
-    // This middleware registers the Mezzio\Router\RouteResult request attribute.
     $pipeline = new MiddlewarePipe();
     $pipeline->pipe((new RouteMiddlewareFactory('admin-router'))($container));
     $pipeline->pipe((new \Mimmi20\Mezzio\Navigation\NavigationMiddlewareFactory(urlHelperServiceName: 'admin-url-helper'))($container));
