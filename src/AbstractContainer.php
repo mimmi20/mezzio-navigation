@@ -150,7 +150,7 @@ abstract class AbstractContainer implements ContainerInterface
     /**
      * Adds several pages at once
      *
-     * @param array<int|string, PageInterface> $pages pages to add
+     * @param iterable<int|string, PageInterface> $pages pages to add
      *
      * @throws InvalidArgumentException if $pages is not array, Traversable or PageInterface
      */
@@ -171,7 +171,7 @@ abstract class AbstractContainer implements ContainerInterface
     /**
      * Sets pages this container should have, removing existing pages
      *
-     * @param array<int|string, PageInterface> $pages pages to set
+     * @param iterable<int|string, PageInterface> $pages pages to set
      *
      * @throws InvalidArgumentException
      */
