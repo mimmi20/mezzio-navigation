@@ -225,10 +225,7 @@ abstract class AbstractPage extends AbstractContainer implements PageInterface, 
 
         if (method_exists($this, $method)) {
             throw new Exception\InvalidArgumentException(
-                sprintf(
-                    'Unsetting native property "%s" is not allowed',
-                    $name,
-                ),
+                sprintf('Unsetting native property "%s" is not allowed', $name),
             );
         }
 
