@@ -41,7 +41,7 @@ updates:
       - dependency-name: "laminas/laminas-servicemanager"
       - dependency-name: "psr/container"
 
-    rebase-strategy: "auto"
+    rebase-strategy: "disabled"
 
   - package-ecosystem: "github-actions"
 
@@ -76,7 +76,7 @@ updates:
       - dependency-name: "mimmi20/ci"
       - dependency-name: "release-drafter/release-drafter"
 
-    rebase-strategy: "auto"
+    rebase-strategy: "disabled"
 
   - package-ecosystem: "composer"
 
@@ -114,7 +114,7 @@ updates:
       - dependency-name: "laminas/laminas-servicemanager"
       - dependency-name: "psr/container"
 
-    rebase-strategy: "auto"
+    rebase-strategy: "disabled"
 
   - package-ecosystem: "github-actions"
 
@@ -149,4 +149,4 @@ updates:
       - dependency-name: "mimmi20/ci"
       - dependency-name: "release-drafter/release-drafter"
 
-    rebase-strategy: "auto"
+    rebase-strategy: "disabled"
