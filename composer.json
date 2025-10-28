@@ -22,7 +22,7 @@
   "require": {
     "php": "~8.3.0 || ~8.4.0 || ~8.5.0",
     "ext-mbstring": "*",
-    "laminas/laminas-servicemanager": "^4.4.0",
+    "laminas/laminas-servicemanager": "^4.5.0",
     "laminas/laminas-stdlib": "^3.21.0",
     "mimmi20/mezzio-generic-authorization": "^4.0.0",
     "psr/container": "^1.1.2",
