@@ -745,7 +745,7 @@ common page options, a URI page takes only one additional option, a `uri`. The
 
 ### Creating custom page types
 
-When implementing `Mezzio\Navigation\Page\PageInterface` and using the `Mezzio\Navigation\Page\PageTrait`, there is usually no need to
+When implementing `Mezzio\Navigation\Page\PageInterface` and extending `Mezzio\Navigation\Page\AbstractPage`, there is usually no need to
 override the constructor or the `setOptions()` method. The page constructor
 takes a single parameter, an `iterable`, which is then
 passed to `setOptions()`. That method will in turn call the appropriate `set*()`
@@ -764,11 +764,10 @@ The only thing a custom page class needs to implement is the `getHref()` method.
 namespace My;
 
 use Mimmi20\Mezzio\Navigation\Page\PageInterface;
-use Mimmi20\Mezzio\Navigation\Page\PageTrait;
+use Mimmi20\Mezzio\Navigation\Page\AbstractPage;
 
-class Page implements PageInterface
+class Page extends AbstractPage implements PageInterface
 {
-    use PageTrait;
     public function getHref(): string
     {
         return 'something-completely-different';
