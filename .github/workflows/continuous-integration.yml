@@ -10,23 +10,33 @@ on:
 
 permissions:
   contents: read
+  security-events: read
+  issues: read
+  pull-requests: read
+  checks: read
 
 concurrency:
   group: "${{ github.event_name }}-${{ github.workflow }}-${{ github.head_ref || github.run_id }}-${{ github.ref }}"
   cancel-in-progress: true
 
 jobs:
-  validate:
+  validate-all:
     name: "Validate Project"
 
-    uses: "mimmi20/ci/.github/workflows/validate.yml@8.3"
+    uses: "mimmi20/ci/.github/workflows/validate-all.yml@8.3"
     with:
-      extensions: "ctype, curl, dom, iconv, intl, mbstring, simplexml, tokenizer, xml, xmlwriter"
+      skip-validate-yaml: false
+      skip-validate-md: false
+
+  validate-php:
+    name: "Validate PHP"
+
+    uses: "mimmi20/ci/.github/workflows/validate-php.yml@8.3"
+    with:
+      extensions: "ctype, curl, dom, fileinfo, iconv, intl, mbstring, simplexml, tokenizer, xml, xmlwriter"
       ini-values: "opcache.enable=1, opcache.fast_shutdown=0, zend.assertions=1, assert.exception=On, intl.default_locale=de, intl.use_exceptions=1, zend.exception_ignore_args=0"
       composer-options: "--optimize-autoloader --prefer-dist --prefer-stable -v"
       skip-validate-composer: false
-      skip-validate-yaml: false
-      skip-validate-md: false
       skip-phplint: false
       skip-check-composer: false
       skip-ec-checker: false
@@ -35,33 +45,41 @@ jobs:
   install:
     name: "Install Project"
 
-    needs: "validate"
+    needs:
+      - "validate-all"
+      - "validate-php"
 
-    uses: "mimmi20/ci/.github/workflows/install.yml@8.3"
+    uses: "mimmi20/ci/.github/workflows/install-php.yml@8.3"
     with:
-      extensions: "ctype, curl, dom, iconv, intl, mbstring, simplexml, tokenizer, xml, xmlwriter"
+      extensions: "ctype, curl, dom, fileinfo, iconv, mbstring, intl, simplexml, tokenizer, xml, xmlwriter"
       ini-values: "opcache.enable=1, opcache.fast_shutdown=0, zend.assertions=1, assert.exception=On, intl.default_locale=de, intl.use_exceptions=1, zend.exception_ignore_args=0"
       composer-options: "--optimize-autoloader --prefer-dist --prefer-stable -v"
-      skip-php-install: false
-      skip-npm-install: true
+      skip-librabbitmq-install: true
+      skip-libgif-install: true
 
   analytics:
     name: "Project Analysis"
 
+    permissions:
+      security-events: write
+      id-token: write
+      contents: read
+      issues: read
+      pull-requests: read
+      checks: read
+
     needs: "install"
 
-    uses: "mimmi20/ci/.github/workflows/analytics.yml@8.3"
+    uses: "mimmi20/ci/.github/workflows/analytics-php.yml@8.3"
     with:
-      extensions: "ctype, curl, dom, iconv, intl, mbstring, simplexml, tokenizer, xml, xmlwriter"
+      extensions: "ctype, curl, dom, fileinfo, iconv, intl, mbstring, simplexml, tokenizer, xml, xmlwriter"
       ini-values: "opcache.enable=1, opcache.fast_shutdown=0, zend.assertions=1, assert.exception=On, intl.default_locale=de, intl.use_exceptions=1, zend.exception_ignore_args=0"
       composer-options: "--optimize-autoloader --prefer-dist --prefer-stable -v"
       skip-php-cs-fixer: false
       skip-phpcs: false
       skip-phpstan: false
       skip-rector: false
-      skip-eslint: true
-      skip-stylelint: true
-      skip-prettier: true
+      use-code-scanning: true
       phpcs-options: ""
 
   tests:
@@ -69,7 +87,7 @@ jobs:
 
     needs: "analytics"
 
-    uses: "mimmi20/ci/.github/workflows/test.yml@8.3"
+    uses: "mimmi20/ci/.github/workflows/test-php.yml@8.3"
     with:
       extensions: "ctype, dom, fileinfo, intl, simplexml, tokenizer, xml, xmlwriter"
       ini-values: "opcache.enable=1, opcache.fast_shutdown=0, zend.assertions=1, assert.exception=On, intl.default_locale=de, intl.use_exceptions=1, zend.exception_ignore_args=0"
@@ -78,13 +96,13 @@ jobs:
       test-name: ""
       min-msi: 84.5
       min-covered-msi: 84.5
-      skip-phpunit: false
-      skip-vitest: true
-      skip-stryker: true
+      skip-librabbitmq-install: true
+      skip-libgif-install: true
       upload-codecov: true
       upload-codeclimate: true
       upload-coveralls: true
       upload-flag: ""
+      use-phpstan: true
     secrets:
       ENV_CODECLIMATE_API_KEY: ${{ secrets.CODECLIMATE_API_KEY }}
       ENV_CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
@@ -93,7 +111,7 @@ jobs:
   # This is a meta job to avoid to have to constantly change the protection rules
   # whenever we touch the matrix.
   tests-status:
-    name: "Unit & Integration Tests Status"
+    name: "CI Status"
 
     runs-on: "ubuntu-latest"
 
@@ -103,10 +121,10 @@ jobs:
       - "tests"
 
     steps:
-      - name: Successful run
-        if: ${{ !(contains(needs.*.result, 'failure')) }}
-        run: exit 0
-
       - name: Failing run
-        if: ${{ contains(needs.*.result, 'failure') }}
+        if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'skipped') || contains(needs.*.result, 'cancelled') }}
         run: exit 1
+
+      - name: Successful run
+        if: ${{ !(contains(needs.*.result, 'failure')) && !(contains(needs.*.result, 'skipped')) && !(contains(needs.*.result, 'cancelled')) }}
+        run: exit 0
