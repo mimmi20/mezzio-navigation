@@ -12,8 +12,11 @@ jobs:
   actionlint:
     uses: "mimmi20/ci/.github/workflows/lint-actions.yml@8.3"
     with:
-      skip-nasm-install: false
-      skip-libimagequant-install: false
+      skip-nasm-install: true
+      skip-libimagequant-install: true
+      skip-libpng-install: true
+      skip-librabbitmq-install: true
+      skip-libgif-install: true
 
   # This is a meta job to avoid to have to constantly change the protection rules
   # whenever we touch the matrix.
@@ -28,9 +31,9 @@ jobs:
 
     steps:
       - name: Failing run
-        if: ${{ contains(needs.*.result, 'failure') }}
+        if: ${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'skipped') || contains(needs.*.result, 'cancelled') }}
         run: exit 1
 
       - name: Successful run
-        if: ${{ !(contains(needs.*.result, 'failure')) }}
+        if: ${{ !(contains(needs.*.result, 'failure')) && !(contains(needs.*.result, 'skipped')) && !(contains(needs.*.result, 'cancelled')) }}
         run: exit 0
