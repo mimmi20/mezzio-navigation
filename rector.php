@@ -16,7 +16,6 @@ use Rector\DeadCode\Rector\If_\RemoveAlwaysTrueIfConditionRector;
 use Rector\DeadCode\Rector\If_\RemoveDeadInstanceOfRector;
 use Rector\DeadCode\Rector\StaticCall\RemoveParentCallWithoutParentRector;
 use Rector\Php80\Rector\Class_\AnnotationToAttributeRector;
-use Rector\Php81\Rector\Array_\FirstClassCallableRector;
 use Rector\Php81\Rector\FuncCall\NullToStrictStringFuncCallArgRector;
 use Rector\Php81\Rector\Property\ReadOnlyPropertyRector;
 use Rector\PHPUnit\Set\PHPUnitSetList;
@@ -39,7 +38,6 @@ return static function (RectorConfig $rectorConfig): void {
         [
             NullToStrictStringFuncCallArgRector::class,
             RemoveDeadInstanceOfRector::class,
-            FirstClassCallableRector::class,
             RemoveAlwaysTrueIfConditionRector::class,
             RemoveParentCallWithoutParentRector::class,
             AnnotationToAttributeRector::class,
