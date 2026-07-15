@@ -102,10 +102,12 @@ final class Route extends AbstractPage implements RouteInterface
     public function isActive(bool $recursive = false): bool
     {
         if ($this->active === null) {
+            /** @var array<string> $reqParams */
             $reqParams  = [];
             $pageParams = $this->getParams();
 
             if ($this->getRouteMatch() !== null) {
+                /** @var array<string> $reqParams */
                 $reqParams = $this->getRouteMatch()->getMatchedParams();
 
                 if ($this->getRoute() !== null) {
