@@ -121,10 +121,10 @@ final class NavigationMiddlewareFactoryTest extends TestCase
      */
     public function testFactory(): void
     {
-        $authorization    = $this->createStub(AuthorizationInterface::class);
-        $router           = $this->createStub(RouterInterface::class);
-        $navigationConfig = $this->createStub(NavigationConfigInterface::class);
-        $urlHelper        = $this->createStub(UrlHelper::class);
+        $authorization    = self::createStub(AuthorizationInterface::class);
+        $router           = self::createStub(RouterInterface::class);
+        $navigationConfig = self::createStub(NavigationConfigInterface::class);
+        $urlHelper        = self::createStub(UrlHelper::class);
 
         $container = $this->getMockBuilder(ContainerInterface::class)
             ->disableOriginalConstructor()
@@ -228,7 +228,7 @@ final class NavigationMiddlewareFactoryTest extends TestCase
      */
     public function testFactoryContainerExceptionRouterInterface(): void
     {
-        $authorization = $this->createStub(AuthorizationInterface::class);
+        $authorization = self::createStub(AuthorizationInterface::class);
         $exception     = new ServiceNotCreatedException('test');
         $container     = $this->getMockBuilder(ContainerInterface::class)
             ->disableOriginalConstructor()
@@ -290,8 +290,8 @@ final class NavigationMiddlewareFactoryTest extends TestCase
      */
     public function testFactoryContainerExceptionNavigationConfig(): void
     {
-        $authorization = $this->createStub(AuthorizationInterface::class);
-        $router        = $this->createStub(RouterInterface::class);
+        $authorization = self::createStub(AuthorizationInterface::class);
+        $router        = self::createStub(RouterInterface::class);
         $exception     = new ServiceNotCreatedException('test');
         $container     = $this->getMockBuilder(ContainerInterface::class)
             ->disableOriginalConstructor()
@@ -355,9 +355,9 @@ final class NavigationMiddlewareFactoryTest extends TestCase
      */
     public function testFactoryContainerExceptionUrlHelper(): void
     {
-        $authorization    = $this->createStub(AuthorizationInterface::class);
-        $router           = $this->createStub(RouterInterface::class);
-        $navigationConfig = $this->createStub(NavigationConfigInterface::class);
+        $authorization    = self::createStub(AuthorizationInterface::class);
+        $router           = self::createStub(RouterInterface::class);
+        $navigationConfig = self::createStub(NavigationConfigInterface::class);
         $exception        = new ServiceNotCreatedException('test');
         $container        = $this->getMockBuilder(ContainerInterface::class)
             ->disableOriginalConstructor()
@@ -426,10 +426,10 @@ final class NavigationMiddlewareFactoryTest extends TestCase
         $navigationConfigName = 'MyNavigationConfigInterface';
         $urlHelperServiceName = 'MyUrlHelper';
 
-        $authorization    = $this->createStub(AuthorizationInterface::class);
-        $router           = $this->createStub(RouterInterface::class);
-        $navigationConfig = $this->createStub(NavigationConfigInterface::class);
-        $urlHelper        = $this->createStub(UrlHelper::class);
+        $authorization    = self::createStub(AuthorizationInterface::class);
+        $router           = self::createStub(RouterInterface::class);
+        $navigationConfig = self::createStub(NavigationConfigInterface::class);
+        $urlHelper        = self::createStub(UrlHelper::class);
 
         $container = $this->getMockBuilder(ContainerInterface::class)
             ->disableOriginalConstructor()

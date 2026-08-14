@@ -991,7 +991,7 @@ final class RouteTest extends TestCase
     {
         $page = new Route();
 
-        $routeResult = $this->createStub(RouteResult::class);
+        $routeResult = self::createStub(RouteResult::class);
 
         self::assertNull($page->getRouteMatch());
 
@@ -1025,7 +1025,7 @@ final class RouteTest extends TestCase
     public function testSetRouter(): void
     {
         $page   = new Route();
-        $router = $this->createStub(RouterInterface::class);
+        $router = self::createStub(RouterInterface::class);
 
         self::assertNull($page->getRouter());
 
@@ -1065,7 +1065,7 @@ final class RouteTest extends TestCase
     {
         $page = new Route();
 
-        $router = $this->createStub(RouterInterface::class);
+        $router = self::createStub(RouterInterface::class);
 
         assert($router instanceof RouterInterface);
         $page->setRouter($router);
@@ -1267,8 +1267,8 @@ final class RouteTest extends TestCase
         $page        = new Route();
         $params      = ['testParams'];
         $route       = 'testRoute';
-        $router      = $this->createStub(RouterInterface::class);
-        $routeResult = $this->createStub(RouteResult::class);
+        $router      = self::createStub(RouterInterface::class);
+        $routeResult = self::createStub(RouteResult::class);
 
         $page->setParams($params);
         $page->setRoute($route);
