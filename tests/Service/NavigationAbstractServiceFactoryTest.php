@@ -169,7 +169,7 @@ final class NavigationAbstractServiceFactoryTest extends TestCase
             ->method('getPages')
             ->willReturn($pages);
 
-        $pageFactory = $this->createMock(PageFactoryInterface::class);
+        $pageFactory = self::createStub(PageFactoryInterface::class);
 
         $container = $this->getMockBuilder(ContainerInterface::class)
             ->disableOriginalConstructor()
@@ -228,7 +228,7 @@ final class NavigationAbstractServiceFactoryTest extends TestCase
             ->method('getPages')
             ->willReturn($pages);
 
-        $pageFactory = $this->createMock(PageFactoryInterface::class);
+        $pageFactory = self::createStub(PageFactoryInterface::class);
 
         $container = $this->getMockBuilder(ContainerInterface::class)
             ->disableOriginalConstructor()

@@ -200,9 +200,9 @@ final class ConstructedNavigationFactoryTest extends TestCase
             ],
         ];
 
-        $routeResult     = $this->createMock(RouteResult::class);
-        $routerInterface = $this->createMock(RouterInterface::class);
-        $prequest        = $this->createMock(ServerRequestInterface::class);
+        $routeResult     = self::createStub(RouteResult::class);
+        $routerInterface = self::createStub(RouterInterface::class);
+        $prequest        = self::createStub(ServerRequestInterface::class);
 
         $page1 = $this->getMockBuilder(RouteInterface::class)
             ->disableOriginalConstructor()
@@ -317,9 +317,9 @@ final class ConstructedNavigationFactoryTest extends TestCase
             'test' => [$page2Config],
         ];
 
-        $routeResult     = $this->createMock(RouteResult::class);
-        $routerInterface = $this->createMock(RouterInterface::class);
-        $prequest        = $this->createMock(ServerRequestInterface::class);
+        $routeResult     = self::createStub(RouteResult::class);
+        $routerInterface = self::createStub(RouterInterface::class);
+        $prequest        = self::createStub(ServerRequestInterface::class);
 
         $page1 = $this->getMockBuilder(RouteInterface::class)
             ->disableOriginalConstructor()

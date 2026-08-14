@@ -38,7 +38,7 @@ final class NavigationConfigTest extends TestCase
 
         self::assertNull($config->getUrlHelper());
 
-        $helper = $this->createMock(UrlHelper::class);
+        $helper = self::createStub(UrlHelper::class);
 
         assert($helper instanceof UrlHelper);
         $config->setUrlHelper($helper);
@@ -57,7 +57,7 @@ final class NavigationConfigTest extends TestCase
 
         self::assertNull($config->getRouteResult());
 
-        $routeResult = $this->createMock(RouteResult::class);
+        $routeResult = self::createStub(RouteResult::class);
 
         assert($routeResult instanceof RouteResult);
         $config->setRouteResult($routeResult);
@@ -76,7 +76,7 @@ final class NavigationConfigTest extends TestCase
 
         self::assertNull($config->getRouter());
 
-        $router = $this->createMock(RouterInterface::class);
+        $router = self::createStub(RouterInterface::class);
 
         assert($router instanceof RouterInterface);
         $config->setRouter($router);
@@ -95,7 +95,7 @@ final class NavigationConfigTest extends TestCase
 
         self::assertNull($config->getRequest());
 
-        $request = $this->createMock(ServerRequestInterface::class);
+        $request = self::createStub(ServerRequestInterface::class);
 
         assert($request instanceof ServerRequestInterface);
         $config->setRequest($request);
@@ -114,7 +114,7 @@ final class NavigationConfigTest extends TestCase
 
         self::assertNull($config->getAuthorization());
 
-        $authorization = $this->createMock(AuthorizationInterface::class);
+        $authorization = self::createStub(AuthorizationInterface::class);
 
         assert($authorization instanceof AuthorizationInterface);
         $config->setAuthorization($authorization);

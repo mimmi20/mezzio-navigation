@@ -15,8 +15,8 @@ use Rector\Config\RectorConfig;
 use Rector\DeadCode\Rector\If_\RemoveAlwaysTrueIfConditionRector;
 use Rector\DeadCode\Rector\If_\RemoveDeadInstanceOfRector;
 use Rector\DeadCode\Rector\StaticCall\RemoveParentCallWithoutParentRector;
+use Rector\DeadCode\Rector\StmtsAwareInterface\RemoveDeadInstanceOfAssertRector;
 use Rector\Php80\Rector\Class_\AnnotationToAttributeRector;
-use Rector\Php81\Rector\FuncCall\NullToStrictStringFuncCallArgRector;
 use Rector\Php81\Rector\Property\ReadOnlyPropertyRector;
 use Rector\PHPUnit\Set\PHPUnitSetList;
 use Rector\Set\ValueObject\LevelSetList;
@@ -31,16 +31,16 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->sets([
         SetList::DEAD_CODE,
         LevelSetList::UP_TO_PHP_83,
-        PHPUnitSetList::PHPUNIT_100,
+        PHPUnitSetList::PHPUNIT_120,
     ]);
 
     $rectorConfig->skip(
         [
-            NullToStrictStringFuncCallArgRector::class,
             RemoveDeadInstanceOfRector::class,
             RemoveAlwaysTrueIfConditionRector::class,
             RemoveParentCallWithoutParentRector::class,
             AnnotationToAttributeRector::class,
+            RemoveDeadInstanceOfAssertRector::class,
         ],
     );
 
