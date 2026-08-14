@@ -37,10 +37,10 @@ final class NavigationMiddlewareTest extends TestCase
      */
     public function testConstructor(): void
     {
-        $navigationConfig = $this->createMock(NavigationConfigInterface::class);
-        $urlHelper        = $this->createMock(UrlHelper::class);
-        $authorization    = $this->createMock(AuthorizationInterface::class);
-        $router           = $this->createMock(RouterInterface::class);
+        $navigationConfig = $this->createStub(NavigationConfigInterface::class);
+        $urlHelper        = $this->createStub(UrlHelper::class);
+        $authorization    = $this->createStub(AuthorizationInterface::class);
+        $router           = $this->createStub(RouterInterface::class);
 
         assert($navigationConfig instanceof NavigationConfigInterface);
         assert($urlHelper instanceof UrlHelper);
@@ -57,8 +57,8 @@ final class NavigationMiddlewareTest extends TestCase
      */
     public function testConstructorWithoutOptionalParameters(): void
     {
-        $navigationConfig = $this->createMock(NavigationConfigInterface::class);
-        $urlHelper        = $this->createMock(UrlHelper::class);
+        $navigationConfig = $this->createStub(NavigationConfigInterface::class);
+        $urlHelper        = $this->createStub(UrlHelper::class);
 
         assert($navigationConfig instanceof NavigationConfigInterface);
         assert($urlHelper instanceof UrlHelper);
@@ -73,9 +73,9 @@ final class NavigationMiddlewareTest extends TestCase
      */
     public function testProcessWithoutRouteResult(): void
     {
-        $urlHelper     = $this->createMock(UrlHelper::class);
-        $authorization = $this->createMock(AuthorizationInterface::class);
-        $router        = $this->createMock(RouterInterface::class);
+        $urlHelper     = $this->createStub(UrlHelper::class);
+        $authorization = $this->createStub(AuthorizationInterface::class);
+        $router        = $this->createStub(RouterInterface::class);
 
         $request = $this->getMockBuilder(ServerRequestInterface::class)
             ->disableOriginalConstructor()
@@ -110,7 +110,7 @@ final class NavigationMiddlewareTest extends TestCase
         $middleware = new NavigationMiddleware($navigationConfig, $urlHelper, $authorization, $router);
         self::assertInstanceOf(NavigationMiddleware::class, $middleware);
 
-        $expectedResponse = $this->createMock(ResponseInterface::class);
+        $expectedResponse = $this->createStub(ResponseInterface::class);
 
         $handler = $this->getMockBuilder(RequestHandlerInterface::class)
             ->disableOriginalConstructor()
@@ -134,10 +134,10 @@ final class NavigationMiddlewareTest extends TestCase
      */
     public function testProcess(): void
     {
-        $urlHelper     = $this->createMock(UrlHelper::class);
-        $authorization = $this->createMock(AuthorizationInterface::class);
-        $router        = $this->createMock(RouterInterface::class);
-        $routeResult   = $this->createMock(RouteResult::class);
+        $urlHelper     = $this->createStub(UrlHelper::class);
+        $authorization = $this->createStub(AuthorizationInterface::class);
+        $router        = $this->createStub(RouterInterface::class);
+        $routeResult   = $this->createStub(RouteResult::class);
 
         $request = $this->getMockBuilder(ServerRequestInterface::class)
             ->disableOriginalConstructor()
@@ -173,7 +173,7 @@ final class NavigationMiddlewareTest extends TestCase
         $middleware = new NavigationMiddleware($navigationConfig, $urlHelper, $authorization, $router);
         self::assertInstanceOf(NavigationMiddleware::class, $middleware);
 
-        $expectedResponse = $this->createMock(ResponseInterface::class);
+        $expectedResponse = $this->createStub(ResponseInterface::class);
 
         $handler = $this->getMockBuilder(RequestHandlerInterface::class)
             ->disableOriginalConstructor()
