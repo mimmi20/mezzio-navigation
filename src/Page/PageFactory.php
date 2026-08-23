@@ -74,7 +74,7 @@ final class PageFactory implements PageFactoryInterface
                         break;
                 }
 
-                if (!class_exists($type, true)) {
+                if (!class_exists($type, autoload: true)) {
                     throw new Exception\InvalidArgumentException('Cannot find class ' . $type);
                 }
 
@@ -94,8 +94,8 @@ final class PageFactory implements PageFactoryInterface
             }
         }
 
-        foreach (self::$factories as $factoryCallBack) {
-            $page = call_user_func($factoryCallBack, $options);
+        foreach (self::$factories as $factory) {
+            $page = call_user_func($factory, $options);
 
             if ($page) {
                 assert($page instanceof PageInterface);

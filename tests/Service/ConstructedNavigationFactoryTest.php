@@ -41,6 +41,8 @@ final class ConstructedNavigationFactoryTest extends TestCase
      * @throws InvalidArgumentException
      * @throws ContainerExceptionInterface
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws NoPreviousThrowableException
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testCanNotInvokeWithoutConfig(): void
     {
@@ -48,29 +50,25 @@ final class ConstructedNavigationFactoryTest extends TestCase
             'Test2' => [],
         ];
 
-        $navigationConfig = $this->getMockBuilder(NavigationConfigInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $navigationConfig = $this->createMock(NavigationConfigInterface::class);
         $navigationConfig->expects(self::once())
             ->method('getPages')
             ->willReturn($pages);
 
-        $container = $this->getMockBuilder(ContainerInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $container = $this->createMock(ContainerInterface::class);
         $container->expects(self::once())
             ->method('get')
             ->with(NavigationConfigInterface::class)
             ->willReturn($navigationConfig);
 
-        $factory = new ConstructedNavigationFactory('test');
+        $constructedNavigationFactory = new ConstructedNavigationFactory('test');
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Failed to find a navigation container by the name "test"');
         $this->expectExceptionCode(0);
 
         assert($container instanceof ContainerInterface);
-        $factory($container);
+        $constructedNavigationFactory($container);
     }
 
     /**
@@ -78,6 +76,8 @@ final class ConstructedNavigationFactoryTest extends TestCase
      * @throws InvalidArgumentException
      * @throws ContainerExceptionInterface
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
+     * @throws NoPreviousThrowableException
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testInvoke(): void
     {
@@ -94,39 +94,31 @@ final class ConstructedNavigationFactoryTest extends TestCase
             ],
         ];
 
-        $page1 = $this->getMockBuilder(PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $page1 = $this->createMock(PageInterface::class);
         $page1->expects(self::once())
             ->method('hashCode')
             ->willReturn('test1');
 
-        $page2 = $this->getMockBuilder(PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $page2 = $this->createMock(PageInterface::class);
         $page2->expects(self::once())
             ->method('hashCode')
             ->willReturn('test2');
 
-        $navigationConfig = $this->getMockBuilder(NavigationConfigInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $navigationConfig = $this->createMock(NavigationConfigInterface::class);
         $navigationConfig->expects(self::once())
             ->method('getPages')
             ->willReturn($pageConfig);
         $navigationConfig->expects(self::once())
             ->method('getRouteResult')
-            ->willReturn(null);
+            ->willReturn(value: null);
         $navigationConfig->expects(self::once())
             ->method('getRouter')
-            ->willReturn(null);
+            ->willReturn(value: null);
         $navigationConfig->expects(self::once())
             ->method('getRequest')
-            ->willReturn(null);
+            ->willReturn(value: null);
 
-        $pageFactory = $this->getMockBuilder(PageFactoryInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $pageFactory = $this->createMock(PageFactoryInterface::class);
         $matcher     = self::exactly(2);
         $pageFactory->expects($matcher)
             ->method('factory')
@@ -144,9 +136,7 @@ final class ConstructedNavigationFactoryTest extends TestCase
                 },
             );
 
-        $container = $this->getMockBuilder(ContainerInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $container = $this->createMock(ContainerInterface::class);
         $matcher   = self::exactly(2);
         $container->expects($matcher)
             ->method('get')
@@ -164,10 +154,10 @@ final class ConstructedNavigationFactoryTest extends TestCase
                 },
             );
 
-        $factory = new ConstructedNavigationFactory('test');
+        $constructedNavigationFactory = new ConstructedNavigationFactory('test');
 
         assert($container instanceof ContainerInterface);
-        $navigation = $factory($container);
+        $navigation = $constructedNavigationFactory($container);
 
         self::assertInstanceOf(Navigation::class, $navigation);
 
@@ -204,9 +194,7 @@ final class ConstructedNavigationFactoryTest extends TestCase
         $routerInterface = self::createStub(RouterInterface::class);
         $prequest        = self::createStub(ServerRequestInterface::class);
 
-        $page1 = $this->getMockBuilder(RouteInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $page1 = $this->createMock(RouteInterface::class);
         $page1->expects(self::once())
             ->method('hashCode')
             ->willReturn('test1');
@@ -217,9 +205,7 @@ final class ConstructedNavigationFactoryTest extends TestCase
             ->method('setRouter')
             ->with($routerInterface);
 
-        $page2 = $this->getMockBuilder(UriInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $page2 = $this->createMock(UriInterface::class);
         $page2->expects(self::once())
             ->method('hashCode')
             ->willReturn('test2');
@@ -227,9 +213,7 @@ final class ConstructedNavigationFactoryTest extends TestCase
             ->method('setRequest')
             ->with($prequest);
 
-        $navigationConfig = $this->getMockBuilder(NavigationConfigInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $navigationConfig = $this->createMock(NavigationConfigInterface::class);
         $navigationConfig->expects(self::once())
             ->method('getPages')
             ->willReturn($pageConfig);
@@ -243,9 +227,7 @@ final class ConstructedNavigationFactoryTest extends TestCase
             ->method('getRequest')
             ->willReturn($prequest);
 
-        $pageFactory = $this->getMockBuilder(PageFactoryInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $pageFactory = $this->createMock(PageFactoryInterface::class);
         $matcher     = self::exactly(2);
         $pageFactory->expects($matcher)
             ->method('factory')
@@ -263,9 +245,7 @@ final class ConstructedNavigationFactoryTest extends TestCase
                 },
             );
 
-        $container = $this->getMockBuilder(ContainerInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $container = $this->createMock(ContainerInterface::class);
         $matcher   = self::exactly(2);
         $container->expects($matcher)
             ->method('get')
@@ -283,10 +263,10 @@ final class ConstructedNavigationFactoryTest extends TestCase
                 },
             );
 
-        $factory = new ConstructedNavigationFactory('test');
+        $constructedNavigationFactory = new ConstructedNavigationFactory('test');
 
         assert($container instanceof ContainerInterface);
-        $navigation = $factory($container);
+        $navigation = $constructedNavigationFactory($container);
 
         self::assertInstanceOf(Navigation::class, $navigation);
 
@@ -321,9 +301,7 @@ final class ConstructedNavigationFactoryTest extends TestCase
         $routerInterface = self::createStub(RouterInterface::class);
         $prequest        = self::createStub(ServerRequestInterface::class);
 
-        $page1 = $this->getMockBuilder(RouteInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $page1 = $this->createMock(RouteInterface::class);
         $page1->expects(self::once())
             ->method('hashCode')
             ->willReturn('test1');
@@ -334,9 +312,7 @@ final class ConstructedNavigationFactoryTest extends TestCase
             ->method('setRouter')
             ->with($routerInterface);
 
-        $page2 = $this->getMockBuilder(UriInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $page2 = $this->createMock(UriInterface::class);
         $page2->expects(self::never())
             ->method('hashCode')
             ->willReturn('test2');
@@ -344,9 +320,7 @@ final class ConstructedNavigationFactoryTest extends TestCase
             ->method('setRequest')
             ->with($prequest);
 
-        $navigationConfig = $this->getMockBuilder(NavigationConfigInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $navigationConfig = $this->createMock(NavigationConfigInterface::class);
         $navigationConfig->expects(self::once())
             ->method('getPages')
             ->willReturn($pageConfig);
@@ -360,9 +334,7 @@ final class ConstructedNavigationFactoryTest extends TestCase
             ->method('getRequest')
             ->willReturn($prequest);
 
-        $pageFactory = $this->getMockBuilder(PageFactoryInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $pageFactory = $this->createMock(PageFactoryInterface::class);
         unset($page2Config['pages']);
         $matcher = self::exactly(2);
         $pageFactory->expects($matcher)
@@ -381,9 +353,7 @@ final class ConstructedNavigationFactoryTest extends TestCase
                 },
             );
 
-        $container = $this->getMockBuilder(ContainerInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $container = $this->createMock(ContainerInterface::class);
         $matcher   = self::exactly(2);
         $container->expects($matcher)
             ->method('get')
@@ -401,10 +371,10 @@ final class ConstructedNavigationFactoryTest extends TestCase
                 },
             );
 
-        $factory = new ConstructedNavigationFactory('test');
+        $constructedNavigationFactory = new ConstructedNavigationFactory('test');
 
         assert($container instanceof ContainerInterface);
-        $navigation = $factory($container);
+        $navigation = $constructedNavigationFactory($container);
 
         self::assertInstanceOf(Navigation::class, $navigation);
 

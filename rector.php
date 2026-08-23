@@ -18,35 +18,48 @@ use Rector\DeadCode\Rector\StaticCall\RemoveParentCallWithoutParentRector;
 use Rector\DeadCode\Rector\StmtsAwareInterface\RemoveDeadInstanceOfAssertRector;
 use Rector\Php80\Rector\Class_\AnnotationToAttributeRector;
 use Rector\Php81\Rector\Property\ReadOnlyPropertyRector;
-use Rector\PHPUnit\Set\PHPUnitSetList;
-use Rector\Set\ValueObject\LevelSetList;
-use Rector\Set\ValueObject\SetList;
+use Rector\PHPUnit\CodeQuality\Rector\Class_\PreferPHPUnitThisCallRector;
+use Rector\PHPUnit\CodeQuality\Rector\Class_\YieldDataProviderRector;
+use Rector\PHPUnit\CodeQuality\Rector\FuncCall\AssertFuncCallToPHPUnitAssertRector;
+use Rector\ValueObject\PhpVersion;
 
-return static function (RectorConfig $rectorConfig): void {
-    $rectorConfig->paths([
+return RectorConfig::configure()
+    ->withPaths([
         __DIR__ . '/src',
         __DIR__ . '/tests',
-    ]);
-
-    $rectorConfig->sets([
-        SetList::DEAD_CODE,
-        LevelSetList::UP_TO_PHP_83,
-        PHPUnitSetList::PHPUNIT_120,
-    ]);
-
-    $rectorConfig->skip(
-        [
-            RemoveDeadInstanceOfRector::class,
-            RemoveAlwaysTrueIfConditionRector::class,
-            RemoveParentCallWithoutParentRector::class,
-            AnnotationToAttributeRector::class,
-            RemoveDeadInstanceOfAssertRector::class,
-        ],
-    );
-
-    $rectorConfig->skip([
+    ])
+    ->withPhpVersion(PhpVersion::PHP_83)
+    ->withPreparedSets(
+        deadCode: true,
+        codeQuality: true,
+        typeDeclarations: true,
+        typeDeclarationDocblocks: true,
+        naming: true,
+        namedArgs: true,
+        instanceOf: true,
+        if: true,
+        earlyReturn: true,
+        phpunitCodeQuality: true,
+        phpunitNarrowAsserts: true,
+        phpunitMockToStub: true,
+    )
+    ->withPhpSets(php83: true)
+    ->withAttributesSets(phpunit: true)
+    ->withComposerBased(phpunit: true)
+    ->withSkip([
+        RemoveDeadInstanceOfRector::class,
+        RemoveAlwaysTrueIfConditionRector::class,
+        RemoveParentCallWithoutParentRector::class,
+        AnnotationToAttributeRector::class,
+        RemoveDeadInstanceOfAssertRector::class,
+        PreferPHPUnitThisCallRector::class,
+        AssertFuncCallToPHPUnitAssertRector::class,
+        YieldDataProviderRector::class,
+    ])
+    ->withSkip([
         ReadOnlyPropertyRector::class => [
             __DIR__ . '/src/LaminasRbacFactory.php',
         ],
-    ]);
-};
+    ])
+    ->withoutParallel()
+    ->withMemoryLimit('2048M');

@@ -60,11 +60,11 @@ final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
         string $requestedName,
         array | null $options = null,
     ): Navigation {
-        $factory = new ConstructedNavigationFactory(
+        $constructedNavigationFactory = new ConstructedNavigationFactory(
             $this->getNamedConfigName($container, $requestedName),
         );
 
-        return $factory($container);
+        return $constructedNavigationFactory($container);
     }
 
     /**
@@ -103,11 +103,11 @@ final class NavigationAbstractServiceFactory implements AbstractFactoryInterface
      *
      * @throws void
      */
-    private function hasNamedConfig(string $name, NavigationConfigInterface $config): bool
+    private function hasNamedConfig(string $name, NavigationConfigInterface $navigationConfig): bool
     {
         $withoutPrefix = $this->getConfigName($name);
 
-        $pages = $config->getPages();
+        $pages = $navigationConfig->getPages();
 
         if (isset($pages[$withoutPrefix])) {
             return true;

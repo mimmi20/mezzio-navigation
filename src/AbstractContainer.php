@@ -213,7 +213,7 @@ abstract class AbstractContainer implements ContainerInterface
         } else {
             $this->sort();
 
-            $hash = array_search($page, $this->index, true);
+            $hash = array_search($page, $this->index, strict: true);
 
             if (!$hash) {
                 return false;
@@ -232,8 +232,8 @@ abstract class AbstractContainer implements ContainerInterface
             foreach ($this->pages as $childPage) {
                 assert($childPage instanceof PageInterface);
 
-                if ($childPage->hasPage($page, true)) {
-                    $childPage->removePage($page, true);
+                if ($childPage->hasPage($page, recursive: true)) {
+                    $childPage->removePage($page, recursive: true);
 
                     return true;
                 }
@@ -273,7 +273,7 @@ abstract class AbstractContainer implements ContainerInterface
         } else {
             $this->sort();
 
-            $hash = array_search($page, $this->index, true);
+            $hash = array_search($page, $this->index, strict: true);
 
             if (!$hash) {
                 return false;
@@ -286,7 +286,7 @@ abstract class AbstractContainer implements ContainerInterface
 
         if ($recursive) {
             foreach ($this->pages as $childPage) {
-                if ($childPage->hasPage($page, true)) {
+                if ($childPage->hasPage($page, recursive: true)) {
                     return true;
                 }
             }
@@ -394,8 +394,8 @@ abstract class AbstractContainer implements ContainerInterface
         $pages   = [];
         $indexes = array_keys($this->index);
 
-        foreach ($indexes as $hash) {
-            $pages[$hash] = $this->pages[$hash]->toArray();
+        foreach ($indexes as $index) {
+            $pages[$index] = $this->pages[$index]->toArray();
         }
 
         return $pages;
