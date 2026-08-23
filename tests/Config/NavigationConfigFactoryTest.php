@@ -32,22 +32,20 @@ final class NavigationConfigFactoryTest extends TestCase
      */
     public function testFactoryWithoutNavigationConfig(): void
     {
-        $container = $this->getMockBuilder(ContainerInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $container = $this->createMock(ContainerInterface::class);
         $container->expects(self::once())
             ->method('get')
             ->with('config')
             ->willReturn('');
 
-        $factory = new NavigationConfigFactory();
+        $navigationConfigFactory = new NavigationConfigFactory();
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Could not find navigation configuration key');
         $this->expectExceptionCode(0);
 
         assert($container instanceof ContainerInterface);
-        $factory($container);
+        $navigationConfigFactory($container);
     }
 
     /**
@@ -57,22 +55,20 @@ final class NavigationConfigFactoryTest extends TestCase
      */
     public function testFactoryWithoutNavigationConfig2(): void
     {
-        $container = $this->getMockBuilder(ContainerInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $container = $this->createMock(ContainerInterface::class);
         $container->expects(self::once())
             ->method('get')
             ->with('config')
             ->willReturn([]);
 
-        $factory = new NavigationConfigFactory();
+        $navigationConfigFactory = new NavigationConfigFactory();
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Could not find navigation configuration key');
         $this->expectExceptionCode(0);
 
         assert($container instanceof ContainerInterface);
-        $factory($container);
+        $navigationConfigFactory($container);
     }
 
     /**
@@ -84,22 +80,20 @@ final class NavigationConfigFactoryTest extends TestCase
     {
         $pages = [NavigationConfigFactory::CONFIG_KEY => ''];
 
-        $container = $this->getMockBuilder(ContainerInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $container = $this->createMock(ContainerInterface::class);
         $container->expects(self::once())
             ->method('get')
             ->with('config')
             ->willReturn($pages);
 
-        $factory = new NavigationConfigFactory();
+        $navigationConfigFactory = new NavigationConfigFactory();
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Could not find navigation configuration key');
         $this->expectExceptionCode(0);
 
         assert($container instanceof ContainerInterface);
-        $factory($container);
+        $navigationConfigFactory($container);
     }
 
     /**
@@ -113,21 +107,19 @@ final class NavigationConfigFactoryTest extends TestCase
             NavigationConfigFactory::CONFIG_KEY => [],
         ];
 
-        $container = $this->getMockBuilder(ContainerInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $container = $this->createMock(ContainerInterface::class);
         $container->expects(self::once())
             ->method('get')
             ->with('config')
             ->willReturn($pages);
 
-        $factory = new NavigationConfigFactory();
+        $navigationConfigFactory = new NavigationConfigFactory();
 
         assert($container instanceof ContainerInterface);
-        $config = $factory($container);
+        $navigationConfig = $navigationConfigFactory($container);
 
-        self::assertInstanceOf(NavigationConfig::class, $config);
+        self::assertInstanceOf(NavigationConfig::class, $navigationConfig);
 
-        self::assertSame($pages[NavigationConfigFactory::CONFIG_KEY], $config->getPages());
+        self::assertSame($pages[NavigationConfigFactory::CONFIG_KEY], $navigationConfig->getPages());
     }
 }

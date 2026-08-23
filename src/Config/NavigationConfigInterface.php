@@ -46,7 +46,7 @@ interface NavigationConfigInterface
     public function getRequest(): ServerRequestInterface | null;
 
     /** @throws void */
-    public function setRequest(ServerRequestInterface $request): void;
+    public function setRequest(ServerRequestInterface $serverRequest): void;
 
     /** @throws void */
     public function getAuthorization(): AuthorizationInterface | null;

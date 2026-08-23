@@ -201,7 +201,7 @@ abstract class AbstractPage extends AbstractContainer implements PageInterface, 
      */
     public function __isset(string $name): bool
     {
-        $method = 'get' . self::normalizePropertyName($name);
+        $method = 'get' . $this->normalizePropertyName($name);
 
         if (method_exists($this, $method)) {
             return true;
@@ -221,7 +221,7 @@ abstract class AbstractPage extends AbstractContainer implements PageInterface, 
      */
     public function __unset(string $name): void
     {
-        $method = 'set' . self::normalizePropertyName($name);
+        $method = 'set' . $this->normalizePropertyName($name);
 
         if (method_exists($this, $method)) {
             throw new Exception\InvalidArgumentException(
@@ -594,7 +594,7 @@ abstract class AbstractPage extends AbstractContainer implements PageInterface, 
         }
 
         // remove from old parent
-        if ($this->parent !== null) {
+        if ($this->parent instanceof ContainerInterface) {
             $this->parent->removePage($this);
         }
 
@@ -602,7 +602,10 @@ abstract class AbstractPage extends AbstractContainer implements PageInterface, 
         $this->parent = $parent;
 
         // add to parent if page and not already a child
-        if (!$this->parent instanceof ContainerInterface || $this->parent->hasPage($this, false)) {
+        if (
+            !$this->parent instanceof ContainerInterface
+            || $this->parent->hasPage($this, recursive: false)
+        ) {
             return;
         }
 
@@ -747,7 +750,7 @@ abstract class AbstractPage extends AbstractContainer implements PageInterface, 
     {
         if ($this->active === null && $recursive) {
             foreach ($this->pages as $page) {
-                if ($page->isActive(true)) {
+                if ($page->isActive(recursive: true)) {
                     return true;
                 }
             }
@@ -859,7 +862,7 @@ abstract class AbstractPage extends AbstractContainer implements PageInterface, 
             );
         }
 
-        $method = 'set' . self::normalizePropertyName($property);
+        $method = 'set' . $this->normalizePropertyName($property);
 
         if ($method !== 'setOptions' && method_exists($this, $method)) {
             $this->{$method}($value);
@@ -891,7 +894,7 @@ abstract class AbstractPage extends AbstractContainer implements PageInterface, 
             );
         }
 
-        $method = 'get' . self::normalizePropertyName($property);
+        $method = 'get' . $this->normalizePropertyName($property);
 
         if (method_exists($this, $method)) {
             return $this->{$method}();
@@ -1059,7 +1062,7 @@ abstract class AbstractPage extends AbstractContainer implements PageInterface, 
      *
      * @throws void
      */
-    private static function normalizePropertyName(string $property): string
+    private function normalizePropertyName(string $property): string
     {
         return str_replace(' ', '', ucwords(str_replace('_', ' ', $property)));
     }

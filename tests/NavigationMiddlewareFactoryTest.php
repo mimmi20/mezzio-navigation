@@ -22,7 +22,6 @@ use Mimmi20\Mezzio\Navigation\Exception\InvalidArgumentException;
 use Mimmi20\Mezzio\Navigation\Exception\MissingHelperException;
 use Mimmi20\Mezzio\Navigation\NavigationMiddleware;
 use Mimmi20\Mezzio\Navigation\NavigationMiddlewareFactory;
-use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
@@ -33,24 +32,20 @@ use function sprintf;
 final class NavigationMiddlewareFactoryTest extends TestCase
 {
     /**
-     * @throws Exception
      * @throws MissingHelperException
      * @throws InvalidArgumentException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testFactoryWithoutNavigationConfig(): void
     {
-        $container = $this->getMockBuilder(ContainerInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $container = $this->createMock(ContainerInterface::class);
         $container->expects(self::once())
             ->method('has')
             ->with(NavigationConfigInterface::class)
-            ->willReturn(false);
+            ->willReturn(value: false);
         $container->expects(self::never())
             ->method('get');
 
-        $factory = new NavigationMiddlewareFactory();
+        $navigationMiddlewareFactory = new NavigationMiddlewareFactory();
 
         $this->expectException(MissingHelperException::class);
         $this->expectExceptionMessage(
@@ -63,31 +58,27 @@ final class NavigationMiddlewareFactoryTest extends TestCase
         $this->expectExceptionCode(0);
 
         assert($container instanceof ContainerInterface);
-        $factory($container);
+        $navigationMiddlewareFactory($container);
     }
 
     /**
-     * @throws Exception
      * @throws MissingHelperException
      * @throws InvalidArgumentException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testFactoryWithoutUrlHelper(): void
     {
-        $container = $this->getMockBuilder(ContainerInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $matcher   = self::exactly(2);
-        $container->expects($matcher)
+        $container    = $this->createMock(ContainerInterface::class);
+        $invokedCount = self::exactly(2);
+        $container->expects($invokedCount)
             ->method('has')
             ->willReturnCallback(
-                static function (string $id) use ($matcher): bool {
-                    match ($matcher->numberOfInvocations()) {
+                static function (string $id) use ($invokedCount): bool {
+                    match ($invokedCount->numberOfInvocations()) {
                         1 => self::assertSame(NavigationConfigInterface::class, $id),
                         default => self::assertSame(UrlHelper::class, $id),
                     };
 
-                    return match ($matcher->numberOfInvocations()) {
+                    return match ($invokedCount->numberOfInvocations()) {
                         1 => true,
                         default => false,
                     };
@@ -96,7 +87,7 @@ final class NavigationMiddlewareFactoryTest extends TestCase
         $container->expects(self::never())
             ->method('get');
 
-        $factory = new NavigationMiddlewareFactory();
+        $navigationMiddlewareFactory = new NavigationMiddlewareFactory();
 
         $this->expectException(MissingHelperException::class);
         $this->expectExceptionMessage(
@@ -109,15 +100,13 @@ final class NavigationMiddlewareFactoryTest extends TestCase
         $this->expectExceptionCode(0);
 
         assert($container instanceof ContainerInterface);
-        $factory($container);
+        $navigationMiddlewareFactory($container);
     }
 
     /**
      * @throws Exception
      * @throws MissingHelperException
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testFactory(): void
     {
@@ -126,9 +115,7 @@ final class NavigationMiddlewareFactoryTest extends TestCase
         $navigationConfig = self::createStub(NavigationConfigInterface::class);
         $urlHelper        = self::createStub(UrlHelper::class);
 
-        $container = $this->getMockBuilder(ContainerInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $container = $this->createMock(ContainerInterface::class);
         $matcher   = self::exactly(4);
         $container->expects($matcher)
             ->method('has')
@@ -165,31 +152,27 @@ final class NavigationMiddlewareFactoryTest extends TestCase
                 },
             );
 
-        $factory = new NavigationMiddlewareFactory();
+        $navigationMiddlewareFactory = new NavigationMiddlewareFactory();
 
         assert($container instanceof ContainerInterface);
-        $middleware = $factory($container);
-        self::assertInstanceOf(NavigationMiddleware::class, $middleware);
+        $navigationMiddleware = $navigationMiddlewareFactory($container);
+        self::assertInstanceOf(NavigationMiddleware::class, $navigationMiddleware);
     }
 
     /**
-     * @throws Exception
      * @throws MissingHelperException
      * @throws InvalidArgumentException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testFactoryContainerExceptionAuthorizationInterface(): void
     {
-        $exception = new ServiceNotCreatedException('test');
-        $container = $this->getMockBuilder(ContainerInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $matcher   = self::exactly(3);
-        $container->expects($matcher)
+        $serviceNotCreatedException = new ServiceNotCreatedException('test');
+        $container                  = $this->createMock(ContainerInterface::class);
+        $invokedCount               = self::exactly(3);
+        $container->expects($invokedCount)
             ->method('has')
             ->willReturnCallback(
-                static function (string $id) use ($matcher): bool {
-                    match ($matcher->numberOfInvocations()) {
+                static function (string $id) use ($invokedCount): bool {
+                    match ($invokedCount->numberOfInvocations()) {
                         1 => self::assertSame(NavigationConfigInterface::class, $id),
                         3 => self::assertSame(AuthorizationInterface::class, $id),
                         default => self::assertSame(UrlHelper::class, $id),
@@ -201,9 +184,9 @@ final class NavigationMiddlewareFactoryTest extends TestCase
         $container->expects(self::once())
             ->method('get')
             ->with(AuthorizationInterface::class)
-            ->willThrowException($exception);
+            ->willThrowException($serviceNotCreatedException);
 
-        $factory = new NavigationMiddlewareFactory();
+        $navigationMiddlewareFactory = new NavigationMiddlewareFactory();
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -216,24 +199,19 @@ final class NavigationMiddlewareFactoryTest extends TestCase
         $this->expectExceptionCode(0);
 
         assert($container instanceof ContainerInterface);
-        $factory($container);
+        $navigationMiddlewareFactory($container);
     }
 
     /**
-     * @throws Exception
      * @throws MissingHelperException
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testFactoryContainerExceptionRouterInterface(): void
     {
-        $authorization = self::createStub(AuthorizationInterface::class);
-        $exception     = new ServiceNotCreatedException('test');
-        $container     = $this->getMockBuilder(ContainerInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $matcher       = self::exactly(4);
+        $authorization              = self::createStub(AuthorizationInterface::class);
+        $serviceNotCreatedException = new ServiceNotCreatedException('test');
+        $container                  = $this->createMock(ContainerInterface::class);
+        $matcher                    = self::exactly(4);
         $container->expects($matcher)
             ->method('has')
             ->willReturnCallback(
@@ -252,7 +230,7 @@ final class NavigationMiddlewareFactoryTest extends TestCase
         $container->expects($matcher)
             ->method('get')
             ->willReturnCallback(
-                static function (string $id) use ($matcher, $authorization, $exception): mixed {
+                static function (string $id) use ($matcher, $authorization, $serviceNotCreatedException): mixed {
                     match ($matcher->numberOfInvocations()) {
                         1 => self::assertSame(AuthorizationInterface::class, $id),
                         default => self::assertSame(RouterInterface::class, $id),
@@ -260,12 +238,12 @@ final class NavigationMiddlewareFactoryTest extends TestCase
 
                     return match ($matcher->numberOfInvocations()) {
                         1 => $authorization,
-                        default => throw $exception,
+                        default => throw $serviceNotCreatedException,
                     };
                 },
             );
 
-        $factory = new NavigationMiddlewareFactory();
+        $navigationMiddlewareFactory = new NavigationMiddlewareFactory();
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -278,25 +256,20 @@ final class NavigationMiddlewareFactoryTest extends TestCase
         $this->expectExceptionCode(0);
 
         assert($container instanceof ContainerInterface);
-        $factory($container);
+        $navigationMiddlewareFactory($container);
     }
 
     /**
-     * @throws Exception
      * @throws MissingHelperException
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testFactoryContainerExceptionNavigationConfig(): void
     {
-        $authorization = self::createStub(AuthorizationInterface::class);
-        $router        = self::createStub(RouterInterface::class);
-        $exception     = new ServiceNotCreatedException('test');
-        $container     = $this->getMockBuilder(ContainerInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $matcher       = self::exactly(4);
+        $authorization              = self::createStub(AuthorizationInterface::class);
+        $router                     = self::createStub(RouterInterface::class);
+        $serviceNotCreatedException = new ServiceNotCreatedException('test');
+        $container                  = $this->createMock(ContainerInterface::class);
+        $matcher                    = self::exactly(4);
         $container->expects($matcher)
             ->method('has')
             ->willReturnCallback(
@@ -315,7 +288,7 @@ final class NavigationMiddlewareFactoryTest extends TestCase
         $container->expects($matcher)
             ->method('get')
             ->willReturnCallback(
-                static function (string $id) use ($matcher, $authorization, $router, $exception): mixed {
+                static function (string $id) use ($matcher, $authorization, $router, $serviceNotCreatedException): mixed {
                     match ($matcher->numberOfInvocations()) {
                         1 => self::assertSame(AuthorizationInterface::class, $id),
                         2 => self::assertSame(RouterInterface::class, $id),
@@ -325,12 +298,12 @@ final class NavigationMiddlewareFactoryTest extends TestCase
                     return match ($matcher->numberOfInvocations()) {
                         1 => $authorization,
                         2 => $router,
-                        default => throw $exception,
+                        default => throw $serviceNotCreatedException,
                     };
                 },
             );
 
-        $factory = new NavigationMiddlewareFactory();
+        $navigationMiddlewareFactory = new NavigationMiddlewareFactory();
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -343,26 +316,21 @@ final class NavigationMiddlewareFactoryTest extends TestCase
         $this->expectExceptionCode(0);
 
         assert($container instanceof ContainerInterface);
-        $factory($container);
+        $navigationMiddlewareFactory($container);
     }
 
     /**
-     * @throws Exception
      * @throws MissingHelperException
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testFactoryContainerExceptionUrlHelper(): void
     {
-        $authorization    = self::createStub(AuthorizationInterface::class);
-        $router           = self::createStub(RouterInterface::class);
-        $navigationConfig = self::createStub(NavigationConfigInterface::class);
-        $exception        = new ServiceNotCreatedException('test');
-        $container        = $this->getMockBuilder(ContainerInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $matcher          = self::exactly(4);
+        $authorization              = self::createStub(AuthorizationInterface::class);
+        $router                     = self::createStub(RouterInterface::class);
+        $navigationConfig           = self::createStub(NavigationConfigInterface::class);
+        $serviceNotCreatedException = new ServiceNotCreatedException('test');
+        $container                  = $this->createMock(ContainerInterface::class);
+        $matcher                    = self::exactly(4);
         $container->expects($matcher)
             ->method('has')
             ->willReturnCallback(
@@ -381,7 +349,7 @@ final class NavigationMiddlewareFactoryTest extends TestCase
         $container->expects($matcher)
             ->method('get')
             ->willReturnCallback(
-                static function (string $id) use ($matcher, $authorization, $router, $navigationConfig, $exception): mixed {
+                static function (string $id) use ($matcher, $authorization, $router, $navigationConfig, $serviceNotCreatedException): mixed {
                     match ($matcher->numberOfInvocations()) {
                         1 => self::assertSame(AuthorizationInterface::class, $id),
                         2 => self::assertSame(RouterInterface::class, $id),
@@ -393,12 +361,12 @@ final class NavigationMiddlewareFactoryTest extends TestCase
                         1 => $authorization,
                         2 => $router,
                         3 => $navigationConfig,
-                        default => throw $exception,
+                        default => throw $serviceNotCreatedException,
                     };
                 },
             );
 
-        $factory = new NavigationMiddlewareFactory();
+        $navigationMiddlewareFactory = new NavigationMiddlewareFactory();
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -411,15 +379,13 @@ final class NavigationMiddlewareFactoryTest extends TestCase
         $this->expectExceptionCode(0);
 
         assert($container instanceof ContainerInterface);
-        $factory($container);
+        $navigationMiddlewareFactory($container);
     }
 
     /**
      * @throws Exception
      * @throws MissingHelperException
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testFactoryAllowsSerialization(): void
     {
@@ -431,9 +397,7 @@ final class NavigationMiddlewareFactoryTest extends TestCase
         $navigationConfig = self::createStub(NavigationConfigInterface::class);
         $urlHelper        = self::createStub(UrlHelper::class);
 
-        $container = $this->getMockBuilder(ContainerInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $container = $this->createMock(ContainerInterface::class);
         $matcher   = self::exactly(4);
         $container->expects($matcher)
             ->method('has')
@@ -470,17 +434,17 @@ final class NavigationMiddlewareFactoryTest extends TestCase
                 },
             );
 
-        $factory = NavigationMiddlewareFactory::__set_state(
+        $navigationMiddlewareFactory = NavigationMiddlewareFactory::__set_state(
             [
                 'navigationConfigName' => $navigationConfigName,
                 'urlHelperServiceName' => $urlHelperServiceName,
             ],
         );
 
-        self::assertInstanceOf(NavigationMiddlewareFactory::class, $factory);
+        self::assertInstanceOf(NavigationMiddlewareFactory::class, $navigationMiddlewareFactory);
 
         assert($container instanceof ContainerInterface);
-        $middleware = $factory($container);
-        self::assertInstanceOf(NavigationMiddleware::class, $middleware);
+        $navigationMiddleware = $navigationMiddlewareFactory($container);
+        self::assertInstanceOf(NavigationMiddleware::class, $navigationMiddleware);
     }
 }
