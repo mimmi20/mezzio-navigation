@@ -34,16 +34,16 @@ final class NavigationConfigTest extends TestCase
      */
     public function testSetUrlHelper(): void
     {
-        $config = new NavigationConfig();
+        $navigationConfig = new NavigationConfig();
 
-        self::assertNull($config->getUrlHelper());
+        self::assertNull($navigationConfig->getUrlHelper());
 
         $helper = self::createStub(UrlHelper::class);
 
         assert($helper instanceof UrlHelper);
-        $config->setUrlHelper($helper);
+        $navigationConfig->setUrlHelper($helper);
 
-        self::assertSame($helper, $config->getUrlHelper());
+        self::assertSame($helper, $navigationConfig->getUrlHelper());
     }
 
     /**
@@ -53,16 +53,16 @@ final class NavigationConfigTest extends TestCase
      */
     public function testSetRouteResult(): void
     {
-        $config = new NavigationConfig();
+        $navigationConfig = new NavigationConfig();
 
-        self::assertNull($config->getRouteResult());
+        self::assertNull($navigationConfig->getRouteResult());
 
         $routeResult = self::createStub(RouteResult::class);
 
         assert($routeResult instanceof RouteResult);
-        $config->setRouteResult($routeResult);
+        $navigationConfig->setRouteResult($routeResult);
 
-        self::assertSame($routeResult, $config->getRouteResult());
+        self::assertSame($routeResult, $navigationConfig->getRouteResult());
     }
 
     /**
@@ -72,16 +72,16 @@ final class NavigationConfigTest extends TestCase
      */
     public function testSetRouter(): void
     {
-        $config = new NavigationConfig();
+        $navigationConfig = new NavigationConfig();
 
-        self::assertNull($config->getRouter());
+        self::assertNull($navigationConfig->getRouter());
 
         $router = self::createStub(RouterInterface::class);
 
         assert($router instanceof RouterInterface);
-        $config->setRouter($router);
+        $navigationConfig->setRouter($router);
 
-        self::assertSame($router, $config->getRouter());
+        self::assertSame($router, $navigationConfig->getRouter());
     }
 
     /**
@@ -91,16 +91,16 @@ final class NavigationConfigTest extends TestCase
      */
     public function testSetRequest(): void
     {
-        $config = new NavigationConfig();
+        $navigationConfig = new NavigationConfig();
 
-        self::assertNull($config->getRequest());
+        self::assertNull($navigationConfig->getRequest());
 
         $request = self::createStub(ServerRequestInterface::class);
 
         assert($request instanceof ServerRequestInterface);
-        $config->setRequest($request);
+        $navigationConfig->setRequest($request);
 
-        self::assertSame($request, $config->getRequest());
+        self::assertSame($request, $navigationConfig->getRequest());
     }
 
     /**
@@ -110,29 +110,29 @@ final class NavigationConfigTest extends TestCase
      */
     public function testSetAuthorization(): void
     {
-        $config = new NavigationConfig();
+        $navigationConfig = new NavigationConfig();
 
-        self::assertNull($config->getAuthorization());
+        self::assertNull($navigationConfig->getAuthorization());
 
         $authorization = self::createStub(AuthorizationInterface::class);
 
         assert($authorization instanceof AuthorizationInterface);
-        $config->setAuthorization($authorization);
+        $navigationConfig->setAuthorization($authorization);
 
-        self::assertSame($authorization, $config->getAuthorization());
+        self::assertSame($authorization, $navigationConfig->getAuthorization());
     }
 
     /** @throws Exception */
     public function testSetPages(): void
     {
-        $config = new NavigationConfig();
+        $navigationConfig = new NavigationConfig();
 
-        self::assertNull($config->getPages());
+        self::assertNull($navigationConfig->getPages());
 
         $pages = [['test' => 'test']];
 
-        $config->setPages($pages);
+        $navigationConfig->setPages($pages);
 
-        self::assertSame($pages, $config->getPages());
+        self::assertSame($pages, $navigationConfig->getPages());
     }
 }

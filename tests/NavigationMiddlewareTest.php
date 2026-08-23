@@ -46,8 +46,13 @@ final class NavigationMiddlewareTest extends TestCase
         assert($urlHelper instanceof UrlHelper);
         assert($authorization instanceof AuthorizationInterface);
         assert($router instanceof RouterInterface);
-        $middleware = new NavigationMiddleware($navigationConfig, $urlHelper, $authorization, $router);
-        self::assertInstanceOf(NavigationMiddleware::class, $middleware);
+        $navigationMiddleware = new NavigationMiddleware(
+            $navigationConfig,
+            $urlHelper,
+            $authorization,
+            $router,
+        );
+        self::assertInstanceOf(NavigationMiddleware::class, $navigationMiddleware);
     }
 
     /**
@@ -62,8 +67,8 @@ final class NavigationMiddlewareTest extends TestCase
 
         assert($navigationConfig instanceof NavigationConfigInterface);
         assert($urlHelper instanceof UrlHelper);
-        $middleware = new NavigationMiddleware($navigationConfig, $urlHelper);
-        self::assertInstanceOf(NavigationMiddleware::class, $middleware);
+        $navigationMiddleware = new NavigationMiddleware($navigationConfig, $urlHelper);
+        self::assertInstanceOf(NavigationMiddleware::class, $navigationMiddleware);
     }
 
     /**
@@ -77,17 +82,13 @@ final class NavigationMiddlewareTest extends TestCase
         $authorization = self::createStub(AuthorizationInterface::class);
         $router        = self::createStub(RouterInterface::class);
 
-        $request = $this->getMockBuilder(ServerRequestInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $request = $this->createMock(ServerRequestInterface::class);
         $request->expects(self::once())
             ->method('getAttribute')
             ->with(RouteResult::class)
-            ->willReturn(null);
+            ->willReturn(value: null);
 
-        $navigationConfig = $this->getMockBuilder(NavigationConfigInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $navigationConfig = $this->createMock(NavigationConfigInterface::class);
         $navigationConfig->expects(self::once())
             ->method('setUrlHelper')
             ->with($urlHelper);
@@ -107,14 +108,17 @@ final class NavigationMiddlewareTest extends TestCase
         assert($urlHelper instanceof UrlHelper);
         assert($authorization instanceof AuthorizationInterface);
         assert($router instanceof RouterInterface);
-        $middleware = new NavigationMiddleware($navigationConfig, $urlHelper, $authorization, $router);
-        self::assertInstanceOf(NavigationMiddleware::class, $middleware);
+        $navigationMiddleware = new NavigationMiddleware(
+            $navigationConfig,
+            $urlHelper,
+            $authorization,
+            $router,
+        );
+        self::assertInstanceOf(NavigationMiddleware::class, $navigationMiddleware);
 
         $expectedResponse = self::createStub(ResponseInterface::class);
 
-        $handler = $this->getMockBuilder(RequestHandlerInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $handler = $this->createMock(RequestHandlerInterface::class);
         $handler->expects(self::once())
             ->method('handle')
             ->with($request)
@@ -122,7 +126,7 @@ final class NavigationMiddlewareTest extends TestCase
 
         assert($request instanceof ServerRequestInterface);
         assert($handler instanceof RequestHandlerInterface);
-        $response = $middleware->process($request, $handler);
+        $response = $navigationMiddleware->process($request, $handler);
 
         self::assertSame($expectedResponse, $response);
     }
@@ -139,17 +143,13 @@ final class NavigationMiddlewareTest extends TestCase
         $router        = self::createStub(RouterInterface::class);
         $routeResult   = self::createStub(RouteResult::class);
 
-        $request = $this->getMockBuilder(ServerRequestInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $request = $this->createMock(ServerRequestInterface::class);
         $request->expects(self::once())
             ->method('getAttribute')
             ->with(RouteResult::class)
             ->willReturn($routeResult);
 
-        $navigationConfig = $this->getMockBuilder(NavigationConfigInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $navigationConfig = $this->createMock(NavigationConfigInterface::class);
         $navigationConfig->expects(self::once())
             ->method('setUrlHelper')
             ->with($urlHelper);
@@ -170,14 +170,17 @@ final class NavigationMiddlewareTest extends TestCase
         assert($urlHelper instanceof UrlHelper);
         assert($authorization instanceof AuthorizationInterface);
         assert($router instanceof RouterInterface);
-        $middleware = new NavigationMiddleware($navigationConfig, $urlHelper, $authorization, $router);
-        self::assertInstanceOf(NavigationMiddleware::class, $middleware);
+        $navigationMiddleware = new NavigationMiddleware(
+            $navigationConfig,
+            $urlHelper,
+            $authorization,
+            $router,
+        );
+        self::assertInstanceOf(NavigationMiddleware::class, $navigationMiddleware);
 
         $expectedResponse = self::createStub(ResponseInterface::class);
 
-        $handler = $this->getMockBuilder(RequestHandlerInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $handler = $this->createMock(RequestHandlerInterface::class);
         $handler->expects(self::once())
             ->method('handle')
             ->with($request)
@@ -185,7 +188,7 @@ final class NavigationMiddlewareTest extends TestCase
 
         assert($request instanceof ServerRequestInterface);
         assert($handler instanceof RequestHandlerInterface);
-        $response = $middleware->process($request, $handler);
+        $response = $navigationMiddleware->process($request, $handler);
 
         self::assertSame($expectedResponse, $response);
     }

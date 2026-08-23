@@ -47,9 +47,9 @@ final class NavigationConfigFactory
             throw new InvalidArgumentException('Could not find navigation configuration key');
         }
 
-        $config = new NavigationConfig();
-        $config->setPages($configuration[self::CONFIG_KEY]);
+        $navigationConfig = new NavigationConfig();
+        $navigationConfig->setPages($configuration[self::CONFIG_KEY]);
 
-        return $config;
+        return $navigationConfig;
     }
 }

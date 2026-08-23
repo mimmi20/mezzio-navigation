@@ -65,9 +65,9 @@ trait NavigationFactoryTrait
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
      * @throws ContainerExceptionInterface
      */
-    private function getPages(ContainerInterface $container, NavigationConfigInterface $config): array
+    private function getPages(ContainerInterface $container, NavigationConfigInterface $navigationConfig): array
     {
-        $pages = $config->getPages();
+        $pages = $navigationConfig->getPages();
 
         if (
             $pages === null
@@ -89,9 +89,9 @@ trait NavigationFactoryTrait
         return $this->preparePages(
             $pages[$this->configName],
             $factory,
-            $config->getRouteResult(),
-            $config->getRouter(),
-            $config->getRequest(),
+            $navigationConfig->getRouteResult(),
+            $navigationConfig->getRouter(),
+            $navigationConfig->getRequest(),
         );
     }
 
@@ -104,19 +104,19 @@ trait NavigationFactoryTrait
      */
     private function preparePages(
         array $pages,
-        PageFactoryInterface $factory,
+        PageFactoryInterface $pageFactory,
         RouteResult | null $routeResult = null,
         RouterInterface | null $router = null,
         ServerRequestInterface | null $request = null,
     ): array {
         return array_map(
-            function (array $pageConfig) use ($factory, $routeResult, $router, $request): PageInterface {
+            function (array $pageConfig) use ($pageFactory, $routeResult, $router, $request): PageInterface {
                 $subPages = null;
 
                 if (array_key_exists('pages', $pageConfig) && is_array($pageConfig['pages'])) {
                     $subPages = $this->preparePages(
                         $pageConfig['pages'],
-                        $factory,
+                        $pageFactory,
                         $routeResult,
                         $router,
                         $request,
@@ -125,10 +125,10 @@ trait NavigationFactoryTrait
 
                 unset($pageConfig['pages']);
 
-                $page = $factory->factory($pageConfig);
+                $page = $pageFactory->factory($pageConfig);
 
                 if ($page instanceof RouteInterface) {
-                    if ($routeResult !== null) {
+                    if ($routeResult instanceof RouteResult) {
                         $page->setRouteMatch($routeResult);
                     }
 

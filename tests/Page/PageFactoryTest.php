@@ -30,14 +30,14 @@ final class PageFactoryTest extends TestCase
     /** @throws InvalidArgumentException */
     public function testFactoryInvalidType(): void
     {
-        $factory = new PageFactory();
-        $options = ['type' => 'test'];
+        $pageFactory = new PageFactory();
+        $options     = ['type' => 'test'];
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Cannot find class test');
         $this->expectExceptionCode(0);
 
-        $factory->factory($options);
+        $pageFactory->factory($options);
     }
 
     /**
@@ -46,7 +46,7 @@ final class PageFactoryTest extends TestCase
      */
     public function testDetectFactoryPage(): void
     {
-        $factory = new PageFactory();
+        $pageFactory = new PageFactory();
 
         PageFactory::addFactory(
             static function (array $page): PageInterface | null {
@@ -64,7 +64,7 @@ final class PageFactoryTest extends TestCase
 
         self::assertInstanceOf(
             Uri::class,
-            $factory->factory(
+            $pageFactory->factory(
                 [
                     'label' => 'URI Page',
                     'factory_uri' => '#',
@@ -74,7 +74,7 @@ final class PageFactoryTest extends TestCase
 
         self::assertInstanceOf(
             Route::class,
-            $factory->factory(
+            $pageFactory->factory(
                 [
                     'label' => 'URI Page',
                     'factory_mvc' => '#',
@@ -89,9 +89,9 @@ final class PageFactoryTest extends TestCase
      */
     public function testDetectMvcPage(): void
     {
-        $factory = new PageFactory();
-        $pages   = [
-            $factory->factory(
+        $pageFactory = new PageFactory();
+        $pages       = [
+            $pageFactory->factory(
                 [
                     'label' => 'MVC Page',
                     'route' => 'home',
@@ -108,8 +108,8 @@ final class PageFactoryTest extends TestCase
      */
     public function testDetectUriPage(): void
     {
-        $factory = new PageFactory();
-        $page    = $factory->factory(
+        $pageFactory = new PageFactory();
+        $page        = $pageFactory->factory(
             [
                 'label' => 'URI Page',
                 'uri' => '#',
@@ -125,8 +125,8 @@ final class PageFactoryTest extends TestCase
      */
     public function testMvcShouldHaveDetectionPrecedence(): void
     {
-        $factory = new PageFactory();
-        $page    = $factory->factory(
+        $pageFactory = new PageFactory();
+        $page        = $pageFactory->factory(
             [
                 'label' => 'MVC Page',
                 'route' => 'index',
@@ -143,8 +143,8 @@ final class PageFactoryTest extends TestCase
      */
     public function testSupportsMvcShorthand(): void
     {
-        $factory = new PageFactory();
-        $mvcPage = $factory->factory(
+        $pageFactory = new PageFactory();
+        $mvcPage     = $pageFactory->factory(
             [
                 'type' => 'route',
                 'label' => 'MVC Page',
@@ -160,8 +160,8 @@ final class PageFactoryTest extends TestCase
      */
     public function testSupportsUriShorthand(): void
     {
-        $factory = new PageFactory();
-        $uriPage = $factory->factory(
+        $pageFactory = new PageFactory();
+        $uriPage     = $pageFactory->factory(
             [
                 'type' => 'uri',
                 'label' => 'URI Page',
@@ -178,8 +178,8 @@ final class PageFactoryTest extends TestCase
      */
     public function testSupportsCustomPageTypes(): void
     {
-        $factory = new PageFactory();
-        $page    = $factory->factory(
+        $pageFactory = new PageFactory();
+        $page        = $pageFactory->factory(
             [
                 'type' => Page::class,
                 'label' => 'My Custom Page',
@@ -192,7 +192,7 @@ final class PageFactoryTest extends TestCase
     /** @throws InvalidArgumentException */
     public function testShouldFailForInvalidType(): void
     {
-        $factory = new PageFactory();
+        $pageFactory = new PageFactory();
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -204,7 +204,7 @@ final class PageFactoryTest extends TestCase
         );
         $this->expectExceptionCode(0);
 
-        $factory->factory(
+        $pageFactory->factory(
             [
                 'type' => InvalidPage::class,
                 'label' => 'My Invalid Page',
@@ -215,13 +215,13 @@ final class PageFactoryTest extends TestCase
     /** @throws InvalidArgumentException */
     public function testShouldFailIfUnableToDetermineType(): void
     {
-        $factory = new PageFactory();
+        $pageFactory = new PageFactory();
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid argument: Unable to determine class to instantiate');
         $this->expectExceptionCode(0);
 
-        $factory->factory(
+        $pageFactory->factory(
             ['label' => 'My Invalid Page'],
         );
     }
