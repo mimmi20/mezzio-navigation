@@ -19,7 +19,6 @@ use Mezzio\Router\RouterInterface;
 use Mimmi20\Mezzio\GenericAuthorization\AuthorizationInterface;
 use Mimmi20\Mezzio\Navigation\Config\NavigationConfigInterface;
 use Mimmi20\Mezzio\Navigation\NavigationMiddleware;
-use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
@@ -30,11 +29,7 @@ use function assert;
 
 final class NavigationMiddlewareTest extends TestCase
 {
-    /**
-     * @throws Exception
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
-     */
+    /** @throws Exception */
     public function testConstructor(): void
     {
         $navigationConfig = self::createStub(NavigationConfigInterface::class);
@@ -46,15 +41,16 @@ final class NavigationMiddlewareTest extends TestCase
         assert($urlHelper instanceof UrlHelper);
         assert($authorization instanceof AuthorizationInterface);
         assert($router instanceof RouterInterface);
-        $middleware = new NavigationMiddleware($navigationConfig, $urlHelper, $authorization, $router);
-        self::assertInstanceOf(NavigationMiddleware::class, $middleware);
+        $navigationMiddleware = new NavigationMiddleware(
+            $navigationConfig,
+            $urlHelper,
+            $authorization,
+            $router,
+        );
+        self::assertInstanceOf(NavigationMiddleware::class, $navigationMiddleware);
     }
 
-    /**
-     * @throws Exception
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
-     */
+    /** @throws Exception */
     public function testConstructorWithoutOptionalParameters(): void
     {
         $navigationConfig = self::createStub(NavigationConfigInterface::class);
@@ -62,32 +58,24 @@ final class NavigationMiddlewareTest extends TestCase
 
         assert($navigationConfig instanceof NavigationConfigInterface);
         assert($urlHelper instanceof UrlHelper);
-        $middleware = new NavigationMiddleware($navigationConfig, $urlHelper);
-        self::assertInstanceOf(NavigationMiddleware::class, $middleware);
+        $navigationMiddleware = new NavigationMiddleware($navigationConfig, $urlHelper);
+        self::assertInstanceOf(NavigationMiddleware::class, $navigationMiddleware);
     }
 
-    /**
-     * @throws Exception
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
-     */
+    /** @throws Exception */
     public function testProcessWithoutRouteResult(): void
     {
         $urlHelper     = self::createStub(UrlHelper::class);
         $authorization = self::createStub(AuthorizationInterface::class);
         $router        = self::createStub(RouterInterface::class);
 
-        $request = $this->getMockBuilder(ServerRequestInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $request = $this->createMock(ServerRequestInterface::class);
         $request->expects(self::once())
             ->method('getAttribute')
             ->with(RouteResult::class)
-            ->willReturn(null);
+            ->willReturn(value: null);
 
-        $navigationConfig = $this->getMockBuilder(NavigationConfigInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $navigationConfig = $this->createMock(NavigationConfigInterface::class);
         $navigationConfig->expects(self::once())
             ->method('setUrlHelper')
             ->with($urlHelper);
@@ -107,14 +95,17 @@ final class NavigationMiddlewareTest extends TestCase
         assert($urlHelper instanceof UrlHelper);
         assert($authorization instanceof AuthorizationInterface);
         assert($router instanceof RouterInterface);
-        $middleware = new NavigationMiddleware($navigationConfig, $urlHelper, $authorization, $router);
-        self::assertInstanceOf(NavigationMiddleware::class, $middleware);
+        $navigationMiddleware = new NavigationMiddleware(
+            $navigationConfig,
+            $urlHelper,
+            $authorization,
+            $router,
+        );
+        self::assertInstanceOf(NavigationMiddleware::class, $navigationMiddleware);
 
         $expectedResponse = self::createStub(ResponseInterface::class);
 
-        $handler = $this->getMockBuilder(RequestHandlerInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $handler = $this->createMock(RequestHandlerInterface::class);
         $handler->expects(self::once())
             ->method('handle')
             ->with($request)
@@ -122,16 +113,12 @@ final class NavigationMiddlewareTest extends TestCase
 
         assert($request instanceof ServerRequestInterface);
         assert($handler instanceof RequestHandlerInterface);
-        $response = $middleware->process($request, $handler);
+        $response = $navigationMiddleware->process($request, $handler);
 
         self::assertSame($expectedResponse, $response);
     }
 
-    /**
-     * @throws Exception
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
-     */
+    /** @throws Exception */
     public function testProcess(): void
     {
         $urlHelper     = self::createStub(UrlHelper::class);
@@ -139,17 +126,13 @@ final class NavigationMiddlewareTest extends TestCase
         $router        = self::createStub(RouterInterface::class);
         $routeResult   = self::createStub(RouteResult::class);
 
-        $request = $this->getMockBuilder(ServerRequestInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $request = $this->createMock(ServerRequestInterface::class);
         $request->expects(self::once())
             ->method('getAttribute')
             ->with(RouteResult::class)
             ->willReturn($routeResult);
 
-        $navigationConfig = $this->getMockBuilder(NavigationConfigInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $navigationConfig = $this->createMock(NavigationConfigInterface::class);
         $navigationConfig->expects(self::once())
             ->method('setUrlHelper')
             ->with($urlHelper);
@@ -170,14 +153,17 @@ final class NavigationMiddlewareTest extends TestCase
         assert($urlHelper instanceof UrlHelper);
         assert($authorization instanceof AuthorizationInterface);
         assert($router instanceof RouterInterface);
-        $middleware = new NavigationMiddleware($navigationConfig, $urlHelper, $authorization, $router);
-        self::assertInstanceOf(NavigationMiddleware::class, $middleware);
+        $navigationMiddleware = new NavigationMiddleware(
+            $navigationConfig,
+            $urlHelper,
+            $authorization,
+            $router,
+        );
+        self::assertInstanceOf(NavigationMiddleware::class, $navigationMiddleware);
 
         $expectedResponse = self::createStub(ResponseInterface::class);
 
-        $handler = $this->getMockBuilder(RequestHandlerInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $handler = $this->createMock(RequestHandlerInterface::class);
         $handler->expects(self::once())
             ->method('handle')
             ->with($request)
@@ -185,7 +171,7 @@ final class NavigationMiddlewareTest extends TestCase
 
         assert($request instanceof ServerRequestInterface);
         assert($handler instanceof RequestHandlerInterface);
-        $response = $middleware->process($request, $handler);
+        $response = $navigationMiddleware->process($request, $handler);
 
         self::assertSame($expectedResponse, $response);
     }

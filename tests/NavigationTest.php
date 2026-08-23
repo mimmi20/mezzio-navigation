@@ -72,25 +72,20 @@ final class NavigationTest extends TestCase
         self::assertCount(3, $pages);
         self::assertCount(3, $navigation);
         self::assertIsArray($pages[$page3->hashCode()]);
-        self::assertSame('page3', $pages[$page3->hashCode()]['uri'], var_export($pages, true));
+        self::assertSame('page3', $pages[$page3->hashCode()]['uri'], var_export($pages, return: true));
         self::assertIsArray($pages[$page1->hashCode()]);
         self::assertSame('page1', $pages[$page1->hashCode()]['uri']);
         self::assertIsArray($pages[$page2->hashCode()]);
         self::assertSame('page2', $pages[$page2->hashCode()]['uri']);
     }
 
-    /**
-     * @throws Exception
-     * @throws InvalidArgumentException
-     */
+    /** @throws InvalidArgumentException */
     public function testAddChildPageTwice(): void
     {
         $navigation = new Navigation();
         $hashCode   = 'abc';
 
-        $childPage = $this->getMockBuilder(Page\PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $childPage = $this->createMock(Page\PageInterface::class);
         $childPage->expects(self::exactly(2))
             ->method('hashCode')
             ->willReturn($hashCode);
@@ -128,9 +123,7 @@ final class NavigationTest extends TestCase
         $code1      = 'code 1';
         $code2      = 'code 2';
 
-        $childPage1 = $this->getMockBuilder(Page\PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $childPage1 = $this->createMock(Page\PageInterface::class);
         $childPage1->expects(self::once())
             ->method('hashCode')
             ->willReturn($code1);
@@ -145,15 +138,13 @@ final class NavigationTest extends TestCase
         $childPage1->expects(self::never())
             ->method('removePage');
 
-        $childPage2 = $this->getMockBuilder(Page\PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $childPage2 = $this->createMock(Page\PageInterface::class);
         $childPage2->expects(self::once())
             ->method('hashCode')
             ->willReturn($code2);
         $childPage2->expects(self::exactly(2))
             ->method('getOrder')
-            ->willReturn(null);
+            ->willReturn(value: null);
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($navigation);
@@ -181,9 +172,7 @@ final class NavigationTest extends TestCase
         $code1      = 'code 1';
         $code2      = 'code 2';
 
-        $childPage1 = $this->getMockBuilder(Page\PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $childPage1 = $this->createMock(Page\PageInterface::class);
         $childPage1->expects(self::once())
             ->method('hashCode')
             ->willReturn($code1);
@@ -198,15 +187,13 @@ final class NavigationTest extends TestCase
         $childPage1->expects(self::never())
             ->method('removePage');
 
-        $childPage2 = $this->getMockBuilder(Page\PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $childPage2 = $this->createMock(Page\PageInterface::class);
         $childPage2->expects(self::exactly(2))
             ->method('hashCode')
             ->willReturn($code2);
         $childPage2->expects(self::once())
             ->method('getOrder')
-            ->willReturn(null);
+            ->willReturn(value: null);
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($navigation);
@@ -234,9 +221,7 @@ final class NavigationTest extends TestCase
         $code1      = 'code 1';
         $code2      = 'code 2';
 
-        $childPage1 = $this->getMockBuilder(Page\PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $childPage1 = $this->createMock(Page\PageInterface::class);
         $childPage1->expects(self::once())
             ->method('hashCode')
             ->willReturn($code1);
@@ -251,15 +236,13 @@ final class NavigationTest extends TestCase
         $childPage1->expects(self::never())
             ->method('removePage');
 
-        $childPage2 = $this->getMockBuilder(Page\PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $childPage2 = $this->createMock(Page\PageInterface::class);
         $childPage2->expects(self::once())
             ->method('hashCode')
             ->willReturn($code2);
         $childPage2->expects(self::exactly(2))
             ->method('getOrder')
-            ->willReturn(null);
+            ->willReturn(value: null);
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($navigation);
@@ -287,9 +270,7 @@ final class NavigationTest extends TestCase
         $code1      = 'code 1';
         $code2      = 'code 2';
 
-        $childPage1 = $this->getMockBuilder(Page\PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $childPage1 = $this->createMock(Page\PageInterface::class);
         $childPage1->expects(self::once())
             ->method('hashCode')
             ->willReturn($code1);
@@ -300,15 +281,13 @@ final class NavigationTest extends TestCase
             ->method('setParent')
             ->with($navigation);
 
-        $childPage2 = $this->getMockBuilder(Page\PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $childPage2 = $this->createMock(Page\PageInterface::class);
         $childPage2->expects(self::once())
             ->method('hashCode')
             ->willReturn($code2);
         $childPage2->expects(self::never())
             ->method('getOrder')
-            ->willReturn(null);
+            ->willReturn(value: null);
         $childPage2->expects(self::never())
             ->method('setParent')
             ->with($navigation);
@@ -320,7 +299,7 @@ final class NavigationTest extends TestCase
         $childPage1->expects(self::once())
             ->method('hasPage')
             ->with($childPage2, true)
-            ->willReturn(true);
+            ->willReturn(value: true);
         $childPage1->expects(self::once())
             ->method('removePage')
             ->with($childPage2, true);
@@ -330,7 +309,7 @@ final class NavigationTest extends TestCase
         $navigation->addPage($childPage1);
         $childPage1->addPage($childPage2);
 
-        self::assertTrue($navigation->removePage($childPage2, true));
+        self::assertTrue($navigation->removePage($childPage2, recursive: true));
         self::assertSame([$code1 => $childPage1], $navigation->getPages());
     }
 
@@ -344,9 +323,7 @@ final class NavigationTest extends TestCase
         $code1      = 'code 1';
         $code2      = 'code 2';
 
-        $childPage1 = $this->getMockBuilder(Page\PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $childPage1 = $this->createMock(Page\PageInterface::class);
         $childPage1->expects(self::once())
             ->method('hashCode')
             ->willReturn($code1);
@@ -357,15 +334,13 @@ final class NavigationTest extends TestCase
             ->method('setParent')
             ->with($navigation);
 
-        $childPage2 = $this->getMockBuilder(Page\PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $childPage2 = $this->createMock(Page\PageInterface::class);
         $childPage2->expects(self::once())
             ->method('hashCode')
             ->willReturn($code2);
         $childPage2->expects(self::never())
             ->method('getOrder')
-            ->willReturn(null);
+            ->willReturn(value: null);
         $childPage2->expects(self::never())
             ->method('setParent')
             ->with($navigation);
@@ -377,7 +352,7 @@ final class NavigationTest extends TestCase
         $childPage1->expects(self::once())
             ->method('hasPage')
             ->with($childPage2, true)
-            ->willReturn(false);
+            ->willReturn(value: false);
         $childPage1->expects(self::never())
             ->method('removePage');
 
@@ -386,7 +361,7 @@ final class NavigationTest extends TestCase
         $navigation->addPage($childPage1);
         $childPage1->addPage($childPage2);
 
-        self::assertFalse($navigation->removePage($childPage2, true));
+        self::assertFalse($navigation->removePage($childPage2, recursive: true));
         self::assertSame([$code1 => $childPage1], $navigation->getPages());
     }
 
@@ -400,9 +375,7 @@ final class NavigationTest extends TestCase
         $code1      = 'code 1';
         $code2      = 'code 2';
 
-        $childPage1 = $this->getMockBuilder(Page\PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $childPage1 = $this->createMock(Page\PageInterface::class);
         $childPage1->expects(self::once())
             ->method('hashCode')
             ->willReturn($code1);
@@ -413,15 +386,13 @@ final class NavigationTest extends TestCase
             ->method('setParent')
             ->with($navigation);
 
-        $childPage2 = $this->getMockBuilder(Page\PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $childPage2 = $this->createMock(Page\PageInterface::class);
         $childPage2->expects(self::once())
             ->method('hashCode')
             ->willReturn($code2);
         $childPage2->expects(self::exactly(2))
             ->method('getOrder')
-            ->willReturn(null);
+            ->willReturn(value: null);
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($navigation);
@@ -444,9 +415,7 @@ final class NavigationTest extends TestCase
         $code1      = 'code 1';
         $code2      = 'code 2';
 
-        $childPage1 = $this->getMockBuilder(Page\PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $childPage1 = $this->createMock(Page\PageInterface::class);
         $childPage1->expects(self::once())
             ->method('hashCode')
             ->willReturn($code1);
@@ -457,15 +426,13 @@ final class NavigationTest extends TestCase
             ->method('setParent')
             ->with($navigation);
 
-        $childPage2 = $this->getMockBuilder(Page\PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $childPage2 = $this->createMock(Page\PageInterface::class);
         $childPage2->expects(self::exactly(2))
             ->method('hashCode')
             ->willReturn($code2);
         $childPage2->expects(self::once())
             ->method('getOrder')
-            ->willReturn(null);
+            ->willReturn(value: null);
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($navigation);
@@ -488,9 +455,7 @@ final class NavigationTest extends TestCase
         $code1      = 'code 1';
         $code2      = 'code 2';
 
-        $childPage1 = $this->getMockBuilder(Page\PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $childPage1 = $this->createMock(Page\PageInterface::class);
         $childPage1->expects(self::once())
             ->method('hashCode')
             ->willReturn($code1);
@@ -501,15 +466,13 @@ final class NavigationTest extends TestCase
             ->method('setParent')
             ->with($navigation);
 
-        $childPage2 = $this->getMockBuilder(Page\PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $childPage2 = $this->createMock(Page\PageInterface::class);
         $childPage2->expects(self::once())
             ->method('hashCode')
             ->willReturn($code2);
         $childPage2->expects(self::exactly(2))
             ->method('getOrder')
-            ->willReturn(null);
+            ->willReturn(value: null);
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($navigation);
@@ -532,9 +495,7 @@ final class NavigationTest extends TestCase
         $code1      = 'code 1';
         $code2      = 'code 2';
 
-        $childPage1 = $this->getMockBuilder(Page\PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $childPage1 = $this->createMock(Page\PageInterface::class);
         $childPage1->expects(self::once())
             ->method('hashCode')
             ->willReturn($code1);
@@ -545,15 +506,13 @@ final class NavigationTest extends TestCase
             ->method('setParent')
             ->with($navigation);
 
-        $childPage2 = $this->getMockBuilder(Page\PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $childPage2 = $this->createMock(Page\PageInterface::class);
         $childPage2->expects(self::once())
             ->method('hashCode')
             ->willReturn($code2);
         $childPage2->expects(self::never())
             ->method('getOrder')
-            ->willReturn(null);
+            ->willReturn(value: null);
         $childPage2->expects(self::never())
             ->method('setParent')
             ->with($navigation);
@@ -561,7 +520,7 @@ final class NavigationTest extends TestCase
         $childPage1->expects(self::once())
             ->method('hasPage')
             ->with($childPage2, true)
-            ->willReturn(true);
+            ->willReturn(value: true);
         $childPage1->expects(self::never())
             ->method('removePage');
 
@@ -570,7 +529,7 @@ final class NavigationTest extends TestCase
         $navigation->addPage($childPage1);
         $childPage1->addPage($childPage2);
 
-        self::assertTrue($navigation->hasPage($childPage2, true));
+        self::assertTrue($navigation->hasPage($childPage2, recursive: true));
     }
 
     /**
@@ -583,9 +542,7 @@ final class NavigationTest extends TestCase
         $code1      = 'code 1';
         $code2      = 'code 2';
 
-        $childPage1 = $this->getMockBuilder(Page\PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $childPage1 = $this->createMock(Page\PageInterface::class);
         $childPage1->expects(self::once())
             ->method('hashCode')
             ->willReturn($code1);
@@ -596,15 +553,13 @@ final class NavigationTest extends TestCase
             ->method('setParent')
             ->with($navigation);
 
-        $childPage2 = $this->getMockBuilder(Page\PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $childPage2 = $this->createMock(Page\PageInterface::class);
         $childPage2->expects(self::once())
             ->method('hashCode')
             ->willReturn($code2);
         $childPage2->expects(self::never())
             ->method('getOrder')
-            ->willReturn(null);
+            ->willReturn(value: null);
         $childPage2->expects(self::never())
             ->method('setParent')
             ->with($navigation);
@@ -612,7 +567,7 @@ final class NavigationTest extends TestCase
         $childPage1->expects(self::once())
             ->method('hasPage')
             ->with($childPage2, true)
-            ->willReturn(false);
+            ->willReturn(value: false);
         $childPage1->expects(self::never())
             ->method('removePage');
 
@@ -621,7 +576,7 @@ final class NavigationTest extends TestCase
         $navigation->addPage($childPage1);
         $childPage1->addPage($childPage2);
 
-        self::assertFalse($navigation->hasPage($childPage2, true));
+        self::assertFalse($navigation->hasPage($childPage2, recursive: true));
     }
 
     /**
@@ -637,9 +592,7 @@ final class NavigationTest extends TestCase
         $code1 = 'code 1';
         $code2 = 'code 2';
 
-        $childPage1 = $this->getMockBuilder(Page\PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $childPage1 = $this->createMock(Page\PageInterface::class);
         $childPage1->expects(self::once())
             ->method('hashCode')
             ->willReturn($code1);
@@ -651,23 +604,21 @@ final class NavigationTest extends TestCase
             ->with($navigation);
         $childPage1->expects(self::once())
             ->method('isVisible')
-            ->willReturn(false);
+            ->willReturn(value: false);
 
-        $childPage2 = $this->getMockBuilder(Page\PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $childPage2 = $this->createMock(Page\PageInterface::class);
         $childPage2->expects(self::once())
             ->method('hashCode')
             ->willReturn($code2);
         $childPage2->expects(self::once())
             ->method('getOrder')
-            ->willReturn(null);
+            ->willReturn(value: null);
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($navigation);
         $childPage2->expects(self::once())
             ->method('isVisible')
-            ->willReturn(false);
+            ->willReturn(value: false);
 
         assert($childPage1 instanceof Page\PageInterface);
         assert($childPage2 instanceof Page\PageInterface);
@@ -675,7 +626,7 @@ final class NavigationTest extends TestCase
         $navigation->addPage($childPage2);
 
         self::assertTrue($navigation->hasPages());
-        self::assertFalse($navigation->hasPages(true));
+        self::assertFalse($navigation->hasPages(onlyVisible: true));
     }
 
     /**
@@ -691,9 +642,7 @@ final class NavigationTest extends TestCase
         $code1 = 'code 1';
         $code2 = 'code 2';
 
-        $childPage1 = $this->getMockBuilder(Page\PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $childPage1 = $this->createMock(Page\PageInterface::class);
         $childPage1->expects(self::once())
             ->method('hashCode')
             ->willReturn($code1);
@@ -705,23 +654,21 @@ final class NavigationTest extends TestCase
             ->with($navigation);
         $childPage1->expects(self::once())
             ->method('isVisible')
-            ->willReturn(false);
+            ->willReturn(value: false);
 
-        $childPage2 = $this->getMockBuilder(Page\PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $childPage2 = $this->createMock(Page\PageInterface::class);
         $childPage2->expects(self::once())
             ->method('hashCode')
             ->willReturn($code2);
         $childPage2->expects(self::once())
             ->method('getOrder')
-            ->willReturn(null);
+            ->willReturn(value: null);
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($navigation);
         $childPage2->expects(self::once())
             ->method('isVisible')
-            ->willReturn(true);
+            ->willReturn(value: true);
 
         assert($childPage1 instanceof Page\PageInterface);
         assert($childPage2 instanceof Page\PageInterface);
@@ -729,7 +676,7 @@ final class NavigationTest extends TestCase
         $navigation->addPage($childPage2);
 
         self::assertTrue($navigation->hasPages());
-        self::assertTrue($navigation->hasPages(true));
+        self::assertTrue($navigation->hasPages(onlyVisible: true));
     }
 
     /**
@@ -747,9 +694,7 @@ final class NavigationTest extends TestCase
         $code1 = 'code 1';
         $code2 = 'code 2';
 
-        $childPage1 = $this->getMockBuilder(Page\PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $childPage1 = $this->createMock(Page\PageInterface::class);
         $childPage1->expects(self::once())
             ->method('hashCode')
             ->willReturn($code1);
@@ -764,15 +709,13 @@ final class NavigationTest extends TestCase
         $childPage1->expects(self::never())
             ->method('get');
 
-        $childPage2 = $this->getMockBuilder(Page\PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $childPage2 = $this->createMock(Page\PageInterface::class);
         $childPage2->expects(self::once())
             ->method('hashCode')
             ->willReturn($code2);
         $childPage2->expects(self::exactly(2))
             ->method('getOrder')
-            ->willReturn(null);
+            ->willReturn(value: null);
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($navigation);
@@ -807,9 +750,7 @@ final class NavigationTest extends TestCase
         $code2 = 'code 2';
         $code3 = 'code 3';
 
-        $childPage1 = $this->getMockBuilder(Page\PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $childPage1 = $this->createMock(Page\PageInterface::class);
         $childPage1->expects(self::once())
             ->method('hashCode')
             ->willReturn($code1);
@@ -826,15 +767,13 @@ final class NavigationTest extends TestCase
             ->with($property)
             ->willReturn($value);
 
-        $childPage2 = $this->getMockBuilder(Page\PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $childPage2 = $this->createMock(Page\PageInterface::class);
         $childPage2->expects(self::once())
             ->method('hashCode')
             ->willReturn($code2);
         $childPage2->expects(self::exactly(2))
             ->method('getOrder')
-            ->willReturn(null);
+            ->willReturn(value: null);
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($navigation);
@@ -845,15 +784,13 @@ final class NavigationTest extends TestCase
             ->with($property)
             ->willReturn($value);
 
-        $childPage3 = $this->getMockBuilder(Page\PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $childPage3 = $this->createMock(Page\PageInterface::class);
         $childPage3->expects(self::once())
             ->method('hashCode')
             ->willReturn($code3);
         $childPage3->expects(self::exactly(2))
             ->method('getOrder')
-            ->willReturn(null);
+            ->willReturn(value: null);
         $childPage3->expects(self::once())
             ->method('setParent')
             ->with($navigation);
@@ -862,7 +799,7 @@ final class NavigationTest extends TestCase
         $childPage3->expects(self::once())
             ->method('get')
             ->with($property)
-            ->willReturn(null);
+            ->willReturn(value: null);
 
         assert($childPage1 instanceof Page\PageInterface);
         assert($childPage2 instanceof Page\PageInterface);
@@ -904,9 +841,7 @@ final class NavigationTest extends TestCase
         $code1 = 'code 1';
         $code2 = 'code 2';
 
-        $childPage1 = $this->getMockBuilder(Page\PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $childPage1 = $this->createMock(Page\PageInterface::class);
         $childPage1->expects(self::once())
             ->method('hashCode')
             ->willReturn($code1);
@@ -923,15 +858,13 @@ final class NavigationTest extends TestCase
             ->with($property)
             ->willReturn($value);
 
-        $childPage2 = $this->getMockBuilder(Page\PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $childPage2 = $this->createMock(Page\PageInterface::class);
         $childPage2->expects(self::once())
             ->method('hashCode')
             ->willReturn($code2);
         $childPage2->expects(self::exactly(2))
             ->method('getOrder')
-            ->willReturn(null);
+            ->willReturn(value: null);
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($navigation);
@@ -975,9 +908,7 @@ final class NavigationTest extends TestCase
         $code1      = 'code 1';
         $code2      = 'code 2';
 
-        $childPage1 = $this->getMockBuilder(Page\PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $childPage1 = $this->createMock(Page\PageInterface::class);
         $childPage1->expects(self::once())
             ->method('hashCode')
             ->willReturn($code1);
@@ -992,15 +923,13 @@ final class NavigationTest extends TestCase
         $childPage1->expects(self::never())
             ->method('get');
 
-        $childPage2 = $this->getMockBuilder(Page\PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $childPage2 = $this->createMock(Page\PageInterface::class);
         $childPage2->expects(self::once())
             ->method('hashCode')
             ->willReturn($code2);
         $childPage2->expects(self::exactly(2))
             ->method('getOrder')
-            ->willReturn(null);
+            ->willReturn(value: null);
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($navigation);
@@ -1049,9 +978,7 @@ final class NavigationTest extends TestCase
         $code1      = 'code 1';
         $code2      = 'code 2';
 
-        $childPage1 = $this->getMockBuilder(Page\PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $childPage1 = $this->createMock(Page\PageInterface::class);
         $childPage1->expects(self::once())
             ->method('hashCode')
             ->willReturn($code1);
@@ -1066,15 +993,13 @@ final class NavigationTest extends TestCase
         $childPage1->expects(self::never())
             ->method('get');
 
-        $childPage2 = $this->getMockBuilder(Page\PageInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $childPage2 = $this->createMock(Page\PageInterface::class);
         $childPage2->expects(self::once())
             ->method('hashCode')
             ->willReturn($code2);
         $childPage2->expects(self::exactly(2))
             ->method('getOrder')
-            ->willReturn(null);
+            ->willReturn(value: null);
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($navigation);

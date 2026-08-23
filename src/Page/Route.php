@@ -106,7 +106,7 @@ final class Route extends AbstractPage implements RouteInterface
             $reqParams  = [];
             $pageParams = $this->getParams();
 
-            if ($this->getRouteMatch() !== null) {
+            if ($this->getRouteMatch() instanceof RouteResult) {
                 /** @var array<string> $reqParams */
                 $reqParams = $this->getRouteMatch()->getMatchedParams();
 
@@ -170,7 +170,10 @@ final class Route extends AbstractPage implements RouteInterface
 
         if ($this->getRoute() !== null) {
             $name = $this->getRoute();
-        } elseif ($this->getRouteMatch() !== null && !$this->getRouteMatch()->isFailure()) {
+        } elseif (
+            $this->getRouteMatch() instanceof RouteResult
+            && !$this->getRouteMatch()->isFailure()
+        ) {
             $name = $this->getRouteMatch()->getMatchedRouteName();
         }
 
@@ -195,7 +198,7 @@ final class Route extends AbstractPage implements RouteInterface
 
         $params = $this->getParams();
 
-        if ($this->useRouteMatch() && $this->getRouteMatch() !== null) {
+        if ($this->useRouteMatch() && $this->getRouteMatch() instanceof RouteResult) {
             $params = array_merge(
                 $this->getRouteMatch()->getMatchedParams(),
                 $params,
@@ -336,9 +339,9 @@ final class Route extends AbstractPage implements RouteInterface
      * @throws void
      */
     #[Override]
-    public function setRouteMatch(RouteResult $matches): void
+    public function setRouteMatch(RouteResult $routeResult): void
     {
-        $this->routeMatch = $matches;
+        $this->routeMatch = $routeResult;
     }
 
     /**

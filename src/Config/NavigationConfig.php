@@ -28,7 +28,7 @@ final class NavigationConfig implements NavigationConfigInterface
     private UrlHelper | null $urlHelper                  = null;
     private RouteResult | null $routeResult              = null;
     private RouterInterface | null $router               = null;
-    private ServerRequestInterface | null $request       = null;
+    private ServerRequestInterface | null $serverRequest = null;
     private AuthorizationInterface | null $authorization = null;
 
     /** @var array<int, array<string, string>>|null */
@@ -80,14 +80,14 @@ final class NavigationConfig implements NavigationConfigInterface
     #[Override]
     public function getRequest(): ServerRequestInterface | null
     {
-        return $this->request;
+        return $this->serverRequest;
     }
 
     /** @throws void */
     #[Override]
-    public function setRequest(ServerRequestInterface $request): void
+    public function setRequest(ServerRequestInterface $serverRequest): void
     {
-        $this->request = $request;
+        $this->serverRequest = $serverRequest;
     }
 
     /** @throws void */

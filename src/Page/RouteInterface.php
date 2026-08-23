@@ -105,7 +105,7 @@ interface RouteInterface extends PageInterface
      *
      * @throws void
      */
-    public function setRouteMatch(RouteResult $matches): void;
+    public function setRouteMatch(RouteResult $routeResult): void;
 
     /**
      * Get the useRouteMatch flag

@@ -39,7 +39,7 @@ $rules = require 'vendor/mimmi20/coding-standard/src/php-cs-fixer.config.php';
 $config = new Config();
 
 return $config
-    ->setRiskyAllowed(true)
+    ->setRiskyAllowed(true)->setUnsupportedPhpVersionAllowed(true)
     ->setRules(
         array_merge(
             $rules,
