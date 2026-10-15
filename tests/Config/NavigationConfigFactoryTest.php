@@ -16,7 +16,6 @@ namespace Mimmi20\MezzioTest\Navigation\Config;
 use Mimmi20\Mezzio\Navigation\Config\NavigationConfig;
 use Mimmi20\Mezzio\Navigation\Config\NavigationConfigFactory;
 use Mimmi20\Mezzio\Navigation\Exception\InvalidArgumentException;
-use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerExceptionInterface;
@@ -30,8 +29,6 @@ final class NavigationConfigFactoryTest extends TestCase
      * @throws Exception
      * @throws InvalidArgumentException
      * @throws ContainerExceptionInterface
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testFactoryWithoutNavigationConfig(): void
     {
@@ -55,8 +52,6 @@ final class NavigationConfigFactoryTest extends TestCase
      * @throws Exception
      * @throws InvalidArgumentException
      * @throws ContainerExceptionInterface
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testFactoryWithoutNavigationConfig2(): void
     {
@@ -80,8 +75,6 @@ final class NavigationConfigFactoryTest extends TestCase
      * @throws Exception
      * @throws InvalidArgumentException
      * @throws ContainerExceptionInterface
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testFactoryWithoutNavigationConfig3(): void
     {
@@ -107,8 +100,6 @@ final class NavigationConfigFactoryTest extends TestCase
      * @throws Exception
      * @throws InvalidArgumentException
      * @throws ContainerExceptionInterface
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testFactory(): void
     {

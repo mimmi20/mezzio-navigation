@@ -23,7 +23,6 @@ use Mimmi20\Mezzio\Navigation\Exception\InvalidArgumentException;
 use Mimmi20\Mezzio\Navigation\Exception\OutOfBoundsException;
 use Mimmi20\Mezzio\Navigation\Page\PageInterface;
 use Mimmi20\Mezzio\Navigation\Page\Route;
-use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 
@@ -467,12 +466,7 @@ final class RouteTest extends TestCase
         $route->setParent($route);
     }
 
-    /**
-     * @throws Exception
-     * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
-     */
+    /** @throws InvalidArgumentException */
     public function testDuplicateSetParent(): void
     {
         $route = new Route();
@@ -496,8 +490,6 @@ final class RouteTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testSetTwoParents(): void
     {
@@ -561,8 +553,6 @@ final class RouteTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testSetOrderWithParent(): void
     {
@@ -658,8 +648,6 @@ final class RouteTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testSetVisibleWithParent(): void
     {
@@ -728,8 +716,6 @@ final class RouteTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testSetActiveWithPages(): void
     {
@@ -752,8 +738,6 @@ final class RouteTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testSetActiveWithRouteMatchWithoutRoute(): void
     {
@@ -781,8 +765,6 @@ final class RouteTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testSetActiveWithRouteMatchWithRouteNotMatch(): void
     {
@@ -809,8 +791,6 @@ final class RouteTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testSetActiveWithRouteMatchWithRouteMatch(): void
     {
@@ -980,8 +960,6 @@ final class RouteTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testSetRouteMatch(): void
     {
@@ -1015,8 +993,6 @@ final class RouteTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testSetRouter(): void
     {
@@ -1033,8 +1009,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws DomainException
-     * @throws RuntimeException
      * @throws InvalidArgumentException
+     * @throws RuntimeException
      */
     public function testGetHrefMissingRouter(): void
     {
@@ -1051,11 +1027,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws DomainException
-     * @throws RuntimeException
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
-     * @throws \PHPUnit\Framework\InvalidArgumentException
+     * @throws RuntimeException
      */
     public function testGetHrefMissingRoute(): void
     {
@@ -1078,8 +1051,6 @@ final class RouteTest extends TestCase
      * @throws InvalidArgumentException
      * @throws DomainException
      * @throws RuntimeException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testGetHrefWithRoute(): void
     {
@@ -1106,8 +1077,6 @@ final class RouteTest extends TestCase
      * @throws InvalidArgumentException
      * @throws DomainException
      * @throws RuntimeException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testGetHrefWithRouteMatch(): void
     {
@@ -1151,8 +1120,6 @@ final class RouteTest extends TestCase
      * @throws InvalidArgumentException
      * @throws DomainException
      * @throws RuntimeException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testGetHrefWithFragmentIdentifier(): void
     {
@@ -1198,8 +1165,6 @@ final class RouteTest extends TestCase
      * @throws InvalidArgumentException
      * @throws DomainException
      * @throws RuntimeException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testGetHrefWithQuery(): void
     {
@@ -1245,8 +1210,6 @@ final class RouteTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testToArray(): void
     {
@@ -1305,12 +1268,7 @@ final class RouteTest extends TestCase
         $route->addPage($route);
     }
 
-    /**
-     * @throws Exception
-     * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
-     */
+    /** @throws InvalidArgumentException */
     public function testAddChildPageTwice(): void
     {
         $route    = new Route();
@@ -1359,8 +1317,6 @@ final class RouteTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testRemovePageByIndex(): void
     {
@@ -1402,8 +1358,6 @@ final class RouteTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testRemovePageByObject(): void
     {
@@ -1445,8 +1399,6 @@ final class RouteTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testRemovePageNotExistingPage(): void
     {
@@ -1488,8 +1440,6 @@ final class RouteTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testRemovePageRecursive(): void
     {
@@ -1539,8 +1489,6 @@ final class RouteTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testRemovePageRecursiveNotFound(): void
     {
@@ -1589,8 +1537,6 @@ final class RouteTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testHasPageByIndex(): void
     {
@@ -1631,8 +1577,6 @@ final class RouteTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testHasPageByObject(): void
     {
@@ -1673,8 +1617,6 @@ final class RouteTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testHasNotExistingPage(): void
     {
@@ -1715,8 +1657,6 @@ final class RouteTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testHasPageRecursive(): void
     {
@@ -1764,8 +1704,6 @@ final class RouteTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testHasPageRecursiveNotFound(): void
     {
@@ -1813,8 +1751,6 @@ final class RouteTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testHasNoVisiblePages(): void
     {
@@ -1865,8 +1801,6 @@ final class RouteTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testHasVisiblePages(): void
     {
@@ -1917,8 +1851,6 @@ final class RouteTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testFindOneBy(): void
     {
@@ -1975,8 +1907,6 @@ final class RouteTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testFindAllBy(): void
     {
@@ -2069,8 +1999,6 @@ final class RouteTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testCallFindAllBy(): void
     {
@@ -2146,8 +2074,6 @@ final class RouteTest extends TestCase
      * @throws Exception
      * @throws InvalidArgumentException
      * @throws OutOfBoundsException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testCurrent(): void
     {
@@ -2218,8 +2144,6 @@ final class RouteTest extends TestCase
      * @throws Exception
      * @throws InvalidArgumentException
      * @throws OutOfBoundsException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testRewind(): void
     {

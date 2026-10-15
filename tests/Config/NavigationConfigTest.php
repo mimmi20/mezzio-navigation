@@ -18,7 +18,6 @@ use Mezzio\Router\RouteResult;
 use Mezzio\Router\RouterInterface;
 use Mimmi20\Mezzio\GenericAuthorization\AuthorizationInterface;
 use Mimmi20\Mezzio\Navigation\Config\NavigationConfig;
-use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ServerRequestInterface;
@@ -27,11 +26,7 @@ use function assert;
 
 final class NavigationConfigTest extends TestCase
 {
-    /**
-     * @throws Exception
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
-     */
+    /** @throws Exception */
     public function testSetUrlHelper(): void
     {
         $navigationConfig = new NavigationConfig();
@@ -46,11 +41,7 @@ final class NavigationConfigTest extends TestCase
         self::assertSame($helper, $navigationConfig->getUrlHelper());
     }
 
-    /**
-     * @throws Exception
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
-     */
+    /** @throws Exception */
     public function testSetRouteResult(): void
     {
         $navigationConfig = new NavigationConfig();
@@ -65,11 +56,7 @@ final class NavigationConfigTest extends TestCase
         self::assertSame($routeResult, $navigationConfig->getRouteResult());
     }
 
-    /**
-     * @throws Exception
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
-     */
+    /** @throws Exception */
     public function testSetRouter(): void
     {
         $navigationConfig = new NavigationConfig();
@@ -84,11 +71,7 @@ final class NavigationConfigTest extends TestCase
         self::assertSame($router, $navigationConfig->getRouter());
     }
 
-    /**
-     * @throws Exception
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
-     */
+    /** @throws Exception */
     public function testSetRequest(): void
     {
         $navigationConfig = new NavigationConfig();
@@ -103,11 +86,7 @@ final class NavigationConfigTest extends TestCase
         self::assertSame($request, $navigationConfig->getRequest());
     }
 
-    /**
-     * @throws Exception
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
-     */
+    /** @throws Exception */
     public function testSetAuthorization(): void
     {
         $navigationConfig = new NavigationConfig();

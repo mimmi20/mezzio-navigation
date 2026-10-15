@@ -19,7 +19,6 @@ use Mimmi20\Mezzio\Navigation\Exception\InvalidArgumentException;
 use Mimmi20\Mezzio\Navigation\Exception\OutOfBoundsException;
 use Mimmi20\Mezzio\Navigation\Page\PageInterface;
 use Mimmi20\Mezzio\Navigation\Page\Uri;
-use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
@@ -426,12 +425,7 @@ final class UriTest extends TestCase
         $uri->setParent($uri);
     }
 
-    /**
-     * @throws Exception
-     * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
-     */
+    /** @throws InvalidArgumentException */
     public function testDuplicateSetParent(): void
     {
         $uri = new Uri();
@@ -455,8 +449,6 @@ final class UriTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testSetTwoParents(): void
     {
@@ -520,8 +512,6 @@ final class UriTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testSetOrderWithParent(): void
     {
@@ -607,8 +597,6 @@ final class UriTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testSetVisibleWithParent(): void
     {
@@ -687,8 +675,6 @@ final class UriTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testSetActiveWithPages(): void
     {
@@ -878,8 +864,6 @@ final class UriTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testIsActiveReturnsTrueWhenHasMatchingRequestUri(): void
     {
@@ -911,8 +895,6 @@ final class UriTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testIsActiveReturnsFalseOnNonMatchingRequestUri(): void
     {
@@ -973,12 +955,7 @@ final class UriTest extends TestCase
         $uri->addPage($uri);
     }
 
-    /**
-     * @throws Exception
-     * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
-     */
+    /** @throws InvalidArgumentException */
     public function testAddChildPageTwice(): void
     {
         $uri      = new Uri();
@@ -1027,8 +1004,6 @@ final class UriTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testRemovePageByIndex(): void
     {
@@ -1086,8 +1061,6 @@ final class UriTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testRemovePageByObject(): void
     {
@@ -1145,8 +1118,6 @@ final class UriTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testRemovePageNotExistingPage(): void
     {
@@ -1204,8 +1175,6 @@ final class UriTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testRemovePageRecursive(): void
     {
@@ -1267,8 +1236,6 @@ final class UriTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testRemovePageRecursiveNotFound(): void
     {
@@ -1329,8 +1296,6 @@ final class UriTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testHasPageByIndex(): void
     {
@@ -1387,8 +1352,6 @@ final class UriTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testHasPageByObject(): void
     {
@@ -1445,8 +1408,6 @@ final class UriTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testHasNotExistingPage(): void
     {
@@ -1503,8 +1464,6 @@ final class UriTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testHasPageRecursive(): void
     {
@@ -1564,8 +1523,6 @@ final class UriTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testHasPageRecursiveNotFound(): void
     {
@@ -1625,8 +1582,6 @@ final class UriTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testHasNoVisiblePages(): void
     {
@@ -1689,8 +1644,6 @@ final class UriTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testHasVisiblePages(): void
     {
@@ -1753,8 +1706,6 @@ final class UriTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testFindOneBy(): void
     {
@@ -1818,8 +1769,6 @@ final class UriTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testFindAllBy(): void
     {
@@ -1924,8 +1873,6 @@ final class UriTest extends TestCase
     /**
      * @throws Exception
      * @throws InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testCallFindAllBy(): void
     {
@@ -2009,8 +1956,6 @@ final class UriTest extends TestCase
      * @throws Exception
      * @throws InvalidArgumentException
      * @throws OutOfBoundsException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testCurrent(): void
     {
@@ -2089,8 +2034,6 @@ final class UriTest extends TestCase
      * @throws Exception
      * @throws InvalidArgumentException
      * @throws OutOfBoundsException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testRewind(): void
     {

@@ -19,7 +19,6 @@ use Mezzio\Router\RouterInterface;
 use Mimmi20\Mezzio\GenericAuthorization\AuthorizationInterface;
 use Mimmi20\Mezzio\Navigation\Config\NavigationConfigInterface;
 use Mimmi20\Mezzio\Navigation\NavigationMiddleware;
-use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
@@ -30,11 +29,7 @@ use function assert;
 
 final class NavigationMiddlewareTest extends TestCase
 {
-    /**
-     * @throws Exception
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
-     */
+    /** @throws Exception */
     public function testConstructor(): void
     {
         $navigationConfig = self::createStub(NavigationConfigInterface::class);
@@ -55,11 +50,7 @@ final class NavigationMiddlewareTest extends TestCase
         self::assertInstanceOf(NavigationMiddleware::class, $navigationMiddleware);
     }
 
-    /**
-     * @throws Exception
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
-     */
+    /** @throws Exception */
     public function testConstructorWithoutOptionalParameters(): void
     {
         $navigationConfig = self::createStub(NavigationConfigInterface::class);
@@ -71,11 +62,7 @@ final class NavigationMiddlewareTest extends TestCase
         self::assertInstanceOf(NavigationMiddleware::class, $navigationMiddleware);
     }
 
-    /**
-     * @throws Exception
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
-     */
+    /** @throws Exception */
     public function testProcessWithoutRouteResult(): void
     {
         $urlHelper     = self::createStub(UrlHelper::class);
@@ -131,11 +118,7 @@ final class NavigationMiddlewareTest extends TestCase
         self::assertSame($expectedResponse, $response);
     }
 
-    /**
-     * @throws Exception
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
-     */
+    /** @throws Exception */
     public function testProcess(): void
     {
         $urlHelper     = self::createStub(UrlHelper::class);
