@@ -25,7 +25,6 @@ use Mimmi20\Mezzio\Navigation\Page\RouteInterface;
 use Mimmi20\Mezzio\Navigation\Page\Uri;
 use Mimmi20\Mezzio\Navigation\Page\UriInterface;
 use Mimmi20\Mezzio\Navigation\Service\ConstructedNavigationFactory;
-use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerExceptionInterface;
@@ -41,8 +40,6 @@ final class ConstructedNavigationFactoryTest extends TestCase
      * @throws InvalidArgumentException
      * @throws ContainerExceptionInterface
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testCanNotInvokeWithoutConfig(): void
     {
@@ -76,8 +73,6 @@ final class ConstructedNavigationFactoryTest extends TestCase
      * @throws InvalidArgumentException
      * @throws ContainerExceptionInterface
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testInvoke(): void
     {
@@ -172,8 +167,6 @@ final class ConstructedNavigationFactoryTest extends TestCase
      * @throws InvalidArgumentException
      * @throws ContainerExceptionInterface
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testInvokeWithRouteResult(): void
     {
@@ -281,8 +274,6 @@ final class ConstructedNavigationFactoryTest extends TestCase
      * @throws InvalidArgumentException
      * @throws ContainerExceptionInterface
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
-     * @throws NoPreviousThrowableException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testInvokeWithSubPages(): void
     {
