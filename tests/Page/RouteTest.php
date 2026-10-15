@@ -13,7 +13,6 @@ declare(strict_types = 1);
 
 namespace Mimmi20\MezzioTest\Navigation\Page;
 
-use Mezzio\Router\Exception\RuntimeException;
 use Mezzio\Router\RouteResult;
 use Mezzio\Router\RouterInterface;
 use Mimmi20\Mezzio\Navigation\ContainerInterface;
@@ -1009,7 +1008,6 @@ final class RouteTest extends TestCase
 
     /**
      * @throws DomainException
-     * @throws RuntimeException
      * @throws InvalidArgumentException
      */
     public function testGetHrefMissingRouter(): void
@@ -1027,7 +1025,6 @@ final class RouteTest extends TestCase
 
     /**
      * @throws DomainException
-     * @throws RuntimeException
      * @throws InvalidArgumentException
      */
     public function testGetHrefMissingRoute(): void
@@ -1050,7 +1047,6 @@ final class RouteTest extends TestCase
      * @throws Exception
      * @throws InvalidArgumentException
      * @throws DomainException
-     * @throws RuntimeException
      */
     public function testGetHrefWithRoute(): void
     {
@@ -1076,7 +1072,6 @@ final class RouteTest extends TestCase
      * @throws Exception
      * @throws InvalidArgumentException
      * @throws DomainException
-     * @throws RuntimeException
      */
     public function testGetHrefWithRouteMatch(): void
     {
@@ -1119,7 +1114,6 @@ final class RouteTest extends TestCase
      * @throws Exception
      * @throws InvalidArgumentException
      * @throws DomainException
-     * @throws RuntimeException
      */
     public function testGetHrefWithFragmentIdentifier(): void
     {
@@ -1164,7 +1158,6 @@ final class RouteTest extends TestCase
      * @throws Exception
      * @throws InvalidArgumentException
      * @throws DomainException
-     * @throws RuntimeException
      */
     public function testGetHrefWithQuery(): void
     {

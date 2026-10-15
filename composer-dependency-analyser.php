@@ -23,9 +23,6 @@ $config
     // applies only to directory scanning, not directly listed files
     ->setFileExtensions(['php'])
 
-    // Ignoring errors in vendor directory
-    ->ignoreErrorsOnPath(__DIR__ . '/src', [ErrorType::DEV_DEPENDENCY_IN_PROD])
-
     // do not complain about some modules
     ->ignoreErrorsOnPackage('mimmi20/coding-standard', [ErrorType::UNUSED_DEPENDENCY])
     ->ignoreErrorsOnPackage('phpstan/extension-installer', [ErrorType::UNUSED_DEPENDENCY])

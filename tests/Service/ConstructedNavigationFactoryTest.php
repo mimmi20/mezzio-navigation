@@ -167,7 +167,6 @@ final class ConstructedNavigationFactoryTest extends TestCase
      * @throws InvalidArgumentException
      * @throws ContainerExceptionInterface
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testInvokeWithRouteResult(): void
     {
@@ -275,7 +274,6 @@ final class ConstructedNavigationFactoryTest extends TestCase
      * @throws InvalidArgumentException
      * @throws ContainerExceptionInterface
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testInvokeWithSubPages(): void
     {

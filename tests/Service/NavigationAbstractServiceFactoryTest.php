@@ -74,7 +74,6 @@ final class NavigationAbstractServiceFactoryTest extends TestCase
     /**
      * @throws Exception
      * @throws ContainerExceptionInterface
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testCanCreate(): void
     {
@@ -105,7 +104,6 @@ final class NavigationAbstractServiceFactoryTest extends TestCase
     /**
      * @throws Exception
      * @throws ContainerExceptionInterface
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testCanCreateLowercased(): void
     {
@@ -138,7 +136,6 @@ final class NavigationAbstractServiceFactoryTest extends TestCase
      * @throws InvalidArgumentException
      * @throws ContainerExceptionInterface
      * @throws \Laminas\Stdlib\Exception\InvalidArgumentException
-     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     public function testInvoke(): void
     {
