@@ -37,7 +37,6 @@ $config
     ->ignoreErrorsOnPackage('tomasvotruba/type-coverage', [ErrorType::UNUSED_DEPENDENCY])
     ->ignoreErrorsOnPackage('tomasvotruba/unused-public', [ErrorType::UNUSED_DEPENDENCY])
     ->ignoreErrorsOnPackage('phpstan/phpstan-phpunit', [ErrorType::UNUSED_DEPENDENCY])
-    ->ignoreErrorsOnPackage('rector/type-perfect', [ErrorType::UNUSED_DEPENDENCY])
     ->ignoreErrorsOnPackage(
         'jbelien/phpstan-sarif-formatter',
         [ErrorType::UNUSED_DEPENDENCY],
