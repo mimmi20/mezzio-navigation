@@ -13,6 +13,7 @@ declare(strict_types = 1);
 
 namespace Mimmi20\Mezzio\Navigation\Page;
 
+use Mezzio\Router\Exception\RuntimeException;
 use Mezzio\Router\RouteResult;
 use Mezzio\Router\RouterInterface;
 use Mimmi20\Mezzio\Navigation\Exception;
@@ -149,6 +150,7 @@ final class Route extends AbstractPage implements RouteInterface
      * @return string page href
      *
      * @throws Exception\DomainException if no router is set
+     * @throws RuntimeException
      */
     #[Override]
     public function getHref(): string
