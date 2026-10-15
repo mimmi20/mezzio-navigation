@@ -23,9 +23,6 @@ $config
     // applies only to directory scanning, not directly listed files
     ->setFileExtensions(['php'])
 
-    // Ignoring errors in vendor directory
-    ->ignoreErrorsOnPath(__DIR__ . '/src', [ErrorType::DEV_DEPENDENCY_IN_PROD])
-
     // do not complain about some modules
     ->ignoreErrorsOnPackage('mimmi20/coding-standard', [ErrorType::UNUSED_DEPENDENCY])
     ->ignoreErrorsOnPackage('phpstan/extension-installer', [ErrorType::UNUSED_DEPENDENCY])
@@ -40,7 +37,6 @@ $config
     ->ignoreErrorsOnPackage('tomasvotruba/type-coverage', [ErrorType::UNUSED_DEPENDENCY])
     ->ignoreErrorsOnPackage('tomasvotruba/unused-public', [ErrorType::UNUSED_DEPENDENCY])
     ->ignoreErrorsOnPackage('phpstan/phpstan-phpunit', [ErrorType::UNUSED_DEPENDENCY])
-    ->ignoreErrorsOnPackage('rector/type-perfect', [ErrorType::UNUSED_DEPENDENCY])
     ->ignoreErrorsOnPackage(
         'jbelien/phpstan-sarif-formatter',
         [ErrorType::UNUSED_DEPENDENCY],

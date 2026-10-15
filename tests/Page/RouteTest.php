@@ -1009,8 +1009,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws DomainException
-     * @throws RuntimeException
      * @throws InvalidArgumentException
+     * @throws RuntimeException
      */
     public function testGetHrefMissingRouter(): void
     {
@@ -1027,8 +1027,8 @@ final class RouteTest extends TestCase
 
     /**
      * @throws DomainException
-     * @throws RuntimeException
      * @throws InvalidArgumentException
+     * @throws RuntimeException
      */
     public function testGetHrefMissingRoute(): void
     {
