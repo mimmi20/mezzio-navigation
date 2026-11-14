@@ -142,33 +142,3 @@ services:
       relativePathHelper: @simpleRelativePathHelper
       currentWorkingDirectory: %currentWorkingDirectory%
       pretty: true
-
-rules:
-  # code complexity
-  # - Symplify\PHPStanRules\Rules\NoDynamicNameRule
-
-  - Symplify\PHPStanRules\Rules\ForbiddenExtendOfNonAbstractClassRule
-
-  # domain
-  - Symplify\PHPStanRules\Rules\Domain\RequireExceptionNamespaceRule
-  - Symplify\PHPStanRules\Rules\Domain\RequireAttributeNamespaceRule
-  - Symplify\PHPStanRules\Rules\Enum\RequireUniqueEnumConstantRule
-  - Symplify\PHPStanRules\Rules\PreventParentMethodVisibilityOverrideRule
-
-  # paths
-  - Symplify\PHPStanRules\Rules\NoReferenceRule
-
-  # explicit naming
-  - Symplify\PHPStanRules\Rules\ForbiddenMultipleClassLikeInOneFileRule
-
-  - Symplify\PHPStanRules\Rules\Complexity\ForbiddenArrayMethodCallRule
-  # - Symplify\PHPStanRules\Rules\CheckRequiredInterfaceInContractNamespaceRule
-
-  # naming
-  - Symplify\PHPStanRules\Rules\RequireAttributeNameRule
-
-  # naming
-  - Symplify\PHPStanRules\Rules\Explicit\ExplicitClassPrefixSuffixRule
-  - Symplify\PHPStanRules\Rules\NoReturnSetterMethodRule
-  - Symplify\PHPStanRules\Rules\UppercaseConstantRule
-  - Symplify\PHPStanRules\Rules\ClassNameRespectsParentSuffixRule
