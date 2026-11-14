@@ -73,7 +73,7 @@ final class NavigationMiddlewareTest extends TestCase
         $request->expects(self::once())
             ->method('getAttribute')
             ->with(RouteResult::class)
-            ->willReturn(value: null);
+            ->willReturn(null);
 
         $navigationConfig = $this->createMock(NavigationConfigInterface::class);
         $navigationConfig->expects(self::once())
