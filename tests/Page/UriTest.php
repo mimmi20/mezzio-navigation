@@ -436,7 +436,7 @@ final class UriTest extends TestCase
         $parent->expects(self::once())
             ->method('hasPage')
             ->with($uri, false)
-            ->willReturn(value: false);
+            ->willReturn(false);
         $parent->expects(self::once())
             ->method('addPage')
             ->with($uri);
@@ -461,7 +461,7 @@ final class UriTest extends TestCase
         $parent1->expects(self::once())
             ->method('hasPage')
             ->with($uri, false)
-            ->willReturn(value: false);
+            ->willReturn(false);
         $parent1->expects(self::once())
             ->method('addPage')
             ->with($uri);
@@ -472,7 +472,7 @@ final class UriTest extends TestCase
         $parent2->expects(self::once())
             ->method('hasPage')
             ->with($uri, false)
-            ->willReturn(value: true);
+            ->willReturn(true);
         $parent2->expects(self::never())
             ->method('addPage');
 
@@ -604,7 +604,7 @@ final class UriTest extends TestCase
         $parent1 = $this->createMock(PageInterface::class);
         $parent1->expects(self::exactly(2))
             ->method('isVisible')
-            ->willReturn(value: true);
+            ->willReturn(true);
 
         assert($parent1 instanceof PageInterface);
         $uri->setParent($parent1);
@@ -615,7 +615,7 @@ final class UriTest extends TestCase
         $parent2 = $this->createMock(PageInterface::class);
         $parent2->expects(self::exactly(2))
             ->method('isVisible')
-            ->willReturn(value: false);
+            ->willReturn(false);
 
         assert($parent2 instanceof PageInterface);
         $uri->setParent($parent2);
@@ -684,7 +684,7 @@ final class UriTest extends TestCase
         $childPage1->expects(self::exactly(2))
             ->method('isActive')
             ->with(true)
-            ->willReturn(value: true);
+            ->willReturn(true);
 
         self::assertFalse($uri->isActive(recursive: true));
         self::assertFalse($uri->getActive(recursive: true));
@@ -1036,7 +1036,7 @@ final class UriTest extends TestCase
             ->willReturn($code2);
         $childPage2->expects(self::exactly(2))
             ->method('getOrder')
-            ->willReturn(value: null);
+            ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($uri);
@@ -1093,7 +1093,7 @@ final class UriTest extends TestCase
             ->willReturn($code2);
         $childPage2->expects(self::once())
             ->method('getOrder')
-            ->willReturn(value: null);
+            ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($uri);
@@ -1150,7 +1150,7 @@ final class UriTest extends TestCase
             ->willReturn($code2);
         $childPage2->expects(self::exactly(2))
             ->method('getOrder')
-            ->willReturn(value: null);
+            ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($uri);
@@ -1203,7 +1203,7 @@ final class UriTest extends TestCase
             ->willReturn($code2);
         $childPage2->expects(self::never())
             ->method('getOrder')
-            ->willReturn(value: null);
+            ->willReturn(null);
         $childPage2->expects(self::never())
             ->method('setParent')
             ->with($uri);
@@ -1219,7 +1219,7 @@ final class UriTest extends TestCase
         $childPage1->expects(self::once())
             ->method('hasPage')
             ->with($childPage2, true)
-            ->willReturn(value: true);
+            ->willReturn(true);
         $childPage1->expects(self::once())
             ->method('removePage')
             ->with($childPage2, true);
@@ -1264,7 +1264,7 @@ final class UriTest extends TestCase
             ->willReturn($code2);
         $childPage2->expects(self::never())
             ->method('getOrder')
-            ->willReturn(value: null);
+            ->willReturn(null);
         $childPage2->expects(self::never())
             ->method('setParent')
             ->with($uri);
@@ -1280,7 +1280,7 @@ final class UriTest extends TestCase
         $childPage1->expects(self::once())
             ->method('hasPage')
             ->with($childPage2, true)
-            ->willReturn(value: false);
+            ->willReturn(false);
         $childPage1->expects(self::never())
             ->method('removePage');
 
@@ -1328,7 +1328,7 @@ final class UriTest extends TestCase
             ->willReturn($code2);
         $childPage2->expects(self::exactly(2))
             ->method('getOrder')
-            ->willReturn(value: null);
+            ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($uri);
@@ -1384,7 +1384,7 @@ final class UriTest extends TestCase
             ->willReturn($code2);
         $childPage2->expects(self::once())
             ->method('getOrder')
-            ->willReturn(value: null);
+            ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($uri);
@@ -1440,7 +1440,7 @@ final class UriTest extends TestCase
             ->willReturn($code2);
         $childPage2->expects(self::exactly(2))
             ->method('getOrder')
-            ->willReturn(value: null);
+            ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($uri);
@@ -1492,7 +1492,7 @@ final class UriTest extends TestCase
             ->willReturn($code2);
         $childPage2->expects(self::never())
             ->method('getOrder')
-            ->willReturn(value: null);
+            ->willReturn(null);
         $childPage2->expects(self::never())
             ->method('setParent')
             ->with($uri);
@@ -1508,7 +1508,7 @@ final class UriTest extends TestCase
         $childPage1->expects(self::once())
             ->method('hasPage')
             ->with($childPage2, true)
-            ->willReturn(value: true);
+            ->willReturn(true);
         $childPage1->expects(self::never())
             ->method('removePage');
 
@@ -1551,7 +1551,7 @@ final class UriTest extends TestCase
             ->willReturn($code2);
         $childPage2->expects(self::never())
             ->method('getOrder')
-            ->willReturn(value: null);
+            ->willReturn(null);
         $childPage2->expects(self::never())
             ->method('setParent')
             ->with($uri);
@@ -1567,7 +1567,7 @@ final class UriTest extends TestCase
         $childPage1->expects(self::once())
             ->method('hasPage')
             ->with($childPage2, true)
-            ->willReturn(value: false);
+            ->willReturn(false);
         $childPage1->expects(self::never())
             ->method('removePage');
 
@@ -1604,7 +1604,7 @@ final class UriTest extends TestCase
             ->with($uri);
         $childPage1->expects(self::once())
             ->method('isVisible')
-            ->willReturn(value: false);
+            ->willReturn(false);
         $childPage1->expects(self::never())
             ->method('get');
         $childPage1->expects(self::never())
@@ -1618,13 +1618,13 @@ final class UriTest extends TestCase
             ->willReturn($code2);
         $childPage2->expects(self::once())
             ->method('getOrder')
-            ->willReturn(value: null);
+            ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($uri);
         $childPage2->expects(self::once())
             ->method('isVisible')
-            ->willReturn(value: false);
+            ->willReturn(false);
         $childPage2->expects(self::never())
             ->method('get');
         $childPage2->expects(self::never())
@@ -1666,7 +1666,7 @@ final class UriTest extends TestCase
             ->with($uri);
         $childPage1->expects(self::once())
             ->method('isVisible')
-            ->willReturn(value: false);
+            ->willReturn(false);
         $childPage1->expects(self::never())
             ->method('get');
         $childPage1->expects(self::never())
@@ -1680,13 +1680,13 @@ final class UriTest extends TestCase
             ->willReturn($code2);
         $childPage2->expects(self::once())
             ->method('getOrder')
-            ->willReturn(value: null);
+            ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($uri);
         $childPage2->expects(self::once())
             ->method('isVisible')
-            ->willReturn(value: true);
+            ->willReturn(true);
         $childPage2->expects(self::never())
             ->method('get');
         $childPage2->expects(self::never())
@@ -1743,7 +1743,7 @@ final class UriTest extends TestCase
             ->willReturn($code2);
         $childPage2->expects(self::exactly(2))
             ->method('getOrder')
-            ->willReturn(value: null);
+            ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($uri);
@@ -1809,7 +1809,7 @@ final class UriTest extends TestCase
             ->willReturn($code2);
         $childPage2->expects(self::exactly(2))
             ->method('getOrder')
-            ->willReturn(value: null);
+            ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($uri);
@@ -1830,7 +1830,7 @@ final class UriTest extends TestCase
             ->willReturn($code3);
         $childPage3->expects(self::exactly(2))
             ->method('getOrder')
-            ->willReturn(value: null);
+            ->willReturn(null);
         $childPage3->expects(self::once())
             ->method('setParent')
             ->with($uri);
@@ -1839,7 +1839,7 @@ final class UriTest extends TestCase
         $childPage3->expects(self::once())
             ->method('get')
             ->with($property)
-            ->willReturn(value: null);
+            ->willReturn(null);
         $childPage3->expects(self::never())
             ->method('hasPage');
         $childPage3->expects(self::never())
@@ -1912,7 +1912,7 @@ final class UriTest extends TestCase
             ->willReturn($code2);
         $childPage2->expects(self::exactly(2))
             ->method('getOrder')
-            ->willReturn(value: null);
+            ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($uri);
@@ -1988,7 +1988,7 @@ final class UriTest extends TestCase
             ->willReturn($code2);
         $childPage2->expects(self::exactly(2))
             ->method('getOrder')
-            ->willReturn(value: null);
+            ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($uri);
@@ -2066,7 +2066,7 @@ final class UriTest extends TestCase
             ->willReturn($code2);
         $childPage2->expects(self::exactly(2))
             ->method('getOrder')
-            ->willReturn(value: null);
+            ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($uri);

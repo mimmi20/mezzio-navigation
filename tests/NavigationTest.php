@@ -144,7 +144,7 @@ final class NavigationTest extends TestCase
             ->willReturn($code2);
         $childPage2->expects(self::exactly(2))
             ->method('getOrder')
-            ->willReturn(value: null);
+            ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($navigation);
@@ -193,7 +193,7 @@ final class NavigationTest extends TestCase
             ->willReturn($code2);
         $childPage2->expects(self::once())
             ->method('getOrder')
-            ->willReturn(value: null);
+            ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($navigation);
@@ -242,7 +242,7 @@ final class NavigationTest extends TestCase
             ->willReturn($code2);
         $childPage2->expects(self::exactly(2))
             ->method('getOrder')
-            ->willReturn(value: null);
+            ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($navigation);
@@ -287,7 +287,7 @@ final class NavigationTest extends TestCase
             ->willReturn($code2);
         $childPage2->expects(self::never())
             ->method('getOrder')
-            ->willReturn(value: null);
+            ->willReturn(null);
         $childPage2->expects(self::never())
             ->method('setParent')
             ->with($navigation);
@@ -299,7 +299,7 @@ final class NavigationTest extends TestCase
         $childPage1->expects(self::once())
             ->method('hasPage')
             ->with($childPage2, true)
-            ->willReturn(value: true);
+            ->willReturn(true);
         $childPage1->expects(self::once())
             ->method('removePage')
             ->with($childPage2, true);
@@ -340,7 +340,7 @@ final class NavigationTest extends TestCase
             ->willReturn($code2);
         $childPage2->expects(self::never())
             ->method('getOrder')
-            ->willReturn(value: null);
+            ->willReturn(null);
         $childPage2->expects(self::never())
             ->method('setParent')
             ->with($navigation);
@@ -352,7 +352,7 @@ final class NavigationTest extends TestCase
         $childPage1->expects(self::once())
             ->method('hasPage')
             ->with($childPage2, true)
-            ->willReturn(value: false);
+            ->willReturn(false);
         $childPage1->expects(self::never())
             ->method('removePage');
 
@@ -392,7 +392,7 @@ final class NavigationTest extends TestCase
             ->willReturn($code2);
         $childPage2->expects(self::exactly(2))
             ->method('getOrder')
-            ->willReturn(value: null);
+            ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($navigation);
@@ -432,7 +432,7 @@ final class NavigationTest extends TestCase
             ->willReturn($code2);
         $childPage2->expects(self::once())
             ->method('getOrder')
-            ->willReturn(value: null);
+            ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($navigation);
@@ -472,7 +472,7 @@ final class NavigationTest extends TestCase
             ->willReturn($code2);
         $childPage2->expects(self::exactly(2))
             ->method('getOrder')
-            ->willReturn(value: null);
+            ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($navigation);
@@ -512,7 +512,7 @@ final class NavigationTest extends TestCase
             ->willReturn($code2);
         $childPage2->expects(self::never())
             ->method('getOrder')
-            ->willReturn(value: null);
+            ->willReturn(null);
         $childPage2->expects(self::never())
             ->method('setParent')
             ->with($navigation);
@@ -520,7 +520,7 @@ final class NavigationTest extends TestCase
         $childPage1->expects(self::once())
             ->method('hasPage')
             ->with($childPage2, true)
-            ->willReturn(value: true);
+            ->willReturn(true);
         $childPage1->expects(self::never())
             ->method('removePage');
 
@@ -559,7 +559,7 @@ final class NavigationTest extends TestCase
             ->willReturn($code2);
         $childPage2->expects(self::never())
             ->method('getOrder')
-            ->willReturn(value: null);
+            ->willReturn(null);
         $childPage2->expects(self::never())
             ->method('setParent')
             ->with($navigation);
@@ -567,7 +567,7 @@ final class NavigationTest extends TestCase
         $childPage1->expects(self::once())
             ->method('hasPage')
             ->with($childPage2, true)
-            ->willReturn(value: false);
+            ->willReturn(false);
         $childPage1->expects(self::never())
             ->method('removePage');
 
@@ -604,7 +604,7 @@ final class NavigationTest extends TestCase
             ->with($navigation);
         $childPage1->expects(self::once())
             ->method('isVisible')
-            ->willReturn(value: false);
+            ->willReturn(false);
 
         $childPage2 = $this->createMock(Page\PageInterface::class);
         $childPage2->expects(self::once())
@@ -612,13 +612,13 @@ final class NavigationTest extends TestCase
             ->willReturn($code2);
         $childPage2->expects(self::once())
             ->method('getOrder')
-            ->willReturn(value: null);
+            ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($navigation);
         $childPage2->expects(self::once())
             ->method('isVisible')
-            ->willReturn(value: false);
+            ->willReturn(false);
 
         assert($childPage1 instanceof Page\PageInterface);
         assert($childPage2 instanceof Page\PageInterface);
@@ -654,7 +654,7 @@ final class NavigationTest extends TestCase
             ->with($navigation);
         $childPage1->expects(self::once())
             ->method('isVisible')
-            ->willReturn(value: false);
+            ->willReturn(false);
 
         $childPage2 = $this->createMock(Page\PageInterface::class);
         $childPage2->expects(self::once())
@@ -662,13 +662,13 @@ final class NavigationTest extends TestCase
             ->willReturn($code2);
         $childPage2->expects(self::once())
             ->method('getOrder')
-            ->willReturn(value: null);
+            ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($navigation);
         $childPage2->expects(self::once())
             ->method('isVisible')
-            ->willReturn(value: true);
+            ->willReturn(true);
 
         assert($childPage1 instanceof Page\PageInterface);
         assert($childPage2 instanceof Page\PageInterface);
@@ -715,7 +715,7 @@ final class NavigationTest extends TestCase
             ->willReturn($code2);
         $childPage2->expects(self::exactly(2))
             ->method('getOrder')
-            ->willReturn(value: null);
+            ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($navigation);
@@ -773,7 +773,7 @@ final class NavigationTest extends TestCase
             ->willReturn($code2);
         $childPage2->expects(self::exactly(2))
             ->method('getOrder')
-            ->willReturn(value: null);
+            ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($navigation);
@@ -790,7 +790,7 @@ final class NavigationTest extends TestCase
             ->willReturn($code3);
         $childPage3->expects(self::exactly(2))
             ->method('getOrder')
-            ->willReturn(value: null);
+            ->willReturn(null);
         $childPage3->expects(self::once())
             ->method('setParent')
             ->with($navigation);
@@ -799,7 +799,7 @@ final class NavigationTest extends TestCase
         $childPage3->expects(self::once())
             ->method('get')
             ->with($property)
-            ->willReturn(value: null);
+            ->willReturn(null);
 
         assert($childPage1 instanceof Page\PageInterface);
         assert($childPage2 instanceof Page\PageInterface);
@@ -864,7 +864,7 @@ final class NavigationTest extends TestCase
             ->willReturn($code2);
         $childPage2->expects(self::exactly(2))
             ->method('getOrder')
-            ->willReturn(value: null);
+            ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($navigation);
@@ -929,7 +929,7 @@ final class NavigationTest extends TestCase
             ->willReturn($code2);
         $childPage2->expects(self::exactly(2))
             ->method('getOrder')
-            ->willReturn(value: null);
+            ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($navigation);
@@ -999,7 +999,7 @@ final class NavigationTest extends TestCase
             ->willReturn($code2);
         $childPage2->expects(self::exactly(2))
             ->method('getOrder')
-            ->willReturn(value: null);
+            ->willReturn(null);
         $childPage2->expects(self::once())
             ->method('setParent')
             ->with($navigation);

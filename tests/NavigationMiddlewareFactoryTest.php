@@ -41,7 +41,7 @@ final class NavigationMiddlewareFactoryTest extends TestCase
         $container->expects(self::once())
             ->method('has')
             ->with(NavigationConfigInterface::class)
-            ->willReturn(value: false);
+            ->willReturn(false);
         $container->expects(self::never())
             ->method('get');
 

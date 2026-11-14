@@ -105,13 +105,13 @@ final class ConstructedNavigationFactoryTest extends TestCase
             ->willReturn($pageConfig);
         $navigationConfig->expects(self::once())
             ->method('getRouteResult')
-            ->willReturn(value: null);
+            ->willReturn(null);
         $navigationConfig->expects(self::once())
             ->method('getRouter')
-            ->willReturn(value: null);
+            ->willReturn(null);
         $navigationConfig->expects(self::once())
             ->method('getRequest')
-            ->willReturn(value: null);
+            ->willReturn(null);
 
         $pageFactory = $this->createMock(PageFactoryInterface::class);
         $matcher     = self::exactly(2);
